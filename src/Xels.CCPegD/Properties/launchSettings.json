@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Xels.CCPegD": {
+      "commandName": "Project",
+      "commandLineArgs": "-mainchain"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "profiles": {
+    "Xels.CCMinerD": {
+      "commandName": "Project",
+      "commandLineArgs": "-txindex=1"
+    },
+    "Xels.CCMinerD TestNet": {
+      "commandName": "Project",
+      "commandLineArgs": "-testnet -txindex=1"
+    },
+    "Xels.CCMinerD RegTest": {
+      "commandName": "Project",
+      "commandLineArgs": "-regtest -txindex=1"
+    }
+  }
+}

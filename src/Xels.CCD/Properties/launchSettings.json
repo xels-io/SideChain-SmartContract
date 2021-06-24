@@ -1,0 +1,15 @@
+﻿{
+  "profiles": {
+    "Xels.CCD": {
+      "commandName": "Project"
+    },
+    "Xels.CCD Test": {
+      "commandName": "Project",
+      "commandLineArgs": "-testnet -addressindex=0"
+    },
+    "Xels.CCD RegTest": {
+      "commandName": "Project",
+      "commandLineArgs": "-regtest -addressindex=0"
+    }
+  }
+}

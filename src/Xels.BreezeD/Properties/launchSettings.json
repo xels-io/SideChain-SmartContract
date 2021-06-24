@@ -1,0 +1,20 @@
+{
+  "profiles": {
+    "Bitcoin Main": {
+      "commandName": "Project",
+      "commandLineArgs": "Xels -testnet"
+    },
+    "Bitcoin Test": {
+      "commandName": "Project",
+      "commandLineArgs": "-testnet -debug=all -loglevel=debug"
+    },
+    "Xels Main": {
+      "commandName": "Project",
+      "commandLineArgs": "Xels "
+    },
+    "Xels Test": {
+      "commandName": "Project",
+      "commandLineArgs": "Xels -testnet -prune=2880"
+    }
+  }
+}
