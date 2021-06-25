@@ -219,7 +219,7 @@ namespace Xels.Bitcoin.Features.Miner.Staking
         /// <summary>
         /// Needed for Increament Nonce method of PoW Hybridization with PoS
         /// </summary>
-        //private uint256 hashPrevBlock;
+        private uint256 hashPrevBlock;
 
         public PosMinting(
             IBlockProvider blockProvider,
@@ -405,30 +405,30 @@ namespace Xels.Bitcoin.Features.Miner.Staking
                     blockTemplate = null;
                 }
 
-                //bool PoWFound = false;
-                //int nExtraNonce = 0;
-                //ulong maxTries = int.MaxValue;
-                //int InnerLoopCount = int.MaxValue;
-                //BlockTemplate pblockTemplate = this.blockProvider.BuildPowBlock(chainTip, new Script());// this.blockAssemblerFactory.Create(chainTip).CreateNewBlock(new Script());
-                //Block pblock = pblockTemplate.Block;
+                bool PoWFound = false;
+                int nExtraNonce = 0;
+                ulong maxTries = int.MaxValue;
+                int InnerLoopCount = int.MaxValue;
+                BlockTemplate pblockTemplate = this.blockProvider.BuildPowBlock(chainTip, new Script());// this.blockAssemblerFactory.Create(chainTip).CreateNewBlock(new Script());
+                Block pblock = pblockTemplate.Block;
 
-                //while (!PoWFound)
-                //{
-                //    nExtraNonce = this.IncrementExtraNonce(pblock, this.chainIndexer, nExtraNonce);
-                //    while ((maxTries > 0) && (pblock.Header.Nonce < InnerLoopCount) && !pblock.CheckProofOfWork())
-                //    {
-                //        this.nodeLifetime.ApplicationStopping.ThrowIfCancellationRequested();
+                while (!PoWFound)
+                {
+                    nExtraNonce = this.IncrementExtraNonce(pblock, this.chainIndexer, nExtraNonce);
+                    while ((maxTries > 0) && (pblock.Header.Nonce < InnerLoopCount) && !pblock.CheckProofOfWork())
+                    {
+                        this.nodeLifetime.ApplicationStopping.ThrowIfCancellationRequested();
 
-                //        ++pblock.Header.Nonce;
-                //        --maxTries;
-                //    }
-                //    if (maxTries == 0)
-                //        break;
-                //    if (pblock.Header.Nonce == InnerLoopCount)
-                //        continue;
+                        ++pblock.Header.Nonce;
+                        --maxTries;
+                    }
+                    if (maxTries == 0)
+                        break;
+                    if (pblock.Header.Nonce == InnerLoopCount)
+                        continue;
 
-                //    PoWFound = true;
-                //}
+                    PoWFound = true;
+                }
 
                 uint coinstakeTimestamp = (uint)this.dateTimeProvider.GetAdjustedTimeAsUnixTimestamp() & ~PosConsensusOptions.StakeTimestampMask;
                 if (coinstakeTimestamp <= this.lastCoinStakeSearchTime)
@@ -472,31 +472,31 @@ namespace Xels.Bitcoin.Features.Miner.Staking
             }
         }
 
-        ///// <summary>
-        ///// This method is used in PoW mining loop.
-        ///// </summary>
-        ///// <param name="block"></param>
-        ///// <param name="previousHeader"></param>
-        ///// <param name="extraNonce"></param>
-        ///// <returns></returns>
-        //public int IncrementExtraNonce(Block block, ChainIndexer previousHeader, int extraNonce)
-        //{
-        //    if (this.hashPrevBlock != block.Header.HashPrevBlock)
-        //    {
-        //        extraNonce = 0;
-        //        this.hashPrevBlock = block.Header.HashPrevBlock;
-        //    }
+        /// <summary>
+        /// This method is used in PoW mining loop.
+        /// </summary>
+        /// <param name="block"></param>
+        /// <param name="previousHeader"></param>
+        /// <param name="extraNonce"></param>
+        /// <returns></returns>
+        public int IncrementExtraNonce(Block block, ChainIndexer previousHeader, int extraNonce)
+        {
+            if (this.hashPrevBlock != block.Header.HashPrevBlock)
+            {
+                extraNonce = 0;
+                this.hashPrevBlock = block.Header.HashPrevBlock;
+            }
 
-        //    extraNonce++;
-        //    int height = previousHeader.Height + 1; // Height first in coinbase required for block.version=2
-        //    Transaction txCoinbase = block.Transactions[0];
-        //    txCoinbase.Inputs[0] = TxIn.CreateCoinbase(height);
+            extraNonce++;
+            int height = previousHeader.Height + 1; // Height first in coinbase required for block.version=2
+            Transaction txCoinbase = block.Transactions[0];
+            txCoinbase.Inputs[0] = TxIn.CreateCoinbase(height);
 
-        //    Guard.Assert(txCoinbase.Inputs[0].ScriptSig.Length <= 100);
-        //    block.UpdateMerkleRoot();
+            Guard.Assert(txCoinbase.Inputs[0].ScriptSig.Length <= 100);
+            block.UpdateMerkleRoot();
 
-        //    return extraNonce;
-        //}
+            return extraNonce;
+        }
 
         internal List<UtxoStakeDescription> GetUtxoStakeDescriptions(WalletSecret walletSecret, CancellationToken cancellationToken)
         {

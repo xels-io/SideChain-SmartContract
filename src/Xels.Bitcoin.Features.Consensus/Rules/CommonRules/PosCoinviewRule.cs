@@ -182,9 +182,47 @@ namespace Xels.Bitcoin.Features.Consensus.Rules.CommonRules
         public override Money GetProofOfWorkReward(int height)
         {
             if (this.IsPremine(height))
+            {
                 return this.consensus.PremineReward;
+            }
+            else if (height <= this.consensus.FirstMiningPeriodHeight)
+            {
+                return this.consensus.ProofOfStakeReward;
+            }
+            else if (height <= this.consensus.SecondMiningPeriodHeight)
+            {
+                return this.consensus.ProofOfStakeReward - (Money.Satoshis(3256) * (height - this.consensus.FirstMiningPeriodHeight));
+            }
+            else if (height <= this.consensus.ThirdMiningPeriodHeight)
+            {
+                return this.consensus.ProofOfStakeReward / 2;
+            }
+            else if (height <= this.consensus.ForthMiningPeriodHeight)
+            {
+                return (this.consensus.ProofOfStakeReward / 2) - (Money.Satoshis(1628) * (height - this.consensus.ThirdMiningPeriodHeight));
+            }
+            else if (height <= this.consensus.FifthMiningPeriodHeight)
+            {
+                return this.consensus.ProofOfStakeReward / 4;
+            }
+            else
+            {
+                int multiplier = (int)(height - this.consensus.FifthMiningPeriodHeight) / (int)210240;
+                double returnAmount = 1449770000;
 
-            return this.consensus.ProofOfWorkReward;
+                if (multiplier == 0)
+                {
+                    return Money.Satoshis(1449770000);
+                }
+                else
+                {
+                    for (int i = 0; i < multiplier; i++)
+                    {
+                        returnAmount *= 1.02;
+                    }
+                }
+                return Money.Satoshis((decimal)returnAmount);
+            }
         }
 
         /// <summary>
@@ -194,10 +232,48 @@ namespace Xels.Bitcoin.Features.Consensus.Rules.CommonRules
         /// <returns>Miner's coin stake reward.</returns>
         public Money GetProofOfStakeReward(int height)
         {
-            if (this.IsPremine(height))
+            if (height <= this.consensus.PremineHeight)
+            {
                 return this.consensus.PremineReward;
+            }
+            else if (height <= this.consensus.FirstMiningPeriodHeight)
+            {
+                return this.consensus.ProofOfStakeReward;
+            }
+            else if (height <= this.consensus.SecondMiningPeriodHeight)
+            {
+                return this.consensus.ProofOfStakeReward - (Money.Satoshis(3256) * (height - this.consensus.FirstMiningPeriodHeight));
+            }
+            else if (height <= this.consensus.ThirdMiningPeriodHeight)
+            {
+                return this.consensus.ProofOfStakeReward / 2;
+            }
+            else if (height <= this.consensus.ForthMiningPeriodHeight)
+            {
+                return (this.consensus.ProofOfStakeReward / 2) - (Money.Satoshis(1628) * (height - this.consensus.ThirdMiningPeriodHeight));
+            }
+            else if (height <= this.consensus.FifthMiningPeriodHeight)
+            {
+                return this.consensus.ProofOfStakeReward / 4;
+            }
+            else
+            {
+                int multiplier = (int)(height - this.consensus.FifthMiningPeriodHeight) / (int)210240;
+                double returnAmount = 1449770000;
 
-            return this.consensus.ProofOfStakeReward;
+                if (multiplier == 0)
+                {
+                    return Money.Satoshis(1449770000);
+                }
+                else
+                {
+                    for (int i = 0; i < multiplier; i++)
+                    {
+                        returnAmount *= 1.02;
+                    }
+                }
+                return Money.Satoshis((decimal)returnAmount);
+            }
         }
     }
 }
