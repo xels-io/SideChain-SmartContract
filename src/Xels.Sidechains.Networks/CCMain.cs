@@ -28,7 +28,7 @@ namespace Xels.Sidechains.Networks
             this.NetworkType = NetworkType.Mainnet;
             this.CoinTicker = "XCC";
             this.Magic = 0x522357AC;
-            this.DefaultPort = 16179;
+            this.DefaultPort = 27770;
             this.DefaultMaxOutboundConnections = 16;
             this.DefaultMaxInboundConnections = 109;
             this.DefaultRPCPort = 16175;

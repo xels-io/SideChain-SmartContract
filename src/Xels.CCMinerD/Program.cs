@@ -33,6 +33,7 @@ namespace Xels.CCMinerD
 
         public static void Main(string[] args)
         {
+            args = new string[] { "-mainchain" };
             MainAsync(args).Wait();
         }
 
