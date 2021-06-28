@@ -78,6 +78,12 @@ namespace Xels.Bitcoin.Controllers.Models
         [JsonProperty("chaintrust")]
         public string PosChainTrust { get; set; }
 
+        [JsonProperty("blockreward")]
+        public Money BlockReward { get; set; }
+
+        [JsonProperty("totalout")]
+        public Money TotalOut { get; set; }
+
         /// <summary>
         /// Creates a block model
         /// Used for deserializing from Json
