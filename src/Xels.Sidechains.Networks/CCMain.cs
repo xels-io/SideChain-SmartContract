@@ -105,10 +105,10 @@ namespace Xels.Sidechains.Networks
                 federationMemberMaxIdleTimeSeconds: 60 * 60 * 24 * 2 // 2 days
             )
             {
-                EnforceMinProtocolVersionAtBlockHeight = 384675, // setting the value to zero makes the functionality inactive
+                EnforceMinProtocolVersionAtBlockHeight = 1, // setting the value to zero makes the functionality inactive
                 EnforcedMinProtocolVersion = ProtocolVersion.CC_VERSION, // minimum protocol version which will be enforced at block height defined in EnforceMinProtocolVersionAtBlockHeight
-                FederationMemberActivationTime = 1605862800, // Friday, November 20, 2020 9:00:00 AM
-                VotingManagerV2ActivationHeight = 1_683_000 // Tuesday, 12 January 2021 9:00:00 AM (Estimated)
+                FederationMemberActivationTime = Utils.DateTimeToUnixTime(new DateTimeOffset(2021, 06, 14, 0, 0, 0, TimeSpan.Zero)),//1605862800, // Friday, November 20, 2020 9:00:00 AM
+                VotingManagerV2ActivationHeight = 1 // Tuesday, 12 January 2021 9:00:00 AM (Estimated)
             };
 
             var buriedDeployments = new BuriedDeploymentsArray
@@ -134,7 +134,7 @@ namespace Xels.Sidechains.Networks
                 bip34Hash: new uint256("0x000000000000024b89b42a942fe0d9fea3bb44ab7bd1b19115dd6a759c0808b8"),
                 minerConfirmationWindow: 2016, // nPowTargetTimespan / nPowTargetSpacing
                 maxReorgLength: 240, // Heuristic. Roughly 2 * mining members
-                defaultAssumeValid: new uint256("0xbfd4a96a6c5250f18bf7c586761256fa5f8753ffa10b24160f0648a452823a95"), // 1400000
+                defaultAssumeValid: new uint256("0x0000005a39d58d384efabc1a9c79cd6e8c63894c77d4219526481cb49582ff29"), // 1400000
                 maxMoney: Money.Coins(100_000_000),
                 coinbaseMaturity: 1,
                 premineHeight: 2,
@@ -176,50 +176,25 @@ namespace Xels.Sidechains.Networks
 
             this.Checkpoints = new Dictionary<int, CheckpointInfo>()
             {
-                { 50000, new CheckpointInfo(new uint256("0xf3ed37db1c56751fdf9f45902696dd034444a697cd8c106a08f4c60cd2de9d77")) },
-                { 100000, new CheckpointInfo(new uint256("0x1400cb20800d54cd7fff5fea90133a1a8ca44e7043268cd0c7efdd7f8186b2d0")) },
-                { 150000, new CheckpointInfo(new uint256("0x505d22805f0fc4ea057edad778e7334412526a7c1b017b179be5d274c8d42914")) },
-                { 200000, new CheckpointInfo(new uint256("0x5569221c600e42b0467c92bd932046c12198eee5c50ac98eadff7d3159f55b75")) },
-                { 250000, new CheckpointInfo(new uint256("0x1a0d5f43335eff00e8a3b5dc09e4f6849b571b6870eb58364cf86623222922d7")) },
-                { 300000, new CheckpointInfo(new uint256("0x3b1c3704e0cb79e7fff46ab7e9feacbfa9e2e95ab90b273d99520dbd42cc34b6")) },
-                { 350000, new CheckpointInfo(new uint256("0xcb420b8ef20e1da9eb63b6847005b17928b4bad6c2920eebc964ecf21c50ce5a")) },
-                { 400000, new CheckpointInfo(new uint256("0xa501a5c69dfce78e39bf0c25d2c1eafa9fd7a9f32ee06b419d3a3c0a6ac29d8b")) },
-                { 450000, new CheckpointInfo(new uint256("0xc3ae6119d23294ac51c05f9c761da5271711b1945592cb83cc1bcc1b908780c7")) },
-                { 500000, new CheckpointInfo(new uint256("0x810cc011d6d5158aaefcc38550a31b4118fae1bb18ea7894f81a2edc81126d5f")) },
-                { 550000, new CheckpointInfo(new uint256("0x3a6b0a58deb1997879d35fc6e017123594c00eafb3ac45d8c31a5dbf68c2bccc")) },
-                { 600000, new CheckpointInfo(new uint256("0xc79bf7066ec9243a335fcd2a43380a47a5b9dccdeaee3f67ab5503cef0cd1626")) },
-                { 700000, new CheckpointInfo(new uint256("0xe777ae5e283564a994cbcf88315a594854c12d626e6908fb27e3d0cd7d04fcc7")) },
-                { 800000, new CheckpointInfo(new uint256("0xe8b2b9b4e342b0ff9a0b1b967b0f2b7481fe420c5922322d1b77cfae66471fa1")) },
-                { 900000, new CheckpointInfo(new uint256("0x30599fbbce4404ebaff9f8d0ea7071c684f124439f1f4e9fabec0debad6c7a06")) },
-                { 1_000_000, new CheckpointInfo(new uint256("0x547faf99acb45e2195ea5fbb6873562c44a7696f6571e8a309d6c9f509be064a")) },
-                { 1_100_000, new CheckpointInfo(new uint256("0x7abc2882bcb5e9723ba71ff4155ed3c4006ee655e9f52f8787bcae31b4c796a8")) },
-                { 1_200_000, new CheckpointInfo(new uint256("0x8411b830270cc9d6c2e28de1c2e8025c57a5673835f63e30708967adfee5a92c")) },
-                { 1_300_000, new CheckpointInfo(new uint256("0x512c19a8245316b4d3b13513c7901f41842846f539f668ca4ac349daaab6dc20")) },
-                { 1_400_000, new CheckpointInfo(new uint256("0xbfd4a96a6c5250f18bf7c586761256fa5f8753ffa10b24160f0648a452823a95")) },
-                { 1_500_000, new CheckpointInfo(new uint256("0x2a1602877a5231997654bae975223762ee636be2f371cb444b2d3fb564e6989e")) },
-                { 1_750_000, new CheckpointInfo(new uint256("0x58c96a878efeeffea1b1924b61eed627687900e01588ffaa2f4a161973f01abf")) },
-                { 1_850_000, new CheckpointInfo(new uint256("0x6e2590bd9a8eaab25b236c0c9ac314abec70b18aa053b96c9257f2356dec8314")) },
-                { 2_150_000, new CheckpointInfo(new uint256("0x4c65f29b5098479cab275afd77d302ebe5ed8d8ef33e02ae54bf185865763f18")) },
+                
             };
 
             this.DNSSeeds = new List<DNSSeedData>
             {
-                new DNSSeedData("CCmain1.Xelsnetwork.com", "CCmain1.Xelsnetwork.com")
+                new DNSSeedData("api.xels.io","api.xels.io"),
+                new DNSSeedData("mainnet.xels.io","mainnet.xels.io")
             };
 
             this.SeedNodes = new List<NetworkAddress>
             {
-                new NetworkAddress(IPAddress.Parse("213.125.242.234"), 16179),
-                new NetworkAddress(IPAddress.Parse("45.58.55.21"), 16179),
-                new NetworkAddress(IPAddress.Parse("86.106.181.141"), 16179),
-                new NetworkAddress(IPAddress.Parse("51.195.136.221"), 16179)
+                
             };
 
             this.StandardScriptsRegistry = new PoAStandardScriptsRegistry();
 
             Assert(this.DefaultBanTimeSeconds <= this.Consensus.MaxReorgLength * this.Consensus.TargetSpacing.TotalSeconds / 2);
-            Assert(this.Consensus.HashGenesisBlock == uint256.Parse("000005769503496300ec879afd7543dc9f86d3b3d679950b2b83e2f49f525856"));
-            Assert(this.Genesis.Header.HashMerkleRoot == uint256.Parse("1669a55d45b642af0ce82c5884cf5b8d8efd5bdcb9a450c95f442b9bd1ff65ea"));
+            Assert(this.Consensus.HashGenesisBlock == uint256.Parse("0000005a39d58d384efabc1a9c79cd6e8c63894c77d4219526481cb49582ff29"));
+            Assert(this.Genesis.Header.HashMerkleRoot == uint256.Parse("64637abf3dd01134a4c7038916396f5cabe26c64c14a41ddd633389a7f4c28c2"));
 
             this.RegisterRules(this.Consensus);
             this.RegisterMempoolRules(this.Consensus);
