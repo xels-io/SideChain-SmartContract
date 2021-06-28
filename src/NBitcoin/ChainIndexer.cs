@@ -237,6 +237,24 @@ namespace NBitcoin
                 return result;
             }
         }
+        private ChainedHeader GetBlockLocked(int height)
+        {
+            ChainedHeader result;
+            this.blocksByHeight.TryGetValue(height, out result);
+            return result;
+        }
+        public List<ChainedHeader> GetRestBlocks(int existingHeight)
+        {
+            int blockAtHeight = this.Tip.Height;
+            int numberOfBlocks = this.Tip.Height - existingHeight;
+            List<ChainedHeader> lstChainedBlocks = new List<ChainedHeader>();
+            for (int i = 0; i < numberOfBlocks; i++)
+            {
+                lstChainedBlocks.Add(this.GetBlockLocked(blockAtHeight));
+                blockAtHeight--;
+            }
+            return lstChainedBlocks;
+        }
 
         /// <summary>
         /// Get a <see cref="ChainedHeader"/> based on it's height.
