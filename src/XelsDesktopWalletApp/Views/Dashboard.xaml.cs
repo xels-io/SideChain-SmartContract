@@ -10,6 +10,8 @@ using System.Windows.Navigation;
 using NBitcoin;
 
 using Newtonsoft.Json;
+
+using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 using XelsDesktopWalletApp.Views.SmartContractView;
@@ -470,7 +472,7 @@ namespace XelsDesktopWalletApp.Views
             string getUrl = this.baseURL + $"";
             var content = "";
 
-            HttpResponseMessage response = await client.GetAsync(getUrl);
+            HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
 
             if (response.IsSuccessStatusCode)
             {
