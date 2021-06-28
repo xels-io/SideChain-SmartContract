@@ -33,7 +33,7 @@ namespace Xels.CCMinerD
 
         public static void Main(string[] args)
         {
-            args = new string[] { "-mainchain" };
+            //args = new string[] { "-mainchain" };
             MainAsync(args).Wait();
         }
 
@@ -59,7 +59,7 @@ namespace Xels.CCMinerD
                     fullNode = isMainchainNode ? BuildXlcNode(args) : BuildCCMiningNode(args);
 
                     // set the console window title to identify which node this is (for clarity when running Xlc and CC on the same machine)
-                    Console.Title = isMainchainNode ? $"Xlc Full Node {fullNode.Network.NetworkType}" : $"CC Full Node {fullNode.Network.NetworkType}";
+                    //Console.Title = isMainchainNode ? $"Xlc Full Node {fullNode.Network.NetworkType}" : $"CC Full Node {fullNode.Network.NetworkType}";
                 }
 
                 if (fullNode != null)
