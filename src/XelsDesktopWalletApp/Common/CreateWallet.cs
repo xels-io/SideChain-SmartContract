@@ -41,8 +41,6 @@ namespace XelsDesktopWalletApp.Common
     public class CreateWallet
     {
         Token token = new Token();
-        private static string walletfilepath = @"D:\All_Projects\xls-wpf-v4\src\XelsDesktopWalletApp\File\Wallets.json";
-
 
         //public Wallet WalletCreation(string mnemonic)
         //{
@@ -94,7 +92,10 @@ namespace XelsDesktopWalletApp.Common
                 storedWallets.Add(storedWallet);
                 string JSONresult = JsonConvert.SerializeObject(storedWallets.ToArray(), Formatting.Indented);
 
-                string path = walletfilepath;
+                string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
+                string walletFile = Path.Combine(walletCurrentDirectory, @"..\..\..\File\Wallets.json");
+                string path = Path.GetFullPath(walletFile);
 
                 if (File.Exists(path))
                 {
@@ -123,25 +124,39 @@ namespace XelsDesktopWalletApp.Common
 
         public List<StoredWallet> RetrieveWallets()
         {
-            using (StreamReader r = new StreamReader(walletfilepath))
+            List<StoredWallet> wallets = new List<StoredWallet>();
+
+            string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string walletFile = Path.Combine(walletCurrentDirectory, @"..\..\..\File\Wallets.json");
+            string path = Path.GetFullPath(walletFile);
+
+            if (File.Exists(path))
             {
-                string json = r.ReadToEnd();
-                List<StoredWallet> wallets = new List<StoredWallet>();
-
-                if (json != "{ }" || json != "")
+                using (StreamReader r = new StreamReader(path))
                 {
-                    wallets = JsonConvert.DeserializeObject<List<StoredWallet>>(json);
-                }
+                    string json = r.ReadToEnd();
 
-                return wallets;
+                    if (json != "{ }" || json != "")
+                    {
+                        wallets = JsonConvert.DeserializeObject<List<StoredWallet>>(json);
+                    }
+
+                    return wallets;
+                }
             }
+
+            return null;
         }
 
         public StoredWallet GetLocalWallet(string walletname, string symbol)
         {
             StoredWallet wallet = new StoredWallet();
 
-            using (StreamReader r = new StreamReader(walletfilepath))
+            string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string walletFile = Path.Combine(walletCurrentDirectory, @"..\..\..\File\Wallets.json");
+            string path = Path.GetFullPath(walletFile);
+
+            using (StreamReader r = new StreamReader(path))
             {
                 string json = r.ReadToEnd();
                 List<StoredWallet> wallets = new List<StoredWallet>();

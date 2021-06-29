@@ -24,7 +24,6 @@ namespace XelsDesktopWalletApp.Views
     public partial class Dashboard : Window
     {
         private string baseURL = URLConfiguration.BaseURL;// "http://localhost:37221/api";
-        private static string walletfilepath = @"D:\All_Projects\xls-wpf-v4\src\XelsDesktopWalletApp\File\Wallets.json";
 
         private WalletBalanceArray walletBalanceArray = new WalletBalanceArray();
         private HistoryModelArray historyModelArray = new HistoryModelArray();
@@ -412,7 +411,11 @@ namespace XelsDesktopWalletApp.Views
             //this.createWallet.Initialize("SELS");
             //this.createWallet.Initialize("BELS");
 
-            if (File.Exists(walletfilepath))
+            string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string walletFile = Path.Combine(walletCurrentDirectory, @"..\..\..\File\Wallets.json");
+            string path = Path.GetFullPath(walletFile);
+
+            if (File.Exists(path))
             {
                 this.selswallet = this.createWallet.GetLocalWallet(this.walletName, "SELS");
                 this.belswallet = this.createWallet.GetLocalWallet(this.walletName, "BELS");
