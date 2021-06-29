@@ -22,6 +22,7 @@ namespace Xels.Bitcoin.Features.Miner.Controllers
     /// </summary>
     [ApiVersion("1")]
     [Route("api/[controller]")]
+    [ApiController]
     public class MiningController : Controller
     {
         private const string ExceptionOccurredMessage = "Exception occurred: {0}";

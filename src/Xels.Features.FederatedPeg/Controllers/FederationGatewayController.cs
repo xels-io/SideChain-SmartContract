@@ -41,6 +41,7 @@ namespace Xels.Features.FederatedPeg.Controllers
     /// </summary>
     [ApiVersion("1")]
     [Route("api/[controller]")]
+    [ApiController]
     public class FederationGatewayController : Controller
     {
         private readonly IAsyncProvider asyncProvider;

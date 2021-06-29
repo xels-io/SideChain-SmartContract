@@ -23,7 +23,7 @@ using Xels.Bitcoin.Utilities.JsonErrors;
 namespace Xels.Features.Unity3dApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("[controller]")]     
     public class Unity3dController : Controller
     {
         private readonly IAddressIndexer addressIndexer;

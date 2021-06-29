@@ -20,6 +20,7 @@ namespace Xels.Bitcoin.Features.ColdStaking.Controllers
     /// </summary>
     [ApiVersion("1")]
     [Route("api/[controller]")]
+    [ApiController]
     public class ColdStakingController : Controller
     {
         public ColdStakingManager ColdStakingManager { get; private set; }

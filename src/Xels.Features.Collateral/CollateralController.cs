@@ -21,6 +21,7 @@ namespace Xels.Features.Collateral
     /// <summary>Controller providing operations on collateral federation members.</summary>
     [ApiVersion("1")]
     [Route("api/[controller]")]
+    [ApiController]
     public sealed class CollateralController : Controller
     {
         private readonly ILogger logger;
