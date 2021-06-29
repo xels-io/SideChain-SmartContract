@@ -212,9 +212,9 @@
                     </Grid>
                     <TextBlock x:Name="UnconfirmedBalanceTxt" Width="130" Height="22" FontFamily="Microsoft YaHei Light" Foreground="#FF898989" 
                                FontSize="10" />
-                    <TextBlock Width="84" Height="22" HorizontalAlignment="Center" FontFamily="Microsoft YaHei Light" Foreground="#FF898989" FontSize="10">
+                    <TextBlock Name="SelsCoinTxt" Width="84" Height="22" HorizontalAlignment="Center" FontFamily="Microsoft YaHei Light" Foreground="#FF898989" FontSize="10">
                 00.00000000 SELS</TextBlock>
-                    <TextBlock Width="86" Height="24" HorizontalAlignment="Center" FontFamily="Microsoft YaHei Light" Foreground="#FF898989" FontSize="10">
+                    <TextBlock Name="BelsCoinTxt"  Width="86" Height="24" HorizontalAlignment="Center" FontFamily="Microsoft YaHei Light" Foreground="#FF898989" FontSize="10">
                 00.00000000 BELS</TextBlock>
                     <Button Content="Import XELS &amp; BELS Address" Width="190" Click="ImportAddrButton_Click" FontFamily="Microsoft YaHei Light" Foreground="#FF0FD421" Background="White" BorderBrush="#FF30CD3E" FontSize="10" Height="24">
                         <Button.Resources>

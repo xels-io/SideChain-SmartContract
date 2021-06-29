@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -7,9 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
-
 using NBitcoin;
-//using NBitcoin.BouncyCastle.Math;
 using Nethereum.Web3;
 using Newtonsoft.Json;
 using XelsDesktopWalletApp.Common;
@@ -24,8 +23,8 @@ namespace XelsDesktopWalletApp.Views
     /// </summary>
     public partial class Dashboard : Window
     {
-        //private static HttpClient client = new HttpClient();
         private string baseURL = URLConfiguration.BaseURL;// "http://localhost:37221/api";
+        private static string walletfilepath = @"D:\All_Projects\xls-wpf-v4\src\XelsDesktopWalletApp\File\Wallets.json";
 
         private WalletBalanceArray walletBalanceArray = new WalletBalanceArray();
         private HistoryModelArray historyModelArray = new HistoryModelArray();
@@ -35,10 +34,8 @@ namespace XelsDesktopWalletApp.Views
         private CreateWallet createWallet = new CreateWallet();
         private StoredWallet selswallet = new StoredWallet();
         private StoredWallet belswallet = new StoredWallet();
-        //private Money sels;
-        //private Money bels;
-        private BigInteger sels;
-        private BigInteger bels;
+        private BigInteger sels = 0;
+        private BigInteger bels = 0;
 
         private readonly WalletInfo walletInfo = new WalletInfo();
         private string walletName;
@@ -115,7 +112,7 @@ namespace XelsDesktopWalletApp.Views
             {
                 this.buttonPowMining.Visibility = Visibility.Hidden;
             }
-            _ = UpdateWalletAsync();
+            UpdateWalletAsync();
             PopulateTxt();
 
         }
@@ -190,19 +187,6 @@ namespace XelsDesktopWalletApp.Views
 
                 this.transactionItem = JsonConvert.DeserializeObject<TransactionItemModelArray>(content);
 
-
-                //if (this.historyModelArray.history != null && this.historyModelArray.history[0].transactionsHistory.Length > 0)
-                //{
-                //    int transactionsLen = this.historyModelArray.history[0].transactionsHistory.Length;
-                //    this.NoData.Visibility = Visibility.Hidden;
-                //    this.HistoryList.Visibility = Visibility.Visible;
-
-                //    TransactionItemModel[] historyResponse = new TransactionItemModel[transactionsLen];
-                //    historyResponse = this.historyModelArray.history[0].transactionsHistory;
-
-                //    GetTransactionInfo(historyResponse);
-
-
                 if (this.transactionItem.Transactions != null && this.transactionItem.Transactions.Length > 0)
                 {
                     int transactionsLen = this.transactionItem.Transactions.Length;
@@ -228,7 +212,7 @@ namespace XelsDesktopWalletApp.Views
             }
         }
 
-        private async Task GetTransactionInfo(TransactionItemModel[] transactions)
+        private void GetTransactionInfo(TransactionItemModel[] transactions)
         {
 
             foreach (TransactionItemModel transaction in transactions)
@@ -423,9 +407,34 @@ namespace XelsDesktopWalletApp.Views
             }
         }
 
-
-        private async Task PopulateTxt()
+        private async void UpdateWalletAsync()
         {
+            //this.createWallet.Initialize("SELS");
+            //this.createWallet.Initialize("BELS");
+
+            if (File.Exists(walletfilepath))
+            {
+                this.selswallet = this.createWallet.GetLocalWallet(this.walletName, "SELS");
+                this.belswallet = this.createWallet.GetLocalWallet(this.walletName, "BELS");
+
+                if (this.selswallet.Address != null)
+                {
+                    this.sels = await this.createWallet.GetBalanceAsync(this.selswallet.Address, "SELS");
+                }
+                if (this.belswallet.Address != null)
+                {
+                    this.bels = await this.createWallet.GetBalanceAsync(this.belswallet.Address, "BELS");
+                }
+
+            }
+        }
+
+
+        private void PopulateTxt()
+        {
+            // coins
+            this.SelsCoinTxt.Text = $"{this.sels} SELS";
+            this.BelsCoinTxt.Text = $"{this.bels} BELS";
 
             // Connection info
             this.ConnectionStatusTxt.Text = this.connectedNodesStatus;
@@ -451,27 +460,6 @@ namespace XelsDesktopWalletApp.Views
             this.CoinsAwaitingMaturityTxt.Text = $"{this.awaitingMaturity} XELS";
             this.NetworkWeightTxt.Text = $"{this.stakingInfo.netStakeWeight} XELS";
             this.ExpectedRewardTimmeTxt.Text = this.stakingInfo.expectedTime.ToString();
-        }
-
-        private async Task UpdateWalletAsync()
-        {
-            //token update
-            this.createWallet.Initialize("SELS");
-            this.createWallet.Initialize("BELS");
-
-            this.selswallet = this.createWallet.GetLocalWallet(this.walletName, "SELS");
-            this.belswallet = this.createWallet.GetLocalWallet(this.walletName, "BELS");
-
-            if (this.selswallet.Address != null)
-            {
-                this.sels = await this.createWallet.GetBalanceAsync(this.selswallet);
-            }
-
-            if (this.belswallet.Address != null)
-            {
-                this.bels = await this.createWallet.GetBalanceAsync(this.belswallet);
-            }
-
         }
 
 
