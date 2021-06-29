@@ -188,7 +188,7 @@ namespace XelsDesktopWalletApp.Common
         //}
 
 
-        public async Task<BigInteger> GetBalanceAsync(string address, string cointype)
+        public async Task<string> GetBalanceAsync(string address, string cointype)
         {
             try
             {
@@ -213,7 +213,10 @@ namespace XelsDesktopWalletApp.Common
                 IContractQueryHandler<BalanceOfFunction> balanceHandler = web3.Eth.GetContractQueryHandler<BalanceOfFunction>();
                 BigInteger balance = await balanceHandler.QueryAsync<BigInteger>(contractAddress, balanceOfFunctionMessage);
 
-                return balance;
+                double balanceconvert = (double)balance * 0.00000001;
+                string balancemain = balanceconvert.ToString();
+
+                return balancemain;
             }
 
             catch (Exception e)

@@ -33,8 +33,8 @@ namespace XelsDesktopWalletApp.Views
         private CreateWallet createWallet = new CreateWallet();
         private StoredWallet selswallet = new StoredWallet();
         private StoredWallet belswallet = new StoredWallet();
-        private BigInteger sels = 0;
-        private BigInteger bels = 0;
+        private string sels = "";
+        private string bels = "";
 
         private readonly WalletInfo walletInfo = new WalletInfo();
         private string walletName;
@@ -112,8 +112,6 @@ namespace XelsDesktopWalletApp.Views
                 this.buttonPowMining.Visibility = Visibility.Hidden;
             }
             UpdateWalletAsync();
-            PopulateTxt();
-
         }
 
 
@@ -150,7 +148,7 @@ namespace XelsDesktopWalletApp.Views
                     {
                         this.hasBalance = false;
                     }
-                    // Balance info
+                    // Populate - Balance info
                     this.ConfirmedBalanceTxt.Text = $"{this.confirmedBalance} XELS";
                     this.UnconfirmedBalanceTxt.Text = $"{this.unconfirmedBalance} (unconfirmed)";
                 }
@@ -322,11 +320,14 @@ namespace XelsDesktopWalletApp.Views
                 if (this.walletGeneralInfoModel.connectedNodes == 1)
                 {
                     this.connectedNodesStatus = "1 connection";
+                    this.ConnectionStatusTxt.Text = this.connectedNodesStatus;
+                    this.ConnectedCountTxt.Text = this.connectedNodesStatus;
                 }
                 else
                 if (this.walletGeneralInfoModel.connectedNodes >= 0)
                 {
                     this.ConnectionStatusTxt.Text = $"{ this.walletGeneralInfoModel.connectedNodes} connections";
+                    this.ConnectedCountTxt.Text = $"{ this.walletGeneralInfoModel.connectedNodes} connections";
                 }
 
                 if (!this.walletGeneralInfoModel.isChainSynced)
@@ -349,6 +350,15 @@ namespace XelsDesktopWalletApp.Views
                     }
                 }
 
+                // populate
+                this.walletGeneralInfoModel.lastBlockSyncedHeight = this.walletGeneralInfoModel.lastBlockSyncedHeight ?? 0;
+                this.LastBlockSyncedHeightTxt.Text = this.walletGeneralInfoModel.lastBlockSyncedHeight.ToString();
+                this.ChainTipTxt.Text = this.walletGeneralInfoModel.chainTip.ToString();
+
+                this.ParentSyncedTxt.Text = this.percentSynced;
+
+                this.ConnectionPercentTxt.Text = this.percentSynced;
+
                 this.LastBlockSyncedHeightTxt.Text = this.walletGeneralInfoModel.lastBlockSyncedHeight.ToString();
 
                 this.ChainTipTxt.Text = this.walletGeneralInfoModel.chainTip.ToString();
@@ -359,10 +369,8 @@ namespace XelsDesktopWalletApp.Views
                 }
                 else if (this.stakingEnabled && !this.sidechainEnabled)
                 {
-                    this.ConnectionNotifyTxt.Text = "Not Ok";
+                    this.ConnectionNotifyTxt.Text = "Ok";
                 }
-
-
             }
             else
             {
@@ -386,11 +394,13 @@ namespace XelsDesktopWalletApp.Views
                 stakingInfoModel = JsonConvert.DeserializeObject<StakingInfoModel>(content);
 
                 this.stakingInfo.enabled = stakingInfoModel.enabled; //stakingEnabled
+                this.stakingEnabled = this.stakingInfo.enabled;
                 this.stakingInfo.staking = stakingInfoModel.staking; //stakingActive
                 this.stakingInfo.weight = stakingInfoModel.weight; //stakingWeight
                 this.stakingInfo.netStakeWeight = stakingInfoModel.netStakeWeight; //netStakingWeight
                 this.awaitingMaturity = (this.unconfirmedBalance + this.confirmedBalance) - this.spendableBalance; //
                 this.stakingInfo.expectedTime = stakingInfoModel.expectedTime; //expectedTime
+
                 if (this.stakingInfo.staking)
                 {
                     this.isStarting = false;
@@ -399,6 +409,23 @@ namespace XelsDesktopWalletApp.Views
                 {
                     this.isStopping = false;
                 }
+
+                //populate
+
+                if (!this.stakingEnabled && !this.sidechainEnabled)
+                {
+                    this.ConnectionNotifyTxt.Text = "Not Ok";
+                }
+                else if (this.stakingEnabled && !this.sidechainEnabled)
+                {
+                    this.ConnectionNotifyTxt.Text = "Ok";
+                }
+
+                this.HybridWeightTxt.Text = $"{this.stakingInfo.weight} XELS";
+                this.CoinsAwaitingMaturityTxt.Text = $"{this.awaitingMaturity} XELS";
+                this.NetworkWeightTxt.Text = $"{this.stakingInfo.netStakeWeight} XELS";
+                this.ExpectedRewardTimmeTxt.Text = this.stakingInfo.expectedTime.ToString();
+
             }
             else
             {
@@ -428,44 +455,13 @@ namespace XelsDesktopWalletApp.Views
                 {
                     this.bels = await this.createWallet.GetBalanceAsync(this.belswallet.Address, "BELS");
                 }
+                
+                // Populate coins
+                this.SelsCoinTxt.Text = this.sels + " SELS";
+                this.BelsCoinTxt.Text = this.bels + " BELS";
 
             }
         }
-
-
-        private void PopulateTxt()
-        {
-            // coins
-            this.SelsCoinTxt.Text = $"{this.sels} SELS";
-            this.BelsCoinTxt.Text = $"{this.bels} BELS";
-
-            // Connection info
-            this.ConnectionStatusTxt.Text = this.connectedNodesStatus;
-            this.walletGeneralInfoModel.lastBlockSyncedHeight = this.walletGeneralInfoModel.lastBlockSyncedHeight ?? 0;
-            this.LastBlockSyncedHeightTxt.Text = this.walletGeneralInfoModel.lastBlockSyncedHeight.ToString();
-            this.ChainTipTxt.Text = this.walletGeneralInfoModel.chainTip.ToString();
-            this.ParentSyncedTxt.Text = this.percentSynced;
-
-            this.ConnectionPercentTxt.Text = this.percentSynced;
-            this.ConnectedCountTxt.Text = this.connectedNodesStatus;
-
-            if (!this.stakingEnabled && !this.sidechainEnabled)
-            {
-                this.ConnectionNotifyTxt.Text = "Not Ok";
-            }
-            else if (this.stakingEnabled && !this.sidechainEnabled)
-            {
-                this.ConnectionNotifyTxt.Text = "Not Ok";
-            }
-
-            // Hybrid pow mining info
-            this.HybridWeightTxt.Text = $"{this.stakingInfo.weight} XELS";
-            this.CoinsAwaitingMaturityTxt.Text = $"{this.awaitingMaturity} XELS";
-            this.NetworkWeightTxt.Text = $"{this.stakingInfo.netStakeWeight} XELS";
-            this.ExpectedRewardTimmeTxt.Text = this.stakingInfo.expectedTime.ToString();
-        }
-
-
 
         private void receiveButton_Click(object sender, RoutedEventArgs e)
         {
