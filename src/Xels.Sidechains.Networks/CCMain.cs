@@ -70,7 +70,7 @@ namespace Xels.Sidechains.Networks
                 new CollateralFederationMember(new PubKey("03e54650fb2242613ce0b508df0650c3d7cbcb4b82c748c7b69157927c47b19642"), true, new Money(7000000_00000000),"CK7j3zkc1TbZVug289eq7UpKBy7dRWxox2"),
                 new CollateralFederationMember(new PubKey("0394788094df4ddde7eb3eacdd61245eef3d03b103f566406aa43cb18c36a1e64b"), true, new Money(7000000_00000000),"CZ9gAuEHX9oQiCV9EfwDinRQ96UQfB1CDq"),
                 new CollateralFederationMember(new PubKey("02fd05bd7398e3e36d93c31a91b603418f9e4e1b251490b790eabb9cc302927be8"), true, new Money(7000000_00000000),"Cev8YBzpFZFmfMQLeKSNYgAa57CmyqwhUT"),
-                new CollateralFederationMember(new PubKey("03caac79a12ffd58595d5eb1a3cda5cd5cce5fd82b595181d6bbf70514e48fcbff"), true, new Money(7000000_00000000),"Cev8YBzpFZFmfMQLeKSNYgAa57CmyqwhUT"),
+                new CollateralFederationMember(new PubKey("03caac79a12ffd58595d5eb1a3cda5cd5cce5fd82b595181d6bbf70514e48fcbff"), false, new Money(7000000_00000000),"XGytWoLG4mcoMNXN387D3RJtUvsXwo1aNX"),//"XVGhRi1wSk4idA9NCZ9eXtrrLWti1iSPRP"),
             };
 
             this.Federations = new Federations();

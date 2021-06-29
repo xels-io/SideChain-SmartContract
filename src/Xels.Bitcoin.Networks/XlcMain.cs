@@ -17,11 +17,11 @@ namespace Xels.Bitcoin.Networks
             this.Name = "XlcMain";
             this.NetworkType = NetworkType.Mainnet;
             this.Magic = BitConverter.ToUInt32(Encoding.ASCII.GetBytes("XelS"));
-            this.DefaultPort = 17105;
+            this.DefaultPort = 27770;// 17105;
             this.DefaultMaxOutboundConnections = 16;
             this.DefaultMaxInboundConnections = 109;
             this.DefaultRPCPort = 17104;
-            this.DefaultAPIPort = 17103;
+            this.DefaultAPIPort = 37221;//17103;
             this.DefaultSignalRPort = 17102;
             this.MaxTipAge = 2 * 60 * 60;
             this.MinTxFee = 10000;
