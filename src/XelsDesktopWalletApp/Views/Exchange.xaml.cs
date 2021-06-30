@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 
@@ -44,6 +47,9 @@ namespace XelsDesktopWalletApp.Views
         }
         #endregion
 
+        private StoredWallet mywallet = new StoredWallet();
+        private CreateWallet createWallet = new CreateWallet();
+
         public Exchange()
         {
             InitializeComponent();
@@ -55,10 +61,110 @@ namespace XelsDesktopWalletApp.Views
 
             this.walletName = walletname;
             this.walletInfo.walletName = this.walletName;
-
+            this.mywallet = this.createWallet.GetLocalWalletDetails(this.walletInfo.walletName);
             LoadCreate();
         }
 
+
+        public void GetOrders(string hash)
+        {
+            try
+            {
+                string path = URLConfiguration.BaseURLExchange + "/api/getOrders";
+
+                WebRequest requestObjPost = WebRequest.Create(path);
+                requestObjPost.Method = "POST";
+                requestObjPost.ContentType = "application/json";
+
+                string postdata = "{"+ hash + "}";
+
+                using (var streamWriter = new StreamWriter(requestObjPost.GetRequestStream()))
+                {
+                    streamWriter.WriteLine(postdata);
+                    streamWriter.Flush();
+                    streamWriter.Close();
+
+                    var httpResponse = (HttpWebResponse)requestObjPost.GetResponse();
+
+                    using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                    {
+                        var result = streamReader.ReadToEnd();
+                        streamReader.Close();
+                    }
+
+                }
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+        public void GetOrder(string orderId)
+        {
+            try
+            {
+                string path = URLConfiguration.BaseURLExchange + "/api/getOrder/" + orderId;
+
+                WebRequest requestObjGet = WebRequest.Create(path);
+                requestObjGet.Method = "GET";
+
+                HttpWebResponse responseObjGet = null;
+                responseObjGet = (HttpWebResponse)requestObjGet.GetResponse();
+
+                string stringresult = null;
+                using (Stream stream = responseObjGet.GetResponseStream())
+                {
+                    StreamReader sr = new StreamReader(stream);
+                    stringresult = sr.ReadToEnd();
+                    sr.Close();
+                }
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+        public void NewOrder(string data)
+        {
+            try
+            {
+                string path = URLConfiguration.BaseURLExchange + "/api/new-order";
+
+                WebRequest requestObjPost = WebRequest.Create(path);
+                requestObjPost.Method = "POST";
+                requestObjPost.ContentType = "application/json";
+
+                string postdata = "{" + data + "}";
+
+                using (var streamWriter = new StreamWriter(requestObjPost.GetRequestStream()))
+                {
+                    streamWriter.WriteLine(postdata);
+                    streamWriter.Flush();
+                    streamWriter.Close();
+
+                    var httpResponse = (HttpWebResponse)requestObjPost.GetResponse();
+
+                    using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                    {
+                        var result = streamReader.ReadToEnd();
+                        streamReader.Close();
+                    }
+
+                }
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
+        public void UpdateExchangeList()
+        {
+            if (this.mywallet.Wallethash != null || this.mywallet.Wallethash != "")
+            {
+                GetOrders(this.mywallet.Wallethash);
+            }
+        }
 
         public async void LoadCreate()
         {
