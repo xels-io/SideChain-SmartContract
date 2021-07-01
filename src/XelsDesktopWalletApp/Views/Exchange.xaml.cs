@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Newtonsoft.Json;
 using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
@@ -65,16 +66,17 @@ namespace XelsDesktopWalletApp.Views
             LoadCreate();
         }
 
-
-        public void GetOrders(string hash)
+        #region Api Requests
+        public List<ExchangeResponse> GetOrders(string hash)
         {
             try
             {
                 string path = URLConfiguration.BaseURLExchange + "/api/getOrders";
 
                 WebRequest requestObjPost = WebRequest.Create(path);
+                requestObjPost.Headers.Add("Authorization", "1234567890");
                 requestObjPost.Method = "POST";
-                requestObjPost.ContentType = "application/json";
+                requestObjPost.ContentType = "application/x-www-form-urlencoded";
 
                 string postdata = "{"+ hash + "}";
 
@@ -88,8 +90,16 @@ namespace XelsDesktopWalletApp.Views
 
                     using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                     {
+                        List<ExchangeResponse> exchangedata = new List<ExchangeResponse>();
                         var result = streamReader.ReadToEnd();
                         streamReader.Close();
+
+                        if (result != "{ }" || result != "")
+                        {
+                            exchangedata = JsonConvert.DeserializeObject<List<ExchangeResponse>>(result);
+                        }
+
+                        return exchangedata;
                     }
 
                 }
@@ -106,6 +116,7 @@ namespace XelsDesktopWalletApp.Views
                 string path = URLConfiguration.BaseURLExchange + "/api/getOrder/" + orderId;
 
                 WebRequest requestObjGet = WebRequest.Create(path);
+                requestObjGet.Headers.Add("Authorization", "1234567890");
                 requestObjGet.Method = "GET";
 
                 HttpWebResponse responseObjGet = null;
@@ -131,8 +142,9 @@ namespace XelsDesktopWalletApp.Views
                 string path = URLConfiguration.BaseURLExchange + "/api/new-order";
 
                 WebRequest requestObjPost = WebRequest.Create(path);
+                requestObjPost.Headers.Add("Authorization", "1234567890");
                 requestObjPost.Method = "POST";
-                requestObjPost.ContentType = "application/json";
+                requestObjPost.ContentType = "application/x-www-form-urlencoded";
 
                 string postdata = "{" + data + "}";
 
@@ -157,12 +169,27 @@ namespace XelsDesktopWalletApp.Views
                 throw;
             }
         }
+        #endregion
 
         public void UpdateExchangeList()
         {
             if (this.mywallet.Wallethash != null || this.mywallet.Wallethash != "")
             {
-                GetOrders(this.mywallet.Wallethash);
+                List<ExchangeResponse> exchangedatalist = GetOrders(this.mywallet.Wallethash);
+
+                if (exchangedatalist != null && exchangedatalist.Count > 0)
+                {
+                    this.NoData.Visibility = Visibility.Hidden;
+                    this.ExchangeList.Visibility = Visibility.Visible;
+
+                    this.ExchangeList.ItemsSource = exchangedatalist;
+                }
+                else
+                {
+                    this.ExchangeList.Visibility = Visibility.Hidden;
+                    this.NoData.Visibility = Visibility.Visible;
+                }
+
             }
         }
 
