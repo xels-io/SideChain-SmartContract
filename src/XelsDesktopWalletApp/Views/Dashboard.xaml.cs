@@ -447,15 +447,19 @@ namespace XelsDesktopWalletApp.Views
                 this.selswallet = this.createWallet.GetLocalWallet(this.walletName, "SELS");
                 this.belswallet = this.createWallet.GetLocalWallet(this.walletName, "BELS");
 
-                if (this.selswallet.Address != null)
-                {
-                    this.sels = await this.createWallet.GetBalanceAsync(this.selswallet.Address, "SELS");
+                if (this.selswallet != null) { 
+                    if (this.selswallet.Address != null)
+                    {
+                        this.sels = await this.createWallet.GetBalanceAsync(this.selswallet.Address, "SELS");
+                    }
                 }
-                if (this.belswallet.Address != null)
+                if (this.belswallet != null)
                 {
-                    this.bels = await this.createWallet.GetBalanceAsync(this.belswallet.Address, "BELS");
+                    if (this.belswallet.Address != null)
+                    {
+                        this.bels = await this.createWallet.GetBalanceAsync(this.belswallet.Address, "BELS");
+                    }
                 }
-                
                 // Populate coins
                 this.SelsCoinTxt.Text = this.sels + " SELS";
                 this.BelsCoinTxt.Text = this.bels + " BELS";

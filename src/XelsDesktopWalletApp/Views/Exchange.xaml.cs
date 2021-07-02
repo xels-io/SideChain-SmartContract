@@ -50,6 +50,41 @@ namespace XelsDesktopWalletApp.Views
 
         private StoredWallet mywallet = new StoredWallet();
         private CreateWallet createWallet = new CreateWallet();
+        private List<ExchangeResponse> exchangedatalist = new List<ExchangeResponse>();
+
+        #region Coin Select
+
+        private ExchangeCoin selectedcoin = new ExchangeCoin();
+        public ExchangeCoin SelectedCoin
+        {
+            get
+            {
+                return this.selectedcoin;
+            }
+            set
+            {
+                this.selectedcoin = value;
+            }
+        }
+
+        private List<ExchangeCoin> coins = new List<ExchangeCoin>() {
+                new ExchangeCoin(){ Name="SELS"},
+                new ExchangeCoin(){ Name="BELS"}
+            };
+
+        public List<ExchangeCoin> Coins
+        {
+            get
+            {
+                return this.coins;
+            }
+            set
+            {
+                this.coins = value;
+            }
+        }
+
+        #endregion
 
         public Exchange()
         {
@@ -63,126 +98,142 @@ namespace XelsDesktopWalletApp.Views
             this.walletName = walletname;
             this.walletInfo.walletName = this.walletName;
             this.mywallet = this.createWallet.GetLocalWalletDetails(this.walletInfo.walletName);
+
             LoadCreate();
+            UpdateExchangeListAsync();
         }
 
         #region Api Requests
-        public List<ExchangeResponse> GetOrders(string hash)
-        {
-            try
-            {
-                string path = URLConfiguration.BaseURLExchange + "/api/getOrders";
+        //public async Task<List<ExchangeResponse>> GetOrdersAsync(string hash)
+        //{
+        //    try
+        //    {
+        //        string path = URLConfiguration.BaseURLExchange + "/api/getOrders";
 
-                WebRequest requestObjPost = WebRequest.Create(path);
-                requestObjPost.Headers.Add("Authorization", "1234567890");
-                requestObjPost.Method = "POST";
-                requestObjPost.ContentType = "application/x-www-form-urlencoded";
+        //        WebRequest requestObjPost = WebRequest.Create(path);
+        //        requestObjPost.Headers.Add("Authorization", "1234567890");
+        //        requestObjPost.Method = "POST";
+        //        requestObjPost.ContentType = "application/x-www-form-urlencoded";
 
-                string postdata = "{"+ hash + "}";
+        //        string postdata = "{ user_code : " + hash + "}";
 
-                using (var streamWriter = new StreamWriter(requestObjPost.GetRequestStream()))
-                {
-                    streamWriter.WriteLine(postdata);
-                    streamWriter.Flush();
-                    streamWriter.Close();
+        //        using (var streamWriter = new StreamWriter(requestObjPost.GetRequestStream()))
+        //        {
+        //            streamWriter.WriteLine(postdata);
+        //            streamWriter.Flush();
+        //            streamWriter.Close();
 
-                    var httpResponse = (HttpWebResponse)requestObjPost.GetResponse();
+        //            var httpResponse = (HttpWebResponse)await requestObjPost.GetResponseAsync();
 
-                    using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-                    {
-                        List<ExchangeResponse> exchangedata = new List<ExchangeResponse>();
-                        var result = streamReader.ReadToEnd();
-                        streamReader.Close();
+        //            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+        //            {
+        //                List<ExchangeResponse> exchangedata = new List<ExchangeResponse>();
+        //                var result = streamReader.ReadToEnd();
+        //                streamReader.Close();
 
-                        if (result != "{ }" || result != "")
-                        {
-                            exchangedata = JsonConvert.DeserializeObject<List<ExchangeResponse>>(result);
-                        }
+        //                if (result != "{ }" || result != "")
+        //                {
+        //                    exchangedata = JsonConvert.DeserializeObject<List<ExchangeResponse>>(result);
+        //                }
 
-                        return exchangedata;
-                    }
+        //                return exchangedata;
+        //            }
 
-                }
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-        }
-        public void GetOrder(string orderId)
-        {
-            try
-            {
-                string path = URLConfiguration.BaseURLExchange + "/api/getOrder/" + orderId;
+        //        }
+        //    }
+        //    catch (ExchangeErr e)
+        //    {
+        //        MessageBox.Show("Error Code" + e.error.err_code + " : Message - " + e.detail);
+        //        throw;
+        //    }
+        //}
+        //public void GetOrder(string orderId)
+        //{
+        //    try
+        //    {
+        //        string path = URLConfiguration.BaseURLExchange + "/api/getOrder/" + orderId;
 
-                WebRequest requestObjGet = WebRequest.Create(path);
-                requestObjGet.Headers.Add("Authorization", "1234567890");
-                requestObjGet.Method = "GET";
+        //        WebRequest requestObjGet = WebRequest.Create(path);
+        //        requestObjGet.Headers.Add("Authorization", "1234567890");
+        //        requestObjGet.Method = "GET";
 
-                HttpWebResponse responseObjGet = null;
-                responseObjGet = (HttpWebResponse)requestObjGet.GetResponse();
+        //        HttpWebResponse responseObjGet = null;
+        //        responseObjGet = (HttpWebResponse)requestObjGet.GetResponse();
 
-                string stringresult = null;
-                using (Stream stream = responseObjGet.GetResponseStream())
-                {
-                    StreamReader sr = new StreamReader(stream);
-                    stringresult = sr.ReadToEnd();
-                    sr.Close();
-                }
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-        }
-        public void NewOrder(string data)
-        {
-            try
-            {
-                string path = URLConfiguration.BaseURLExchange + "/api/new-order";
+        //        string stringresult = null;
+        //        using (Stream stream = responseObjGet.GetResponseStream())
+        //        {
+        //            StreamReader sr = new StreamReader(stream);
+        //            stringresult = sr.ReadToEnd();
+        //            sr.Close();
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw;
+        //    }
+        //}
+        //public void NewOrder(string data)
+        //{
+        //    try
+        //    {
+        //        string path = URLConfiguration.BaseURLExchange + "/api/new-order";
 
-                WebRequest requestObjPost = WebRequest.Create(path);
-                requestObjPost.Headers.Add("Authorization", "1234567890");
-                requestObjPost.Method = "POST";
-                requestObjPost.ContentType = "application/x-www-form-urlencoded";
+        //        WebRequest requestObjPost = WebRequest.Create(path);
+        //        requestObjPost.Headers.Add("Authorization", "1234567890");
+        //        requestObjPost.Method = "POST";
+        //        requestObjPost.ContentType = "application/x-www-form-urlencoded";
 
-                string postdata = "{" + data + "}";
+        //        string postdata = "{" + data + "}";
 
-                using (var streamWriter = new StreamWriter(requestObjPost.GetRequestStream()))
-                {
-                    streamWriter.WriteLine(postdata);
-                    streamWriter.Flush();
-                    streamWriter.Close();
+        //        using (var streamWriter = new StreamWriter(requestObjPost.GetRequestStream()))
+        //        {
+        //            streamWriter.WriteLine(postdata);
+        //            streamWriter.Flush();
+        //            streamWriter.Close();
 
-                    var httpResponse = (HttpWebResponse)requestObjPost.GetResponse();
+        //            var httpResponse = (HttpWebResponse)requestObjPost.GetResponse();
 
-                    using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-                    {
-                        var result = streamReader.ReadToEnd();
-                        streamReader.Close();
-                    }
+        //            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+        //            {
+        //                var result = streamReader.ReadToEnd();
+        //                streamReader.Close();
+        //            }
 
-                }
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-        }
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw;
+        //    }
+        //}
         #endregion
 
-        public void UpdateExchangeList()
+        public async Task UpdateExchangeListAsync()
         {
             if (this.mywallet.Wallethash != null || this.mywallet.Wallethash != "")
             {
-                List<ExchangeResponse> exchangedatalist = GetOrders(this.mywallet.Wallethash);
+                // this.exchangedatalist = await GetOrdersAsync(this.mywallet.Wallethash);
 
-                if (exchangedatalist != null && exchangedatalist.Count > 0)
+                //temporary for test
+                ExchangeResponse exchange = new ExchangeResponse();
+                exchange.id = "12345";
+                exchange.deposit_address = "1234321";
+                exchange.xels_address = "0123456789";
+                exchange.status = 0;
+                exchange.transaction_id = "123";
+                exchange.xels_amount = 0;
+                exchange.deposit_amount = 0;
+                exchange.deposit_symbol = "";
+                this.exchangedatalist.Add(exchange);
+                //temporary for test
+
+                if (this.exchangedatalist != null && this.exchangedatalist.Count > 0)
                 {
                     this.NoData.Visibility = Visibility.Hidden;
                     this.ExchangeList.Visibility = Visibility.Visible;
 
-                    this.ExchangeList.ItemsSource = exchangedatalist;
+                    this.ExchangeList.ItemsSource = this.exchangedatalist;
                 }
                 else
                 {
@@ -274,5 +325,9 @@ namespace XelsDesktopWalletApp.Views
             this.Close();
         }
 
+        private void ExchangeOrderSubmitButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

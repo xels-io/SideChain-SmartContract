@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -14,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Newtonsoft.Json;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 
@@ -151,7 +151,7 @@ namespace XelsDesktopWalletApp.Views
             if (this.canPassMnemonic == true)
             {
 
-                string postUrl = this.baseURL + "/create";
+                string postUrl = this.baseURL + "/wallet/create";
 
                 HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(this._walletcreateconfirm), Encoding.UTF8, "application/json"));
 

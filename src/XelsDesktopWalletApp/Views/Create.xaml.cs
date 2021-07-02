@@ -128,7 +128,7 @@ namespace XelsDesktopWalletApp.Views
 
         private async Task<string> GetAPIAsync(string path)
         {
-            string getUrl = path + "/mnemonic?language=English&wordCount=12";
+            string getUrl = path + "/wallet/mnemonic?language=English&wordCount=12";
             var content ="";
 
             HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
