@@ -233,12 +233,15 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
         {
             string activeAddress = this.lab_ActiveAddress.Content.ToString();
             Clipboard.SetText(activeAddress);
+            MessageBox.Show(activeAddress + "  COPIED");
         }
 
-        //private void Button_Click(object sender, RoutedEventArgs e)
-        //{
-        //    this.SmartContract_Dashboard.Children.Add(new CallContract());
-        //}
+        private void btn_TokenManagement_Click(object sender, RoutedEventArgs e)
+        {
+            this.dashboardStactPanal1.Visibility = Visibility.Hidden;
+            this.dashboardStactPanal2.Visibility = Visibility.Hidden;
+            this.page_contant.Children.Add(new TokenManagement(this.walletName,GLOBALS.Address));
+        }
     }
 
 }

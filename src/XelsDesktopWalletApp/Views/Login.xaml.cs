@@ -71,7 +71,7 @@ namespace XelsDesktopWalletApp.Views
 
         private async Task GetAPIAsync(string path)
         {
-            string getUrl = path + "/list-wallets";
+            string getUrl = path + "/wallet/list-wallets";
             var content = "";
 
             HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
@@ -120,7 +120,7 @@ namespace XelsDesktopWalletApp.Views
             {
                 this.selectedWallet.password = this.password.Password;
 
-                string postUrl = this.baseURL + "/load/";
+                string postUrl = this.baseURL + "/wallet/load/";
 
                 HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(this.SelectedWallet), Encoding.UTF8, "application/json"));
 
