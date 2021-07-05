@@ -189,12 +189,12 @@
                                    Text="LATEST EXCHANGES" FontSize="10" Foreground="#FF9B9B9B" Margin="330,10,0,0" Grid.ColumnSpan="3"/>
 
 
-                        <Grid Grid.ColumnSpan="3">
-                            <Label Name="NoData" Content="Looks like you haven't made any transactions yet."  HorizontalAlignment="Left"
+                        <Grid Grid.ColumnSpan="3" Name="NoData">
+                            <Label Content="Looks like you haven't made any transactions yet."  HorizontalAlignment="Left"
                        FontFamily="Microsoft YaHei Light" Margin="251,34,0,80" FontSize="12" FontWeight="Bold" Foreground="#FF494747"/>
 
                         </Grid>
-                        <Grid Margin="0,20,0,-151" Grid.ColumnSpan="3">
+                        <Grid Margin="0,20,0,-151" Grid.ColumnSpan="3" Name="ListData">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="97*"/>
                                 <ColumnDefinition Width="156*"/>

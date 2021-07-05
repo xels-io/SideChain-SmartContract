@@ -28,8 +28,9 @@ namespace XelsDesktopWalletApp.Views
     {
 
         #region Base
-        //static HttpClient client = new HttpClient();
-        string baseURL = URLConfiguration.BaseURL;// "http://localhost:37221/api";
+        static HttpClient client = new HttpClient();
+        private string baseURL = URLConfiguration.BaseURL;
+        private string baseURLExchange = URLConfiguration.BaseURLExchange;
         #endregion
         #region Wallet Info
         private readonly WalletInfo walletInfo = new WalletInfo();
@@ -104,49 +105,40 @@ namespace XelsDesktopWalletApp.Views
         }
 
         #region Api Requests
-        //public async Task<List<ExchangeResponse>> GetOrdersAsync(string hash)
-        //{
-        //    try
-        //    {
-        //        string path = URLConfiguration.BaseURLExchange + "/api/getOrders";
+        public async Task<List<ExchangeResponse>> GetOrdersAsync(string hash)
+        {
+            try
+            {
+                string postUrl = this.baseURLExchange + "/api/getOrders";
 
-        //        WebRequest requestObjPost = WebRequest.Create(path);
-        //        requestObjPost.Headers.Add("Authorization", "1234567890");
-        //        requestObjPost.Method = "POST";
-        //        requestObjPost.ContentType = "application/x-www-form-urlencoded";
+                var content = "";
+                List<ExchangeResponse> exchangedata = new List<ExchangeResponse>();
+                PostHash code = new PostHash();
+                code.user_code = hash;
 
-        //        string postdata = "{ user_code : " + hash + "}";
+                client.DefaultRequestHeaders.Add("Authorization", "1234567890");
+                
+                HttpResponseMessage response = await client.PostAsJsonAsync(postUrl, code);
 
-        //        using (var streamWriter = new StreamWriter(requestObjPost.GetRequestStream()))
-        //        {
-        //            streamWriter.WriteLine(postdata);
-        //            streamWriter.Flush();
-        //            streamWriter.Close();
+                if (response.IsSuccessStatusCode)
+                {
+                    content = await response.Content.ReadAsStringAsync();
+                    exchangedata = JsonConvert.DeserializeObject<List<ExchangeResponse>>(content);
+                }
+                else
+                {
+                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                }
 
-        //            var httpResponse = (HttpWebResponse)await requestObjPost.GetResponseAsync();
+                return exchangedata;
 
-        //            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-        //            {
-        //                List<ExchangeResponse> exchangedata = new List<ExchangeResponse>();
-        //                var result = streamReader.ReadToEnd();
-        //                streamReader.Close();
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
 
-        //                if (result != "{ }" || result != "")
-        //                {
-        //                    exchangedata = JsonConvert.DeserializeObject<List<ExchangeResponse>>(result);
-        //                }
-
-        //                return exchangedata;
-        //            }
-
-        //        }
-        //    }
-        //    catch (ExchangeErr e)
-        //    {
-        //        MessageBox.Show("Error Code" + e.error.err_code + " : Message - " + e.detail);
-        //        throw;
-        //    }
-        //}
         //public void GetOrder(string orderId)
         //{
         //    try
@@ -213,31 +205,18 @@ namespace XelsDesktopWalletApp.Views
         {
             if (this.mywallet.Wallethash != null || this.mywallet.Wallethash != "")
             {
-                // this.exchangedatalist = await GetOrdersAsync(this.mywallet.Wallethash);
-
-                //temporary for test
-                ExchangeResponse exchange = new ExchangeResponse();
-                exchange.id = "12345";
-                exchange.deposit_address = "1234321";
-                exchange.xels_address = "0123456789";
-                exchange.status = 0;
-                exchange.transaction_id = "123";
-                exchange.xels_amount = 0;
-                exchange.deposit_amount = 0;
-                exchange.deposit_symbol = "";
-                this.exchangedatalist.Add(exchange);
-                //temporary for test
+                this.exchangedatalist = await GetOrdersAsync(this.mywallet.Wallethash);
 
                 if (this.exchangedatalist != null && this.exchangedatalist.Count > 0)
                 {
                     this.NoData.Visibility = Visibility.Hidden;
-                    this.ExchangeList.Visibility = Visibility.Visible;
+                    this.ListData.Visibility = Visibility.Visible;
 
-                    this.ExchangeList.ItemsSource = this.exchangedatalist;
+                    this.ExchangeList.ItemsSource = this.exchangedatalist; //ListData
                 }
                 else
                 {
-                    this.ExchangeList.Visibility = Visibility.Hidden;
+                    this.ListData.Visibility = Visibility.Hidden;
                     this.NoData.Visibility = Visibility.Visible;
                 }
 
