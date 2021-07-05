@@ -113,9 +113,110 @@
                 </ComboBox>
             </Grid>
 
-            <Grid>
-                <Label Content="Expense window." FontFamily="Microsoft YaHei Light"/>
+            <Grid Height="368"  Background="WhiteSmoke" Width="779">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="130*"/>
+                    <RowDefinition Height="200*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Vertical" Grid.Row="0" HorizontalAlignment="Center" Width="575">
 
+                    <Grid Background="White" Width="571" Height="117" Margin="0 20 0 0">
+
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Vertical" Margin="0,10,285,66"  Grid.Column="0" Grid.ColumnSpan="2" >
+                            <Label Content="Deposit" Height="16" Width="265" Foreground="#FF615858"
+                                   FontFamily="Microsoft YaHei" FontSize="10" Padding="0" Margin="0"/>
+                            <ComboBox ItemsSource="{Binding Path=Coins, Mode=TwoWay}" 
+                                      SelectedItem="{Binding Path=SelectedCoin, Mode=TwoWay}"
+                                      Width="263" Background="White" BorderBrush="LimeGreen" Foreground="#FF615858" 
+                                      Padding="2" FontFamily="Microsoft YaHei Light" 
+                                      >
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="0,10,-1,66"  Grid.Column="1" >
+                            <Label Content="Amount" Height="16" Width="266" Foreground="#FF615858"
+                                FontFamily="Microsoft YaHei" FontSize="10" Padding="0"/>
+                            <TextBox x:Name="AmountTxt" 
+                                     TextWrapping="Wrap" Width="267" MaxLength="24" Padding="2" 
+                                     AutomationProperties.HelpText="Enter Amount." TextBlock.FontFamily="Microsoft YaHei Light" 
+                                     FontFamily="Microsoft YaHei Light" FontSize="10" Foreground="#FF615858" 
+                                     TextAlignment="Left" Height="19">
+
+                            </TextBox>
+
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="-1,56,0,41"  Grid.ColumnSpan="2" >
+                            <TextBlock x:Name="MessageTxt"  
+                                       Text="{Binding ElementName=AmountTxt, Path=Text, StringFormat='You will get {0} XELS', Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       Height="16" Width="547" Foreground="Black"
+                                       FontFamily="Microsoft YaHei" FontSize="10" Padding="0" Margin="0"/>
+
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="0,81,-1,13"  Grid.ColumnSpan="2" >
+                            <Button Content="Exchange Order Submit" Click="ExchangeOrderSubmitButton_Click" FontFamily="Microsoft YaHei Light" 
+                                Foreground="White" Background="#FF0FD421" BorderBrush="#FF30CD3E" FontSize="10" 
+                                Width="148" Height="23">
+                                <Button.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="CornerRadius" Value="2"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                        </StackPanel>
+
+                    </Grid>
+                </StackPanel>
+
+
+                <StackPanel Orientation="Vertical" Grid.Row="1" Margin="10,10,10,10" Grid.ColumnSpan="3">
+                    <Grid Height="225" Background="White">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="377*"/>
+                            <ColumnDefinition Width="25*"/>
+                            <ColumnDefinition Width="357*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Width="99" HorizontalAlignment="Left" FontFamily="Microsoft YaHei" Height="16" VerticalAlignment="Top" 
+                                   Text="LATEST EXCHANGES" FontSize="10" Foreground="#FF9B9B9B" Margin="330,10,0,0" Grid.ColumnSpan="3"/>
+
+
+                        <Grid Grid.ColumnSpan="3" Name="NoData">
+                            <Label Content="Looks like you haven't made any transactions yet."  HorizontalAlignment="Left"
+                       FontFamily="Microsoft YaHei Light" Margin="251,34,0,80" FontSize="12" FontWeight="Bold" Foreground="#FF494747"/>
+
+                        </Grid>
+                        <Grid Margin="0,20,0,-151" Grid.ColumnSpan="3" Name="ListData">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="97*"/>
+                                <ColumnDefinition Width="156*"/>
+                            </Grid.ColumnDefinitions>
+                            <ListView Margin="0,18,0,178" x:Name="ExchangeList" FontSize="9" BorderThickness="0" Grid.ColumnSpan="2" >
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Order Id" Width="200" 
+                                            DisplayMemberBinding="{Binding Path=id}"  />
+                                        <GridViewColumn Header="Deposit" Width="150"
+                                            DisplayMemberBinding="{Binding Path=deposit_address}" />
+                                        <GridViewColumn Header="Recived" Width="150" 
+                                            DisplayMemberBinding="{Binding Path=xels_address}"  />
+                                        <GridViewColumn Header="Status" Width="150" 
+                                            DisplayMemberBinding="{Binding Path=status}"  />
+                                    </GridView>
+                                </ListView.View>
+                                <TextBlock Text="TextBlock" TextWrapping="Wrap"/>
+                            </ListView>
+                        </Grid>
+                    </Grid>
+                </StackPanel>
             </Grid>
 
 

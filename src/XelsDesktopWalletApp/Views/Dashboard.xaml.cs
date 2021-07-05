@@ -1,16 +1,16 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
-
 using NBitcoin;
-
+using Nethereum.Web3;
 using Newtonsoft.Json;
-
 using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
@@ -23,7 +23,6 @@ namespace XelsDesktopWalletApp.Views
     /// </summary>
     public partial class Dashboard : Window
     {
-        //private static HttpClient client = new HttpClient();
         private string baseURL = URLConfiguration.BaseURL;// "http://localhost:37221/api";
 
         private WalletBalanceArray walletBalanceArray = new WalletBalanceArray();
@@ -34,8 +33,8 @@ namespace XelsDesktopWalletApp.Views
         private CreateWallet createWallet = new CreateWallet();
         private StoredWallet selswallet = new StoredWallet();
         private StoredWallet belswallet = new StoredWallet();
-        private Money sels;
-        private Money bels;
+        private string sels = "";
+        private string bels = "";
 
         private readonly WalletInfo walletInfo = new WalletInfo();
         private string walletName;
@@ -103,18 +102,16 @@ namespace XelsDesktopWalletApp.Views
             LoadLoginAsync();
             GetHistoryAsync();
 
-            if(URLConfiguration.Chain != "-sidechain")// (!this.sidechainEnabled)
+            if (URLConfiguration.Chain != "-sidechain")// (!this.sidechainEnabled)
             {
-                _ = GetStakingInfoAsync(this.baseURL);                 
+                _ = GetStakingInfoAsync(this.baseURL);
             }
 
             if (URLConfiguration.Chain == "-sidechain")// (!this.sidechainEnabled)
-            {                 
+            {
                 this.buttonPowMining.Visibility = Visibility.Hidden;
             }
-            _ = UpdateWalletAsync();
-            PopulateTxt();
-
+            UpdateWalletAsync();
         }
 
 
@@ -151,7 +148,7 @@ namespace XelsDesktopWalletApp.Views
                     {
                         this.hasBalance = false;
                     }
-                    // Balance info
+                    // Populate - Balance info
                     this.ConfirmedBalanceTxt.Text = $"{this.confirmedBalance} XELS";
                     this.UnconfirmedBalanceTxt.Text = $"{this.unconfirmedBalance} (unconfirmed)";
                 }
@@ -187,19 +184,6 @@ namespace XelsDesktopWalletApp.Views
 
                 this.transactionItem = JsonConvert.DeserializeObject<TransactionItemModelArray>(content);
 
-
-                //if (this.historyModelArray.history != null && this.historyModelArray.history[0].transactionsHistory.Length > 0)
-                //{
-                //    int transactionsLen = this.historyModelArray.history[0].transactionsHistory.Length;
-                //    this.NoData.Visibility = Visibility.Hidden;
-                //    this.HistoryList.Visibility = Visibility.Visible;
-
-                //    TransactionItemModel[] historyResponse = new TransactionItemModel[transactionsLen];
-                //    historyResponse = this.historyModelArray.history[0].transactionsHistory;
-
-                //    GetTransactionInfo(historyResponse);
-
-
                 if (this.transactionItem.Transactions != null && this.transactionItem.Transactions.Length > 0)
                 {
                     int transactionsLen = this.transactionItem.Transactions.Length;
@@ -225,7 +209,7 @@ namespace XelsDesktopWalletApp.Views
             }
         }
 
-        private async Task GetTransactionInfo(TransactionItemModel[] transactions)
+        private void GetTransactionInfo(TransactionItemModel[] transactions)
         {
 
             foreach (TransactionItemModel transaction in transactions)
@@ -336,11 +320,14 @@ namespace XelsDesktopWalletApp.Views
                 if (this.walletGeneralInfoModel.connectedNodes == 1)
                 {
                     this.connectedNodesStatus = "1 connection";
+                    this.ConnectionStatusTxt.Text = this.connectedNodesStatus;
+                    this.ConnectedCountTxt.Text = this.connectedNodesStatus;
                 }
                 else
                 if (this.walletGeneralInfoModel.connectedNodes >= 0)
                 {
                     this.ConnectionStatusTxt.Text = $"{ this.walletGeneralInfoModel.connectedNodes} connections";
+                    this.ConnectedCountTxt.Text = $"{ this.walletGeneralInfoModel.connectedNodes} connections";
                 }
 
                 if (!this.walletGeneralInfoModel.isChainSynced)
@@ -360,8 +347,17 @@ namespace XelsDesktopWalletApp.Views
                     if (this.percentSynced == "100%")
                     {
                         this.blockChainStatus = $"Up to date.  { this.processedText}";
-                    }                    
+                    }
                 }
+
+                // populate
+                this.walletGeneralInfoModel.lastBlockSyncedHeight = this.walletGeneralInfoModel.lastBlockSyncedHeight ?? 0;
+                this.LastBlockSyncedHeightTxt.Text = this.walletGeneralInfoModel.lastBlockSyncedHeight.ToString();
+                this.ChainTipTxt.Text = this.walletGeneralInfoModel.chainTip.ToString();
+
+                this.ParentSyncedTxt.Text = this.percentSynced;
+
+                this.ConnectionPercentTxt.Text = this.percentSynced;
 
                 this.LastBlockSyncedHeightTxt.Text = this.walletGeneralInfoModel.lastBlockSyncedHeight.ToString();
 
@@ -373,10 +369,8 @@ namespace XelsDesktopWalletApp.Views
                 }
                 else if (this.stakingEnabled && !this.sidechainEnabled)
                 {
-                    this.ConnectionNotifyTxt.Text = "Not Ok";
+                    this.ConnectionNotifyTxt.Text = "Ok";
                 }
-
-
             }
             else
             {
@@ -400,11 +394,13 @@ namespace XelsDesktopWalletApp.Views
                 stakingInfoModel = JsonConvert.DeserializeObject<StakingInfoModel>(content);
 
                 this.stakingInfo.enabled = stakingInfoModel.enabled; //stakingEnabled
+                this.stakingEnabled = this.stakingInfo.enabled;
                 this.stakingInfo.staking = stakingInfoModel.staking; //stakingActive
                 this.stakingInfo.weight = stakingInfoModel.weight; //stakingWeight
                 this.stakingInfo.netStakeWeight = stakingInfoModel.netStakeWeight; //netStakingWeight
                 this.awaitingMaturity = (this.unconfirmedBalance + this.confirmedBalance) - this.spendableBalance; //
                 this.stakingInfo.expectedTime = stakingInfoModel.expectedTime; //expectedTime
+
                 if (this.stakingInfo.staking)
                 {
                     this.isStarting = false;
@@ -413,6 +409,23 @@ namespace XelsDesktopWalletApp.Views
                 {
                     this.isStopping = false;
                 }
+
+                //populate
+
+                if (!this.stakingEnabled && !this.sidechainEnabled)
+                {
+                    this.ConnectionNotifyTxt.Text = "Not Ok";
+                }
+                else if (this.stakingEnabled && !this.sidechainEnabled)
+                {
+                    this.ConnectionNotifyTxt.Text = "Ok";
+                }
+
+                this.HybridWeightTxt.Text = $"{this.stakingInfo.weight} XELS";
+                this.CoinsAwaitingMaturityTxt.Text = $"{this.awaitingMaturity} XELS";
+                this.NetworkWeightTxt.Text = $"{this.stakingInfo.netStakeWeight} XELS";
+                this.ExpectedRewardTimmeTxt.Text = this.stakingInfo.expectedTime.ToString();
+
             }
             else
             {
@@ -420,72 +433,39 @@ namespace XelsDesktopWalletApp.Views
             }
         }
 
-
-        private async Task PopulateTxt()
+        private async void UpdateWalletAsync()
         {
+            //this.createWallet.Initialize("SELS");
+            //this.createWallet.Initialize("BELS");
 
-            // Connection info
-            this.ConnectionStatusTxt.Text = this.connectedNodesStatus;
-            this.walletGeneralInfoModel.lastBlockSyncedHeight = this.walletGeneralInfoModel.lastBlockSyncedHeight ?? 0;
-            this.LastBlockSyncedHeightTxt.Text = this.walletGeneralInfoModel.lastBlockSyncedHeight.ToString();
-            this.ChainTipTxt.Text = this.walletGeneralInfoModel.chainTip.ToString();
-            this.ParentSyncedTxt.Text = this.percentSynced;
+            string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string walletFile = Path.Combine(walletCurrentDirectory, @"..\..\..\File\Wallets.json");
+            string path = Path.GetFullPath(walletFile);
 
-            this.ConnectionPercentTxt.Text = this.percentSynced;
-            this.ConnectedCountTxt.Text = this.connectedNodesStatus;
-
-            if (!this.stakingEnabled && !this.sidechainEnabled)
+            if (File.Exists(path))
             {
-                this.ConnectionNotifyTxt.Text = "Not Ok";
-            }
-            else if (this.stakingEnabled && !this.sidechainEnabled)
-            {
-                this.ConnectionNotifyTxt.Text = "Not Ok";
-            }
+                this.selswallet = this.createWallet.GetLocalWallet(this.walletName, "SELS");
+                this.belswallet = this.createWallet.GetLocalWallet(this.walletName, "BELS");
 
-            // Hybrid pow mining info
-            this.HybridWeightTxt.Text = $"{this.stakingInfo.weight} XELS";
-            this.CoinsAwaitingMaturityTxt.Text = $"{this.awaitingMaturity} XELS";
-            this.NetworkWeightTxt.Text = $"{this.stakingInfo.netStakeWeight} XELS";
-            this.ExpectedRewardTimmeTxt.Text = this.stakingInfo.expectedTime.ToString();
+                if (this.selswallet != null) { 
+                    if (this.selswallet.Address != null)
+                    {
+                        this.sels = await this.createWallet.GetBalanceAsync(this.selswallet.Address, "SELS");
+                    }
+                }
+                if (this.belswallet != null)
+                {
+                    if (this.belswallet.Address != null)
+                    {
+                        this.bels = await this.createWallet.GetBalanceAsync(this.belswallet.Address, "BELS");
+                    }
+                }
+                // Populate coins
+                this.SelsCoinTxt.Text = this.sels + " SELS";
+                this.BelsCoinTxt.Text = this.bels + " BELS";
+
+            }
         }
-
-        private async Task UpdateWalletAsync()
-        {
-            this.selswallet = this.createWallet.GetLocalWallet(this.walletName, "SELS");
-            this.belswallet = this.createWallet.GetLocalWallet(this.walletName, "BELS");
-
-            if (this.selswallet.Address != null)
-            {
-                this.sels = await GetBalanceAsync(this.selswallet.Address);
-            }
-
-            if (this.belswallet.Address != null)
-            {
-                this.bels = await GetBalanceAsync(this.belswallet.Address);
-            }
-
-        }
-
-        private async Task<Money> GetBalanceAsync(string addr)
-        {
-            string getUrl = this.baseURL + $"";
-            var content = "";
-
-            HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
-
-            if (response.IsSuccessStatusCode)
-            {
-                content = await response.Content.ReadAsStringAsync();
-            }
-            else
-            {
-                MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-            }
-            return 0;
-        }
-
-
 
         private void receiveButton_Click(object sender, RoutedEventArgs e)
         {

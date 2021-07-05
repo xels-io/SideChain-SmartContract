@@ -1,8 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Numerics;
+using System.Threading.Tasks;
+using System.Reflection;
+using NBitcoin;
 using Nethereum.Web3.Accounts;
 using Newtonsoft.Json;
-using System.Linq;
+
+using Nethereum.Web3;
+using Nethereum.ABI.FunctionEncoding.Attributes;
+using Nethereum.Contracts.CQS;
+using Nethereum.Util;
+using Nethereum.Hex.HexConvertors.Extensions;
+using Nethereum.Contracts;
+using Nethereum.Contracts.Extensions;
+using Nethereum.Contracts.ContractHandlers;
+using Xels.Bitcoin.Features.Interop.ETHClient;
+
 
 namespace XelsDesktopWalletApp.Common
 {
@@ -24,7 +40,8 @@ namespace XelsDesktopWalletApp.Common
 
     public class CreateWallet
     {
-        List<StoredWallet> storedWallets = new List<StoredWallet>();
+        Token token = new Token();
+
         //public Wallet WalletCreation(string mnemonic)
         //{
         //    Wallet wallet = new Wallet();
@@ -32,20 +49,9 @@ namespace XelsDesktopWalletApp.Common
         //    //// creates new mnemonic only
         //    //Mnemonic mnemo = new Mnemonic(Wordlist.English, WordCount.Twelve);
         //    //ExtKey hdRoot = mnemo.DeriveExtKey("my password");
-        //    //Console.WriteLine(mnemo);
-
-        //    // try2
-        //    Mnemonic mnemo = new Mnemonic("above turn genuine amused sister grocery fiscal draft wedding chat process prosper",
-        //        Wordlist.English);
-        //    ExtKey hdRoot = mnemo.DeriveExtKey("Shuvo912#");
-
-
-        //    //try3
+       
         //    var privateKey = "0000000000000000000000000000000000000000000000000000000000000001";
         //    var account = new Account(privateKey);
-
-        //    wallet.PrivateKey = privateKey;
-        //    wallet.Address = account.Address;
 
         //    return wallet;
         //}
@@ -66,7 +72,15 @@ namespace XelsDesktopWalletApp.Common
         {
             if (walletname != null)
             {
-                this.storedWallets = RetrieveWallets();
+                List<StoredWallet> storedWallets = new List<StoredWallet>();
+
+                List<StoredWallet> returnedWallets = new List<StoredWallet>();
+                returnedWallets = RetrieveWallets();
+
+                if (returnedWallets != null)
+                {
+                    storedWallets = returnedWallets;
+                }
 
                 StoredWallet storedWallet = new StoredWallet();
                 storedWallet.Address = wallet.Address;
@@ -75,11 +89,13 @@ namespace XelsDesktopWalletApp.Common
                 storedWallet.Coin = symbol;
                 storedWallet.Wallethash = wallethash;
 
-                this.storedWallets.Add(storedWallet);
-                string JSONresult = JsonConvert.SerializeObject(this.storedWallets.ToArray(), Formatting.Indented);
+                storedWallets.Add(storedWallet);
+                string JSONresult = JsonConvert.SerializeObject(storedWallets.ToArray(), Formatting.Indented);
 
-                string path = @"D:\Towsif\Projects\xels-fullnode-wpf-v3\XelsDesktopWalletApp\File\Wallets.json";
+                string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
+                string walletFile = Path.Combine(walletCurrentDirectory, @"..\..\..\File\Wallets.json");
+                string path = Path.GetFullPath(walletFile);
 
                 if (File.Exists(path))
                 {
@@ -100,9 +116,7 @@ namespace XelsDesktopWalletApp.Common
                     }
                 }
 
-
             }
-
         }
 
 
@@ -110,42 +124,129 @@ namespace XelsDesktopWalletApp.Common
 
         public List<StoredWallet> RetrieveWallets()
         {
-            using (StreamReader r = new StreamReader(@"D:\Towsif\Projects\xels-fullnode-wpf-v3\XelsDesktopWalletApp\File\Wallets.json"))
+            List<StoredWallet> wallets = new List<StoredWallet>();
+
+            string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string walletFile = Path.Combine(walletCurrentDirectory, @"..\..\..\File\Wallets.json");
+            string path = Path.GetFullPath(walletFile);
+
+            if (File.Exists(path))
             {
-                string json = r.ReadToEnd();
-                List<StoredWallet> wallets = new List<StoredWallet>();
-
-                if (json != null)
+                using (StreamReader r = new StreamReader(path))
                 {
-                    wallets = JsonConvert.DeserializeObject<List<StoredWallet>>(json);
-                }
+                    string json = r.ReadToEnd();
 
-                return wallets;
+                    if (json != "{ }" || json != "")
+                    {
+                        wallets = JsonConvert.DeserializeObject<List<StoredWallet>>(json);
+                    }
+
+                    return wallets;
+                }
             }
+
+            return null;
         }
 
         public StoredWallet GetLocalWallet(string walletname, string symbol)
         {
             StoredWallet wallet = new StoredWallet();
 
-            using (StreamReader r = new StreamReader(@"D:\Towsif\Projects\xels-fullnode-wpf-v3\XelsDesktopWalletApp\File\Wallets.json"))
+            string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string walletFile = Path.Combine(walletCurrentDirectory, @"..\..\..\File\Wallets.json");
+            string path = Path.GetFullPath(walletFile);
+
+            using (StreamReader r = new StreamReader(path))
             {
                 string json = r.ReadToEnd();
                 List<StoredWallet> wallets = new List<StoredWallet>();
 
-                if (json != null)
+                if (json != "")
                 {
                     wallets = JsonConvert.DeserializeObject<List<StoredWallet>>(json);
+                    wallet = wallets.Where(c => c.Walletname == walletname && c.Coin == symbol).FirstOrDefault();
                 }
-                wallet = wallets.Where(c => c.Walletname == walletname && c.Coin == symbol).FirstOrDefault();
 
                 return wallet;
             }
         }
 
+        //public void Initialize(string cointype)
+        //{
+        //    using (StreamReader r = new StreamReader(@"D:\All_Projects\xels-fullnode-wpf-v4\src\XelsDesktopWalletApp\Config\Token.json"))
+        //    {
+        //        string json = r.ReadToEnd();
+        //        List<Token> tokens = new List<Token>();
+
+        //        if (json != null)
+        //        {
+        //            tokens = JsonConvert.DeserializeObject<List<Token>>(json);
+        //            this.token = tokens.Where(c => c.name == cointype).FirstOrDefault();
+        //        }
+
+        //    }
+        //}
 
 
+        public async Task<string> GetBalanceAsync(string address, string cointype)
+        {
+            try
+            {
+                Web3 web3 = new Web3("https://mainnet.infura.io/v3/15851454d7644cff846b1b8701403647");
 
+                string contractAddress = "";
+
+                if (cointype == "SELS")
+                {
+                    contractAddress = "0x0E74264EAd02B3a9768Dc4F1A509fA7F49952df6";
+                }
+                else if (cointype == "BELS")
+                {
+                    contractAddress = "0x6fcf304f636d24ca102ab6e4e4e089115c04ebae";
+                }
+
+                var balanceOfFunctionMessage = new BalanceOfFunction()
+                {
+                    Owner = address 
+                };
+
+                IContractQueryHandler<BalanceOfFunction> balanceHandler = web3.Eth.GetContractQueryHandler<BalanceOfFunction>();
+                BigInteger balance = await balanceHandler.QueryAsync<BigInteger>(contractAddress, balanceOfFunctionMessage);
+
+                double balanceconvert = (double)balance * 0.00000001;
+                string balancemain = balanceconvert.ToString();
+
+                return balancemain;
+            }
+
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
+        public StoredWallet GetLocalWalletDetails(string walletname)
+        {
+            StoredWallet wallet = new StoredWallet();
+
+            string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string walletFile = Path.Combine(walletCurrentDirectory, @"..\..\..\File\Wallets.json");
+            string path = Path.GetFullPath(walletFile);
+
+            using (StreamReader r = new StreamReader(path))
+            {
+                string json = r.ReadToEnd();
+                List<StoredWallet> wallets = new List<StoredWallet>();
+
+                if (json != "")
+                {
+                    wallets = JsonConvert.DeserializeObject<List<StoredWallet>>(json);
+                    wallet = wallets.Where(c => c.Walletname == walletname).FirstOrDefault();
+                }
+
+                return wallet;
+            }
+        }
 
 
     }

@@ -40,6 +40,7 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="QRCoder" Version="1.4.1" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <PackageReference Include="WpfAnimatedGif" Version="2.0.0" />
   </ItemGroup>
 
@@ -55,6 +56,10 @@
   <ItemGroup>
     <Resource Include="Assets\Images\home-xels-logo-01.png" />
     <Resource Include="Assets\Images\loading-3.gif" />
+  </ItemGroup>  
+
+  <ItemGroup>
+    <Folder Include="File\" />
   </ItemGroup>
 
 </Project>

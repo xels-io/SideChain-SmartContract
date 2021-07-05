@@ -27,7 +27,7 @@ namespace XelsDesktopWalletApp.Views
 
         #region Base
         //static HttpClient client = new HttpClient();
-        string baseURL = URLConfiguration.BaseURL;// "http://localhost:37221/api";
+        string baseURL = URLConfiguration.BaseURLMain;// "http://localhost:37221/api";
         #endregion
         #region Wallet Info
         private readonly WalletInfo walletInfo = new WalletInfo();
@@ -56,6 +56,8 @@ namespace XelsDesktopWalletApp.Views
         {
             InitializeComponent();
             this.DataContext = this;
+            this.HistoryListBinding.Visibility = Visibility.Hidden;
+            this.NoData.Visibility = Visibility.Visible;
 
             this.walletName = walletname;
             this.walletInfo.walletName = this.walletName;

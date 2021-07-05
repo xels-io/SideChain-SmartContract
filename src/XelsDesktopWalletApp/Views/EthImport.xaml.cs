@@ -137,6 +137,10 @@ namespace XelsDesktopWalletApp.Views
             this.createWallet.StoreLocally(this.sWallet, this.walletName, "SELS", this.walletHash);
             this.createWallet.StoreLocally(this.bWallet, this.walletName, "BELS", this.walletHash);
             //}
+
+            Dashboard ds = new Dashboard();
+            ds.Show();
+            this.Close();
         }
 
         //private void CheckBox_Checked(object sender, RoutedEventArgs e)

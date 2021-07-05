@@ -16,5 +16,7 @@ namespace XelsDesktopWalletApp.Models.CommonModels
         public static HttpClient Client = new HttpClient();
 
         public static string Chain;
+
+        public static string BaseURLExchange = "https://exchange.xels.io";  //exchange
     }
 }
