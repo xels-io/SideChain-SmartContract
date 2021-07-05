@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 using Newtonsoft.Json;
+
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 using XelsDesktopWalletApp.Views;
@@ -26,10 +20,8 @@ namespace XelsDesktopWalletApp
     public partial class MainWindow : Window
     {
 
-       
         string baseURL = URLConfiguration.BaseURL;
 
-        //public List<WalletLoadRequest> _myList { get; set; }
         private List<WalletLoadRequest> myList = new List<WalletLoadRequest>();
         private WalletLoadRequest selectedWallet = new WalletLoadRequest();
 
@@ -44,6 +36,7 @@ namespace XelsDesktopWalletApp
                 this.myList = value;
             }
         }
+
         public WalletLoadRequest SelectedWallet
         {
             get
@@ -56,7 +49,6 @@ namespace XelsDesktopWalletApp
             }
         }
 
-
         public MainWindow()
         {
             InitializeComponent();
@@ -65,7 +57,6 @@ namespace XelsDesktopWalletApp
 
             LoadLoginAsync();
         }
-
 
         public async Task LoadLoginAsync()
         {
@@ -78,9 +69,7 @@ namespace XelsDesktopWalletApp
 
                 throw;
             }
-           
         }
-
 
         private async Task GetAPIAsync(string path)
         {
@@ -93,7 +82,6 @@ namespace XelsDesktopWalletApp
                 if (response.IsSuccessStatusCode)
                 {
                     content = await response.Content.ReadAsStringAsync();
-                    
                 }
                 else
                 {
@@ -103,12 +91,9 @@ namespace XelsDesktopWalletApp
             }
             catch (Exception e)
             {
-
                 throw;
             }
-            
         }
-
 
         private async Task converted(string data)
         {
@@ -127,7 +112,6 @@ namespace XelsDesktopWalletApp
             }
         }
 
-
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
             CreateOrRestore cr = new CreateOrRestore();
@@ -135,11 +119,8 @@ namespace XelsDesktopWalletApp
             this.Close();
         }
 
-
-
         private async void DecryptButton_ClickAsync(object sender, RoutedEventArgs e)
         {
-
             if (this.SelectedWallet.name != null)
             {
                 this.selectedWallet.password = this.password.Password;
@@ -150,20 +131,15 @@ namespace XelsDesktopWalletApp
 
                 if (response.IsSuccessStatusCode)
                 {
-                    // MessageBox.Show("Successfully logged in by " + this.SelectedWallet.name);
-
                     Dashboard db = new Dashboard(this.SelectedWallet.name);
                     db.Show();
                     this.Close();
                 }
                 else
                 {
-                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                    MessageBox.Show($"Error Code{response.StatusCode} : Message - {response.ReasonPhrase}");
                 }
-
             }
-
-
         }
 
 

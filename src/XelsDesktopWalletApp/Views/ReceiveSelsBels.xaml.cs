@@ -1,22 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using QRCoder;
-using XelsDesktopWalletApp.Models;
-using Newtonsoft.Json;
 using System.Drawing;
 using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+
+using QRCoder;
+
+using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 
 namespace XelsDesktopWalletApp.Views
@@ -27,12 +22,12 @@ namespace XelsDesktopWalletApp.Views
     public partial class ReceiveSelsBels : Window
     {
 
-        //static HttpClient client = new HttpClient();
         string baseURL = URLConfiguration.BaseURL;  //"http://localhost:37221/api";
 
         private readonly WalletInfo walletInfo = new WalletInfo();
 
         private string walletName;
+
         public string WalletName
         {
             get
@@ -62,7 +57,6 @@ namespace XelsDesktopWalletApp.Views
             LoadCreate();
         }
 
-
         public async void LoadCreate()
         {
             string addr = await GetAPIAsync(this.baseURL);
@@ -70,7 +64,6 @@ namespace XelsDesktopWalletApp.Views
 
             this.textBoxTextToQr.Text = addr;
         }
-
 
         private string FreshAddress(string adr)
         {
@@ -84,7 +77,6 @@ namespace XelsDesktopWalletApp.Views
             db.Show();
             this.Close();
         }
-
 
         private void generateQRCode()
         {
@@ -160,12 +152,14 @@ namespace XelsDesktopWalletApp.Views
             return content;
 
         }
+
         private void xelsButton_Click(object sender, RoutedEventArgs e)
         {
             Receive r = new Receive(this.walletName);
             r.Show();
             this.Close();
         }
+
         private void selsButton_Click(object sender, RoutedEventArgs e)
         {
 
@@ -173,6 +167,7 @@ namespace XelsDesktopWalletApp.Views
             rsb.Show();
             this.Close();
         }
+
         private void belsButton_Click(object sender, RoutedEventArgs e)
         {
             ReceiveSelsBels rsb = new ReceiveSelsBels(this.walletName);

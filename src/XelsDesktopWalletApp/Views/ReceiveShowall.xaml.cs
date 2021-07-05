@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 using Newtonsoft.Json;
+
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 
@@ -25,7 +18,7 @@ namespace XelsDesktopWalletApp.Views
     public partial class ReceiveShowall : Window
     {
         #region Base
-        //static HttpClient client = new HttpClient();
+       
         string baseURL = URLConfiguration.BaseURL;  // "http://localhost:37221/api";
         #endregion
 
@@ -75,9 +68,7 @@ namespace XelsDesktopWalletApp.Views
         public async void LoadCreate()
         {
             await GetAPIAsync(this.baseURL);
-
         }
-
 
         private void Hyperlink_NavigateReceive(object sender, RequestNavigateEventArgs e)
         {
@@ -85,7 +76,6 @@ namespace XelsDesktopWalletApp.Views
             receive.Show();
             this.Close();
         }
-
 
         private void okButton_Click(object sender, RoutedEventArgs e)
         {
@@ -101,7 +91,6 @@ namespace XelsDesktopWalletApp.Views
 
             HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
 
-
             if (response.IsSuccessStatusCode)
             {
                 content = await response.Content.ReadAsStringAsync();
@@ -116,7 +105,6 @@ namespace XelsDesktopWalletApp.Views
             ListConvert(this.addresses);
 
         }
-
 
         private void ListConvert(ReceiveWalletArray _content)
         {
@@ -144,7 +132,6 @@ namespace XelsDesktopWalletApp.Views
                     this.unusedAddressesList.Add(unusedAddresses);
                 }
             }
-
         }
 
         private void btn_copy_Click(object sender, RoutedEventArgs e)

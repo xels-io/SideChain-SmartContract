@@ -15,10 +15,12 @@ namespace XelsDesktopWalletApp.Views
     public partial class TransactionDetail : Window
     {
         #region Base
-        //static HttpClient client = new HttpClient();
+      
         string baseURL = URLConfiguration.BaseURL;// "http://localhost:37221/api";
         #endregion
+
         #region Wallet Info
+
         private readonly WalletInfo walletInfo = new WalletInfo();
         private WalletGeneralInfoModel walletGeneralInfo = new WalletGeneralInfoModel();
 
@@ -34,15 +36,18 @@ namespace XelsDesktopWalletApp.Views
                 this.walletName = value;
             }
         }
+
         #endregion
 
         private int? lastBlockSyncedHeight;
         private int? confirmations;
         private TransactionInfo _transaction = new TransactionInfo();
+
         public TransactionDetail()
         {
             InitializeComponent();
         }
+
         public TransactionDetail(string walletname, TransactionInfo transaction)
         {
             InitializeComponent();
@@ -150,7 +155,6 @@ namespace XelsDesktopWalletApp.Views
             Clipboard.SetText(this.TransactionIDTxt.Text);
             this.TransactionIDTxt_Copyed.Visibility = Visibility.Visible;
         }
-
 
     }
 }

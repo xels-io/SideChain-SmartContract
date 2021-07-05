@@ -2,14 +2,12 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 using NBitcoin;
-using Nethereum.Web3;
 using Newtonsoft.Json;
 using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
@@ -26,30 +24,35 @@ namespace XelsDesktopWalletApp.Views
         private string baseURL = URLConfiguration.BaseURL;// "http://localhost:37221/api";
 
         private WalletBalanceArray walletBalanceArray = new WalletBalanceArray();
+
         private HistoryModelArray historyModelArray = new HistoryModelArray();
 
         TransactionItemModelArray transactionItem = new TransactionItemModelArray();
+
         private List<TransactionInfo> transactions = new List<TransactionInfo>();
+
         private CreateWallet createWallet = new CreateWallet();
+
         private StoredWallet selswallet = new StoredWallet();
+
         private StoredWallet belswallet = new StoredWallet();
+
         private string sels = "";
+
         private string bels = "";
 
         private readonly WalletInfo walletInfo = new WalletInfo();
+
         private string walletName;
+
         public string WalletName
         {
-            get
-            {
-                return this.walletName;
-            }
+            get => this.walletName;
             set
             {
                 this.walletName = value;
             }
         }
-
 
         #region Own Property
 
@@ -61,7 +64,6 @@ namespace XelsDesktopWalletApp.Views
         private Money unconfirmedBalance;
         private Money spendableBalance;
 
-
         private string percentSynced;
 
         // general info
@@ -71,7 +73,6 @@ namespace XelsDesktopWalletApp.Views
         private string connectedNodesStatus;
         private double percentSyncedNumber = 0;
 
-
         // Staking  Info
         public bool isStarting = false;
         public bool isStopping = false;
@@ -80,7 +81,6 @@ namespace XelsDesktopWalletApp.Views
         public Money awaitingMaturity = 0;
 
         #endregion
-
 
         public Dashboard()
         {
@@ -99,7 +99,9 @@ namespace XelsDesktopWalletApp.Views
             this.walletName = walletname;
             this.walletInfo.walletName = this.walletName;
             GetGeneralInfoAsync();
+
             LoadLoginAsync();
+
             GetHistoryAsync();
 
             if (URLConfiguration.Chain != "-sidechain")// (!this.sidechainEnabled)
@@ -128,7 +130,6 @@ namespace XelsDesktopWalletApp.Views
                 var content = "";
 
                 HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
-
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -159,12 +160,10 @@ namespace XelsDesktopWalletApp.Views
             }
             catch (Exception r)
             {
-
                 throw;
             }
 
         }
-
 
         public async Task GetHistoryAsync()
         {
@@ -200,8 +199,6 @@ namespace XelsDesktopWalletApp.Views
                     this.HistoryList.Visibility = Visibility.Hidden;
                     this.NoData.Visibility = Visibility.Visible;
                 }
-
-
             }
             else
             {
@@ -378,7 +375,6 @@ namespace XelsDesktopWalletApp.Views
             }
         }
 
-
         private async Task GetStakingInfoAsync(string path)
         {
             string getUrl = path + $"/staking/getstakinginfo";
@@ -447,7 +443,8 @@ namespace XelsDesktopWalletApp.Views
                 this.selswallet = this.createWallet.GetLocalWallet(this.walletName, "SELS");
                 this.belswallet = this.createWallet.GetLocalWallet(this.walletName, "BELS");
 
-                if (this.selswallet != null) { 
+                if (this.selswallet != null)
+                {
                     if (this.selswallet.Address != null)
                     {
                         this.sels = await this.createWallet.GetBalanceAsync(this.selswallet.Address, "SELS");

@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+
 using NBitcoin;
+
 using Newtonsoft.Json;
+
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 
@@ -25,7 +19,6 @@ namespace XelsDesktopWalletApp.Views
     public partial class Send : Window
     {
 
-        //private static HttpClient client = new HttpClient();
         private readonly string baseURL = URLConfiguration.BaseURL;// "http://localhost:37221/api";
 
         private readonly WalletInfo walletInfo = new WalletInfo();
@@ -34,7 +27,7 @@ namespace XelsDesktopWalletApp.Views
 
         private WalletBalanceArray balances = new WalletBalanceArray();
         private BuildTransaction buildTransaction = new BuildTransaction();
-        
+
         private Money totalBalance;
         private Xels.Bitcoin.Features.Wallet.CoinType cointype;
         private Money spendableBalance;
@@ -43,7 +36,7 @@ namespace XelsDesktopWalletApp.Views
         private bool isSending = false;
 
         private Money opReturnAmount = 1;
-        
+
         private string walletName;
         public string WalletName
         {
