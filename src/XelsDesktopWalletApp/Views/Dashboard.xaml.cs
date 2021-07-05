@@ -433,7 +433,7 @@ namespace XelsDesktopWalletApp.Views
             }
         }
 
-        private async void UpdateWalletAsync()
+        private async Task UpdateWalletAsync()
         {
             //this.createWallet.Initialize("SELS");
             //this.createWallet.Initialize("BELS");

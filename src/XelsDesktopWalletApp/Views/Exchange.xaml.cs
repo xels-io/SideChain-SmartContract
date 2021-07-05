@@ -28,7 +28,6 @@ namespace XelsDesktopWalletApp.Views
     {
 
         #region Base
-        static HttpClient client = new HttpClient();
         private string baseURL = URLConfiguration.BaseURL;
         private string baseURLExchange = URLConfiguration.BaseURLExchange;
         #endregion
@@ -51,8 +50,23 @@ namespace XelsDesktopWalletApp.Views
 
         private StoredWallet mywallet = new StoredWallet();
         private CreateWallet createWallet = new CreateWallet();
-        private List<ExchangeResponse> exchangedatalist = new List<ExchangeResponse>();
+        public List<ExchangeResponse> exchangedatalist = new List<ExchangeResponse>();
 
+        #region Exchanges
+        public List<ExchangeData> exchangelist = new List<ExchangeData>();
+
+        public List<ExchangeData> Exchangelist
+        {
+            get
+            {
+                return this.exchangelist;
+            }
+            set
+            {
+                this.exchangelist = value;
+            }
+        }
+        #endregion
         #region Coin Select
 
         private ExchangeCoin selectedcoin = new ExchangeCoin();
@@ -110,8 +124,9 @@ namespace XelsDesktopWalletApp.Views
             try
             {
                 string postUrl = this.baseURLExchange + "/api/getOrders";
-
                 var content = "";
+                HttpClient client = new HttpClient();
+
                 List<ExchangeResponse> exchangedata = new List<ExchangeResponse>();
                 PostHash code = new PostHash();
                 code.user_code = hash;
@@ -139,32 +154,45 @@ namespace XelsDesktopWalletApp.Views
             }
         }
 
-        //public void GetOrder(string orderId)
-        //{
-        //    try
-        //    {
-        //        string path = URLConfiguration.BaseURLExchange + "/api/getOrder/" + orderId;
+        public async Task<ExchangeResponse> GetOrderAsync(string orderId)
+        {
+            try
+            {
+                string path = URLConfiguration.BaseURLExchange + "/api/getOrder/" + orderId;
+                var content = "";
+                ExchangeResponse exchangedata = new ExchangeResponse();
 
-        //        WebRequest requestObjGet = WebRequest.Create(path);
-        //        requestObjGet.Headers.Add("Authorization", "1234567890");
-        //        requestObjGet.Method = "GET";
+                HttpResponseMessage response = await URLConfiguration.Client.GetAsync(path);
 
-        //        HttpWebResponse responseObjGet = null;
-        //        responseObjGet = (HttpWebResponse)requestObjGet.GetResponse();
+                if (response.IsSuccessStatusCode)
+                {
+                    content = await response.Content.ReadAsStringAsync();
+                    exchangedata = JsonConvert.DeserializeObject<ExchangeResponse>(content);
 
-        //        string stringresult = null;
-        //        using (Stream stream = responseObjGet.GetResponseStream())
-        //        {
-        //            StreamReader sr = new StreamReader(stream);
-        //            stringresult = sr.ReadToEnd();
-        //            sr.Close();
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        throw;
-        //    }
-        //}
+                    if (exchangedata.id != null)
+                    {
+                        MessageBox.Show($"Your provided Order Id: {orderId} is not found!");
+                    }
+                    else
+                    {
+                        //Deposit(exchangedata.deposit_symbol, exchangedata.deposit_amount, exchangedata.deposit_address);
+                    }
+
+                }
+                else
+                {
+                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                }
+
+                return exchangedata;
+
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
         //public void NewOrder(string data)
         //{
         //    try
@@ -212,16 +240,63 @@ namespace XelsDesktopWalletApp.Views
                     this.NoData.Visibility = Visibility.Hidden;
                     this.ListData.Visibility = Visibility.Visible;
 
-                    this.ExchangeList.ItemsSource = this.exchangedatalist; //ListData
+                    // Processed data
+                    foreach (ExchangeResponse data in this.exchangedatalist)
+                    {
+                        ExchangeData edata = new ExchangeData();
+                        edata.excid = data.id;
+                        edata.deposit_address_amount_symbol = $"{data.deposit_address} {data.deposit_address} {data.deposit_symbol}";
+                        edata.xels_address_amount = $"{data.xels_address} {data.xels_amount} XELS";
+
+                        if (data.status == 0)
+                        {
+                            edata.showstatus = "0";
+                        }
+                        else if (data.status != 0)
+                        {
+                            if(data.status == 0)
+                            {
+                                edata.status[data.status] = "Wating for deposit";
+                                edata.showstatus = edata.status[data.status];
+                            }
+                            else if (data.status == 1)
+                            {
+                                edata.status[data.status] = "Pending Exchange";
+                                edata.showstatus = edata.status[data.status];
+                            }
+                            else if (data.status == 2)
+                            {
+                                edata.status[data.status] = "Complete";
+                                edata.showstatus = edata.status[data.status];
+                            }
+                        }
+
+                        this.exchangelist.Add(edata);
+                    }
+
+                    this.ExchangesList.ItemsSource = this.exchangelist; 
                 }
                 else
                 {
                     this.ListData.Visibility = Visibility.Hidden;
                     this.NoData.Visibility = Visibility.Visible;
+
+                    //this.exchangelist = loadtestlist();
+                    //this.ExchangesList.ItemsSource = this.Exchangelist;
                 }
 
             }
         }
+
+        //public List<ExchangeData> loadtestlist()
+        //{
+        //    List<ExchangeData> list = new List<ExchangeData>();
+        //    list.Add(new ExchangeData() { excid = "1", deposit_address_amount_symbol = "Abc 2.5 $", xels_address_amount ="Xyz 1 XELS", showstatus = "Pending Exchange" });
+        //    list.Add(new ExchangeData() { excid = "2", deposit_address_amount_symbol = "Abc 3 $", xels_address_amount ="Xyz 2 XELS", showstatus = "Complete" });
+        //    list.Add(new ExchangeData() { excid = "3", deposit_address_amount_symbol = "Abc 1 $", xels_address_amount ="Xyz .5 XELS", showstatus = "Pending Exchange" });
+
+        //    return list;
+        //}
 
         public async void LoadCreate()
         {
@@ -257,8 +332,19 @@ namespace XelsDesktopWalletApp.Views
         }
 
 
+        public async Task DepositNowAsync(ExchangeData orderitem)
+        {
+            ExchangeResponse dipositreturn = await GetOrderAsync(orderitem.excid);
+        }
 
 
+
+        private void DepositButton_Click(object sender, RoutedEventArgs e)
+        {
+            ExchangeData item = (ExchangeData)((sender as Button)?.Tag as ListViewItem)?.DataContext;
+            //MessageBox.Show("Item detail: " + item.excid);
+            _ = DepositNowAsync(item);
+        }
 
 
         private void Hyperlink_NavigateDashboard(object sender, RequestNavigateEventArgs e)
