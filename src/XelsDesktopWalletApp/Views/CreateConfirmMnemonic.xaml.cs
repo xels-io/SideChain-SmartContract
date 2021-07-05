@@ -141,7 +141,7 @@ namespace XelsDesktopWalletApp.Views
             this.Close();
         }
 
-        private async Task createButton_Click(object sender, RoutedEventArgs e)
+        private async void createButton_Click(object sender, RoutedEventArgs e)
         {
             CheckMnemonic();
 
