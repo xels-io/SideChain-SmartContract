@@ -131,10 +131,10 @@ namespace Xels.Sidechains.Networks
                 majorityWindow: 1000,
                 buriedDeployments: buriedDeployments,
                 bip9Deployments: bip9Deployments,
-                bip34Hash: new uint256("0x000000000000024b89b42a942fe0d9fea3bb44ab7bd1b19115dd6a759c0808b8"),
+                bip34Hash: null,  //new uint256("0x000000000000024b89b42a942fe0d9fea3bb44ab7bd1b19115dd6a759c0808b8"),
                 minerConfirmationWindow: 2016, // nPowTargetTimespan / nPowTargetSpacing
                 maxReorgLength: 240, // Heuristic. Roughly 2 * mining members
-                defaultAssumeValid: new uint256("0x0000005a39d58d384efabc1a9c79cd6e8c63894c77d4219526481cb49582ff29"), // 1400000
+                defaultAssumeValid: null,  //new uint256("0x0000005a39d58d384efabc1a9c79cd6e8c63894c77d4219526481cb49582ff29"), // 1400000
                 maxMoney: Money.Coins(100_000_000),
                 coinbaseMaturity: 1,
                 premineHeight: 2,
@@ -148,7 +148,7 @@ namespace Xels.Sidechains.Networks
                 powLimit: null,
                 minimumChainWork: null,
                 isProofOfStake: false,
-                lastPowBlock: 0,
+                lastPowBlock: 2,
                 proofOfStakeLimit: null,
                 proofOfStakeLimitV2: null,
                 proofOfStakeReward: Money.Zero
