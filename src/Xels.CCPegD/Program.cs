@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+
+using IWshRuntimeLibrary;
+
 using NBitcoin;
 using NBitcoin.Protocol;
 using Xels.Bitcoin;
@@ -44,7 +48,9 @@ namespace Xels.CCPegD
 
         private static void Main(string[] args)
         {
+            //args = new string[] { "-sidechain" };
             RunFederationGatewayAsync(args).Wait();
+            CreateShortCut();
         }
 
         private static async Task RunFederationGatewayAsync(string[] args)
@@ -140,6 +146,27 @@ namespace Xels.CCPegD
                 .Build();
 
             return node;
+        }
+
+        public static void CreateShortCut()
+        {
+
+            string[] argumentList = { "-mainchain", "-sidechain" };
+
+            string destinationPath = Directory.GetCurrentDirectory();
+            //Console.WriteLine(distinationPath);
+            //Console.ReadLine();
+            foreach (var arg in argumentList)
+            {
+                object shDesktop = (object)"Desktop";
+                WshShell shell = new WshShell();
+                string shortcutAddress = (string)shell.SpecialFolders.Item(ref shDesktop) + @"\xels-app" + arg + ".lnk";
+                IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutAddress);
+
+                shortcut.Arguments = arg;
+                shortcut.TargetPath = destinationPath + @"\Xels.CCPegD.exe";
+                shortcut.Save();
+            }
         }
     }
 }

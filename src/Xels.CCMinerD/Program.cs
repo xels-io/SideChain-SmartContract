@@ -1,6 +1,10 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+
+using IWshRuntimeLibrary;
+
 using NBitcoin.Protocol;
 using Xels.Bitcoin;
 using Xels.Bitcoin.Builder;
@@ -33,12 +37,17 @@ namespace Xels.CCMinerD
 
         public static void Main(string[] args)
         {
-            //args = new string[] { "-mainchain" };
+            //args = new string[] { "-sidechain" };
             MainAsync(args).Wait();
+            CreateShortCut();
         }
 
         public static async Task MainAsync(string[] args)
         {
+            //if (args.Length == 0)
+            //{
+            //    args = new string[] { "-mainchain" };
+            //}
             try
             {
                 bool isMainchainNode = args.FirstOrDefault(a => a.ToLower() == MainchainArgument) != null;
@@ -59,7 +68,7 @@ namespace Xels.CCMinerD
                     fullNode = isMainchainNode ? BuildXlcNode(args) : BuildCCMiningNode(args);
 
                     // set the console window title to identify which node this is (for clarity when running Xlc and CC on the same machine)
-                    //Console.Title = isMainchainNode ? $"Xlc Full Node {fullNode.Network.NetworkType}" : $"CC Full Node {fullNode.Network.NetworkType}";
+                    Console.Title = isMainchainNode ? $"Xlc Full Node {fullNode.Network.NetworkType}" : $"CC Full Node {fullNode.Network.NetworkType}";
                 }
 
                 if (fullNode != null)
@@ -170,6 +179,27 @@ namespace Xels.CCMinerD
                 .Build();
 
             return node;
+        }
+
+        public static void CreateShortCut()
+        {
+
+            string[] argumentList = { "-mainchain","-sidechain" };
+
+            string destinationPath = Directory.GetCurrentDirectory();
+            //Console.WriteLine(distinationPath);
+            //Console.ReadLine();
+            foreach (var arg in argumentList)
+            {
+                object shDesktop = (object)"Desktop";
+                WshShell shell = new WshShell();
+                string shortcutAddress = (string)shell.SpecialFolders.Item(ref shDesktop) + @"\xels-app" + arg + ".lnk";
+                IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutAddress);
+
+                shortcut.Arguments = arg;
+                shortcut.TargetPath = destinationPath + @"\Xels.CCMinerD.exe";
+                shortcut.Save();
+            }
         }
     }
 }

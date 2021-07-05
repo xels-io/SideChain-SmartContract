@@ -12,6 +12,7 @@ namespace Xels.Bitcoin.Features.Interop.Controllers
 {
     [ApiVersion("1")]
     [Route("api/[controller]")]
+    [ApiController]
     public class InteropController : Controller
     {
         private readonly Network network;

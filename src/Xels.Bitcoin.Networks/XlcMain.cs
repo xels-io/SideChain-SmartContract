@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using NBitcoin;
 using NBitcoin.BouncyCastle.Math;
@@ -17,11 +18,11 @@ namespace Xels.Bitcoin.Networks
             this.Name = "XlcMain";
             this.NetworkType = NetworkType.Mainnet;
             this.Magic = BitConverter.ToUInt32(Encoding.ASCII.GetBytes("XelS"));
-            this.DefaultPort = 17105;
+            this.DefaultPort = 27770;// 17105;
             this.DefaultMaxOutboundConnections = 16;
             this.DefaultMaxInboundConnections = 109;
             this.DefaultRPCPort = 17104;
-            this.DefaultAPIPort = 17103;
+            this.DefaultAPIPort = 37221;//17103;
             this.DefaultSignalRPort = 17102;
             this.MaxTipAge = 2 * 60 * 60;
             this.MinTxFee = 10000;
@@ -157,6 +158,12 @@ namespace Xels.Bitcoin.Networks
 
             this.SeedNodes = new List<NetworkAddress>
             {
+                new NetworkAddress(IPAddress.Parse("52.68.239.4"), this.DefaultPort ), // public node with DNS Server Enabled
+                new NetworkAddress(IPAddress.Parse("54.64.43.45"), this.DefaultPort ), // public node with DNS Server Enabled
+                new NetworkAddress(IPAddress.Parse("54.238.248.117"), this.DefaultPort), // public node
+                new NetworkAddress(IPAddress.Parse("13.114.52.87"), this.DefaultPort), // public node
+                new NetworkAddress(IPAddress.Parse("52.192.229.45"), this.DefaultPort), // public node
+                new NetworkAddress(IPAddress.Parse("52.199.121.139"), this.DefaultPort ) // public node
             };
 
             this.StandardScriptsRegistry = new XlcStandardScriptsRegistry();

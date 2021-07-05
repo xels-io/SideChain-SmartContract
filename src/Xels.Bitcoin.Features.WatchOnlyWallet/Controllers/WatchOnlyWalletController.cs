@@ -14,6 +14,7 @@ namespace Xels.Bitcoin.Features.WatchOnlyWallet.Controllers
     /// </summary>
     [ApiVersion("1")]
     [Route("api/[controller]")]
+    [ApiController]
     public class WatchOnlyWalletController : Controller
     {
         /// <summary> The watch-only wallet manager. </summary>

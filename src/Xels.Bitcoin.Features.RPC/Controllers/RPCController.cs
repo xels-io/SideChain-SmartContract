@@ -19,6 +19,7 @@ namespace Xels.Bitcoin.Features.RPC.Controllers
     /// </summary>
     [ApiVersion("1")]
     [Route("api/[controller]")]
+    [ApiController]
     public class RPCController : Controller
     {
         /// <summary>Instance logger.</summary>

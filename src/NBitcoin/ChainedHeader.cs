@@ -285,6 +285,15 @@ namespace NBitcoin
             return Pow256.Divide(target.Add(BigInteger.One));
         }
 
+        public BigInteger GetBlockProof()
+        {
+            BigInteger target = this.Header.Bits.ToBigInteger();
+            if ((target.CompareTo(BigInteger.Zero) <= 0) || (target.CompareTo(Pow256) >= 0))
+                return BigInteger.Zero;
+
+            return Pow256.Divide(target.Add(BigInteger.One));
+        }
+
         /// <summary>Gets a <see cref="BlockLocator"/> for this chain entry.</summary>
         /// <returns>A block locator for this chain entry.</returns>
         public BlockLocator GetLocator()

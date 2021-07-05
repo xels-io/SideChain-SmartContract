@@ -49,8 +49,9 @@ namespace Xels.Bitcoin.Builder
         }
 
         /// <inheritdoc />
+        /// 
         public void Initialize()
-        {
+               {
             try
             {
                 this.logger.Info("Validating feature dependencies.");

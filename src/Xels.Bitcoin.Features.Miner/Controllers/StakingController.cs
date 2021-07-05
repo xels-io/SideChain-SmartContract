@@ -20,6 +20,7 @@ namespace Xels.Bitcoin.Features.Miner.Controllers
     /// </summary>
     [ApiVersion("1")]
     [Route("api/[controller]")]
+    [ApiController]
     public class StakingController : Controller
     {
         /// <summary>Instance logger.</summary>

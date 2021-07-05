@@ -17,6 +17,7 @@ namespace Xels.Bitcoin.Features.Wallet.Controllers
     /// </summary>
     [ApiVersion("1")]
     [Route("api/[controller]")]
+    [ApiController]
     public class AddressBookController : Controller
     {
         /// <summary>An instance of the address book manager.</summary>

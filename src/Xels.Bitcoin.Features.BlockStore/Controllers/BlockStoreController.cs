@@ -34,6 +34,7 @@ namespace Xels.Bitcoin.Features.BlockStore.Controllers
     /// <summary>Controller providing operations on a blockstore.</summary>
     [ApiVersion("1")]
     [Route("api/[controller]")]
+    [ApiController]
     public class BlockStoreController : Controller
     {
         private readonly IAddressIndexer addressIndexer;
@@ -108,6 +109,102 @@ namespace Xels.Bitcoin.Features.BlockStore.Controllers
             {
                 this.logger.LogError("Exception occurred: {0}", e.ToString());
                 return ErrorHelpers.BuildErrorResponse(HttpStatusCode.BadRequest, e.Message, e.ToString());
+            }
+        }
+
+        [Route("getallblocksfromheight")]
+        [HttpGet]
+        public IActionResult GetAllBlocksFromHeight(int height, bool showTransactionDetails = false)
+        {
+            try
+            {
+                List<BlockModel> lstBlockModel = new List<BlockModel>();
+                List<ChainedHeader> lstChainedHeader = this.chainIndexer.GetRestBlocks(height);
+
+                foreach (ChainedHeader chainedHeader in lstChainedHeader)
+                {
+                    if (chainedHeader == null)
+                        continue;
+
+                    Block block = chainedHeader.Block ?? this.blockStore.GetBlock(chainedHeader.HashBlock);
+
+                    // In rare occasions a block that is found in the
+                    // indexer may not have been pushed to the store yet. 
+                    if (block == null)
+                        continue;
+
+                    BlockModel blockModel = showTransactionDetails
+                        ? new BlockTransactionDetailsModel(block, chainedHeader, this.chainIndexer.Tip, this.network)
+                        : new BlockModel(block, chainedHeader, this.chainIndexer.Tip, this.network);
+
+                    if (this.network.Consensus.IsProofOfStake)
+                    {
+                        var posBlock = block as PosBlock;
+
+                        blockModel.PosBlockSignature = posBlock.BlockSignature.ToHex(this.network);
+                        blockModel.PosBlockTrust = new Target(chainedHeader.GetBlockProof()).ToUInt256().ToString();
+                        blockModel.PosChainTrust = chainedHeader.ChainWork.ToString(); // this should be similar to ChainWork
+                    }
+                    blockModel.BlockReward = GetRewardFromHeight(height);
+                    lstBlockModel.Add(blockModel);
+                }
+                return this.Json(lstBlockModel);
+            }
+            catch (Exception e)
+            {
+                this.logger.LogError("Exception occurred: {0}", e.ToString());
+                return ErrorHelpers.BuildErrorResponse(HttpStatusCode.BadRequest, e.Message, e.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Neo: We've to find some way to invoke this method from PosCoinViewRule
+        /// </summary>
+        /// <param name="height"></param>
+        /// <returns></returns>
+        private Money GetRewardFromHeight(int height)
+        {
+            if (height <= this.network.Consensus.PremineHeight)
+            {
+                return this.network.Consensus.PremineReward;
+            }
+            else if (height <= this.network.Consensus.FirstMiningPeriodHeight)
+            {
+                return this.network.Consensus.ProofOfStakeReward;
+            }
+            else if (height <= this.network.Consensus.SecondMiningPeriodHeight)
+            {
+                return this.network.Consensus.ProofOfStakeReward - (Money.Satoshis(3256) * (height - this.network.Consensus.FirstMiningPeriodHeight));
+            }
+            else if (height <= this.network.Consensus.ThirdMiningPeriodHeight)
+            {
+                return this.network.Consensus.ProofOfStakeReward / 2;
+            }
+            else if (height <= this.network.Consensus.ForthMiningPeriodHeight)
+            {
+                return (this.network.Consensus.ProofOfStakeReward / 2) - (Money.Satoshis(1628) * (height - this.network.Consensus.ThirdMiningPeriodHeight));
+            }
+            else if (height <= this.network.Consensus.FifthMiningPeriodHeight)
+            {
+                return this.network.Consensus.ProofOfStakeReward / 4;
+            }
+            else
+            {
+                int multiplier = (int)(height - this.network.Consensus.FifthMiningPeriodHeight) / (int)210240;
+                double returnAmount = 1449770000;
+
+                if (multiplier == 0)
+                {
+                    return Money.Satoshis(1449770000);
+                }
+                else
+                {
+                    for (int i = 0; i < multiplier; i++)
+                    {
+                        returnAmount *= 1.02;
+                    }
+                }
+                return Money.Satoshis((decimal)returnAmount);
             }
         }
 
