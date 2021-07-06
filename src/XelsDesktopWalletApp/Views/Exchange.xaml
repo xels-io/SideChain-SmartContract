@@ -133,7 +133,7 @@
                             <ComboBox ItemsSource="{Binding Path=Coins, Mode=TwoWay}" 
                                       SelectedItem="{Binding Path=SelectedCoin, Mode=TwoWay}"
                                       Width="263" Background="White" BorderBrush="LimeGreen" Foreground="#FF615858" 
-                                      Padding="2" FontFamily="Microsoft YaHei Light" 
+                                      Padding="2" FontFamily="Microsoft YaHei Light" Name="Combobox"
                                       >
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>

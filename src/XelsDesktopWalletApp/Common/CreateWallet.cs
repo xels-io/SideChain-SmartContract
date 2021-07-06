@@ -248,6 +248,10 @@ namespace XelsDesktopWalletApp.Common
             }
         }
 
+        //public async Task<string> TransferAsync(string fromAddress, string pKey, string toAddress, Money amount)
+        //{
+        //}
+
 
     }
 
