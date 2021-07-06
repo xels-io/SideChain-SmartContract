@@ -7,26 +7,36 @@
         mc:Ignorable="d"
         Title="Login" Height="450" Width="800">
 
-    <Border Padding="10">
+    <!--Border Padding="10"-->
         <StackPanel>
 
-            <Grid Background="LimeGreen">
-                <Image Source="/Assets/Images/home-xels-logo-01.png" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"/>
+            <StackPanel>
 
-            </Grid>
+                <Grid Background="LimeGreen" Margin="10" Height="90">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+
+                    <Border HorizontalAlignment="Center" VerticalAlignment="Center" Width="70" Background="Transparent" BorderBrush="White" 
+              BorderThickness="2 2 2 2" Margin="-2">
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="0" BlurRadius="10"/>
+                            </Border.Effect>
+                            <Image Source="/Assets/Images/home-xels-logo-01.png" >
+
+                            </Image>
+                        </Border>
+                         
+
+                </Grid>
+
+
+            </StackPanel>
+
 
             <TextBlock Width="100" Height="71" Text="Welcome" FontWeight="Normal"  FontSize="22" HorizontalAlignment="Center" FontFamily="Microsoft YaHei Light"/>
             <Label Content="Select Wallet" Width="548" FontFamily="Microsoft YaHei Light" Height="34" FontSize="10"/>
-
-            <!--<ComboBox x:Name="BusinessComboBox" DisplayMemberPath="IdNumber"  ItemsSource="{Binding _walletnames}"  Width="531" Background="White" BorderBrush="LimeGreen"  SelectedIndex="0" Padding="5,5,5,5" FontFamily="Microsoft YaHei Light" Margin="0,0,10,0">
-                <ComboBoxItem Content="Choose a wallet"/>
-                <ComboBoxItem Content="Wallet1"/>
-            </ComboBox>-->
-
-            <!--<ComboBox x:Name="cmbWalletList"  Width="531" Background="White" BorderBrush="LimeGreen"  Padding="5,5,5,5" FontFamily="Microsoft YaHei Light" Margin="0,0,10,0" />
-            
-            <ComboBox  ItemsSource="{Binding walletLoadRequestModel.walletNames}" SelectedItem="{Binding walletLoadRequestModel.walletname, Mode=TwoWay}" Text="Select Option" Width="531" Background="White" BorderBrush="LimeGreen"  Padding="5,5,5,5" FontFamily="Microsoft YaHei Light" Margin="0,0,10,0" />-->
-
 
             <ComboBox ItemsSource="{Binding  Path=MyList, Mode=TwoWay}" 
                       SelectedItem="{Binding Path=SelectedWallet, Mode=TwoWay}"
@@ -40,12 +50,6 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
             <Label Content="&#xD;&#xA;Password" Width="548" FontFamily="Microsoft YaHei Light" Height="36" FontSize="10"/>
-
-            <!--<ComboBox ItemsSource="{Binding Path=walletLoadRequestModel.walletNames}"
-                  DisplayMemberPath="{Binding Path=walletLoadRequestModel.walletname}"
-                  SelectedValuePath="{Binding Path=walletLoadRequestModel.walletname}"
-                  SelectedValue="{Binding Path=walletLoadRequestModel.walletname}" />-->
-
 
             <PasswordBox Name="password" PasswordChar="*" Margin="0 10 10 0" Width="531" Padding="2" RenderTransformOrigin="0.792,0.552" FontFamily="Microsoft YaHei Light" Height="26" BorderBrush="LimeGreen" />
 
@@ -67,6 +71,6 @@
                 </Hyperlink.Style><Run Text="Create or Restore a wallet"/>
                 </Hyperlink></TextBlock>
         </StackPanel>
-    </Border>
+    <!--/Border-->
 
 </Window>

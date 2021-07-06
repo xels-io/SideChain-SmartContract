@@ -90,7 +90,7 @@ namespace XelsDesktopWalletApp.Views
             foreach (var d in rowDataMain)
             {
                 WalletLoadRequest wlr = new WalletLoadRequest();
-                wlr.name = d;
+                wlr.Name = d;
                 if (!( d.Contains("[") || d.Contains(",") || d.Contains("]") ))
                 {
                     this.myList.Add(wlr);
@@ -109,9 +109,9 @@ namespace XelsDesktopWalletApp.Views
         private async void decryptButton_Click(object sender, RoutedEventArgs e)
         {
 
-            if (this.SelectedWallet.name != null)
+            if (this.SelectedWallet.Name != null)
             {
-                this.selectedWallet.password = this.password.Password;
+                this.selectedWallet.Password = this.password.Password;
 
                 string postUrl = this.baseURL + "/wallet/load/";
 
@@ -119,7 +119,7 @@ namespace XelsDesktopWalletApp.Views
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Successfully logged in by " + this.SelectedWallet.name);
+                    MessageBox.Show("Successfully logged in by " + this.SelectedWallet.Name);
 
                     Dashboard db = new Dashboard();
                     db.Show();

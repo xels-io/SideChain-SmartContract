@@ -376,7 +376,7 @@ namespace XelsDesktopWalletApp.Views
 
                 if (response.IsSuccessStatusCode)
                 {
-                   
+
                     SendConfirmationSC sendConfirmationSc = new SendConfirmationSC();
                     sendConfirmationSc.transaction = this.transactionBuilding;
                     sendConfirmationSc.transactionFee = this.estimatedSidechainFee;
@@ -389,7 +389,7 @@ namespace XelsDesktopWalletApp.Views
                 }
                 else
                 {
-                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                    MessageBox.Show($"Error Code{ response.StatusCode } : Message - { response.ReasonPhrase}");
                 }
             }
         }

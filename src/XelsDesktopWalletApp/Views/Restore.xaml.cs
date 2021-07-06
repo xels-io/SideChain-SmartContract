@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 
 using Newtonsoft.Json;
@@ -15,55 +16,42 @@ namespace XelsDesktopWalletApp.Views
     public partial class Restore : Window
     {
 
-        static HttpClient client = new HttpClient();
         string baseURL = URLConfiguration.BaseURL;  // "http://localhost:37221/api/wallet";
-
-
 
         public Restore()
         {
             InitializeComponent();
-        }
-
-        //public Restore(IWalletManager walletManager)
-        //{
-        //    this._walletManager = walletManager;
-
-        //    InitializeComponent();
-        //}
-
+        }       
 
         public bool isValid()
         {
-            if (name.Text == string.Empty)
+            if (string.IsNullOrWhiteSpace(this.name.Text))
             {
                 MessageBox.Show("Name is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
-            if (mnemonic.Text == string.Empty)
+            if (string.IsNullOrWhiteSpace(this.mnemonic.Text))
             {
                 MessageBox.Show("Field is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
-            if (creationDate.Text == string.Empty)
+            if (string.IsNullOrWhiteSpace(this.creationDate.Text))
             {
                 MessageBox.Show("Date is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
-            if (password.Text == string.Empty)
+            if (string.IsNullOrWhiteSpace(this.password.Password))
             {
                 MessageBox.Show("Password is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
-            if (passphrase.Text == string.Empty)
+            if (string.IsNullOrWhiteSpace(this.passphrase.Text))
             {
                 MessageBox.Show("Passphrase is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
             return true;
         }
-
-
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
         {
@@ -72,39 +60,31 @@ namespace XelsDesktopWalletApp.Views
             this.Close();
         }
 
-        private async void restoreButton_Click(object sender, RoutedEventArgs e)
+        private async void RestoreButton_Click(object sender, RoutedEventArgs e)
         {
             if (isValid())
             {
-                string postUrl = baseURL + "/Wallet/recover";
+                string postUrl = this.baseURL + "/Wallet/recover";
 
                 WalletRecovery recovery = new WalletRecovery();
-                recovery.name = name.Text;
+                recovery.name = this.name.Text;
                 //recovery.creationDate = creationDate.SelectedDate.Value;
-                recovery.creationDate = creationDate.Text;
-                recovery.mnemonic = mnemonic.Text;
-                recovery.passphrase = passphrase.Text;
-                recovery.password = password.Text;
+                recovery.creationDate = this.creationDate.Text;
+                recovery.mnemonic = this.mnemonic.Text;
+                recovery.passphrase = this.passphrase.Text;
+                recovery.password = this.password.Password; 
 
-                //this._walletManager.RecoverWallet(recovery.password, recovery.name, recovery.mnemonic,
-                //        recovery.creationDate, passphrase: recovery.passphrase);
-
-
-                HttpResponseMessage response = await client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(recovery), Encoding.UTF8, "application/json"));
+                HttpResponseMessage response = await URLConfiguration.Client.PostAsJsonAsync(postUrl, recovery);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Successfully saved data with Name: " + recovery.name);
+                    MessageBox.Show("Successfully saved data with Name:{ recovery.name}");
                 }
                 else
                 {
-                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                    MessageBox.Show($"Error Code{ response.StatusCode } : Message - { response.ReasonPhrase}");
                 }
             }
-
         }
-
-
-
     }
 }
