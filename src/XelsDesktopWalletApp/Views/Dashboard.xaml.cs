@@ -13,6 +13,7 @@ using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 using XelsDesktopWalletApp.Views.SmartContractView;
+using XelsDesktopWalletApp.Views.layout;
 
 namespace XelsDesktopWalletApp.Views
 {
@@ -526,6 +527,13 @@ namespace XelsDesktopWalletApp.Views
         {
             Advanced adv = new Advanced(this.walletName);
             adv.Show();
+            this.Close();
+        }
+
+        private void Hyperlink_NavigateNewLayout(object sender, RequestNavigateEventArgs e)
+        {
+            MainLayout history = new MainLayout();
+            history.Show();
             this.Close();
         }
 
