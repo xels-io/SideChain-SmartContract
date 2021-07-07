@@ -20,14 +20,9 @@ namespace XelsDesktopWalletApp.Models
     // customized
     public class ExchangeData
     {
-        public ExchangeData()
-        {
-            this.status = new string[3];
-        }
         public string excid { get; set; }
         public string deposit_address_amount_symbol { get; set; }
         public string xels_address_amount { get; set; }
-        public string[] status { get; set; }
         public string showstatus { get; set; }
     }
 

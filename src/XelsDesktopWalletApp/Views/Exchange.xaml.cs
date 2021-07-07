@@ -50,6 +50,7 @@ namespace XelsDesktopWalletApp.Views
         #endregion
 
         string addr;
+        bool updatesuccess = false;
         private StoredWallet mywallet = new StoredWallet();
         private CreateWallet createWallet = new CreateWallet();
         public List<ExchangeResponse> exchangedatalist = new List<ExchangeResponse>();
@@ -117,6 +118,8 @@ namespace XelsDesktopWalletApp.Views
             this.mywallet = this.createWallet.GetLocalWalletDetails(this.walletInfo.walletName);
             LoadCreateAsync();
             UpdateExchangeListAsync();
+
+            this.updatesuccess = false;
         }
 
         public bool isValid()
@@ -155,10 +158,9 @@ namespace XelsDesktopWalletApp.Views
                 client.DefaultRequestHeaders.Add("Authorization", "1234567890");
                 
                 HttpResponseMessage response = await client.PostAsJsonAsync(postUrl, code);
-
+                content = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
-                    content = await response.Content.ReadAsStringAsync();
                     exchangedata = JsonConvert.DeserializeObject<List<ExchangeResponse>>(content);
                 }
                 else
@@ -184,10 +186,10 @@ namespace XelsDesktopWalletApp.Views
                 ExchangeResponse exchangedata = new ExchangeResponse();
 
                 HttpResponseMessage response = await URLConfiguration.Client.GetAsync(path);
+                content = await response.Content.ReadAsStringAsync();
 
                 if (response.IsSuccessStatusCode)
                 {
-                    content = await response.Content.ReadAsStringAsync();
                     exchangedata = JsonConvert.DeserializeObject<ExchangeResponse>(content);
 
                     if (exchangedata.id != null)
@@ -196,7 +198,7 @@ namespace XelsDesktopWalletApp.Views
                     }
                     else
                     {
-                        await DepositAsync(exchangedata.deposit_symbol, exchangedata.deposit_amount, exchangedata.deposit_address);
+                        DepositAsync(exchangedata.deposit_symbol, exchangedata.deposit_amount, exchangedata);
                     }
 
                 }
@@ -227,14 +229,18 @@ namespace XelsDesktopWalletApp.Views
                 client.DefaultRequestHeaders.Add("Authorization", "1234567890");
 
                 HttpResponseMessage response = await client.PostAsJsonAsync(postUrl, order);
+                content = await response.Content.ReadAsStringAsync();
 
                 if (response.IsSuccessStatusCode)
                 {
-                    content = await response.Content.ReadAsStringAsync();
                     exchangedata = JsonConvert.DeserializeObject<ExchangeResponse>(content);
 
-                    UpdateExchangeListAsync();
-                    await DepositAsync(order.deposit_symbol, order.deposit_amount, exchangedata.deposit_address);
+                    UpdateExchangeListAsync(); 
+
+                    if (this.updatesuccess == true) {
+                        DepositAsync(order.deposit_symbol, order.deposit_amount, exchangedata);
+                    }
+
                 }
                 else
                 {
@@ -265,58 +271,35 @@ namespace XelsDesktopWalletApp.Views
                     {
                         ExchangeData edata = new ExchangeData();
                         edata.excid = data.id;
-                        edata.deposit_address_amount_symbol = $"{data.deposit_address} {data.deposit_address} {data.deposit_symbol}";
+                        edata.deposit_address_amount_symbol = $"{data.deposit_address} {data.deposit_amount} {data.deposit_symbol}";
                         edata.xels_address_amount = $"{data.xels_address} {data.xels_amount} XELS";
 
-                        if (data.status == 0)
+                        if(data.status == 0)
                         {
-                            edata.showstatus = "0";
+                            edata.showstatus = "Wating for deposit";
                         }
-                        else if (data.status != 0)
+                        else if (data.status == 1)
                         {
-                            if(data.status == 0)
-                            {
-                                edata.status[data.status] = "Wating for deposit";
-                                edata.showstatus = edata.status[data.status];
-                            }
-                            else if (data.status == 1)
-                            {
-                                edata.status[data.status] = "Pending Exchange";
-                                edata.showstatus = edata.status[data.status];
-                            }
-                            else if (data.status == 2)
-                            {
-                                edata.status[data.status] = "Complete";
-                                edata.showstatus = edata.status[data.status];
-                            }
+                            edata.showstatus = "Pending Exchange";
+                        }
+                        else if (data.status == 2)
+                        {
+                            edata.showstatus = "Complete";
                         }
 
                         this.exchangelist.Add(edata);
                     }
 
-                    this.ExchangesList.ItemsSource = this.exchangelist; 
+                    this.ExchangesList.ItemsSource = this.exchangelist;
                 }
                 else
                 {
                     this.ListData.Visibility = Visibility.Hidden;
                     this.NoData.Visibility = Visibility.Visible;
-
-                    //this.exchangelist = loadtestlist();
-                    //this.ExchangesList.ItemsSource = this.Exchangelist;
                 }
-
+                this.updatesuccess = true;
             }
         }
-
-        //public List<ExchangeData> loadtestlist()
-        //{
-        //    List<ExchangeData> list = new List<ExchangeData>();
-        //    list.Add(new ExchangeData() { excid = "1", deposit_address_amount_symbol = "Abc 2.5 $", xels_address_amount ="Xyz 1 XELS", showstatus = "Pending Exchange" });
-        //    list.Add(new ExchangeData() { excid = "2", deposit_address_amount_symbol = "Abc 3 $", xels_address_amount ="Xyz 2 XELS", showstatus = "Complete" });
-        //    list.Add(new ExchangeData() { excid = "3", deposit_address_amount_symbol = "Abc 1 $", xels_address_amount ="Xyz .5 XELS", showstatus = "Pending Exchange" });
-
-        //    return list;
-        //}
 
         public async Task LoadCreateAsync()
         {
@@ -357,7 +340,7 @@ namespace XelsDesktopWalletApp.Views
             ExchangeResponse dipositreturn = await GetOrderAsync(orderitem.excid);
         }
 
-        public async Task DepositAsync(string symbol, double amount, string toAddress)
+        public async Task DepositAsync(string symbol, double amount, ExchangeResponse exchangeResponse)
         {
             StoredWallet mWallet = new StoredWallet();
             if (symbol == this.mywallet.Coin)
@@ -366,13 +349,13 @@ namespace XelsDesktopWalletApp.Views
             }
             if (mWallet == null)
             {
-                MessageBox.Show($"Please import valid token address or send {amount} {symbol} to {toAddress}");
+                MessageBox.Show($"Please import valid token address or send {amount} {symbol} to {exchangeResponse.deposit_address}");
             }
-            // Decrypt Private Key
+            //Decrypt Private Key
             mWallet.PrivateKey = Encryption.DecryptPrivateKey(mWallet.PrivateKey);
-            // Initialize
+            //Initialize
             // Transfer
-            //var tx = await this.createWallet.TransferAsync(mWallet.Address, mWallet.PrivateKey, toAddress, amount);
+            var tx = await this.createWallet.TransferAsync(mWallet, exchangeResponse, amount);
         }
 
 
@@ -380,7 +363,7 @@ namespace XelsDesktopWalletApp.Views
         {
             ExchangeData item = (ExchangeData)((sender as Button)?.Tag as ListViewItem)?.DataContext;
             //MessageBox.Show("Item detail: " + item.excid);
-            _ = DepositNowAsync(item);
+            DepositNowAsync(item);
         }
 
 
@@ -397,7 +380,7 @@ namespace XelsDesktopWalletApp.Views
                 exchangeOrder.xels_address = this.addr;
                 exchangeOrder.deposit_amount = Convert.ToDouble(this.AmountTxt.Text);
                 exchangeOrder.deposit_symbol = this.SelectedCoin.Name;
-                exchangeOrder.user_code = this.mywallet.PrivateKey;
+                exchangeOrder.user_code = this.mywallet.Wallethash;
 
                 NewOrderAsync(exchangeOrder);
 
