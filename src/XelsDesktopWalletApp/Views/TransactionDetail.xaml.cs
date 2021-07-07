@@ -53,7 +53,7 @@ namespace XelsDesktopWalletApp.Views
             InitializeComponent();
             this.DataContext = this;
             this.walletName = walletname;
-            this.walletInfo.walletName = this.walletName;
+            this.walletInfo.WalletName = this.walletName;
             GetTransaction(transaction);
             _ = GetGeneralWalletInfoAsync(this.baseURL);
             PopulateView();
@@ -72,7 +72,7 @@ namespace XelsDesktopWalletApp.Views
 
         private async Task GetGeneralWalletInfoAsync(string path)
         {
-            string getUrl = path + $"/wallet/general-info?Name={this.walletInfo.walletName}";
+            string getUrl = path + $"/wallet/general-info?Name={this.walletInfo.WalletName}";
             var content = "";
 
             HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
@@ -83,7 +83,7 @@ namespace XelsDesktopWalletApp.Views
 
                 this.walletGeneralInfo = JsonConvert.DeserializeObject<WalletGeneralInfoModel>(content);
 
-                this.lastBlockSyncedHeight = this.walletGeneralInfo.lastBlockSyncedHeight;
+                this.lastBlockSyncedHeight = this.walletGeneralInfo.LastBlockSyncedHeight;
                 GetConfirmations(this._transaction);
             }
             else

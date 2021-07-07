@@ -67,12 +67,12 @@ namespace XelsDesktopWalletApp.Views
                 string postUrl = this.baseURL + "/Wallet/recover";
 
                 WalletRecovery recovery = new WalletRecovery();
-                recovery.name = this.name.Text;
+                recovery.Name = this.name.Text;
                 //recovery.creationDate = creationDate.SelectedDate.Value;
-                recovery.creationDate = this.creationDate.Text;
-                recovery.mnemonic = this.mnemonic.Text;
-                recovery.passphrase = this.passphrase.Text;
-                recovery.password = this.password.Password; 
+                recovery.CreationDate = this.creationDate.Text;
+                recovery.Mnemonic = this.mnemonic.Text;
+                recovery.Passphrase = this.passphrase.Text;
+                recovery.Password = this.password.Password; 
 
                 HttpResponseMessage response = await URLConfiguration.Client.PostAsJsonAsync(postUrl, recovery);
 

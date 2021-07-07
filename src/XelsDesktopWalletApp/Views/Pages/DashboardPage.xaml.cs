@@ -6,22 +6,54 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Navigation;
 using NBitcoin;
 using Newtonsoft.Json;
 using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
-using XelsDesktopWalletApp.Views.SmartContractView;
-using XelsDesktopWalletApp.Views.layout;
 
-namespace XelsDesktopWalletApp.Views
+namespace XelsDesktopWalletApp.Views.Pages
 {
     /// <summary>
-    /// Interaction logic for Dashboard.xaml
+    /// Interaction logic for DashboardPage.xaml
     /// </summary>
-    public partial class Dashboard : Window
+    public partial class DashboardPage : Page
     {
+        public DashboardPage()
+        {
+            InitializeComponent();
+
+            this.DataContext = this;
+        }
+
+        public DashboardPage(string walletname)
+        {
+            InitializeComponent();
+
+            //this.AccountComboBox.SelectedItem = this.walletName;
+            this.DataContext = this;
+
+
+            this.walletName = walletname;
+            this.walletInfo.WalletName = this.walletName;
+            GetGeneralInfoAsync();
+
+            GetWalletBalanceAsync();
+
+            GetHistoryAsync();
+
+            if (URLConfiguration.Chain != "-sidechain")// (!this.sidechainEnabled)
+            {
+                _ = GetStakingInfoAsync(this.baseURL);
+            }
+
+            if (URLConfiguration.Chain == "-sidechain")// (!this.sidechainEnabled)
+            {
+                this.buttonPowMining.Visibility = Visibility.Hidden;
+            }
+            UpdateWalletAsync();
+        }
+
         private string baseURL = URLConfiguration.BaseURL;// "http://localhost:37221/api";
 
         private WalletBalanceArray walletBalanceArray = new WalletBalanceArray();
@@ -82,60 +114,18 @@ namespace XelsDesktopWalletApp.Views
         public Money awaitingMaturity = 0;
 
         #endregion
-
-        public Dashboard()
-        {
-            InitializeComponent();
-
-            this.DataContext = this;
-        }
-        public Dashboard(string walletname)
-        {
-            InitializeComponent();
-
-            //this.AccountComboBox.SelectedItem = this.walletName;
-            this.DataContext = this;
-
-
-            this.walletName = walletname;
-            this.walletInfo.WalletName = this.walletName;
-            GetGeneralInfoAsync();
-
-            LoadLoginAsync();
-
-            GetHistoryAsync();
-
-            if (URLConfiguration.Chain != "-sidechain")// (!this.sidechainEnabled)
-            {
-                _ = GetStakingInfoAsync(this.baseURL);
-            }
-
-            if (URLConfiguration.Chain == "-sidechain")// (!this.sidechainEnabled)
-            {
-                this.buttonPowMining.Visibility = Visibility.Hidden;
-            }
-            UpdateWalletAsync();
-        }
-
-
-        public async Task LoadLoginAsync()
-        {
-            await GetWalletBalanceAsync(this.baseURL);
-        }
-
-        private async Task GetWalletBalanceAsync(string path)
+      
+        private async Task GetWalletBalanceAsync()
         {
             try
             {
-                string getUrl = path + $"/wallet/balance?WalletName={this.walletInfo.WalletName}&AccountName=account 0";
+                string getUrl = this.baseURL + $"/wallet/balance?WalletName={this.walletInfo.WalletName}&AccountName=account 0";
                 var content = "";
 
                 HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
-
+                content = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
-                    content = await response.Content.ReadAsStringAsync();
-
                     this.walletBalanceArray = JsonConvert.DeserializeObject<WalletBalanceArray>(content);
 
                     this.confirmedBalance = this.walletBalanceArray.Balances[0].AmountConfirmed;
@@ -469,13 +459,13 @@ namespace XelsDesktopWalletApp.Views
         {
             Receive receive = new Receive(this.walletName);
             receive.Show();
-            this.Close();
+            
         }
         private void sendButton_Click(object sender, RoutedEventArgs e)
         {
             Send send = new Send(this.walletName);
             send.Show();
-            this.Close();
+           
         }
 
 
@@ -484,7 +474,7 @@ namespace XelsDesktopWalletApp.Views
 
             EthImport eImp = new EthImport(this.walletName);
             eImp.Show();
-            this.Close();
+           
         }
 
         private void StopPOWMiningButton_Click(object sender, RoutedEventArgs e)
@@ -498,7 +488,7 @@ namespace XelsDesktopWalletApp.Views
 
             TransactionDetail td = new TransactionDetail(this.walletName, item);
             td.Show();
-            this.Close();
+            
         }
 
 
@@ -506,68 +496,7 @@ namespace XelsDesktopWalletApp.Views
         {
             History history = new History(this.walletName);
             history.Show();
-            this.Close();
+            
         }
-
-        private void Hide_Click(object sender, RoutedEventArgs e)
-        {
-            //MyPopup.IsOpen = false;
-        }
-
-
-        private void Hyperlink_NavigateDashboard(object sender, RequestNavigateEventArgs e)
-        {
-            Dashboard ds = new Dashboard(this.walletName);
-            ds.Show();
-            this.Close();
-        }
-        private void Hyperlink_NavigateHistory(object sender, RequestNavigateEventArgs e)
-        {
-            History hs = new History(this.walletName);
-            hs.Show();
-            this.Close();
-        }
-        private void Hyperlink_NavigateExchange(object sender, RequestNavigateEventArgs e)
-        {
-            Exchange ex = new Exchange(this.walletName);
-            ex.Show();
-            this.Close();
-        }
-        private void Hyperlink_NavigateSmartContract(object sender, RequestNavigateEventArgs e)
-        {
-
-            SmartContractMain sc = new SmartContractMain(this.walletName);
-            sc.Show();
-            this.Close();
-        }
-
-        private void Hyperlink_NavigateAddressBook(object sender, RequestNavigateEventArgs e)
-        {
-            AddressBook ex = new AddressBook(this.walletName);
-            ex.Show();
-            this.Close();
-        }
-        private void Hyperlink_NavigateLogout(object sender, RequestNavigateEventArgs e)
-        {
-            LogoutConfirm lc = new LogoutConfirm(this.walletName);
-            lc.Show();
-            this.Close();
-        }
-
-
-        private void Hyperlink_NavigateAdvanced(object sender, RequestNavigateEventArgs e)
-        {
-            Advanced adv = new Advanced(this.walletName);
-            adv.Show();
-            this.Close();
-        }
-
-        private void Hyperlink_NavigateNewLayout(object sender, RequestNavigateEventArgs e)
-        {
-            MainLayout history = new MainLayout();
-            history.Show();
-            this.Close();
-        }
-
     }
 }

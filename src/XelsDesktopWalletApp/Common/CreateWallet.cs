@@ -4,18 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
-using System.Reflection;
-using NBitcoin;
 using Nethereum.Web3.Accounts;
 using Newtonsoft.Json;
 
 using Nethereum.Web3;
-using Nethereum.ABI.FunctionEncoding.Attributes;
-using Nethereum.Contracts.CQS;
-using Nethereum.Util;
-using Nethereum.Hex.HexConvertors.Extensions;
-using Nethereum.Contracts;
-using Nethereum.Contracts.Extensions;
 using Nethereum.Contracts.ContractHandlers;
 using Xels.Bitcoin.Features.Interop.ETHClient;
 

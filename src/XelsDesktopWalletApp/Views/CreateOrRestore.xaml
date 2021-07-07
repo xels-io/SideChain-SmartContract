@@ -53,7 +53,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <Button Width="200" x:Name="restoreButton" Click="restoreButton_Click" Margin="0,0,10,0" Grid.Column="0" Content="Restore" Height="28" VerticalAlignment="Center" TextBlock.FontFamily="Microsoft YaHei Light" Background="White" Foreground="#FF53E253" BorderThickness="1,1,1,1" BorderBrush="#FF53E253" FontSize="14" Padding="5,5,5,5" >
+            <Button Width="200" x:Name="restoreWalletButton" Click="RestoreWalletButton_Click" Margin="0,0,10,0" Grid.Column="0" Content="Restore" Height="28" VerticalAlignment="Center" TextBlock.FontFamily="Microsoft YaHei Light" Background="White" Foreground="#FF53E253" BorderThickness="1,1,1,1" BorderBrush="#FF53E253" FontSize="14" Padding="5,5,5,5" >
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="5"/>

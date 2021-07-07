@@ -34,8 +34,7 @@ namespace XelsDesktopWalletApp
             this.DataContext = this;
 
             LoadWalletList();
-        }
- 
+        } 
 
         private async Task LoadWalletList()
         {

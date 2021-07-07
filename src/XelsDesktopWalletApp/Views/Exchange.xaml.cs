@@ -89,8 +89,8 @@ namespace XelsDesktopWalletApp.Views
             this.DataContext = this;
 
             this.walletName = walletname;
-            this.walletInfo.walletName = this.walletName;
-            this.mywallet = this.createWallet.GetLocalWalletDetails(this.walletInfo.walletName);
+            this.walletInfo.WalletName = this.walletName;
+            this.mywallet = this.createWallet.GetLocalWalletDetails(this.walletInfo.WalletName);
 
             LoadCreate();
             UpdateExchangeListAsync();
@@ -228,7 +228,7 @@ namespace XelsDesktopWalletApp.Views
 
         private async Task<string> GetUnusedReceiveAddressesAsync(string path)
         {
-            string getUrl = path + $"/wallet/unusedaddress?WalletName={this.walletInfo.walletName}&AccountName=account 0";
+            string getUrl = path + $"/wallet/unusedaddress?WalletName={this.walletInfo.WalletName}&AccountName=account 0";
             var content = "";
 
             HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);

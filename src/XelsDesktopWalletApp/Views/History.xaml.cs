@@ -56,13 +56,13 @@ namespace XelsDesktopWalletApp.Views
             this.NoData.Visibility = Visibility.Visible;
 
             this.walletName = walletname;
-            this.walletInfo.walletName = this.walletName;
+            this.walletInfo.WalletName = this.walletName;
             _ = GetWalletHistoryAsync(this.baseURL);
         }
 
         private async Task GetWalletHistoryAsync(string path)
         {
-            string getUrl = path + $"/wallet/history?WalletName={this.walletInfo.walletName}&AccountName=account 0";
+            string getUrl = path + $"/wallet/history?WalletName={this.walletInfo.WalletName}&AccountName=account 0";
             var content = "";
 
             HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
@@ -74,14 +74,14 @@ namespace XelsDesktopWalletApp.Views
                 
                 this.historyModelArray = JsonConvert.DeserializeObject<HistoryModelArray>(content);
 
-                if (this.historyModelArray.history != null && this.historyModelArray.history[0].transactionsHistory.Length > 0)
+                if (this.historyModelArray.History != null && this.historyModelArray.History[0].TransactionsHistory.Length > 0)
                 {
-                    int transactionsLen = this.historyModelArray.history[0].transactionsHistory.Length;
+                    int transactionsLen = this.historyModelArray.History[0].TransactionsHistory.Length;
                     this.NoData.Visibility = Visibility.Hidden;
                     this.HistoryListBinding.Visibility = Visibility.Visible;
 
                     TransactionItemModel[] historyResponse = new TransactionItemModel[transactionsLen];
-                    historyResponse = this.historyModelArray.history[0].transactionsHistory;
+                    historyResponse = this.historyModelArray.History[0].TransactionsHistory;
 
                     GetTransactionInfo(historyResponse);
                 }
@@ -105,33 +105,33 @@ namespace XelsDesktopWalletApp.Views
                 TransactionInfo transactionInfo = new TransactionInfo();
 
                 //Type
-                if (transaction.type == TransactionItemType.Send)
+                if (transaction.Type == TransactionItemType.Send)
                 {
                     transactionInfo.transactionType = "sent";
                 }
-                else if (transaction.type == TransactionItemType.Received)
+                else if (transaction.Type == TransactionItemType.Received)
                 {
                     transactionInfo.transactionType = "received";
                 }
-                else if (transaction.type == TransactionItemType.Staked)
+                else if (transaction.Type == TransactionItemType.Staked)
                 {
                     transactionInfo.transactionType = "hybrid reward";
                 }
-                else if (transaction.type == TransactionItemType.Mined)
+                else if (transaction.Type == TransactionItemType.Mined)
                 {
                     transactionInfo.transactionType = "pow reward";
                 }
 
                 //Id
-                transactionInfo.transactionId = transaction.id;
+                transactionInfo.transactionId = transaction.Id;
 
                 //Amount
-                transactionInfo.transactionAmount = transaction.amount ?? 0;
+                transactionInfo.transactionAmount = transaction.Amount ?? 0;
 
                 //Fee
-                if (transaction.fee != null)
+                if (transaction.Fee != null)
                 {
-                    transactionInfo.transactionFee = transaction.fee;
+                    transactionInfo.transactionFee = transaction.Fee;
                 }
                 else
                 {
@@ -163,7 +163,7 @@ namespace XelsDesktopWalletApp.Views
                     }
                 }
                 //ConfirmedInBlock
-                transactionInfo.transactionConfirmedInBlock = transaction.confirmedInBlock;
+                transactionInfo.transactionConfirmedInBlock = transaction.ConfirmedInBlock;
                 if (transactionInfo.transactionConfirmedInBlock != 0 || transactionInfo.transactionConfirmedInBlock != null)
                 {
                     transactionInfo.transactionTypeName = TransactionItemTypeName.Confirmed;
@@ -174,7 +174,7 @@ namespace XelsDesktopWalletApp.Views
                 }
 
                 //Timestamp
-                transactionInfo.transactionTimestamp = transaction.timestamp;
+                transactionInfo.transactionTimestamp = transaction.Timestamp;
 
                 transactionInfo.transactionType = transactionInfo.transactionType.ToUpper();
                 this.transactions.Add(transactionInfo);

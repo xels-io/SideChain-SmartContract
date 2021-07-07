@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+
+using XelsDesktopWalletApp.Views.Pages;
 
 namespace XelsDesktopWalletApp.Views.layout
 {
@@ -34,7 +27,7 @@ namespace XelsDesktopWalletApp.Views.layout
 
         private void btnDashboard_Click(object sender, RoutedEventArgs e)
         {
-            this.PageContent.Content = new Testpage();
+            this.PageContent.Content = new DashboardPage();
         }
 
         //private void ButtonOpenMenu_Click(object sender, RoutedEventArgs e)

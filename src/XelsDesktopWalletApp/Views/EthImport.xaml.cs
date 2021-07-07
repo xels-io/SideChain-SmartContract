@@ -47,7 +47,7 @@ namespace XelsDesktopWalletApp.Views
             //HidePrivateKeyTxt();
 
             this.walletName = walletname;
-            this.walletInfo.walletName = this.walletName;
+            this.walletInfo.WalletName = this.walletName;
         }
 
         public bool isValid()
