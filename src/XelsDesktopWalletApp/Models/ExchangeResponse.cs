@@ -11,8 +11,8 @@ namespace XelsDesktopWalletApp.Models
         public string xels_address { get; set; }
         public string deposit_address { get; set; }
         public string deposit_symbol { get; set; }
-        public Money xels_amount { get; set; }
-        public Money deposit_amount { get; set; }
+        public double xels_amount { get; set; }
+        public double deposit_amount { get; set; }
         public string transaction_id { get; set; }
         public int status { get; set; }
     }

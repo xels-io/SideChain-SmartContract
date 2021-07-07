@@ -357,7 +357,7 @@ namespace XelsDesktopWalletApp.Views
             ExchangeResponse dipositreturn = await GetOrderAsync(orderitem.excid);
         }
 
-        public async Task DepositAsync(string symbol, Money amount, string toAddress)
+        public async Task DepositAsync(string symbol, double amount, string toAddress)
         {
             StoredWallet mWallet = new StoredWallet();
             if (symbol == this.mywallet.Coin)
@@ -395,7 +395,7 @@ namespace XelsDesktopWalletApp.Views
 
                 ExchangeOrder exchangeOrder = new ExchangeOrder();
                 exchangeOrder.xels_address = this.addr;
-                exchangeOrder.deposit_amount = this.AmountTxt.Text;
+                exchangeOrder.deposit_amount = Convert.ToDouble(this.AmountTxt.Text);
                 exchangeOrder.deposit_symbol = this.SelectedCoin.Name;
                 exchangeOrder.user_code = this.mywallet.PrivateKey;
 
