@@ -1,14 +1,15 @@
 ﻿using System.Windows;
 using System.Windows.Input;
+
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
+using XelsDesktopWalletApp.Views.Pages;
 using XelsDesktopWalletApp.Views.SmartContractView;
 using XelsDesktopWalletApp.Views.ViewPage;
 
-using XelsDesktopWalletApp.Views.Pages;
 
 namespace XelsDesktopWalletApp.Views.layout
 {
@@ -46,7 +47,7 @@ namespace XelsDesktopWalletApp.Views.layout
             this.DataContext = this;
 
             this.walletName = walletname;
-            this.walletInfo.walletName = this.walletName;
+            this.walletInfo.WalletName = this.walletName;
             //GetGeneralInfoAsync();
             //LoadLoginAsync();
             //GetHistoryAsync();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Navigation;
 
 using System.Windows.Shapes;
@@ -107,8 +108,8 @@ namespace XelsDesktopWalletApp.Views
             this.DataContext = this;
 
             this.walletName = walletname;
-            this.walletInfo.walletName = this.walletName;
-            this.mywallet = this.createWallet.GetLocalWalletDetails(this.walletInfo.walletName);
+            this.walletInfo.WalletName = this.walletName;
+            this.mywallet = this.createWallet.GetLocalWalletDetails(this.walletInfo.WalletName);
             LoadCreateAsync();
             UpdateExchangeListAsync();
 

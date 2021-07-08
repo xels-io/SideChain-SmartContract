@@ -94,7 +94,7 @@ namespace XelsDesktopWalletApp.Views.ViewPage
             InitializeComponent();
             this.DataContext = this;
             this.walletName = walletname;
-            this.walletInfo.walletName = this.walletName;
+            this.walletInfo.WalletName = this.walletName;
 
             LoadAsync();
         }
@@ -134,7 +134,7 @@ namespace XelsDesktopWalletApp.Views.ViewPage
 
         }
 
-        private async Task<string> GetAccountAddressesAsync(string walletName)
+        private async Task<string> GetAccountAddressesAsync(string walletName = "")
         {
 
             string getUrl = this.baseURL + $"/SmartContractWallet/account-addresses?walletName={walletName}";

@@ -581,34 +581,34 @@ namespace XelsDesktopWalletApp.Views
         }
 
 
-        private void ImportAddrButton_Click(object sender, RoutedEventArgs e)
-        {
+        //private void ImportAddrButton_Click(object sender, RoutedEventArgs e)
+        //{
 
-            EthImport eImp = new EthImport(this.walletName);
-            eImp.Show();
-            this.Close();
-        }
+        //    EthImport eImp = new EthImport(this.walletName);
+        //    eImp.Show();
+        //    this.Close();
+        //}
 
-        private void StopPOWMiningButton_Click(object sender, RoutedEventArgs e)
-        {
+        //private void StopPOWMiningButton_Click(object sender, RoutedEventArgs e)
+        //{
 
-        }
+        //}
 
-        private void DetailButton_Click(object sender, RoutedEventArgs e)
-        {
-            TransactionInfo item = (TransactionInfo)((sender as Button)?.Tag as ListViewItem)?.DataContext;
+        //private void DetailButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    TransactionInfo item = (TransactionInfo)((sender as Button)?.Tag as ListViewItem)?.DataContext;
 
-            TransactionDetail td = new TransactionDetail(this.walletName, item);
-            td.Show();
-            this.Close();
-        }
+        //    TransactionDetail td = new TransactionDetail(this.walletName, item);
+        //    td.Show();
+        //    this.Close();
+        //}
 
 
-        private void GotoHistoryButton_Click(object sender, RoutedEventArgs e)
-        {
-            History history = new History(this.walletName);
-            history.Show();
-            this.Close();
-        }
+        //private void GotoHistoryButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    History history = new History(this.walletName);
+        //    history.Show();
+        //    this.Close();
+        //}
     }
 }
