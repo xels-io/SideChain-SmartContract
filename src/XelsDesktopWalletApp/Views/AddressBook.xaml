@@ -113,21 +113,58 @@
                 </ComboBox>
             </Grid>
 
-            <Grid Height="541">
-                <Label Content="Looks like you haven't any address in your address book yet." FontFamily="Microsoft YaHei" 
-                       Margin="420,16,0,497" HorizontalAlignment="Left" />
+            <Grid Height="541" Background="WhiteSmoke" >
 
-                <TextBlock Background="White" Margin="1026,20,0,497" HorizontalAlignment="Left"  FontFamily="Microsoft YaHei" 
-                           Width="135" Foreground="#FF53E253" FontSize="13">
-                    <Hyperlink  NavigateUri="http://www.google.com" RequestNavigate="Hyperlink_NavigateAddAddress" TextDecorations="">
-                        <Hyperlink.Style>
-                            <Style TargetType="{x:Type Hyperlink}"
-                                    BasedOn="{StaticResource {x:Type Hyperlink}}">
-                                <Setter Property="Foreground" Value="#FF53E253"/>
-                            </Style>
-                        </Hyperlink.Style><Run Text="+ Add New Address"/>
-                    </Hyperlink>
+
+                <TextBlock Background="WhiteSmoke" Margin="1032,22,0,495" HorizontalAlignment="Left" 
+                           Width="192" Foreground="#FF53E253" FontSize="13">
+                    <Button  x:Name="AddAddress" Click="AddAddress_Click" Padding="2" 
+                                Background="WhiteSmoke" BorderThickness="0" Foreground="#FF53E253" 
+                                Content="+ Add New Address" 
+                                 HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Microsoft YaHei Light"  >
+                            <Button.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="5"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
                 </TextBlock>
+
+
+                <Grid x:Name="NoData" Margin="415,18,445,495">
+                    <Label Content="Looks like you haven't any address in your address book yet." FontFamily="Microsoft YaHei" 
+                       Margin="420,16,0,497" HorizontalAlignment="Left" />
+                </Grid>
+
+
+
+
+                <Grid Margin="0,60,0,0" x:Name="ListData">
+                    <DataGrid x:Name="AddressList" AutoGenerateColumns="False" HorizontalAlignment="Center" VerticalAlignment="Top" 
+                              Width="900" FontSize="12" BorderThickness="1" BorderBrush="Gray" RowHeight="30"
+                              Background="LightGray" >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Path=label}" IsReadOnly="True" Width="200" />
+                            <DataGridTextColumn Binding="{Binding Path=address}" IsReadOnly="True" Width="550"  />
+                            <DataGridTemplateColumn Width="150">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock FontWeight="Bold"  FontFamily="Microsoft YaHei Light" Margin="1 0 0 0" VerticalAlignment="Center">
+                                            <InlineUIContainer>
+                                                <Button Tag="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListViewItem}}}"  
+                                                    Content="Send" Click="SendButton_Click" Padding="5 0 5 0" />
+                                            </InlineUIContainer>
+                                            <InlineUIContainer>
+                                                <Button Tag="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListViewItem}}}"  
+                                                    Content="X" Click="DeleteButton_Click" Padding="4 0 4 0" />
+                                            </InlineUIContainer>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
 
                 <Popup Name="NewAddressPopup" Placement="Center"  HorizontalOffset="-100" VerticalOffset="-100" AllowsTransparency="False">
                     <Grid Width="400" Height="350" >

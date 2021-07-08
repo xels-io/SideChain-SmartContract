@@ -56,8 +56,31 @@ namespace XelsDesktopWalletApp.Views
 
 
             this.walletName = walletname;
-            LoadAddresses();
+            //LoadAddresses();
 
+            AddAddressManually();
+
+        }
+
+        public void AddAddressManually()
+        {
+            this.addresses = new List<AddressLabel>() {
+                    new AddressLabel { label = "Towsif", address = "Abc/towsif" },
+                    new AddressLabel { label = "Shuvo", address = "Abc/shuvo" },
+                    new AddressLabel { label = "Mts", address = "Abc/mts" }
+                };
+            this.AddressList.ItemsSource = this.addresses;
+
+            if (this.addresses.Count > 0)
+            {
+                this.NoData.Visibility = Visibility.Hidden;
+                this.ListData.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                this.ListData.Visibility = Visibility.Hidden;
+                this.NoData.Visibility = Visibility.Visible;
+            }
         }
 
         public async void LoadAddresses()
@@ -164,12 +187,8 @@ namespace XelsDesktopWalletApp.Views
         }
 
 
-        private void Hyperlink_NavigateAddAddress(object sender, RequestNavigateEventArgs e)
+        private void AddAddress_Click(object sender, RoutedEventArgs e)
         {
-            //AddressBookAddNew addaddr = new AddressBookAddNew(this.walletName);
-            //addaddr.Show();
-            //this.Close();
-
             this.NewAddressPopup.IsOpen = true;
         }
 
@@ -188,9 +207,16 @@ namespace XelsDesktopWalletApp.Views
             this.NewAddressPopup.IsOpen = false;
         }
 
+        private void SendButton_Click(object sender, RoutedEventArgs e)
+        {
 
+        }
+
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
         
-
     }
 
 }
