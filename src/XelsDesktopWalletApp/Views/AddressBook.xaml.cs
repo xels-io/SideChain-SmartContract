@@ -166,10 +166,31 @@ namespace XelsDesktopWalletApp.Views
 
         private void Hyperlink_NavigateAddAddress(object sender, RequestNavigateEventArgs e)
         {
-            AddressBookAddNew addaddr = new AddressBookAddNew(this.walletName);
-            addaddr.Show();
-            this.Close();
+            //AddressBookAddNew addaddr = new AddressBookAddNew(this.walletName);
+            //addaddr.Show();
+            //this.Close();
+
+            this.NewAddressPopup.IsOpen = true;
         }
 
+        private void HidePopup_Click(object sender, RoutedEventArgs e)
+        {
+            this.NewAddressPopup.IsOpen = false;
+        }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.NewAddressPopup.IsOpen = false;
+        }
+
+        private void Create_Click(object sender, RoutedEventArgs e)
+        {
+            this.NewAddressPopup.IsOpen = false;
+        }
+
+
+        
+
     }
+
 }

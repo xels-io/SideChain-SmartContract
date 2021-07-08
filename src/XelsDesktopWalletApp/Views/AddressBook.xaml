@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:XelsDesktopWalletApp.Views"
         mc:Ignorable="d"
-        Title="AddressBook" Height="450" Width="800">
+        Title="AddressBook" Height="632" Width="1238">
     <Border Padding="10">
         <StackPanel>
             <Grid Background="LimeGreen">
@@ -112,11 +112,13 @@
                     </ComboBoxItem>
                 </ComboBox>
             </Grid>
-            
-            <Grid Height="364">
-                <Label Content="Looks like you haven't any address in your address book yet." FontFamily="Microsoft YaHei Light" Margin="201,0,242,339" />
-                
-                <TextBlock Background="White" Margin="617,25,0,322" HorizontalAlignment="Left"  FontFamily="Microsoft YaHei" Width="114" Foreground="#FF53E253" FontSize="11">
+
+            <Grid Height="541">
+                <Label Content="Looks like you haven't any address in your address book yet." FontFamily="Microsoft YaHei" 
+                       Margin="420,16,0,497" HorizontalAlignment="Left" />
+
+                <TextBlock Background="White" Margin="1026,20,0,497" HorizontalAlignment="Left"  FontFamily="Microsoft YaHei" 
+                           Width="135" Foreground="#FF53E253" FontSize="13">
                     <Hyperlink  NavigateUri="http://www.google.com" RequestNavigate="Hyperlink_NavigateAddAddress" TextDecorations="">
                         <Hyperlink.Style>
                             <Style TargetType="{x:Type Hyperlink}"
@@ -126,6 +128,72 @@
                         </Hyperlink.Style><Run Text="+ Add New Address"/>
                     </Hyperlink>
                 </TextBlock>
+
+                <Popup Name="NewAddressPopup" Placement="Center"  HorizontalOffset="-100" VerticalOffset="-100" AllowsTransparency="False">
+                    <Grid Width="400" Height="350" >
+                        <Rectangle Width="400" Height="350" Fill="WhiteSmoke"  />
+                        <Button Click="HidePopup_Click" Margin="20" Height="20" Width="20" 
+                                VerticalAlignment="Top" HorizontalAlignment="Right" Content="X" >
+
+                            <Button.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="50"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+
+
+
+                        <Label Content="New Address" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="30" 
+                               FontFamily="Microsoft YaHei Light" Margin="20,30,0,0" />
+
+                        <Label  x:Name="Label" Content="Label"
+                          HorizontalAlignment="Left" Margin="20,100,0,0"
+                           VerticalAlignment="Top" 
+                            FontFamily="Microsoft YaHei Light" FontSize="14" />
+                        <TextBox  x:Name="LabelTxt"
+                          HorizontalAlignment="Left"  Margin="20,130,20,0"
+                          TextWrapping="Wrap" VerticalAlignment="Top" Width="350" BorderBrush="#FFC9D6C9" 
+                          BorderThickness="2" FontFamily="Microsoft YaHei Light" FontSize="12" Height="30" Padding="4" />
+                        <Label  x:Name="LabelMessage" Content="Your label must be 2-40 characters long."
+                          HorizontalAlignment="Left" Margin="20,155,0,0"
+                           VerticalAlignment="Top" 
+                            FontFamily="Microsoft YaHei Light" FontSize="10" />
+
+                        <Label  x:Name="Address" Content="Address"
+                          HorizontalAlignment="Left" Margin="20,180,0,0"
+                           VerticalAlignment="Top" 
+                            FontFamily="Microsoft YaHei Light" FontSize="14" />
+                        <TextBox  x:Name="AddressTxt"
+                          HorizontalAlignment="Left"  Margin="20,210,20,0"
+                          TextWrapping="Wrap" VerticalAlignment="Top" Width="350" BorderBrush="#FFC9D6C9" 
+                          BorderThickness="2" FontFamily="Microsoft YaHei Light" FontSize="12" Height="30" Padding="4" />
+
+
+                        <Button  x:Name="CancelButton" Click="Cancel_Click" Padding="2" 
+                                Background="White" BorderThickness="1,1,1,1" Foreground="#FF53E253" 
+                                Content="Cancel" Margin="20,270,0,0" 
+                                 HorizontalAlignment="Left" VerticalAlignment="Top" 
+                                Height="30" Width="90" FontFamily="Microsoft YaHei Light" BorderBrush="#FF53E253" >
+                            <Button.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="5"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+
+                        <Button x:Name="sendButton" Click="Create_Click"  Content="Create" Padding="2"  HorizontalAlignment="Center" VerticalAlignment="Top" 
+                                Background="#FF53E253" FontFamily="Microsoft YaHei Light" BorderThickness="1" BorderBrush="#FF53E253"
+                                Foreground="White" Margin="120,270,30,0"  Height="30" Width="250" >
+                            <Button.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="5"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+
+                    </Grid>
+                </Popup>
             </Grid>
 
         </StackPanel>
