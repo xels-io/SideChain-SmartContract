@@ -18,7 +18,8 @@ using Nethereum.Contracts;
 using Nethereum.Contracts.Extensions;
 using Nethereum.Contracts.ContractHandlers;
 using Xels.Bitcoin.Features.Interop.ETHClient;
-
+using Nethereum.RPC.Eth.DTOs;
+using XelsDesktopWalletApp.Models;
 
 namespace XelsDesktopWalletApp.Common
 {
@@ -246,6 +247,56 @@ namespace XelsDesktopWalletApp.Common
 
                 return wallet;
             }
+        }
+
+
+
+
+
+        public async Task<TransactionReceipt> TransferAsync(StoredWallet sWallet, ExchangeResponse exchangeResponse, double amount)
+        {
+            try
+            {
+                Wallet wallet = new Wallet();
+                var account = new Account(sWallet.PrivateKey);
+
+                var url = "https://mainnet.infura.io/v3/15851454d7644cff846b1b8701403647";
+                var web3 = new Web3(account, url);
+
+                string contractAddress = "";
+
+                if (sWallet.Coin == "SELS")
+                {
+                    contractAddress = "0x0E74264EAd02B3a9768Dc4F1A509fA7F49952df6";
+                }
+                else if (sWallet.Coin == "BELS")
+                {
+                    contractAddress = "0x6fcf304f636d24ca102ab6e4e4e089115c04ebae";
+                }
+
+                var transferHandler = web3.Eth.GetContractTransactionHandler<TransferFunction>();
+                BigInteger amt = (BigInteger)amount; 
+                var transfer = new TransferFunction()
+                {
+                    To = exchangeResponse.deposit_address,
+                    TokenAmount = (BigInteger)exchangeResponse.xels_amount
+                };
+
+                transfer.AmountToSend = Web3.Convert.ToWei(exchangeResponse.deposit_amount);
+                //transfer.GasPrice = Web3.Convert.ToWei(25, UnitConversion.EthUnit.Gwei);
+                //var estimate = await transferHandler.EstimateGasAsync(contractAddress, transfer);
+                //transfer.Gas = estimate.Value;
+
+                var transactionReceipt = await transferHandler.SendRequestAndWaitForReceiptAsync(contractAddress, transfer);
+
+                return transactionReceipt;
+            }
+
+            catch (Exception e)
+            {
+                throw;
+            }
+
         }
 
 

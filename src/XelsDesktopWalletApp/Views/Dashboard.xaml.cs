@@ -15,6 +15,14 @@ using XelsDesktopWalletApp.Models.CommonModels;
 using XelsDesktopWalletApp.Views.SmartContractView;
 using XelsDesktopWalletApp.Views.layout;
 
+using Nethereum.ABI.FunctionEncoding.Attributes;
+using Nethereum.Contracts.CQS;
+using Nethereum.Util;
+using Nethereum.Web3.Accounts;
+using Nethereum.Hex.HexConvertors.Extensions;
+using Nethereum.Contracts;
+using Nethereum.Contracts.Extensions;
+
 namespace XelsDesktopWalletApp.Views
 {
     /// <summary>
@@ -430,7 +438,7 @@ namespace XelsDesktopWalletApp.Views
             }
         }
 
-        private async void UpdateWalletAsync()
+        private async Task UpdateWalletAsync()
         {
             //this.createWallet.Initialize("SELS");
             //this.createWallet.Initialize("BELS");
