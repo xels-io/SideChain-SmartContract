@@ -57,7 +57,6 @@ namespace XelsDesktopWalletApp.Views
 
             this.walletName = walletname;
             //LoadAddresses();
-
             AddAddressManually();
 
         }
