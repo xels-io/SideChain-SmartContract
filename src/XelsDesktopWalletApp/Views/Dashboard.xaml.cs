@@ -532,10 +532,14 @@ namespace XelsDesktopWalletApp.Views
 
         private void Hyperlink_NavigateNewLayout(object sender, RequestNavigateEventArgs e)
         {
-            MainLayout history = new MainLayout();
-            history.Show();
+            //MainLayout history = new MainLayout();
+            //history.Show();
+            //this.Close();
+            MainLayout mainLayout = new MainLayout(this.walletName);
+            mainLayout.Show();
             this.Close();
         }
+
 
         private void ImportAddrButton_Click(object sender, RoutedEventArgs e)
         {
