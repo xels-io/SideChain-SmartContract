@@ -67,7 +67,6 @@
 
   <ItemGroup>
     <Folder Include="File\" />
-    <Folder Include="Token\" />
   </ItemGroup>
 
 </Project>

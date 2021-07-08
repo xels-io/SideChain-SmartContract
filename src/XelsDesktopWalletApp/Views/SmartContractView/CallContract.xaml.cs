@@ -1,17 +1,23 @@
 ﻿using System;
-using System.Globalization;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
-
-using Newtonsoft.Json;
-
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 using XelsDesktopWalletApp.Models;
-using XelsDesktopWalletApp.Models.CommonModels;
 using XelsDesktopWalletApp.Models.SmartContractModels;
+using XelsDesktopWalletApp.Models.CommonModels;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace XelsDesktopWalletApp.Views.SmartContractView
 {
@@ -74,10 +80,10 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
             this.txtBalance.Text = addressBalance;
            
         }
-        private void Rectangle_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            this.Visibility = Visibility.Collapsed;
-        }
+        //private void Rectangle_MouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    this.Visibility = Visibility.Collapsed;
+        //}
 
         private void btn_CallSubmit_Click(object sender, RoutedEventArgs e)
         {
@@ -218,9 +224,9 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
         }
 
 
-        private void btn_Cancel_Click(object sender, RoutedEventArgs e)
-        {
-            this.Visibility = Visibility.Collapsed;
-        }
+        //private void btn_Cancel_Click(object sender, RoutedEventArgs e)
+        //{
+        //    this.Visibility = Visibility.Collapsed;
+        //}
     }
 }
