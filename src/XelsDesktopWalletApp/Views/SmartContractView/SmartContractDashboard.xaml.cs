@@ -56,7 +56,7 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
             InitializeComponent();
             this.DataContext = this;
             this.walletName = walletname;
-            this.walletInfo.walletName = this.walletName;
+            this.walletInfo.WalletName = this.walletName;
             this.lab_ActiveAddress.Content = selectedAddress;
             GLOBALS.Address = selectedAddress;
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

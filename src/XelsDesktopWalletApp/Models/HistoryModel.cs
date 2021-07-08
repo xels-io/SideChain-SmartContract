@@ -7,15 +7,15 @@ namespace XelsDesktopWalletApp.Models
 {
     public class HistoryModel
     {
-        public string accountName { get; set; }
-        public string accountHdPath { get; set; }
-        public CoinType coinType { get; set; }
+        public string AccountName { get; set; }
+        public string AccountHdPath { get; set; }
+        public CoinType CoinType { get; set; }
         //public List<TransactionItemModel> transactionsHistory { get; set; }
-        public TransactionItemModel[] transactionsHistory { get; set; }
+        public TransactionItemModel[] TransactionsHistory { get; set; }
     }
 
     public class HistoryModelArray
     {
-        public HistoryModel[] history { get; set; }
+        public HistoryModel[] History { get; set; }
     }
 }

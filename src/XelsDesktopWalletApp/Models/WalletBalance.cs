@@ -9,20 +9,20 @@ namespace XelsDesktopWalletApp.Models
 {
     public class WalletBalance
     {
-        public string accountName { get; set; }
-        public string accountHdPath { get; set; }
+        public string AccountName { get; set; }
+        public string AccountHdPath { get; set; }
 
-        public CoinType coinType { get; set; }
+        public CoinType CoinType { get; set; }
 
-        public Money amountConfirmed { get; set; }
-        public Money amountUnconfirmed { get; set; }
-        public Money spendableAmount { get; set; }
-        public IEnumerable<AddressModel> addresses { get; set; }
+        public Money AmountConfirmed { get; set; }
+        public Money AmountUnconfirmed { get; set; }
+        public Money SpendableAmount { get; set; }
+        public IEnumerable<AddressModel> Addresses { get; set; }
 
     }
 
     public class WalletBalanceArray
     {
-        public WalletBalance[] balances { get; set; }
+        public WalletBalance[] Balances { get; set; }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Navigation;
 
+using XelsDesktopWalletApp.Views.Pages;
+
 namespace XelsDesktopWalletApp.Views
 {
     /// <summary>
@@ -13,8 +15,9 @@ namespace XelsDesktopWalletApp.Views
             InitializeComponent();
         }
 
-        private void restoreButton_Click(object sender, RoutedEventArgs e)
+        private void RestoreWalletButton_Click(object sender, RoutedEventArgs e)
         {
+            //this.PageContent.Content = new WalletRestorePage();
             Restore restore = new Restore();
             restore.Show();
             this.Close();

@@ -6,6 +6,6 @@ namespace XelsDesktopWalletApp.Models
 {
     public class WalletInfo
     {
-        public string walletName { get; set; }
+        public string WalletName { get; set; }
     }
 }

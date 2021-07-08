@@ -23,17 +23,17 @@ namespace XelsDesktopWalletApp.Views
         public Create()
         {
             InitializeComponent();
-            LoadCreate();
+            LoadMnemonics();
         }
 
-        public async void LoadCreate()
+        public async void LoadMnemonics()
         {
-            this._mnemonic = await GetAPIAsync(this.baseURL);
+            this._mnemonic = await GetMnemonics(this.baseURL);
         }
         
-        public bool isValid()
+        public bool IsValid()
         {
-            if (this.name.Text == string.Empty)
+            if (string.IsNullOrWhiteSpace(this.name.Text))
             {
                 MessageBox.Show("Name is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
                 this.name.Focus();
@@ -55,14 +55,14 @@ namespace XelsDesktopWalletApp.Views
                 return false;
             }
 
-            if (this.password.Password == "")
+            if (string.IsNullOrWhiteSpace(this.password.Password))
             {
                 MessageBox.Show("Password field is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
                 this.password.Focus();
                 return false;
             }
 
-            if (this.repassword.Password == "")
+            if (string.IsNullOrWhiteSpace(this.repassword.Password))
             {
                 MessageBox.Show("Confirm password field is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
                 this.repassword.Focus();
@@ -92,7 +92,7 @@ namespace XelsDesktopWalletApp.Views
         {
             if (this.password.Password == this.repassword.Password)
             {
-                this.canProceedPass = true;
+                canProceedPass = true;
             }
             else
             {
@@ -115,7 +115,7 @@ namespace XelsDesktopWalletApp.Views
             this.Close();
         }
 
-        private async Task<string> GetAPIAsync(string path)
+        private async Task<string> GetMnemonics(string path)
         {
             string getUrl = path + "/wallet/mnemonic?language=English&wordCount=12";
             var content = "";
@@ -132,9 +132,9 @@ namespace XelsDesktopWalletApp.Views
             return content;
         }
 
-        private void createButton_Click(object sender, RoutedEventArgs e)
+        private void CreateButton_Click(object sender, RoutedEventArgs e)
         {
-            if (isValid())
+            if (IsValid())
             {
                 CheckPassInput();
 
@@ -142,10 +142,10 @@ namespace XelsDesktopWalletApp.Views
                 {
 
                     WalletCreation creation = new WalletCreation();
-                    creation.name = this.name.Text;
-                    creation.password = this.password.Password;
-                    creation.passphrase = this.passphrase.Text;
-                    creation.mnemonic = this._mnemonic;
+                    creation.Name = this.name.Text;
+                    creation.Password = this.password.Password;
+                    creation.Passphrase = this.passphrase.Text;
+                    creation.Mnemonic = this._mnemonic;
 
                     CreateShowMnemonic csm = new CreateShowMnemonic(creation);
                     csm.Show();

@@ -76,7 +76,7 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
 
             this.DataContext = this;
             this.walletName = walletname;
-            this.walletInfo.walletName = this.walletName;
+            this.walletInfo.WalletName = this.walletName;
 
 
             this.rowTokenContractAddress.Height = new GridLength(0);

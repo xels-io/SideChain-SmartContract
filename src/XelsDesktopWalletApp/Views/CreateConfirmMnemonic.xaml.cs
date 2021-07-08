@@ -41,12 +41,12 @@ namespace XelsDesktopWalletApp.Views
             RandomSelect();
         }
 
-        private void InitializeWalletCreationModel(WalletCreation cr)
+        private void InitializeWalletCreationModel(WalletCreation CreateWallet)
         {
-            this._walletcreateconfirm.name = cr.name;
-            this._walletcreateconfirm.passphrase = cr.passphrase;
-            this._walletcreateconfirm.password = cr.password;
-            this._walletcreateconfirm.mnemonic = cr.mnemonic;
+            this._walletcreateconfirm.Name = CreateWallet.Name;
+            this._walletcreateconfirm.Passphrase = CreateWallet.Passphrase;
+            this._walletcreateconfirm.Password = CreateWallet.Password;
+            this._walletcreateconfirm.Mnemonic = CreateWallet.Mnemonic;
         }
 
         #region field property 
@@ -89,8 +89,8 @@ namespace XelsDesktopWalletApp.Views
         {
             // Initialize array to check
 
-            string[] rowwords = this._walletcreateconfirm.mnemonic.Split('\"');
-            this._walletcreateconfirm.mnemonic = rowwords[1];
+            string[] rowwords = this._walletcreateconfirm.Mnemonic.Split('\"');
+            this._walletcreateconfirm.Mnemonic = rowwords[1];
             this.words = rowwords[1].Split(' ');
 
             //// Random number select
@@ -110,9 +110,9 @@ namespace XelsDesktopWalletApp.Views
             this.valuetwo = "Word number " + sInd;
             this.valuethree = "Word number " + tInd;
 
-            this.wordone.Text = this.valueone;
-            this.wordtwo.Text = this.valuetwo;
-            this.wordthree.Text = this.valuethree;
+            this.wordone.Content = this.valueone;
+            this.wordtwo.Content = this.valuetwo;
+            this.wordthree.Content = this.valuethree;
 
         }
 
@@ -123,7 +123,7 @@ namespace XelsDesktopWalletApp.Views
             string thirdword = this.words[this.randomidx[2]];
 
             // Check for validation
-            if (this._walletcreateconfirm.mnemonic != "" && this.word1.Text == firstword &&
+            if (this._walletcreateconfirm.Mnemonic != "" && this.word1.Text == firstword &&
                 this.word2.Text == secondword && this.word3.Text == thirdword)
             {
                 this.canPassMnemonic = true;
@@ -134,14 +134,14 @@ namespace XelsDesktopWalletApp.Views
             }
         }
 
-        private void cancelButton_Click(object sender, RoutedEventArgs e)
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             Create cr = new Create();
             cr.Show();
             this.Close();
         }
 
-        private async void createButton_Click(object sender, RoutedEventArgs e)
+        private async void CreateButton_Click(object sender, RoutedEventArgs e)
         {
             CheckMnemonic();
 
@@ -153,7 +153,7 @@ namespace XelsDesktopWalletApp.Views
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Successfully created wallet with Name: " + this._walletcreateconfirm.name);
+                    MessageBox.Show($"Successfully created wallet with Name: {this._walletcreateconfirm.Name}");
 
                     MainWindow mw = new MainWindow();
                     mw.Show();
@@ -161,7 +161,7 @@ namespace XelsDesktopWalletApp.Views
                 }
                 else
                 {
-                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                    MessageBox.Show($"Error Code{ response.StatusCode } : Message - { response.ReasonPhrase}");
                 }
             }
         }

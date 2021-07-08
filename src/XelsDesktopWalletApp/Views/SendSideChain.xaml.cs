@@ -63,7 +63,7 @@ namespace XelsDesktopWalletApp.Views
             this.DataContext = this;
 
             this.walletName = walletname;
-            this.walletInfo.walletName = this.walletName;
+            this.walletInfo.WalletName = this.walletName;
             LoadCreateAsync();
         }
 
@@ -226,7 +226,7 @@ namespace XelsDesktopWalletApp.Views
 
         private async Task GetWalletBalanceAsync(string path)
         {
-            string getUrl = path + $"/wallet/balance?WalletName={this.walletInfo.walletName}&AccountName=account 0";
+            string getUrl = path + $"/wallet/balance?WalletName={this.walletInfo.WalletName}&AccountName=account 0";
             var content = "";
 
             HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
@@ -237,9 +237,9 @@ namespace XelsDesktopWalletApp.Views
 
                 this.balances = JsonConvert.DeserializeObject<WalletBalanceArray>(content);
 
-                this.totalBalance = this.balances.balances[0].amountConfirmed + this.balances.balances[0].amountUnconfirmed;
-                this.cointype = this.balances.balances[0].coinType;
-                this.spendableBalance = this.balances.balances[0].spendableAmount;
+                this.totalBalance = this.balances.Balances[0].AmountConfirmed + this.balances.Balances[0].AmountUnconfirmed;
+                this.cointype = this.balances.Balances[0].CoinType;
+                this.spendableBalance = this.balances.Balances[0].SpendableAmount;
 
                 this.textAvailableCoin.Content = this.totalBalance.ToString();
                 this.textCoinType.Content = this.cointype.ToString();
@@ -258,7 +258,7 @@ namespace XelsDesktopWalletApp.Views
             var content = "";
 
             MaximumBalance maximumBalance = new MaximumBalance();
-            maximumBalance.WalletName = this.walletInfo.walletName;
+            maximumBalance.WalletName = this.walletInfo.WalletName;
             maximumBalance.AccountName = "account 0";
             maximumBalance.FeeType = "medium";
             maximumBalance.AllowUnconfirmed = true;
@@ -300,7 +300,7 @@ namespace XelsDesktopWalletApp.Views
                 var content = "";
 
                 FeeEstimationSideChain feeEstimation = new FeeEstimationSideChain();
-                feeEstimation.walletName = this.walletInfo.walletName;
+                feeEstimation.walletName = this.walletInfo.WalletName;
                 feeEstimation.accountName = "account 0";
                 feeEstimation.recipients = recipients;
                 feeEstimation.opreturndata = this.textSidechainDestinationAddress.Text.Trim();
@@ -332,7 +332,7 @@ namespace XelsDesktopWalletApp.Views
             string postUrl = this.baseURL + $"/wallet/build-transaction";
             var content = "";
 
-            this.transactionBuilding.walletName = this.walletInfo.walletName;
+            this.transactionBuilding.walletName = this.walletInfo.WalletName;
             this.transactionBuilding.accountName = "account 0";
             this.transactionBuilding.password = this.password.Password;
             this.transactionBuilding.recipients = recipients;
@@ -376,7 +376,7 @@ namespace XelsDesktopWalletApp.Views
 
                 if (response.IsSuccessStatusCode)
                 {
-                   
+
                     SendConfirmationSC sendConfirmationSc = new SendConfirmationSC();
                     sendConfirmationSc.transaction = this.transactionBuilding;
                     sendConfirmationSc.transactionFee = this.estimatedSidechainFee;
@@ -389,7 +389,7 @@ namespace XelsDesktopWalletApp.Views
                 }
                 else
                 {
-                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                    MessageBox.Show($"Error Code{ response.StatusCode } : Message - { response.ReasonPhrase}");
                 }
             }
         }

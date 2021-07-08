@@ -6,9 +6,9 @@ namespace XelsDesktopWalletApp.Models
 {
     public class WalletCreation
     {
-        public string name { get; set; }
-        public string password { get; set; }
-        public string passphrase { get; set; }
-        public string mnemonic { get; set; }
+        public string Name { get; set; }
+        public string Password { get; set; }
+        public string Passphrase { get; set; }
+        public string Mnemonic { get; set; }
     }
 }
