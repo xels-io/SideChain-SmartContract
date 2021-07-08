@@ -9,6 +9,6 @@
       Title="RestoreWalletPage">
 
     <Grid>
-        
+        <Label> restore wallet </Label>
     </Grid>
 </Page>

@@ -70,7 +70,13 @@
                 </Button>
 
             </Grid>
+        <Grid Background="#FFCFCFCF">
+            <ScrollViewer>
+                <Frame x:Name="PageContent" />
 
-        </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </StackPanel>
+    
     <!--</Border>-->
 </Window>

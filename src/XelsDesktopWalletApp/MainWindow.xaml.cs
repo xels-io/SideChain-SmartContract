@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 using XelsDesktopWalletApp.Views;
+using XelsDesktopWalletApp.Views.layout;
 
 namespace XelsDesktopWalletApp
 {
@@ -96,8 +97,13 @@ namespace XelsDesktopWalletApp
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Dashboard db = new Dashboard(this.UserWallet.Name);//this.SelectedWallet.Name
-                    db.Show();
+                    //Dashboard db = new Dashboard(this.UserWallet.Name);//this.SelectedWallet.Name
+                    //db.Show();
+                    //this.Close();
+
+
+                    MainLayout mainLayout = new MainLayout(this.UserWallet.Name);
+                    mainLayout.Show();
                     this.Close();
                 }
                 else
