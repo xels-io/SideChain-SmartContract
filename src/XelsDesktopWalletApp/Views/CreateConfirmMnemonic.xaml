@@ -5,34 +5,80 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:XelsDesktopWalletApp.Views"
         mc:Ignorable="d"
-        Title="CreateConfirmMnemonic" Height="581" Width="818">
-    <Border Padding="10">
+        Title="CreateConfirmMnemonic" Height="600" Width="1100">
+     
         <StackPanel>
-            <Grid Background="LimeGreen">
-                <Image Width="100" Source="/Assets/Images/home-xels-logo-01.png" />
 
+            <StackPanel>
+
+                <Grid Background="LimeGreen" Margin="10" Height="100">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Border HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" Height="70" Background="Transparent" BorderBrush="WhiteSmoke" 
+              BorderThickness="3" Margin="-2" CornerRadius="10" Padding="5">
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="0" BlurRadius="10" Opacity="50"/>
+                        </Border.Effect>
+                        <Image Source="/Assets/Images/home-xels-logo-01.png" >
+
+                        </Image>
+                    </Border>
+                </Grid>
+            </StackPanel>
+
+        <Border>
+            <Label Margin="0,10,0,0" Content="Confirm words" HorizontalAlignment="Center"  FontSize="28" FontWeight="DemiBold" />
+        </Border>
+
+        <Border Margin="250 2.5">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Name="wordone" Margin="5 0" Content="{Binding ElementName=Valueone, Path=wordone}"/>
+                
+                <TextBox Grid.Row="1" Name="word1" Padding="5" Margin="0 5" AutomationProperties.HelpText="Enter a wallet name." />
             </Grid>
-            <TextBlock Background="White" Margin="0 10 10 0" HorizontalAlignment="Center">
+        </Border>
 
-            </TextBlock>
-            <TextBlock Margin="0,10,0,0" Width="187" Height="78" Text="Confirm words" HorizontalAlignment="Center"  FontSize="28" FontFamily="Microsoft YaHei Light" />
-            <TextBlock Name="wordone" Margin="160,0,0,0" Text="{Binding ElementName=Valueone, Path=wordone}" Width="608" FontFamily="Microsoft YaHei Light" Height="18" />
-            <TextBox Name="word1" Width="450"  Padding="5,5,5,5" AutomationProperties.HelpText="Enter a wallet name." TextBlock.FontFamily="Microsoft YaHei Light" />
+        <Border Margin="250 2.5">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-            <TextBlock Name="wordtwo" Margin="160,10,0,0" Text="{Binding ElementName=Valuetwo, Path=wordtwo}" Width="606" FontFamily="Microsoft YaHei Light" Height="19" />
-            <TextBox Name="word2" Width="450" Padding="5,5,5,5" TextBlock.FontFamily="Microsoft YaHei Light" />
+                <Label Grid.Row="0" Name="wordtwo" Margin="5 0" Content="{Binding ElementName=Valuetwo, Path=wordtwo}"  />
+                <TextBox Grid.Row="1" Name="word2" Margin="0 5" Padding="5" />
+            </Grid>
+        </Border>
 
-            <TextBlock Name="wordthree" Margin="160,10,0,0"  Text="{Binding ElementName=Valuethree, Path=wordthree}" Width="608" FontFamily="Microsoft YaHei Light" Height="18" />
-            <TextBox Name="word3" Width="450" Padding="5,5,5,5" TextBlock.FontFamily="Microsoft YaHei Light" />
+        <Border Margin="250 2.5">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-            <Grid Width="420" Margin="0,20,0,0">
+                <Label Grid.Row="0" Name="wordthree" Margin="5 0"  Content="{Binding ElementName=Valuethree, Path=wordthree}"  />
+                <TextBox Grid.Row="1" Name="word3" Margin="0 5" Padding="5"  />
+            </Grid>
+        </Border>
+
+        <Border Margin="250 10">
+
+            <Grid >
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="6*" />
                 </Grid.ColumnDefinitions>
 
-                <Button x:Name="cancelButton" Click="cancelButton_Click" Margin="-14,0,10,0" Grid.Column="0" Content="back" Height="29" VerticalAlignment="Center" Padding="5,5,5,5" TextBlock.FontFamily="Microsoft YaHei Light" Background="White" Foreground="#FF53E253" BorderThickness="1,1,1,1" BorderBrush="#FF53E253" FontSize="14" RenderTransformOrigin="0.331,0.533">
+                <Button x:Name="cancelButton" Click="CancelButton_Click" Grid.Column="0" Content="back" Padding="5" Margin="5 0" TextBlock.FontFamily="Microsoft YaHei Light" Background="White" Foreground="#FF53E253" BorderThickness="1" BorderBrush="#FF53E253" FontSize="14" RenderTransformOrigin="0.331,0.533">
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="5"/>
@@ -40,7 +86,7 @@
                     </Button.Resources>
                 </Button>
 
-                <Button Width="370" HorizontalAlignment="Left" x:Name="createButton" Click="createButton_Click" Grid.Column="1" Content="Confirm" Padding="5,5,5,5" TextBlock.FontFamily="Microsoft YaHei Light" Background="#FF53E253" Foreground="White" BorderThickness="0,0,0,0" Margin="0,0,-15,0" FontSize="14">
+                <Button x:Name="createButton" Click="CreateButton_Click" Grid.Column="1" Content="Confirm" Padding="5" Margin="5 0" TextBlock.FontFamily="Microsoft YaHei Light" Background="#FF53E253" Foreground="White" BorderThickness="0"  FontSize="14">
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="5"/>
@@ -50,6 +96,8 @@
 
             </Grid>
 
+        </Border>
+           
         </StackPanel>
-    </Border>
+   
 </Window>

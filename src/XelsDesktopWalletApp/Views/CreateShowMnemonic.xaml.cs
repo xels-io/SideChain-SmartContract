@@ -32,17 +32,17 @@ namespace XelsDesktopWalletApp.Views
         public CreateShowMnemonic(WalletCreation model)
         {
             InitializeComponent();
-            this.textBoxTextToMnemonic.Text = model.mnemonic;
+            this.textBoxTextToMnemonic.Text = model.Mnemonic;
 
             InitializeWalletCreationModel(model);
         }
 
-        private void InitializeWalletCreationModel(WalletCreation cr)
+        private void InitializeWalletCreationModel(WalletCreation CreateWallet)
         {
-            this._walletcreate.name = cr.name;
-            this._walletcreate.passphrase = cr.passphrase;
-            this._walletcreate.password = cr.password;
-            this._walletcreate.mnemonic = cr.mnemonic;
+            this._walletcreate.Name = CreateWallet.Name;
+            this._walletcreate.Passphrase = CreateWallet.Passphrase;
+            this._walletcreate.Password = CreateWallet.Password;
+            this._walletcreate.Mnemonic = CreateWallet.Mnemonic;
         }
 
         private void copyClipboardButton_Click(object sender, RoutedEventArgs e)

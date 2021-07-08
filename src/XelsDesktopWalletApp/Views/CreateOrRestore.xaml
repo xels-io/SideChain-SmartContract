@@ -5,13 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:XelsDesktopWalletApp.Views"
         mc:Ignorable="d"
-        Title="CreateOrRestore" Height="450" Width="800">
-    <Border Padding="10">
+        Title="CreateOrRestore" Height="600" Width="1100">
+    
+    
+    <!--Border Padding="10"-->
         <StackPanel>
-            <Grid Background="LimeGreen">
-                <Image Width="100" Source="/Assets/Images/home-xels-logo-01.png" />
+            <StackPanel>
 
-            </Grid>
+                <Grid Background="LimeGreen" Margin="10" Height="100">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Border HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" Height="70" Background="Transparent" BorderBrush="WhiteSmoke" 
+              BorderThickness="3" Margin="-2" CornerRadius="10" Padding="5">
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="0" BlurRadius="10" Opacity="50"/>
+                        </Border.Effect>
+                        <Image Source="/Assets/Images/home-xels-logo-01.png" >
+
+                        </Image>
+                    </Border>
+                </Grid>
+            </StackPanel>
 
             <TextBlock Background="White" Margin="0 10 10 0" HorizontalAlignment="Center" FontFamily="Microsoft YaHei Light" TextDecorations="" Width="26" RenderTransformOrigin="0.51,0.144" Height="42">
                 <Hyperlink  NavigateUri="http://www.google.com" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="">
@@ -20,7 +36,7 @@
                             BasedOn="{StaticResource {x:Type Hyperlink}}">
                         <Setter Property="Foreground" Value="Black"/>
                     </Style>
-                    </Hyperlink.Style><Run Text="back"/>
+                    </Hyperlink.Style><Run Text="back "/>
                 </Hyperlink>
             </TextBlock>
 
@@ -37,7 +53,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <Button Width="200" x:Name="restoreButton" Click="restoreButton_Click" Margin="0,0,10,0" Grid.Column="0" Content="Restore" Height="28" VerticalAlignment="Center" TextBlock.FontFamily="Microsoft YaHei Light" Background="White" Foreground="#FF53E253" BorderThickness="1,1,1,1" BorderBrush="#FF53E253" FontSize="14" Padding="5,5,5,5" >
+            <Button Width="200" x:Name="restoreWalletButton" Click="RestoreWalletButton_Click" Margin="0,0,10,0" Grid.Column="0" Content="Restore" Height="28" VerticalAlignment="Center" TextBlock.FontFamily="Microsoft YaHei Light" Background="White" Foreground="#FF53E253" BorderThickness="1,1,1,1" BorderBrush="#FF53E253" FontSize="14" Padding="5,5,5,5" >
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="5"/>
@@ -56,5 +72,5 @@
             </Grid>
 
         </StackPanel>
-    </Border>
+    <!--</Border>-->
 </Window>

@@ -83,7 +83,7 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
 
             this.DataContext = this;
             this.walletName = walletname;
-            this.walletInfo.walletName = this.walletName;
+            this.walletInfo.WalletName = this.walletName;
             this.txtSender.Text = selectedAddress;
             this.txtBalance.Text = balance;
             this.txtTokenName.Text = this.tokenName;

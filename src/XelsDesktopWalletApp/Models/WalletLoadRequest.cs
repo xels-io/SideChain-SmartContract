@@ -8,16 +8,19 @@ namespace XelsDesktopWalletApp.Models
 {
     public class WalletLoadRequest
     {
-        public WalletLoadRequest()
-        {
-            this.name = "Empty Name";
-            this.password = "";
-        }
+        //public WalletLoadRequest()
+        //{
+        //    this.Name = "Empty Name";
+        //    this.Password = "";
+        //}
 
         [Required(ErrorMessage = "A password is required.")]
-        public string password { get; set; }
+        public string Password { get; set; }
 
         [Required(ErrorMessage = "The name of the wallet is missing.")]
-        public string name { get; set; }
-    }
+        public string Name { get; set; }
+
+        public List<string> WalletNames { get; set; }
+
+    }    
 }
