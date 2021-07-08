@@ -19,11 +19,9 @@ namespace XelsDesktopWalletApp.Views
     /// </summary>
     public partial class Login : Window
     {
-
-        //static HttpClient client = new HttpClient();
+         
         string baseURL = URLConfiguration.BaseURL;// "http://localhost:37221/api/wallet";
         List<string> listData;
-
 
         public List<WalletLoadRequest> _myList { get; set; }
         private List<WalletLoadRequest> myList = new List<WalletLoadRequest>();
@@ -52,7 +50,6 @@ namespace XelsDesktopWalletApp.Views
             }
         }
 
-
         public Login()
         {
             InitializeComponent();
@@ -62,12 +59,10 @@ namespace XelsDesktopWalletApp.Views
             LoadLogin();
         }
 
-
         public async void LoadLogin()
         {
             await GetAPIAsync(this.baseURL);
         }
-
 
         private async Task GetAPIAsync(string path)
         {
@@ -85,7 +80,6 @@ namespace XelsDesktopWalletApp.Views
             }
             converted(content);
         }
-
 
         private void converted(string data)
         {
@@ -105,14 +99,13 @@ namespace XelsDesktopWalletApp.Views
             }
         }
 
-
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
             CreateOrRestore cr = new CreateOrRestore();
             cr.Show();
             this.Close();
         }
-
+        
         private async void decryptButton_Click(object sender, RoutedEventArgs e)
         {
 

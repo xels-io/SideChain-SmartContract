@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 using Newtonsoft.Json.Linq;
+
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 
@@ -36,10 +29,10 @@ namespace XelsDesktopWalletApp.Views
                 this.walletName = value;
             }
         }
-        //static HttpClient client = new HttpClient();
+        
         string baseURL = URLConfiguration.BaseURL;
             /*"http://localhost:37221/api"*/
-        //AddressLabel[] addresses = null;
+         
         List<AddressLabel> addresses = new List<AddressLabel>();
 
         public AddressBook()
@@ -54,13 +47,11 @@ namespace XelsDesktopWalletApp.Views
 
             this.DataContext = this;
 
-
             this.walletName = walletname;
             LoadAddresses();
-
         }
 
-        public async void LoadAddresses()
+        public async Task LoadAddresses()
         {
             this.addresses = await GetAPIAsync(this.baseURL);
         }
@@ -84,14 +75,11 @@ namespace XelsDesktopWalletApp.Views
             return addresslist;
         }
 
-
         public List<AddressLabel> ProcessAddresses(string _content)
         {
             JObject json = JObject.Parse(_content);
 
             AddressLabel addresslist = new AddressLabel();
-
-            //addresslist.label = json.addresses.label;
 
             return null ;
         }
@@ -101,7 +89,6 @@ namespace XelsDesktopWalletApp.Views
             Send send = new Send();
             send.Show();
             this.Close();
-            //MyPopup.IsOpen = true;
         }
 
         private void receiveButton_Click(object sender, RoutedEventArgs e)
@@ -155,14 +142,12 @@ namespace XelsDesktopWalletApp.Views
             this.Close();
         }
 
-
         private void Hyperlink_NavigateAdvanced(object sender, RequestNavigateEventArgs e)
         {
             Advanced adv = new Advanced(this.walletName);
             adv.Show();
             this.Close();
         }
-
 
         private void Hyperlink_NavigateAddAddress(object sender, RequestNavigateEventArgs e)
         {

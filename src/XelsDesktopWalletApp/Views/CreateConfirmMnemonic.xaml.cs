@@ -1,19 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
-using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+
 using Newtonsoft.Json;
+
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 
@@ -24,17 +18,22 @@ namespace XelsDesktopWalletApp.Views
     /// </summary>
     public partial class CreateConfirmMnemonic : Window
     {
-        //static HttpClient client = new HttpClient();
+
         string baseURL = URLConfiguration.BaseURL;//"http://localhost:37221/api/wallet";
+
         WalletCreation _walletcreateconfirm = new WalletCreation();
+
         private bool canPassMnemonic = false;
+
         string[] words;
+
         int[] randomidx = new int[3];
 
         public CreateConfirmMnemonic()
         {
             InitializeComponent();
         }
+
         public CreateConfirmMnemonic(WalletCreation walletcreation)
         {
             InitializeComponent();
@@ -64,15 +63,15 @@ namespace XelsDesktopWalletApp.Views
         private string valueone;
         public string Valueone
         {
-            get { return valueone; }
-            set { valueone = value; OnPropertyChanged("Valueone"); }
+            get { return this.valueone; }
+            set { this.valueone = value; OnPropertyChanged("Valueone"); }
         }
 
         private string valuetwo;
         public string Valuetwo
         {
-            get { return valuetwo; }
-            set { valuetwo = value; OnPropertyChanged("Valuetwo"); }
+            get { return this.valuetwo; }
+            set { this.valuetwo = value; OnPropertyChanged("Valuetwo"); }
         }
 
         private string valuethree;
@@ -80,16 +79,16 @@ namespace XelsDesktopWalletApp.Views
 
         public string Valuethree
         {
-            get { return valuethree; }
-            set { valuethree = value; OnPropertyChanged("Valuethree"); }
+            get { CreateConfirmMnemonic createConfirmMnemonic = this; return createConfirmMnemonic.valuethree; }
+            set { this.valuethree = value; OnPropertyChanged("Valuethree"); }
         }
         #endregion
 
 
         private void RandomSelect()
         {
-            //// Initialize array to check
-            ///
+            // Initialize array to check
+
             string[] rowwords = this._walletcreateconfirm.mnemonic.Split('\"');
             this._walletcreateconfirm.mnemonic = rowwords[1];
             this.words = rowwords[1].Split(' ');
@@ -110,13 +109,12 @@ namespace XelsDesktopWalletApp.Views
             this.valueone = "Word number " + fInd;
             this.valuetwo = "Word number " + sInd;
             this.valuethree = "Word number " + tInd;
-            
+
             this.wordone.Text = this.valueone;
             this.wordtwo.Text = this.valuetwo;
             this.wordthree.Text = this.valuethree;
 
         }
-
 
         public void CheckMnemonic()
         {
@@ -124,7 +122,7 @@ namespace XelsDesktopWalletApp.Views
             string secondword = this.words[this.randomidx[1]];
             string thirdword = this.words[this.randomidx[2]];
 
-            //// Check for validation
+            // Check for validation
             if (this._walletcreateconfirm.mnemonic != "" && this.word1.Text == firstword &&
                 this.word2.Text == secondword && this.word3.Text == thirdword)
             {
@@ -135,7 +133,6 @@ namespace XelsDesktopWalletApp.Views
                 MessageBox.Show("Secret words do not match!");
             }
         }
-
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
         {
@@ -150,7 +147,6 @@ namespace XelsDesktopWalletApp.Views
 
             if (this.canPassMnemonic == true)
             {
-
                 string postUrl = this.baseURL + "/wallet/create";
 
                 HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(this._walletcreateconfirm), Encoding.UTF8, "application/json"));
@@ -167,12 +163,8 @@ namespace XelsDesktopWalletApp.Views
                 {
                     MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
                 }
-
-
             }
-
         }
-
 
     }
 }

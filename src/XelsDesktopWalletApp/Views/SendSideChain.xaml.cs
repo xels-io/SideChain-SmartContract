@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+
 using NBitcoin;
+
 using Newtonsoft.Json;
+
+using Xels.Bitcoin.Features.Wallet;
+
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 
@@ -25,7 +21,6 @@ namespace XelsDesktopWalletApp.Views
     public partial class SendSideChain : Window
     {
 
-        //private static HttpClient client = new HttpClient();
         private readonly string baseURL = URLConfiguration.BaseURL; // "http://localhost:37221/api";
 
         private readonly WalletInfo walletInfo = new WalletInfo();
@@ -36,7 +31,7 @@ namespace XelsDesktopWalletApp.Views
         private BuildTransaction buildTransaction = new BuildTransaction();
 
         private Money totalBalance;
-        private Xels.Bitcoin.Features.Wallet.CoinType cointype;
+        private CoinType cointype;
         private Money spendableBalance;
 
         private Money estimatedSidechainFee = 0;
@@ -44,6 +39,7 @@ namespace XelsDesktopWalletApp.Views
         private Money opReturnAmount = 1;
 
         private string walletName;
+
         public string WalletName
         {
             get
@@ -55,7 +51,6 @@ namespace XelsDesktopWalletApp.Views
                 this.walletName = value;
             }
         }
-
 
         public SendSideChain()
         {
@@ -71,7 +66,6 @@ namespace XelsDesktopWalletApp.Views
             this.walletInfo.walletName = this.walletName;
             LoadCreateAsync();
         }
-
 
         public bool isAddrAmtValid()
         {
@@ -206,7 +200,6 @@ namespace XelsDesktopWalletApp.Views
 
         }
 
-
         private void TxtAmount_LostFocus(object sender, RoutedEventArgs e)
         {
             if (this.textSidechainDestinationAddress.Text != "" && this.textAmount.Text != "")
@@ -215,6 +208,7 @@ namespace XelsDesktopWalletApp.Views
                 this.textAmount.Focus();
             }
         }
+
         private void TxtAddress_LostFocus(object sender, RoutedEventArgs e)
         {
             if (this.textSidechainDestinationAddress.Text != "" && this.textAmount.Text != "")
@@ -229,13 +223,13 @@ namespace XelsDesktopWalletApp.Views
             this.isSending = true;
             BuildTransactionSideChainAsync();
         }
+
         private async Task GetWalletBalanceAsync(string path)
         {
             string getUrl = path + $"/wallet/balance?WalletName={this.walletInfo.walletName}&AccountName=account 0";
             var content = "";
 
             HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
-
 
             if (response.IsSuccessStatusCode)
             {
@@ -255,10 +249,7 @@ namespace XelsDesktopWalletApp.Views
             {
                 MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
             }
-
-
         }
-
 
         private async Task GetMaxBalanceAsync()
         {
@@ -274,7 +265,6 @@ namespace XelsDesktopWalletApp.Views
 
             HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(maximumBalance), Encoding.UTF8, "application/json"));
 
-
             if (response.IsSuccessStatusCode)
             {
                 content = await response.Content.ReadAsStringAsync();
@@ -286,7 +276,6 @@ namespace XelsDesktopWalletApp.Views
             this.estimatedSidechainFee = Money.Parse(content);
 
         }
-
 
         private RecipientSidechain[] GetRecipient()
         {
@@ -320,7 +309,6 @@ namespace XelsDesktopWalletApp.Views
 
                 HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(feeEstimation), Encoding.UTF8, "application/json"));
 
-
                 if (response.IsSuccessStatusCode)
                 {
                     content = await response.Content.ReadAsStringAsync();
@@ -331,7 +319,6 @@ namespace XelsDesktopWalletApp.Views
                     MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
                 }
             }
-
         }
 
         private async void BuildTransactionSideChainAsync()
@@ -355,9 +342,7 @@ namespace XelsDesktopWalletApp.Views
             this.transactionBuilding.opReturnData = this.textSidechainDestinationAddress.Text.Trim();
             this.transactionBuilding.opReturnAmount = myAmt;
 
-
             HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(this.transactionBuilding), Encoding.UTF8, "application/json"));
-
 
             if (response.IsSuccessStatusCode)
             {
@@ -378,9 +363,7 @@ namespace XelsDesktopWalletApp.Views
                 this.isSending = false;
                 MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
             }
-
         }
-
 
         private async Task SendTransactionAsync(TransactionSending tranSending)
         {
@@ -391,11 +374,9 @@ namespace XelsDesktopWalletApp.Views
 
                 HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(tranSending), Encoding.UTF8, "application/json"));
 
-
                 if (response.IsSuccessStatusCode)
                 {
-                    // content = await response.Content.ReadAsStringAsync();
-
+                   
                     SendConfirmationSC sendConfirmationSc = new SendConfirmationSC();
                     sendConfirmationSc.transaction = this.transactionBuilding;
                     sendConfirmationSc.transactionFee = this.estimatedSidechainFee;
@@ -411,10 +392,7 @@ namespace XelsDesktopWalletApp.Views
                     MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
                 }
             }
-
         }
-
-
 
     }
 }
