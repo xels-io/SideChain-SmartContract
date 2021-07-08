@@ -144,19 +144,26 @@
                               Width="900" FontSize="12" BorderThickness="0" RowHeight="40"
                               Background="LightGray" HeadersVisibility="None" GridLinesVisibility="None" IsReadOnly="True" >
                         <DataGrid.Columns >
-                            <DataGridTextColumn Binding="{Binding Path=label}" IsReadOnly="True" Width="200" />
-                            <DataGridTextColumn Binding="{Binding Path=address}" IsReadOnly="True" Width="500"  />
-                            <DataGridTemplateColumn Width="150">
+                            <DataGridTextColumn Binding="{Binding Path=label}" IsReadOnly="True" Width="150" />
+                            <DataGridTextColumn Binding="{Binding Path=address}" IsReadOnly="True" Width="470" />
+                            <DataGridTemplateColumn Width="270">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock FontWeight="Bold"  FontFamily="Microsoft YaHei Light" Margin="1 0 0 0" VerticalAlignment="Top">
                                             <InlineUIContainer>
-                                                <Button Tag="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListViewItem}}}"  
-                                                    Content="Send" Click="SendButton_Click" Padding="5 0 5 0" />
+                                                <Button Content="Copy Address" Click="CopyButton_Click" Padding="10 2 10 2" FontFamily="Microsoft YaHei Light" Margin="10 0 0 0"
+                                                        Background="White" Foreground="#FF53E253" BorderBrush="#FF53E253"  IsEnabled="True" 
+                                                        HorizontalAlignment="Center" VerticalAlignment="Center" />
                                             </InlineUIContainer>
                                             <InlineUIContainer>
                                                 <Button Tag="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListViewItem}}}"  
-                                                    Content="X" Click="DeleteButton_Click" Padding="4 0 4 0" />
+                                                        Content="Send" Click="SendButton_Click" Padding="20 2 20 2" 
+                                                        Background="#FF53E253" Foreground="White" BorderBrush="#FF53E253" />
+                                            </InlineUIContainer>
+                                            <InlineUIContainer>
+                                                <Button Tag="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListViewItem}}}"  
+                                                        Content="X" Click="DeleteButton_Click" Padding="4 2 4 2" FontFamily="Microsoft YaHei"
+                                                        Background="White" Foreground="#FF53E253" BorderBrush="#FF53E253" />
                                             </InlineUIContainer>
                                         </TextBlock>
                                     </DataTemplate>
@@ -166,6 +173,13 @@
                         <DataGrid.CellStyle>
                             <Style TargetType="DataGridCell">
                                 <Setter Property="Margin" Value="50,10,0,0"/>
+                                <Setter Property="Foreground" Value="Black" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="{x:Null}" />
+                                        <Setter Property="BorderBrush" Value="{x:Null}" />
+                                    </Trigger>
+                                </Style.Triggers>
                             </Style>
                         </DataGrid.CellStyle>
                     </DataGrid>
