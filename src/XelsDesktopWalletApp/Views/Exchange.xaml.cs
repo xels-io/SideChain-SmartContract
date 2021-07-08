@@ -157,7 +157,7 @@ namespace XelsDesktopWalletApp.Views
 
                 client.DefaultRequestHeaders.Add("Authorization", "1234567890");
                 
-                HttpResponseMessage response = await client.PostAsJsonAsync(postUrl, code);
+                HttpResponseMessage response = await client.PostAsJsonAsync(postUrl, code).ConfigureAwait(false);
                 content = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
@@ -237,9 +237,9 @@ namespace XelsDesktopWalletApp.Views
 
                     UpdateExchangeListAsync(); 
 
-                    if (this.updatesuccess == true) {
+                    //if (this.updatesuccess == true) {
                         DepositAsync(order.deposit_symbol, order.deposit_amount, exchangedata);
-                    }
+                    //}
 
                 }
                 else
@@ -263,6 +263,7 @@ namespace XelsDesktopWalletApp.Views
 
                 if (this.exchangedatalist != null && this.exchangedatalist.Count > 0)
                 {
+                    this.ExchangesList.Items.Clear();
                     this.NoData.Visibility = Visibility.Hidden;
                     this.ListData.Visibility = Visibility.Visible;
 
