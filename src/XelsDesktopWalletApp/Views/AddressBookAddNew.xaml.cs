@@ -23,14 +23,19 @@ namespace XelsDesktopWalletApp.Views
 
         public AddressBookAddNew()
         {
-            InitializeComponent();
+            //InitializeComponent();
 
             this.DataContext = this;
         }
 
+        //public AddressBookAddNew()
+        //{
+            
+        //}
+
         public AddressBookAddNew(string walletname)
         {
-            InitializeComponent();
+            //InitializeComponent();
 
             this.DataContext = this;
 
