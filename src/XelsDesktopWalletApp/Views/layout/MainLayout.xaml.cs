@@ -76,7 +76,7 @@ namespace XelsDesktopWalletApp.Views.layout
 
         private void btnDashboard_Click(object sender, RoutedEventArgs e)
         {
-            this.PageContent.Content = new DashboardPage();
+            this.PageContent.Content = new DashboardPage(this.walletName);
         }
 
         private void btn_SmartContract_Click(object sender, RoutedEventArgs e)

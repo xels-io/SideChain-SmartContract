@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
+using System.Text;
 
 namespace XelsDesktopWalletApp.Views.Pages
 {
@@ -36,7 +37,7 @@ namespace XelsDesktopWalletApp.Views.Pages
 
             this.walletName = walletname;
             this.walletInfo.WalletName = this.walletName;
-            GetGeneralInfoAsync();
+            GetGeneralWalletInfoAsync();
 
             GetWalletBalanceAsync();
 
@@ -49,7 +50,7 @@ namespace XelsDesktopWalletApp.Views.Pages
 
             if (URLConfiguration.Chain == "-sidechain")// (!this.sidechainEnabled)
             {
-                this.buttonPowMining.Visibility = Visibility.Hidden;
+                this.PowMiningButton.Visibility = Visibility.Hidden;
             }
             UpdateWalletAsync();
         }
@@ -177,7 +178,7 @@ namespace XelsDesktopWalletApp.Views.Pages
                 if (this.transactionItem.Transactions != null && this.transactionItem.Transactions.Length > 0)
                 {
                     int transactionsLen = this.transactionItem.Transactions.Length;
-                    this.NoData.Visibility = Visibility.Hidden;
+                    //this.NoData.Visibility = Visibility.Hidden;
                     this.HistoryList.Visibility = Visibility.Visible;
 
                     TransactionItemModel[] historyResponse = new TransactionItemModel[transactionsLen];
@@ -188,7 +189,7 @@ namespace XelsDesktopWalletApp.Views.Pages
                 else
                 {
                     this.HistoryList.Visibility = Visibility.Hidden;
-                    this.NoData.Visibility = Visibility.Visible;
+                    //this.NoData.Visibility = Visibility.Visible;
                 }
             }
             else
@@ -284,22 +285,17 @@ namespace XelsDesktopWalletApp.Views.Pages
             this.HistoryList.ItemsSource = this.transactions.Take(5);
 
         }
-
-        public async Task GetGeneralInfoAsync()
+      
+        private async Task GetGeneralWalletInfoAsync()
         {
-            await GetGeneralWalletInfoAsync(this.baseURL);
-        }
-
-        private async Task GetGeneralWalletInfoAsync(string path)
-        {
-            string getUrl = path + $"/wallet/general-info?Name={this.walletInfo.WalletName}";
+            string getUrl = this.baseURL + $"/wallet/general-info?Name={this.walletInfo.WalletName}";
             var content = "";
 
             HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
-
+            content = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
-                content = await response.Content.ReadAsStringAsync();
+                
                 this.walletGeneralInfoModel = JsonConvert.DeserializeObject<WalletGeneralInfoModel>(content);
 
                 this.processedText = $"Processed { this.walletGeneralInfoModel.LastBlockSyncedHeight ?? 0} out of { this.walletGeneralInfoModel.ChainTip} blocks.";
@@ -320,7 +316,7 @@ namespace XelsDesktopWalletApp.Views.Pages
 
                 if (!this.walletGeneralInfoModel.IsChainSynced)
                 {
-                    this.ParentSyncedTxt.Text = "syncing...";
+                    this.ParentSyncedTxt.Text = "syncing...".ToString();
                 }
                 else
                 {
@@ -339,25 +335,21 @@ namespace XelsDesktopWalletApp.Views.Pages
                 }
 
                 // populate
-                this.walletGeneralInfoModel.LastBlockSyncedHeight = this.walletGeneralInfoModel.LastBlockSyncedHeight ?? 0;
-                this.LastBlockSyncedHeightTxt.Text = this.walletGeneralInfoModel.LastBlockSyncedHeight.ToString();
+                this.LastBlockSyncedHeightTxt.Text = this.walletGeneralInfoModel.LastBlockSyncedHeight.ToString() ?? "0" ;
+                
                 this.ChainTipTxt.Text = this.walletGeneralInfoModel.ChainTip.ToString();
 
                 this.ParentSyncedTxt.Text = this.percentSynced;
 
                 this.ConnectionPercentTxt.Text = this.percentSynced;
 
-                this.LastBlockSyncedHeightTxt.Text = this.walletGeneralInfoModel.LastBlockSyncedHeight.ToString();
-
-                this.ChainTipTxt.Text = this.walletGeneralInfoModel.ChainTip.ToString();
-
                 if (!this.stakingEnabled && !this.sidechainEnabled)
                 {
-                    this.ConnectionNotifyTxt.Text = "Not Ok";
+                    this.ConnectionNotifyTxt.Content = "Not Staking";
                 }
                 else if (this.stakingEnabled && !this.sidechainEnabled)
                 {
-                    this.ConnectionNotifyTxt.Text = "Ok";
+                    this.ConnectionNotifyTxt.Content = "Staking";
                 }
             }
             else
@@ -383,11 +375,16 @@ namespace XelsDesktopWalletApp.Views.Pages
                 this.stakingInfo.enabled = stakingInfoModel.enabled; //stakingEnabled
                 this.stakingEnabled = this.stakingInfo.enabled;
                 this.stakingInfo.staking = stakingInfoModel.staking; //stakingActive
-                this.stakingInfo.weight = stakingInfoModel.weight; //stakingWeight
-                this.stakingInfo.netStakeWeight = stakingInfoModel.netStakeWeight; //netStakingWeight
-                this.awaitingMaturity = (this.unconfirmedBalance + this.confirmedBalance) - this.spendableBalance; //
-                this.stakingInfo.expectedTime = stakingInfoModel.expectedTime; //expectedTime
 
+                this.stakingInfo.weight = stakingInfoModel.weight; //stakingWeight
+                this.HybridWeightTxt.Text = $"{this.stakingInfo.weight} XELS";
+
+                this.NetworkWeightTxt.Text = $"{stakingInfoModel.netStakeWeight.ToString()} xlc"; //netStakingWeight
+                
+                this.CoinsAwaitingMaturityTxt.Text = $"{((this.unconfirmedBalance + this.confirmedBalance) - this.spendableBalance).ToString()}xlc"; //
+
+                this.ExpectedRewardTimmeTxt.Text = stakingInfoModel.expectedTime.ToString(); //expectedTime
+                 
                 if (this.stakingInfo.staking)
                 {
                     this.isStarting = false;
@@ -401,22 +398,16 @@ namespace XelsDesktopWalletApp.Views.Pages
 
                 if (!this.stakingEnabled && !this.sidechainEnabled)
                 {
-                    this.ConnectionNotifyTxt.Text = "Not Ok";
+                    this.ConnectionNotifyTxt.Content = "Not Staking";
                 }
                 else if (this.stakingEnabled && !this.sidechainEnabled)
                 {
-                    this.ConnectionNotifyTxt.Text = "Ok";
+                    this.ConnectionNotifyTxt.Content = "Staking";
                 }
-
-                this.HybridWeightTxt.Text = $"{this.stakingInfo.weight} XELS";
-                this.CoinsAwaitingMaturityTxt.Text = $"{this.awaitingMaturity} XELS";
-                this.NetworkWeightTxt.Text = $"{this.stakingInfo.netStakeWeight} XELS";
-                this.ExpectedRewardTimmeTxt.Text = this.stakingInfo.expectedTime.ToString();
-
             }
             else
             {
-                MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                MessageBox.Show($"Error Code{response.StatusCode} : Message - {response.ReasonPhrase}");
             }
         }
 
@@ -468,18 +459,69 @@ namespace XelsDesktopWalletApp.Views.Pages
            
         }
 
-
         private void ImportAddrButton_Click(object sender, RoutedEventArgs e)
         {
 
             EthImport eImp = new EthImport(this.walletName);
-            eImp.Show();
-           
+            eImp.Show();           
         }
 
-        private void StopPOWMiningButton_Click(object sender, RoutedEventArgs e)
+        private async void StartPOWMiningButton_Click(object sender, RoutedEventArgs e)
         {
+            string apiUrl = this.baseURL + $"/mining/startmining"; ///mining/stopmining
 
+            HttpResponseMessage response = await URLConfiguration.Client.PostAsJsonAsync(apiUrl,this.walletInfo );
+
+            string content = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+            {
+                this.PowMiningButton.Visibility = Visibility.Hidden;
+                this.StopPowMiningButton.Visibility = Visibility.Visible;
+            }
+        }
+
+        private async void StopPOWMiningButton_Click(object sender, RoutedEventArgs e)
+        {
+            string apiUrl = this.baseURL + $"/mining/stopmining";
+
+            HttpResponseMessage response = await URLConfiguration.Client.PostAsJsonAsync(apiUrl, true);
+
+            string content = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+            {
+                this.PowMiningButton.Visibility = Visibility.Visible;
+                this.StopPowMiningButton.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private async void StartHybridMiningButton_Click(object sender, RoutedEventArgs e)
+        {
+            string apiUrl = this.baseURL + $"/staking/startstaking";
+
+            HttpResponseMessage response = await URLConfiguration.Client.PostAsJsonAsync(apiUrl, this.walletName);
+
+            string content = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                this.HybridMinginButton.Content = "Stop Hybrid Mining";
+            }
+            this.HybridMinginButton.Content = "Stop Hybrid Mining";
+        }
+
+        private async void StopHybridMiningButton_Click(object sender, RoutedEventArgs e)
+        {
+            string apiUrl = this.baseURL + $"/staking/stopstaking";
+
+            HttpResponseMessage response = await URLConfiguration.Client.PostAsJsonAsync(apiUrl, true);
+
+            string content = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                this.HybridMinginButton.Content = "Stop Hybrid Mining";
+            }
+            
         }
 
         private void DetailButton_Click(object sender, RoutedEventArgs e)

@@ -17,7 +17,7 @@ namespace XelsDesktopWalletApp.Views
 
         private void RestoreWalletButton_Click(object sender, RoutedEventArgs e)
         {
-            //this.PageContent.Content = new WalletRestorePage();
+            //this.Content = new RestoreWalletPage();
             Restore restore = new Restore();
             restore.Show();
             this.Close();
