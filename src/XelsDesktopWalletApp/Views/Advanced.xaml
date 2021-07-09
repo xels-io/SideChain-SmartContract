@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:XelsDesktopWalletApp.Views"
         mc:Ignorable="d"
-        Title="Advanced" Height="450" Width="800">
+        Title="Advanced" Height="709" Width="1213">
     <Border Padding="10">
         <StackPanel>
             <Grid Background="LimeGreen">
@@ -113,19 +113,133 @@
             </Grid>
 
 
-            <Grid>
-                <Label Content="You are in advanced window. This window gives your wallets more detailed information. This window is under construction.." FontFamily="Microsoft YaHei Light" FontSize="9"/>
+            <Grid Height="617">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="323*"></ColumnDefinition>
+                    <ColumnDefinition Width="870*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="238" Margin="75,0,0,0" Grid.Column="0">
 
+                    <Grid Height="609">
+
+                        <Button Content="About" HorizontalAlignment="Center" Margin="0,79,0,0" VerticalAlignment="Top" Width="182"
+                            Click="About_Click" FontFamily="Microsoft YaHei Light" Foreground="#FF9B9B9B" Background="White" 
+                                BorderBrush="#FF9B9B9B" FontSize="12" Height="27">
+                            <Button.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="2"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                        <Button Content="Extended Public Key" HorizontalAlignment="Center" Margin="0,128,0,0" VerticalAlignment="Top" Width="182"
+                            Click="ExtendedPublicKey_Click" FontFamily="Microsoft YaHei Light" Foreground="#FF9B9B9B" Background="White" 
+                                BorderBrush="#FF9B9B9B" FontSize="12" Height="28">
+                            <Button.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="2"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                        <Button Content="Generate Addresses" HorizontalAlignment="Center" Margin="0,182,0,0" VerticalAlignment="Top" Width="182"
+                            Click="GenerateAddresses_Click" FontFamily="Microsoft YaHei Light" Foreground="#FF9B9B9B" Background="White" 
+                                BorderBrush="#FF9B9B9B" FontSize="12" Height="27">
+                            <Button.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="2"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                        <Button Content="Rescan Wallet" HorizontalAlignment="Center" Margin="0,232,0,0" VerticalAlignment="Top" Width="182"
+                                Click="Resync_Click" FontFamily="Microsoft YaHei Light" Foreground="#FF9B9B9B" Background="White" 
+                                BorderBrush="#FF9B9B9B" FontSize="12" Height="27">
+                            <Button.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="2"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Margin="6,10,10,10" Grid.Column="1">
+                    <Grid Name="AboutGrid" Height="609">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="2*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Vertical" Margin="0,10,0,66"  Grid.Column="0" Grid.ColumnSpan="2" >
+                            <Label Content="About" Height="34" Width="710" Foreground="LightGray"
+                                FontFamily="Microsoft YaHei" FontSize="18" Padding="0"/>
+
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="0,64,568,66"  Grid.Column="0" Grid.ColumnSpan="2" >
+                            <Label Content="Client name:" Height="30" Width="218" Foreground="#FF615858"  HorizontalAlignment="Right"
+                                FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
+                            <Label Content="Wallet version:" Height="30" Width="218" Foreground="#FF615858"  HorizontalAlignment="Right"
+                                FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
+                            <Label Content="Fullnode version:" Height="30" Width="218" Foreground="#FF615858"  HorizontalAlignment="Right"
+                                FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
+                            <Label Content="Current network:" Height="30" Width="218" Foreground="#FF615858" HorizontalAlignment="Right"
+                                FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
+                            <Label Content="Protocol version:" Height="30" Width="218" Foreground="#FF615858" HorizontalAlignment="Right"
+                                FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
+                            <Label Content="Current block height:" Height="30" Width="218" Foreground="#FF615858" HorizontalAlignment="Right"
+                                FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
+                            <Label Content="Wallet data directory:" Height="30" Width="218" Foreground="#FF615858" HorizontalAlignment="Right"
+                                FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
+
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="0,64,0,66"  Grid.Column="1" HorizontalAlignment="Left" Width="559" >
+                            <TextBlock x:Name="ClientnameTxt" Text="XelsFullNode"
+                                     TextWrapping="Wrap" Width="555" Padding="4" 
+                                     FontFamily="Microsoft YaHei" FontSize="14" Foreground="ForestGreen" 
+                                     TextAlignment="Left" Height="30">
+                            </TextBlock>
+                            <TextBlock x:Name="WalletversionTxt" Text="4.0.0"
+                                     TextWrapping="Wrap" Width="555" Padding="4" 
+                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="#FF615858" 
+                                     TextAlignment="Left" Height="30">
+                            </TextBlock>
+                            <TextBlock x:Name="FullnodeversionTxt"  Text="1.0.8.6"
+                                     TextWrapping="Wrap" Width="555" Padding="4" 
+                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="#FF615858" 
+                                     TextAlignment="Left" Height="30">
+                            </TextBlock>
+                            <TextBlock x:Name="CurrentnetworkTxt"  Text="XlcMain"
+                                     TextWrapping="Wrap" Width="555" Padding="4" 
+                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="#FF615858" 
+                                     TextAlignment="Left" Height="30">
+                            </TextBlock>
+                            <TextBlock x:Name="ProtocolversionTxt"  Text="70012"
+                                     TextWrapping="Wrap" Width="555" Padding="4" 
+                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="#FF615858" 
+                                     TextAlignment="Left" Height="30">
+                            </TextBlock>
+                            <TextBlock x:Name="CurrentblockheightTxt"  Text="1039"
+                                     TextWrapping="Wrap" Width="555" Padding="4" 
+                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="#FF615858" 
+                                     TextAlignment="Left" Height="30">
+                            </TextBlock>
+                            <TextBlock x:Name="WalletdatadirectoryTxt"  Text="C:\Users\TOWSIF\AppData"
+                                     TextWrapping="Wrap" Width="555" Padding="4" 
+                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="ForestGreen" 
+                                     TextAlignment="Left" Height="30">
+                            </TextBlock>
+
+                        </StackPanel>
+                    </Grid>
+                    <!--<Grid Name="ExtendedPublicKeyGrid" Height="609">
+
+                    </Grid>
+                    <Grid Name="GenerateAddressesGrid" Height="609">
+
+                    </Grid>
+                    <Grid Name="ResyncGrid" Height="609">
+
+                    </Grid>-->
+                </StackPanel>
             </Grid>
-            <Label Content="About" Width="587" FontStyle="Italic"/>
-            <Label Content="Client Name: " Width="504"/>
-            <Label Content="XelsNode" Width="504"/>
-            <Label Content="Wallet version:" Width="504"/>
-            <Label Content="4.0.0" Width="504"/>
-            <Label Content="Fullnode version:" Width="504"/>
-            <Label Content="3.0.8.0" Width="504"/>
-            <Label Content="Current Network:" Width="504"/>
-            <Label Content="XelsMain" Width="504"/>
+
 
         </StackPanel>
     </Border>

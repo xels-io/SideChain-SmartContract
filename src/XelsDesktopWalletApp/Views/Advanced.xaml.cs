@@ -108,5 +108,24 @@ namespace XelsDesktopWalletApp.Views
             this.Close();
         }
 
+        private void About_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ExtendedPublicKey_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void GenerateAddresses_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Resync_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
