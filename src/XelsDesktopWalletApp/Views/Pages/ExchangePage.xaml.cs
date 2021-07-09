@@ -1,26 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-
 using System.Windows.Shapes;
-using NBitcoin;
 using Newtonsoft.Json;
-
 using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 
-namespace XelsDesktopWalletApp.Views
+namespace XelsDesktopWalletApp.Views.Pages
 {
     /// <summary>
-    /// Interaction logic for Exchange.xaml
+    /// Interaction logic for ExchangePage.xaml
     /// </summary>
-    public partial class Exchange : Window
+    public partial class ExchangePage : Page
     {
+
 
         #region Base
         private string baseURL = URLConfiguration.BaseURL;
@@ -98,11 +102,12 @@ namespace XelsDesktopWalletApp.Views
 
         #endregion
 
-        public Exchange()
+
+        public ExchangePage()
         {
             InitializeComponent();
         }
-        public Exchange(string walletname)
+        public ExchangePage(string walletname)
         {
             InitializeComponent();
             this.DataContext = this;
@@ -115,6 +120,7 @@ namespace XelsDesktopWalletApp.Views
 
             this.updatesuccess = false;
         }
+
 
         public bool isValid()
         {
@@ -150,7 +156,7 @@ namespace XelsDesktopWalletApp.Views
                 code.user_code = hash;
 
                 client.DefaultRequestHeaders.Add("Authorization", "1234567890");
-                
+
                 HttpResponseMessage response = await client.PostAsJsonAsync(postUrl, code).ConfigureAwait(false);
                 content = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
@@ -192,7 +198,7 @@ namespace XelsDesktopWalletApp.Views
                     }
                     else
                     {
-                        DepositAsync(exchangedata.deposit_symbol, exchangedata.deposit_amount, exchangedata);
+                       await DepositAsync(exchangedata.deposit_symbol, exchangedata.deposit_amount, exchangedata);
                     }
 
                 }
@@ -229,10 +235,10 @@ namespace XelsDesktopWalletApp.Views
                 {
                     exchangedata = JsonConvert.DeserializeObject<ExchangeResponse>(content);
 
-                   await UpdateExchangeListAsync(); 
+                    await UpdateExchangeListAsync();
 
                     //if (this.updatesuccess == true) {
-                       await DepositAsync(order.deposit_symbol, order.deposit_amount, exchangedata);
+                    await DepositAsync(order.deposit_symbol, order.deposit_amount, exchangedata);
                     //}
 
                 }
@@ -251,48 +257,52 @@ namespace XelsDesktopWalletApp.Views
 
         public async Task UpdateExchangeListAsync()
         {
-            if (this.mywallet != null || this.mywallet.Wallethash != "")
+            if (this.mywallet != null)
             {
-                this.exchangedatalist = await GetOrdersAsync(this.mywallet.Wallethash);
-
-                if (this.exchangedatalist != null && this.exchangedatalist.Count > 0)
+                if (this.mywallet.Wallethash != "")
                 {
-                    this.ExchangesList.Items.Clear();
-                    this.NoData.Visibility = Visibility.Hidden;
-                    this.ListData.Visibility = Visibility.Visible;
+                    this.exchangedatalist = await GetOrdersAsync(this.mywallet.Wallethash);
 
-                    // Processed data
-                    foreach (ExchangeResponse data in this.exchangedatalist)
+                    if (this.exchangedatalist != null && this.exchangedatalist.Count > 0)
                     {
-                        ExchangeData edata = new ExchangeData();
-                        edata.excid = data.id;
-                        edata.deposit_address_amount_symbol = $"{data.deposit_address} {data.deposit_amount} {data.deposit_symbol}";
-                        edata.xels_address_amount = $"{data.xels_address} {data.xels_amount} XELS";
+                        this.ExchangesList.Items.Clear();
+                        this.NoData.Visibility = Visibility.Hidden;
+                        this.ListData.Visibility = Visibility.Visible;
 
-                        if(data.status == 0)
+                        // Processed data
+                        foreach (ExchangeResponse data in this.exchangedatalist)
                         {
-                            edata.showstatus = "Wating for deposit";
-                        }
-                        else if (data.status == 1)
-                        {
-                            edata.showstatus = "Pending Exchange";
-                        }
-                        else if (data.status == 2)
-                        {
-                            edata.showstatus = "Complete";
+                            ExchangeData edata = new ExchangeData();
+                            edata.excid = data.id;
+                            edata.deposit_address_amount_symbol = $"{data.deposit_address} {data.deposit_amount} {data.deposit_symbol}";
+                            edata.xels_address_amount = $"{data.xels_address} {data.xels_amount} XELS";
+
+                            if (data.status == 0)
+                            {
+                                edata.showstatus = "Wating for deposit";
+                            }
+                            else if (data.status == 1)
+                            {
+                                edata.showstatus = "Pending Exchange";
+                            }
+                            else if (data.status == 2)
+                            {
+                                edata.showstatus = "Complete";
+                            }
+
+                            this.exchangelist.Add(edata);
                         }
 
-                        this.exchangelist.Add(edata);
+                        this.ExchangesList.ItemsSource = this.exchangelist;
                     }
-
-                    this.ExchangesList.ItemsSource = this.exchangelist;
+                    else
+                    {
+                        this.ListData.Visibility = Visibility.Hidden;
+                        this.NoData.Visibility = Visibility.Visible;
+                    }
+                    this.updatesuccess = true;
                 }
-                else
-                {
-                    this.ListData.Visibility = Visibility.Hidden;
-                    this.NoData.Visibility = Visibility.Visible;
-                }
-                this.updatesuccess = true;
+               
             }
         }
 
@@ -379,50 +389,6 @@ namespace XelsDesktopWalletApp.Views
             }
         }
 
-        private void Hyperlink_NavigateDashboard(object sender, RequestNavigateEventArgs e)
-        {
-            Dashboard ds = new Dashboard(this.walletName);
-            ds.Show();
-            this.Close();
-        }
 
-        private void Hyperlink_NavigateHistory(object sender, RequestNavigateEventArgs e)
-        {
-            History hs = new History(this.walletName);
-            hs.Show();
-            this.Close();
-        }
-
-        private void Hyperlink_NavigateExchange(object sender, RequestNavigateEventArgs e)
-        {
-            Exchange ex = new Exchange(this.walletName);
-            ex.Show();
-            this.Close();
-        }
-
-        private void Hyperlink_NavigateSmartContract(object sender, RequestNavigateEventArgs e)
-        {
-        }
-
-        private void Hyperlink_NavigateAddressBook(object sender, RequestNavigateEventArgs e)
-        {
-            AddressBook ex = new AddressBook(this.walletName);
-            ex.Show();
-            this.Close();
-        }
-
-        private void Hyperlink_NavigateLogout(object sender, RequestNavigateEventArgs e)
-        {
-            LogoutConfirm lc = new LogoutConfirm(this.walletName);
-            lc.Show();
-            this.Close();
-        }
-
-        private void Hyperlink_NavigateAdvanced(object sender, RequestNavigateEventArgs e)
-        {
-            Advanced adv = new Advanced(this.walletName);
-            adv.Show();
-            this.Close();
-        }
     }
 }
