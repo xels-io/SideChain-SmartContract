@@ -113,14 +113,14 @@
             </Grid>
 
 
-            <Grid Height="617">
+            <Grid Height="617" Background="GhostWhite">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="323*"></ColumnDefinition>
                     <ColumnDefinition Width="870*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="238" Margin="75,0,0,0" Grid.Column="0">
 
-                    <Grid Height="609">
+                    <Grid Height="359" Background="White" Margin="0,50,0,0">
 
                         <Button Content="About" HorizontalAlignment="Center" Margin="0,79,0,0" VerticalAlignment="Top" Width="182"
                             Click="About_Click" FontFamily="Microsoft YaHei Light" Foreground="#FF9B9B9B" Background="White" 
@@ -161,31 +161,31 @@
                     </Grid>
                 </StackPanel>
 
-                <StackPanel Orientation="Vertical" Margin="6,10,10,10" Grid.Column="1">
-                    <Grid Name="AboutGrid" Height="609">
+                <StackPanel Name="AboutSP" Orientation="Vertical" Margin="6,0,10,10" Grid.Column="1">
+                    <Grid Name="AboutGrid" Height="358" Background="White" Margin="0,50,0,0" Width="784" HorizontalAlignment="Left">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="2*"></ColumnDefinition>
+                            <ColumnDefinition Width="211*"></ColumnDefinition>
+                            <ColumnDefinition Width="573*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <StackPanel Orientation="Vertical" Margin="0,10,0,66"  Grid.Column="0" Grid.ColumnSpan="2" >
                             <Label Content="About" Height="34" Width="710" Foreground="LightGray"
                                 FontFamily="Microsoft YaHei" FontSize="18" Padding="0"/>
 
                         </StackPanel>
-                        <StackPanel Orientation="Vertical" Margin="0,64,568,66"  Grid.Column="0" Grid.ColumnSpan="2" >
-                            <Label Content="Client name:" Height="30" Width="218" Foreground="#FF615858"  HorizontalAlignment="Right"
+                        <StackPanel Orientation="Vertical" Margin="10,64,0,66"  Grid.Column="0" >
+                            <Label Content="Client name:" Height="30" Width="178" Foreground="#FF615858"  HorizontalAlignment="Right"
                                 FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
-                            <Label Content="Wallet version:" Height="30" Width="218" Foreground="#FF615858"  HorizontalAlignment="Right"
+                            <Label Content="Wallet version:" Height="30" Width="178" Foreground="#FF615858"  HorizontalAlignment="Right"
                                 FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
-                            <Label Content="Fullnode version:" Height="30" Width="218" Foreground="#FF615858"  HorizontalAlignment="Right"
+                            <Label Content="Fullnode version:" Height="30" Width="178" Foreground="#FF615858"  HorizontalAlignment="Right"
                                 FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
-                            <Label Content="Current network:" Height="30" Width="218" Foreground="#FF615858" HorizontalAlignment="Right"
+                            <Label Content="Current network:" Height="30" Width="178" Foreground="#FF615858" HorizontalAlignment="Right"
                                 FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
-                            <Label Content="Protocol version:" Height="30" Width="218" Foreground="#FF615858" HorizontalAlignment="Right"
+                            <Label Content="Protocol version:" Height="30" Width="178" Foreground="#FF615858" HorizontalAlignment="Right"
                                 FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
-                            <Label Content="Current block height:" Height="30" Width="218" Foreground="#FF615858" HorizontalAlignment="Right"
+                            <Label Content="Current block height:" Height="30" Width="178" Foreground="#FF615858" HorizontalAlignment="Right"
                                 FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
-                            <Label Content="Wallet data directory:" Height="30" Width="218" Foreground="#FF615858" HorizontalAlignment="Right"
+                            <Label Content="Wallet data directory:" Height="30" Width="178" Foreground="#FF615858" HorizontalAlignment="Right"
                                 FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
 
                         </StackPanel>
@@ -228,16 +228,162 @@
 
                         </StackPanel>
                     </Grid>
-                    <!--<Grid Name="ExtendedPublicKeyGrid" Height="609">
-
+                    
+                    <!--<Grid Name="ExtendedPublicKeyGrid" Height="358" Background="White" Margin="0,50,0,0" Width="784" HorizontalAlignment="Left">
+                        <StackPanel Orientation="Vertical" Margin="50,50,50,0" HorizontalAlignment="Left"  >
+                            <Label Content="EXTENDED PUBLIC KEY" Height="89"  Foreground="DarkGray"
+                                FontFamily="Microsoft YaHei" FontSize="18" Padding="0" RenderTransformOrigin="0.502,0.463"  />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="50,106,50,0"  HorizontalAlignment="Right"  >
+                            <Button x:Name="CopyClipboardButton" Click="CopyToClipboard_Click" Content="Copy to clipboard" Padding="5" 
+                                    TextBlock.FontFamily="Microsoft YaHei Light" Background="White" Foreground="#FF53E253" 
+                                    BorderThickness="0" FontSize="14" HorizontalAlignment="Right">
+                            </Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="50,174,50,0"  HorizontalAlignment="Center"  >
+                            <TextBlock  x:Name="ExtPubKeyTxt" TextWrapping="Wrap" FontFamily="Microsoft YaHei Light" 
+                                        FontSize="14"  Foreground="Gray"
+                                        Text="Something went wrong while getting your Extended Public Key." Height="30" Width="679" />
+                        </StackPanel>
                     </Grid>
-                    <Grid Name="GenerateAddressesGrid" Height="609">
-
+                    
+                    <Grid Name="GenerateAddressesGrid" Height="358" Background="White" Margin="0,50,0,0" Width="784" HorizontalAlignment="Left">
+                        <StackPanel Orientation="Vertical" Margin="50,50,50,0" HorizontalAlignment="Left"  >
+                            <Label Content="GENERATE ADDRESSES" Height="89"  Foreground="DarkGray"
+                                FontFamily="Microsoft YaHei" FontSize="18" Padding="0" RenderTransformOrigin="0.502,0.463"  />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="50,124,50,0"  HorizontalAlignment="Left"  >
+                            <Label Content="Amount of generated addresses:" Height="30"  Foreground="#FF615858"
+                                FontFamily="Microsoft YaHei" FontSize="14" Padding="0" RenderTransformOrigin="0.502,0.463"  />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="0,157,0,0"  HorizontalAlignment="Center" Width="684"  >
+                            <TextBox x:Name="AmountofGenerateAddressesTxt" TextWrapping="Wrap" Padding="4" BorderThickness="1" BorderBrush="LightGray"
+                                     AutomationProperties.HelpText="Enter Amount." TextBlock.FontFamily="Microsoft YaHei Light" 
+                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="#FF615858" 
+                                     TextAlignment="Left" Height="31" Width="684" />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="50,200,50,0"  HorizontalAlignment="Center"  >
+                            <Button x:Name="GenerateButton" Click="Generate_Click" Content="Generate" Padding="5" 
+                                    TextBlock.FontFamily="Microsoft YaHei Light" Background="#FF53E253" Foreground="White" 
+                                    BorderThickness="0" FontSize="14" HorizontalAlignment="Center" Width="682">
+                            </Button>
+                        </StackPanel>
                     </Grid>
-                    <Grid Name="ResyncGrid" Height="609">
+                    
+                    <Grid Name="ResyncGrid" Height="358" Background="White" Margin="0,50,0,0" Width="784" HorizontalAlignment="Left">
+                        <StackPanel Orientation="Vertical" Margin="50,50,50,0" HorizontalAlignment="Left"  >
+                            <Label Content="RESCAN WALLET" Height="89"  Foreground="DarkGray"
+                                FontFamily="Microsoft YaHei" FontSize="18" Padding="0" RenderTransformOrigin="0.502,0.463"  />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="50,110,50,180"  HorizontalAlignment="Left" Background="LightGreen" >
+                            <Label Foreground="Green"  
+                                   FontFamily="Microsoft YaHei" FontSize="12" Padding="20" RenderTransformOrigin="0.502,0.463" >
+                                <TextBlock>
+                                Rescanning your wallet will temporarily clear the transactions in your wallet and rescan the blockchain. Select a
+                                <LineBreak/>
+                                date from where you wish to rescan and click the button below.
+                                </TextBlock>
+                            </Label>
 
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="100,190,50,0"  HorizontalAlignment="Left"  >
+                            <Label Content="Rescan from:" Height="30"  Foreground="Gray"
+                                FontFamily="Microsoft YaHei" FontSize="14" Padding="0" RenderTransformOrigin="0.502,0.463"  />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="100,230,50,0"  HorizontalAlignment="Left" Width="190"  >
+                            <DatePicker x:Name="RescanFromDate" DisplayDate="2019-01-01" Padding="5 "
+                                        FontSize="14" Foreground="#FF615858" Height="31"
+                                        BorderThickness="1" BorderBrush="LightGray" />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="50,280,50,0"  HorizontalAlignment="Center"  >
+                            <Button x:Name="RescanButton" Click="Rescan_Click" Content="Rescan" Padding="5" 
+                                    TextBlock.FontFamily="Microsoft YaHei Light" Background="#FF53E253" Foreground="White" 
+                                    BorderThickness="0" FontSize="14" HorizontalAlignment="Center" Width="682">
+                            </Button>
+                        </StackPanel>
                     </Grid>-->
+                
                 </StackPanel>
+                <StackPanel Name="ExtendedPublicKeySP" Orientation="Vertical" Margin="6,0,10,10" Grid.Column="1">
+                    <Grid Name="ExtendedPublicKeyGrid" Height="358" Background="White" Margin="0,50,0,0" Width="784" HorizontalAlignment="Left">
+                        <StackPanel Orientation="Vertical" Margin="50,50,50,0" HorizontalAlignment="Left"  >
+                            <Label Content="EXTENDED PUBLIC KEY" Height="89"  Foreground="DarkGray"
+                                FontFamily="Microsoft YaHei" FontSize="18" Padding="0" RenderTransformOrigin="0.502,0.463"  />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="50,106,50,0"  HorizontalAlignment="Right"  >
+                            <Button x:Name="CopyClipboardButton" Click="CopyToClipboard_Click" Content="Copy to clipboard" Padding="5" 
+                                    TextBlock.FontFamily="Microsoft YaHei Light" Background="White" Foreground="#FF53E253" 
+                                    BorderThickness="0" FontSize="14" HorizontalAlignment="Right">
+                            </Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="50,174,50,0"  HorizontalAlignment="Center"  >
+                            <TextBlock  x:Name="ExtPubKeyTxt" TextWrapping="Wrap" FontFamily="Microsoft YaHei Light" 
+                                        FontSize="14"  Foreground="Gray"
+                                        Text="Something went wrong while getting your Extended Public Key." Height="30" Width="679" />
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel Name="GenerateAddressesSP" Orientation="Vertical" Margin="6,0,10,10" Grid.Column="1">
+                    <Grid Name="GenerateAddressesGrid" Height="358" Background="White" Margin="0,50,0,0" Width="784" HorizontalAlignment="Left">
+                        <StackPanel Orientation="Vertical" Margin="50,50,50,0" HorizontalAlignment="Left"  >
+                            <Label Content="GENERATE ADDRESSES" Height="89"  Foreground="DarkGray"
+                                FontFamily="Microsoft YaHei" FontSize="18" Padding="0" RenderTransformOrigin="0.502,0.463"  />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="50,124,50,0"  HorizontalAlignment="Left"  >
+                            <Label Content="Amount of generated addresses:" Height="30"  Foreground="#FF615858"
+                                FontFamily="Microsoft YaHei" FontSize="14" Padding="0" RenderTransformOrigin="0.502,0.463"  />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="0,157,0,0"  HorizontalAlignment="Center" Width="684"  >
+                            <TextBox x:Name="AmountofGenerateAddressesTxt" TextWrapping="Wrap" Padding="4" BorderThickness="1" BorderBrush="LightGray"
+                                     AutomationProperties.HelpText="Enter Amount." TextBlock.FontFamily="Microsoft YaHei Light" 
+                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="#FF615858" 
+                                     TextAlignment="Left" Height="31" Width="684" />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="50,200,50,0"  HorizontalAlignment="Center"  >
+                            <Button x:Name="GenerateButton" Click="Generate_Click" Content="Generate" Padding="5" 
+                                    TextBlock.FontFamily="Microsoft YaHei Light" Background="#FF53E253" Foreground="White" 
+                                    BorderThickness="0" FontSize="14" HorizontalAlignment="Center" Width="682">
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel Name="ResyncSP" Orientation="Vertical" Margin="6,0,10,10" Grid.Column="1">
+                    <Grid Name="ResyncGrid" Height="358" Background="White" Margin="0,50,0,0" Width="784" HorizontalAlignment="Left">
+                        <StackPanel Orientation="Vertical" Margin="50,50,50,0" HorizontalAlignment="Left"  >
+                            <Label Content="RESCAN WALLET" Height="89"  Foreground="DarkGray"
+                                FontFamily="Microsoft YaHei" FontSize="18" Padding="0" RenderTransformOrigin="0.502,0.463"  />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="50,110,50,180"  HorizontalAlignment="Left" Background="LightGreen" >
+                            <Label Foreground="Green"  
+                                   FontFamily="Microsoft YaHei" FontSize="12" Padding="20" RenderTransformOrigin="0.502,0.463" >
+                                <TextBlock>
+                                Rescanning your wallet will temporarily clear the transactions in your wallet and rescan the blockchain. Select a
+                                <LineBreak/>
+                                date from where you wish to rescan and click the button below.
+                                </TextBlock>
+                            </Label>
+
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="100,190,50,0"  HorizontalAlignment="Left"  >
+                            <Label Content="Rescan from:" Height="30"  Foreground="Gray"
+                                FontFamily="Microsoft YaHei" FontSize="14" Padding="0" RenderTransformOrigin="0.502,0.463"  />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="100,230,50,0"  HorizontalAlignment="Left" Width="190"  >
+                            <DatePicker x:Name="RescanFromDate" DisplayDate="2019-01-01" Padding="5 "
+                                        FontSize="14" Foreground="#FF615858" Height="31"
+                                        BorderThickness="1" BorderBrush="LightGray" />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="50,280,50,0"  HorizontalAlignment="Center"  >
+                            <Button x:Name="RescanButton" Click="Rescan_Click" Content="Rescan" Padding="5" 
+                                    TextBlock.FontFamily="Microsoft YaHei Light" Background="#FF53E253" Foreground="White" 
+                                    BorderThickness="0" FontSize="14" HorizontalAlignment="Center" Width="682">
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+
             </Grid>
 
 

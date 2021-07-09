@@ -32,10 +32,18 @@ namespace XelsDesktopWalletApp.Views
         public Advanced(string walletname)
         {
             InitializeComponent();
-
             this.DataContext = this;
 
+            InitialViewLoad();
             this.walletName = walletname;
+        }
+
+        private void InitialViewLoad()
+        {
+            this.AboutSP.Visibility = Visibility.Visible;
+            this.ExtendedPublicKeySP.Visibility = Visibility.Hidden;
+            this.GenerateAddressesSP.Visibility = Visibility.Hidden;
+            this.ResyncSP.Visibility = Visibility.Hidden;
         }
 
         private void Show_Click(object sender, RoutedEventArgs e)
@@ -110,20 +118,47 @@ namespace XelsDesktopWalletApp.Views
 
         private void About_Click(object sender, RoutedEventArgs e)
         {
-
+            this.AboutSP.Visibility = Visibility.Visible;
+            this.ExtendedPublicKeySP.Visibility = Visibility.Hidden;
+            this.GenerateAddressesSP.Visibility = Visibility.Hidden;
+            this.ResyncSP.Visibility = Visibility.Hidden;
         }
 
         private void ExtendedPublicKey_Click(object sender, RoutedEventArgs e)
         {
-
+            this.AboutSP.Visibility = Visibility.Hidden;
+            this.ExtendedPublicKeySP.Visibility = Visibility.Visible;
+            this.GenerateAddressesSP.Visibility = Visibility.Hidden;
+            this.ResyncSP.Visibility = Visibility.Hidden;
         }
 
         private void GenerateAddresses_Click(object sender, RoutedEventArgs e)
         {
-
+            this.AboutSP.Visibility = Visibility.Hidden;
+            this.ExtendedPublicKeySP.Visibility = Visibility.Hidden;
+            this.GenerateAddressesSP.Visibility = Visibility.Visible;
+            this.ResyncSP.Visibility = Visibility.Hidden;
         }
 
         private void Resync_Click(object sender, RoutedEventArgs e)
+        {
+            this.AboutSP.Visibility = Visibility.Hidden;
+            this.ExtendedPublicKeySP.Visibility = Visibility.Hidden;
+            this.GenerateAddressesSP.Visibility = Visibility.Hidden;
+            this.ResyncSP.Visibility = Visibility.Visible;
+        }
+
+        private void CopyToClipboard_Click(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(this.ExtPubKeyTxt.Text);
+        }
+
+        private void Generate_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Rescan_Click(object sender, RoutedEventArgs e)
         {
 
         }
