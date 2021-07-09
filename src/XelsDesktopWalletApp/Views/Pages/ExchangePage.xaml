@@ -77,7 +77,7 @@
 
         <Border Background="White" BorderBrush="White" BorderThickness="2,1,1,1" CornerRadius="10,10,10,10" Margin="5,10,5,5" Grid.Row="1">
             <StackPanel Orientation="Vertical" Grid.Row="1" Margin="0,10,0,10"  HorizontalAlignment="Center" Width="834" >
-                <Grid Height="362" Background="White" Width="800">
+                <Grid Height="373" Background="White" Width="842">
                     <TextBlock Width="99" HorizontalAlignment="Left" FontFamily="Microsoft YaHei" Height="16" VerticalAlignment="Top" 
                                    Text="LATEST EXCHANGES" FontSize="10" Foreground="#FF9B9B9B" Margin="330,10,0,0" />
 
@@ -85,9 +85,9 @@
                         <Label Content="Looks like you haven't made any transactions yet."  HorizontalAlignment="Left"
                        FontFamily="Microsoft YaHei Light" Margin="251,91,0,184" FontSize="12" FontWeight="Bold" Foreground="#FF494747" Width="282"/>
                     </Grid>
-                    <Grid Margin="10,20,10,-151" x:Name="ListData">
-                        <DataGrid x:Name="ExchangesList" AutoGenerateColumns="False" HorizontalAlignment="Center" VerticalAlignment="Top" Width="780"
-                                      Margin="0,20,0,0" FontSize="11" BorderThickness="1" BorderBrush="Gray" RowHeight="25"
+                    <Grid Margin="10,20,10,38" x:Name="ListData">
+                        <!--<DataGrid x:Name="ExchangesList" AutoGenerateColumns="False" HorizontalAlignment="Center" VerticalAlignment="Top" Width="780"
+                                      Margin="0,20,0,0" FontSize="11" BorderThickness="1" BorderBrush="Gray" RowHeight="25" Height="312"
                                       Background="LightGray" RowBackground="LightYellow" AlternatingRowBackground="LightBlue" >
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Order Id" Binding="{Binding excid}" IsReadOnly="True" Width="100" />
@@ -105,7 +105,30 @@
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                             </DataGrid.Columns>
+                        </DataGrid>-->
+                        <DataGrid Name="ExchangesList"  Width="850" ItemsSource="{Binding}" 
+                              HorizontalAlignment="Center" AutoGenerateColumns="False" 
+                              CanUserAddRows="False"
+                              ScrollViewer.CanContentScroll="True" 
+                              ScrollViewer.VerticalScrollBarVisibility="Auto"
+                              ScrollViewer.HorizontalScrollBarVisibility="Auto" Margin="0,10,0,-21">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ORDER ID" Width="Auto" Binding="{Binding Mode=TwoWay, Path=excid}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="DEPOSIT" Width="Auto" Binding="{Binding Mode=TwoWay, Path=deposit_address_amount_symbol}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="RECEIVED" Width="Auto" Binding="{Binding Mode=TwoWay, Path=xels_address_amount}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="STATUS" Width="200" Binding="{Binding Mode=TwoWay, Path=showstatus}" IsReadOnly="True" />
+                                <DataGridTemplateColumn Header="Actions" Width="Auto">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button  Background="Green" Name="DepositButton" Click="DepositButton_Click">Deposit Now</Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                            </DataGrid.Columns>
+
                         </DataGrid>
+
                     </Grid>
                 </Grid>
             </StackPanel>

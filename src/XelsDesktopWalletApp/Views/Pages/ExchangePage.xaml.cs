@@ -49,7 +49,7 @@ namespace XelsDesktopWalletApp.Views.Pages
 
         string addr;
         bool updatesuccess = false;
-        private StoredWallet mywallet = new StoredWallet();
+        private readonly StoredWallet mywallet = new StoredWallet();
         private CreateWallet createWallet = new CreateWallet();
         public List<ExchangeResponse> exchangedatalist = new List<ExchangeResponse>();
 
@@ -115,9 +115,8 @@ namespace XelsDesktopWalletApp.Views.Pages
             this.walletName = walletname;
             this.walletInfo.WalletName = this.walletName;
             this.mywallet = this.createWallet.GetLocalWalletDetails(this.walletInfo.WalletName);
-            LoadCreateAsync();
-            UpdateExchangeListAsync();
-
+            Task.Run(async () => await LoadCreateAsync());
+            Task.Run(async () => await UpdateExchangeListAsync());
             this.updatesuccess = false;
         }
 
@@ -177,45 +176,6 @@ namespace XelsDesktopWalletApp.Views.Pages
             }
         }
 
-        public async Task<ExchangeResponse> GetOrderAsync(string orderId)
-        {
-            try
-            {
-                string path = URLConfiguration.BaseURLExchange + "/api/getOrder/" + orderId;
-                var content = "";
-                ExchangeResponse exchangedata = new ExchangeResponse();
-
-                HttpResponseMessage response = await URLConfiguration.Client.GetAsync(path);
-                content = await response.Content.ReadAsStringAsync();
-
-                if (response.IsSuccessStatusCode)
-                {
-                    exchangedata = JsonConvert.DeserializeObject<ExchangeResponse>(content);
-
-                    if (exchangedata.id != null)
-                    {
-                        MessageBox.Show($"Your provided Order Id: {orderId} is not found!");
-                    }
-                    else
-                    {
-                       await DepositAsync(exchangedata.deposit_symbol, exchangedata.deposit_amount, exchangedata);
-                    }
-
-                }
-                else
-                {
-                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-                }
-
-                return exchangedata;
-
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-        }
-
         public async Task NewOrderAsync(ExchangeOrder order)
         {
             try
@@ -250,74 +210,82 @@ namespace XelsDesktopWalletApp.Views.Pages
             }
             catch (Exception e)
             {
-                throw;
+                MessageBox.Show(e.Message.ToString());
             }
         }
         #endregion
 
         public async Task UpdateExchangeListAsync()
         {
-            if (this.mywallet != null)
-            {
-                if (this.mywallet.Wallethash != "")
+
+                if (this.mywallet != null)
                 {
-                    this.exchangedatalist = await GetOrdersAsync(this.mywallet.Wallethash);
-
-                    if (this.exchangedatalist != null && this.exchangedatalist.Count > 0)
+                    if (this.mywallet.Wallethash != "")
                     {
-                        this.ExchangesList.Items.Clear();
-                        this.NoData.Visibility = Visibility.Hidden;
-                        this.ListData.Visibility = Visibility.Visible;
-
-                        // Processed data
-                        foreach (ExchangeResponse data in this.exchangedatalist)
+                        try
                         {
-                            ExchangeData edata = new ExchangeData();
-                            edata.excid = data.id;
-                            edata.deposit_address_amount_symbol = $"{data.deposit_address} {data.deposit_amount} {data.deposit_symbol}";
-                            edata.xels_address_amount = $"{data.xels_address} {data.xels_amount} XELS";
 
-                            if (data.status == 0)
-                            {
-                                edata.showstatus = "Wating for deposit";
-                            }
-                            else if (data.status == 1)
-                            {
-                                edata.showstatus = "Pending Exchange";
-                            }
-                            else if (data.status == 2)
-                            {
-                                edata.showstatus = "Complete";
-                            }
+                        this.exchangedatalist = await GetOrdersAsync(this.mywallet.Wallethash);
+                        this.Dispatcher.Invoke(() =>
+                        {
 
-                            this.exchangelist.Add(edata);
+                            if (this.exchangedatalist != null && this.exchangedatalist.Count > 0)
+                            {
+                                this.ExchangesList.ItemsSource=null;
+                                this.NoData.Visibility = Visibility.Hidden;
+                                this.ListData.Visibility = Visibility.Visible;
+                                // Processed data
+                                foreach (ExchangeResponse data in this.exchangedatalist)
+                                {
+                                    ExchangeData edata = new ExchangeData();
+                                    edata.excid = data.id;
+                                    edata.deposit_address_amount_symbol = $"{data.deposit_address} {data.deposit_amount} {data.deposit_symbol}";
+                                    edata.xels_address_amount = $"{data.xels_address} {data.xels_amount} XELS";
+
+                                    if (data.status == 0)
+                                    {
+                                        edata.showstatus = "Wating for deposit";
+                                    }
+                                    else if (data.status == 1)
+                                    {
+                                        edata.showstatus = "Pending Exchange";
+                                    }
+                                    else if (data.status == 2)
+                                    {
+                                        edata.showstatus = "Complete";
+                                    }
+
+                                    this.exchangelist.Add(edata);
+                                }
+
+                                this.ExchangesList.ItemsSource = this.exchangelist;
+                            }
+                            else
+                            {
+                                this.ListData.Visibility = Visibility.Hidden;
+                                this.NoData.Visibility = Visibility.Visible;
+                            }
+                            this.updatesuccess = true;
+                        });
+                        }
+                        catch (Exception e)
+                        {
+                            MessageBox.Show(e.Message.ToString());
                         }
 
-                        this.ExchangesList.ItemsSource = this.exchangelist;
                     }
-                    else
-                    {
-                        this.ListData.Visibility = Visibility.Hidden;
-                        this.NoData.Visibility = Visibility.Visible;
-                    }
-                    this.updatesuccess = true;
+
                 }
-               
-            }
         }
 
         public async Task LoadCreateAsync()
         {
             this.addr = await GetUnusedReceiveAddressesAsync(this.baseURL);
-            this.addr = FreshAddress(this.addr);
+            this.addr = this.addr.TrimStart('"').TrimEnd('"');
+
         }
 
-        private string FreshAddress(string adr)
-        {
-            adr = adr.Trim(new char[] { '"' });
-            return adr;
-        }
-
+      
         private async Task<string> GetUnusedReceiveAddressesAsync(string path)
         {
             string getUrl = path + $"/wallet/unusedaddress?WalletName={this.walletInfo.WalletName}&AccountName=account 0";
@@ -336,36 +304,87 @@ namespace XelsDesktopWalletApp.Views.Pages
             return content;
         }
 
-
-        public async Task DepositNowAsync(ExchangeData orderitem)
-        {
-            ExchangeResponse dipositreturn = await GetOrderAsync(orderitem.excid);
-        }
-
         public async Task DepositAsync(string symbol, double amount, ExchangeResponse exchangeResponse)
         {
+            string addre = mywallet.Address;
+            string privtKey= mywallet.PrivateKey;
+            string  walltName= mywallet.Walletname;
+            string coin = mywallet.Coin;
+            string wathash = mywallet.Wallethash;
+
             StoredWallet mWallet = new StoredWallet();
-            if (symbol == this.mywallet.Coin)
+            try
             {
-                mWallet = this.mywallet;
+                if (symbol == coin)
+                {
+                    mWallet.Address = addre;
+                    mWallet.Walletname = walltName;
+                    mWallet.Coin = coin;
+                    mWallet.Wallethash = wathash;
+                    mWallet.PrivateKey= Encryption.DecryptPrivateKey(privtKey);
+                }
+                //Initialize
+                // Transfer
+                var tx = await this.createWallet.TransferAsync(mWallet, exchangeResponse, amount);
+
             }
-            if (mWallet == null)
+            catch (Exception e)
             {
-                MessageBox.Show($"Please import valid token address or send {amount} {symbol} to {exchangeResponse.deposit_address}");
+                MessageBox.Show(e.Message.ToString());
             }
-            //Decrypt Private Key
-            mWallet.PrivateKey = Encryption.DecryptPrivateKey(mWallet.PrivateKey);
-            //Initialize
-            // Transfer
-            var tx = await this.createWallet.TransferAsync(mWallet, exchangeResponse, amount);
         }
+     
+        public async Task<ExchangeResponse> GetOrderAsync(string orderId)
+        {
+            ExchangeResponse exchangedata = new ExchangeResponse();
+            try
+            {
+                string path = URLConfiguration.BaseURLExchange + "/api/getOrder/" + orderId;
+                HttpResponseMessage response = await URLConfiguration.Client.GetAsync(path);
+                string content = await response.Content.ReadAsStringAsync();
 
+                if (response.IsSuccessStatusCode)
+                {
+                    exchangedata = JsonConvert.DeserializeObject<ExchangeResponse>(content);
 
+                    if (exchangedata.id == null)
+                    {
+                        MessageBox.Show($"Your provided Order Id: {orderId} is not found!");
+                    }
+                    else
+                    {
+                        await DepositAsync(exchangedata.deposit_symbol, exchangedata.deposit_amount, exchangedata);
+                    }
+
+                }
+                else
+                {
+                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                }
+
+                return exchangedata;
+
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message.ToString());
+                return exchangedata;
+            }
+        }
         private void DepositButton_Click(object sender, RoutedEventArgs e)
         {
-            ExchangeData item = (ExchangeData)((sender as Button)?.Tag as ListViewItem)?.DataContext;
-            //MessageBox.Show("Item detail: " + item.excid);
-            DepositNowAsync(item);
+            DataGrid dataGrid = this.ExchangesList;
+            DataGridRow Row = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromIndex(dataGrid.SelectedIndex);
+            ExchangeData item = (ExchangeData) Row.DataContext;
+            if (item != null)
+            {
+                Task<ExchangeResponse> task = Task.Run<ExchangeResponse>(async () => await GetOrderAsync(item.excid));
+            }
+            else
+            {
+                MessageBox.Show("Value Must be required!.");
+            }
+
         }
 
 
@@ -377,15 +396,15 @@ namespace XelsDesktopWalletApp.Views.Pages
                 {
                     MessageBox.Show($"Your ethereum address is not imported properly. Please import your address again");
                 }
-
-                ExchangeOrder exchangeOrder = new ExchangeOrder();
-                exchangeOrder.xels_address = this.addr;
-                exchangeOrder.deposit_amount = Convert.ToDouble(this.AmountTxt.Text);
-                exchangeOrder.deposit_symbol = this.SelectedCoin.Name;
-                exchangeOrder.user_code = this.mywallet.Wallethash;
-
-                NewOrderAsync(exchangeOrder);
-
+                else
+                {
+                    ExchangeOrder exchangeOrder = new ExchangeOrder();
+                    exchangeOrder.xels_address = this.addr;
+                    exchangeOrder.deposit_amount = Convert.ToDouble(this.AmountTxt.Text);
+                    exchangeOrder.deposit_symbol = this.SelectedCoin.Name;
+                    exchangeOrder.user_code = this.mywallet.Wallethash;
+                    Task.Run(async () => await NewOrderAsync(exchangeOrder));
+                }
             }
         }
 
