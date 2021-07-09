@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Navigation;
 
+using System.Windows.Shapes;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 using XelsDesktopWalletApp.Models;
@@ -51,28 +53,102 @@ namespace XelsDesktopWalletApp.Views
             LoadAddresses();
         }
 
-        public async Task LoadAddresses()
+        
+        public bool isValid()
+        {
+            if (this.LabelTxt.Text == string.Empty)
+            {
+                MessageBox.Show("Please enter a label for your address.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.LabelTxt.Focus();
+                return false;
+            }
+
+            if (this.LabelTxt.Text.Length < 2)
+            {
+                MessageBox.Show("A label needs to be at least 2 characters long.");
+                this.LabelTxt.Focus();
+                return false;
+            }
+
+            if (this.LabelTxt.Text.Length > 40)
+            {
+                MessageBox.Show("A label can't be more than 40 characters long.");
+                this.LabelTxt.Focus();
+                return false;
+            }
+
+            if (this.AddressTxt.Text == string.Empty)
+            {
+                MessageBox.Show("Please add a valid address.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.AddressTxt.Focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        //public void AddAddressManually()
+        //{
+        //    this.addresses = new List<AddressLabel>() {
+        //            new AddressLabel { label = "Towsif", address = "0bcds6f9df9gdbfgidbfrfbgfgdsgfdtowsif" },
+        //            new AddressLabel { label = "Shuvo", address = "63grkjbfcghsdggdgdgdgdgfhdfdgfdshuvo" },
+        //            new AddressLabel { label = "Mts", address = "a7sdf8s7fdfsgdfghgjfdhrfhffhdgffdhmts" }
+        //        };
+        //    this.AddressList.ItemsSource = this.addresses;
+
+        //    if (this.addresses.Count > 0)
+        //    {
+        //        this.NoData.Visibility = Visibility.Hidden;
+        //        this.ListData.Visibility = Visibility.Visible;
+        //    }
+        //    else
+        //    {
+        //        this.ListData.Visibility = Visibility.Hidden;
+        //        this.NoData.Visibility = Visibility.Visible;
+        //    }
+        //}
+
+        public async void LoadAddresses()
         {
             this.addresses = await GetAPIAsync(this.baseURL);
+
+            if (this.addresses.Count > 0)
+            {
+                this.NoData.Visibility = Visibility.Hidden;
+                this.ListData.Visibility = Visibility.Visible;
+                this.AddressList.ItemsSource = this.addresses;
+            }
+            else
+            {
+                this.ListData.Visibility = Visibility.Hidden;
+                this.NoData.Visibility = Visibility.Visible;
+            }
         }
 
         private async Task<List<AddressLabel>> GetAPIAsync(string path)
         {
-            string getUrl = path + "/AddressBook";
-            var content = "";
+            try { 
+                string getUrl = path + "/AddressBook";
+                var content = "";
 
-            HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
-            if (response.IsSuccessStatusCode)
-            {
-                content = await response.Content.ReadAsStringAsync();
-            }
-            else
-            {
-                MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-            }
+                HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
+                if (response.IsSuccessStatusCode)
+                {
+                    content = await response.Content.ReadAsStringAsync();
+                    this.addresses = JsonConvert.DeserializeObject<List<AddressLabel>>(content);
+                }
+                else
+                {
+                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                }
 
-            List<AddressLabel> addresslist = ProcessAddresses(content);
-            return addresslist;
+                List<AddressLabel> addresslist = ProcessAddresses(content);
+                return addresslist;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public List<AddressLabel> ProcessAddresses(string _content)
@@ -149,12 +225,82 @@ namespace XelsDesktopWalletApp.Views
             this.Close();
         }
 
-        private void Hyperlink_NavigateAddAddress(object sender, RequestNavigateEventArgs e)
+
+        private void AddAddress_Click(object sender, RoutedEventArgs e)
         {
-            AddressBookAddNew addaddr = new AddressBookAddNew(this.walletName);
-            addaddr.Show();
-            this.Close();
+            this.NewAddressPopup.IsOpen = true;
         }
 
+        private void HidePopup_Click(object sender, RoutedEventArgs e)
+        {
+            this.NewAddressPopup.IsOpen = false;
+        }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.NewAddressPopup.IsOpen = false;
+        }
+
+        private void Create_Click(object sender, RoutedEventArgs e)
+        {
+            AddressLabel address = new AddressLabel();
+            address.label = LabelTxt.Text;
+            address.address = AddressTxt.Text;
+            AddNewAddress(address);
+        }
+
+        public async Task AddNewAddress(AddressLabel newaddress)
+        {
+            try
+            {
+                if (isValid())
+                {
+                    string postUrl = this.baseURL + "/AddressBook/address";
+
+                    HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(newaddress), Encoding.UTF8, "application/json"));
+                    
+                    if (response.IsSuccessStatusCode)
+                    {
+                        MessageBox.Show("Successfully created with label: " + newaddress.label);
+
+                        this.NewAddressPopup.IsOpen = false;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
+        private void SendButton_Click(object sender, RoutedEventArgs e)
+        {
+            AddressLabel item = (AddressLabel)((sender as Button)?.Tag as ListViewItem)?.DataContext;
+
+            //Send td = new Send(this.walletName);
+            //td.Show();
+            //this.Close();
+        }
+
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            AddressLabel item = (AddressLabel)((sender as Button)?.Tag as ListViewItem)?.DataContext;
+        }
+        
+
+        private void CopyButton_Click(object sender, RoutedEventArgs e)
+        {
+            DataGrid dataGrid = AddressList;
+            DataGridRow Row = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromIndex(dataGrid.SelectedIndex);
+            DataGridCell RowAndColumn = (DataGridCell)dataGrid.Columns[1].GetCellContent(Row).Parent;
+            string CellValue = ((TextBlock)RowAndColumn.Content).Text;
+
+            Clipboard.SetText(CellValue);
+        }
     }
+
 }
