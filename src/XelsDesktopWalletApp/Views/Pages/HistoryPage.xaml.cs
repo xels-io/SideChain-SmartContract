@@ -1,8 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using System.Windows.Shapes;
 
 using NBitcoin;
 
@@ -11,21 +20,25 @@ using Newtonsoft.Json;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 
-namespace XelsDesktopWalletApp.Views
+namespace XelsDesktopWalletApp.Views.Pages
 {
     /// <summary>
-    /// Interaction logic for History.xaml
+    /// Interaction logic for HistoryPage.xaml
     /// </summary>
-    public partial class History : Window
+    public partial class HistoryPage : Page
     {
+        public HistoryPage()
+        {
+            InitializeComponent();
+            DataContext = this;
+        }
 
         #region Base
-        //static HttpClient client = new HttpClient();
         string baseURL = URLConfiguration.BaseURLMain;// "http://localhost:37221/api";
         #endregion
 
         #region Wallet Info
-        
+
         private readonly WalletInfo walletInfo = new WalletInfo();
 
         private string walletName;
@@ -44,16 +57,12 @@ namespace XelsDesktopWalletApp.Views
 
         private HistoryModelArray historyModelArray = new HistoryModelArray();
         private List<TransactionInfo> transactions = new List<TransactionInfo>();
-        public History()
+         
+        public HistoryPage(string walletname)
         {
-            InitializeComponent();
-        }
-        public History(string walletname)
-        {
-            InitializeComponent();
-            this.DataContext = this;
-            this.HistoryListBinding.Visibility = Visibility.Hidden;
-            this.NoData.Visibility = Visibility.Visible;
+            InitializeComponent();            
+            //this.HistoryListBinding.Visibility = Visibility.Hidden;
+           // this.NoData.Visibility = Visibility.Visible;
 
             this.walletName = walletname;
             this.walletInfo.WalletName = this.walletName;
@@ -67,35 +76,42 @@ namespace XelsDesktopWalletApp.Views
 
             HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
 
+            content = await response.Content.ReadAsStringAsync();
 
             if (response.IsSuccessStatusCode)
             {
-                content = await response.Content.ReadAsStringAsync();
-                
-                this.historyModelArray = JsonConvert.DeserializeObject<HistoryModelArray>(content);
 
-                //if (this.historyModelArray.History != null && this.historyModelArray.History[0].TransactionsHistory.Length > 0)
-                //{
-                //    int transactionsLen = this.historyModelArray.History[0].TransactionsHistory.Length;
-                //    this.NoData.Visibility = Visibility.Hidden;
-                //    this.HistoryListBinding.Visibility = Visibility.Visible;
+                try
+                {
+                    var history = JsonConvert.DeserializeObject<HistoryModelArray>(content);
 
-                //    TransactionItemModel[] historyResponse = new TransactionItemModel[transactionsLen];
-                //   // historyResponse = this.historyModelArray.History[0].TransactionsHistory;
+                    foreach(var h in history.History)
+                    {
+                        this.HistoryListBinding.ItemsSource = h.TransactionsHistory;
+                    }
+                }
+                catch (Exception e)
+                {
 
-                //    GetTransactionInfo(historyResponse);
-                //}
-                //else
-                //{
-                //    this.HistoryListBinding.Visibility = Visibility.Hidden;
-                //    this.NoData.Visibility = Visibility.Visible;
-                //}
+                    throw;
+                }
+               
             }
             else
             {
                 MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
             }
         }
+
+        private void DetailsButton_Click(object sender, RoutedEventArgs e)
+        {
+            TransactionInfo item = (TransactionInfo)((sender as Button)?.Tag as ListViewItem)?.DataContext;
+
+            TransactionDetail td = new TransactionDetail(this.walletName, item);
+            td.Show();
+
+        }
+
 
         //private void GetTransactionInfo(TransactionItemModel[] transactions)
         //{
@@ -182,51 +198,6 @@ namespace XelsDesktopWalletApp.Views
 
         //    this.HistoryListBinding.ItemsSource = this.transactions;
         //}
-
-
-        private void Hyperlink_NavigateDashboard(object sender, RequestNavigateEventArgs e)
-        {
-            Dashboard ds = new Dashboard(this.walletName);
-            ds.Show();
-            this.Close();
-        }
-        private void Hyperlink_NavigateHistory(object sender, RequestNavigateEventArgs e)
-        {
-            History hs = new History(this.walletName);
-            hs.Show();
-            this.Close();
-        }
-        private void Hyperlink_NavigateExchange(object sender, RequestNavigateEventArgs e)
-        {
-            Exchange ex = new Exchange(this.walletName);
-            ex.Show();
-            this.Close();
-        }
-        private void Hyperlink_NavigateSmartContract(object sender, RequestNavigateEventArgs e)
-        {
-        }
-
-        private void Hyperlink_NavigateAddressBook(object sender, RequestNavigateEventArgs e)
-        {
-            AddressBook ex = new AddressBook(this.walletName);
-            ex.Show();
-            this.Close();
-        }
-
-        private void Hyperlink_NavigateLogout(object sender, RequestNavigateEventArgs e)
-        {
-            LogoutConfirm lc = new LogoutConfirm(this.walletName);
-            lc.Show();
-            this.Close();
-        }
-
-        private void Hyperlink_NavigateAdvanced(object sender, RequestNavigateEventArgs e)
-        {
-            Advanced adv = new Advanced(this.walletName);
-            adv.Show();
-            this.Close();
-        }
-
 
     }
 }

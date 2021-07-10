@@ -9,9 +9,9 @@ namespace XelsDesktopWalletApp.Models
     {
         public string AccountName { get; set; }
         public string AccountHdPath { get; set; }
-        public CoinType CoinType { get; set; }
+        public int CoinType { get; set; }
         //public List<TransactionItemModel> transactionsHistory { get; set; }
-        public TransactionItemModel[] TransactionsHistory { get; set; }
+        public List<TransactionItemModel> TransactionsHistory { get; set; }
     }
 
     public class HistoryModelArray

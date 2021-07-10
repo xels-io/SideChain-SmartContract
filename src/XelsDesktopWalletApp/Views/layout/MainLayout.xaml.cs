@@ -77,12 +77,19 @@ namespace XelsDesktopWalletApp.Views.layout
         private void btnDashboard_Click(object sender, RoutedEventArgs e)
         {
             this.PageContent.Content = new DashboardPage(this.walletName);
+            this.btnDashboard.Focus();
         }
 
         private void btn_SmartContract_Click(object sender, RoutedEventArgs e)
         {
             this.PageContent.Content = null;
             this.PageContent.Content = new SmtAddressSelection(this.walletName);
+        }
+        
+             private void btnHistory_Click(object sender, RoutedEventArgs e)
+        {
+            this.PageContent.Content = null;
+            this.PageContent.Content = new HistoryPage(this.walletName);
         }
 
         //private void ButtonOpenMenu_Click(object sender, RoutedEventArgs e)
