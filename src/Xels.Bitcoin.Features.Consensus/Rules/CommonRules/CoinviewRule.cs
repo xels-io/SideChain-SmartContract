@@ -432,5 +432,51 @@ namespace Xels.Bitcoin.Features.Consensus.Rules.CommonRules
                    (this.Consensus.PremineReward > 0) &&
                    (height == this.Consensus.PremineHeight);
         }
+
+        public Money GetCalculatedRewardFromHeight(int height)
+        {
+            if (height <= this.Consensus.PremineHeight)
+            {
+                return this.Consensus.PremineReward;
+            }
+            else if (height <= this.Consensus.FirstMiningPeriodHeight)
+            {
+                return this.Consensus.ProofOfStakeReward;
+            }
+            else if (height <= this.Consensus.SecondMiningPeriodHeight)
+            {
+                return this.Consensus.ProofOfStakeReward - (Money.Satoshis(3256) * (height - this.Consensus.FirstMiningPeriodHeight));
+            }
+            else if (height <= this.Consensus.ThirdMiningPeriodHeight)
+            {
+                return this.Consensus.ProofOfStakeReward / 2;
+            }
+            else if (height <= this.Consensus.ForthMiningPeriodHeight)
+            {
+                return (this.Consensus.ProofOfStakeReward / 2) - (Money.Satoshis(1628) * (height - this.Consensus.ThirdMiningPeriodHeight));
+            }
+            else if (height <= this.Consensus.FifthMiningPeriodHeight)
+            {
+                return this.Consensus.ProofOfStakeReward / 4;
+            }
+            else
+            {
+                int multiplier = (int)(height - this.Consensus.FifthMiningPeriodHeight) / (int)210240;
+                double returnAmount = 1449770000;
+
+                if (multiplier == 0)
+                {
+                    return Money.Satoshis(1449770000);
+                }
+                else
+                {
+                    for (int i = 0; i < multiplier; i++)
+                    {
+                        returnAmount *= 1.02;
+                    }
+                }
+                return Money.Satoshis((decimal)returnAmount);
+            }
+        }
     }
 }

@@ -205,10 +205,7 @@ namespace Xels.Bitcoin.Features.SmartContracts.PoS.Rules
         /// <inheritdoc />
         public override Money GetProofOfWorkReward(int height)
         {
-            if (this.IsPremine(height))
-                return this.consensus.PremineReward;
-
-            return this.consensus.ProofOfWorkReward;
+            return this.GetCalculatedRewardFromHeight(height);
         }
 
         /// <summary>

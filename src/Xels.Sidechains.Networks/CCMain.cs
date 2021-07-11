@@ -64,12 +64,12 @@ namespace Xels.Sidechains.Networks
             // and should be the same for all nodes operating on this network.
             var genesisFederationMembers = new List<IFederationMember>()
             {
-                new CollateralFederationMember(new PubKey("033762e3baa6628ba1e523e0d3a4b0112f3704467aba0f0fd5788ddf308cd23a43"), true, new Money(7000000_00000000),"XME93DJogF1HH9iSvo1127oKRaHBxEoQfS"),
-                new CollateralFederationMember(new PubKey("02b7b1b8802a5155dbf7ba0fdfca028e995c77da179972a8cf1e99d93462f91d01"), true, new Money(7000000_00000000),"XSy63BJycFb4QP1qDiU13hxKD5H3U2yhYJ"),
-                new CollateralFederationMember(new PubKey("02e2a8ee8197604a86131b54e18273f9ccb43f58b9de8c4a611cf27c5e715aea2e"), true, new Money(7000000_00000000),"XYMzq6E3MHfgcWQi1DfjNt4YQmEpKPeA1B"),
-                new CollateralFederationMember(new PubKey("03e54650fb2242613ce0b508df0650c3d7cbcb4b82c748c7b69157927c47b19642"), true, new Money(7000000_00000000),"CK7j3zkc1TbZVug289eq7UpKBy7dRWxox2"),
-                new CollateralFederationMember(new PubKey("0394788094df4ddde7eb3eacdd61245eef3d03b103f566406aa43cb18c36a1e64b"), true, new Money(7000000_00000000),"CZ9gAuEHX9oQiCV9EfwDinRQ96UQfB1CDq"),
-                new CollateralFederationMember(new PubKey("02fd05bd7398e3e36d93c31a91b603418f9e4e1b251490b790eabb9cc302927be8"), true, new Money(7000000_00000000),"Cev8YBzpFZFmfMQLeKSNYgAa57CmyqwhUT"),
+                new CollateralFederationMember(new PubKey("033762e3baa6628ba1e523e0d3a4b0112f3704467aba0f0fd5788ddf308cd23a43"), true, new Money(7000000_00000000),"XPddcvptCSW1XQeGJzmNruXYDmt2Yo649s"),
+                new CollateralFederationMember(new PubKey("02b7b1b8802a5155dbf7ba0fdfca028e995c77da179972a8cf1e99d93462f91d01"), true, new Money(7000000_00000000),"XG2752izyfuui6Cys7rqATx3JS5zNgL3wQ"),
+                new CollateralFederationMember(new PubKey("02e2a8ee8197604a86131b54e18273f9ccb43f58b9de8c4a611cf27c5e715aea2e"), true, new Money(7000000_00000000),"XHeUcZtFp9TLiK3nGbi7QcCN2PAjPxUSHX"),
+                new CollateralFederationMember(new PubKey("03e54650fb2242613ce0b508df0650c3d7cbcb4b82c748c7b69157927c47b19642"), true, new Money(7000000_00000000),"CcwX6LmbL1ZUxgbdVz1pDe25SmmNtLnnTr"),
+                new CollateralFederationMember(new PubKey("0394788094df4ddde7eb3eacdd61245eef3d03b103f566406aa43cb18c36a1e64b"), true, new Money(7000000_00000000),"CHwG8nrqs3yDhNwBnzcdtSpuFNWHfUkhoG"),
+                new CollateralFederationMember(new PubKey("02fd05bd7398e3e36d93c31a91b603418f9e4e1b251490b790eabb9cc302927be8"), true, new Money(7000000_00000000),"CWvxWKHyzBzEEpcX2J1CCXZGzQKps2ux9j"),
                 new CollateralFederationMember(new PubKey("03caac79a12ffd58595d5eb1a3cda5cd5cce5fd82b595181d6bbf70514e48fcbff"), false, new Money(7000000_00000000),"XGytWoLG4mcoMNXN387D3RJtUvsXwo1aNX"),//"XVGhRi1wSk4idA9NCZ9eXtrrLWti1iSPRP"),
             };
 
@@ -137,7 +137,7 @@ namespace Xels.Sidechains.Networks
                 defaultAssumeValid: null,  //new uint256("0x0000005a39d58d384efabc1a9c79cd6e8c63894c77d4219526481cb49582ff29"), // 1400000
                 maxMoney: Money.Coins(100_000_000),
                 coinbaseMaturity: 1,
-                premineHeight: 2,
+                premineHeight: 1,
                 premineReward: Money.Coins(100_000_000),
                 proofOfWorkReward: Money.Coins(0),
                 powTargetTimespan: TimeSpan.FromDays(14), // two weeks
