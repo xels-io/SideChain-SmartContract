@@ -1,14 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
+
 using XelsDesktopWalletApp.Models;
 
 namespace XelsDesktopWalletApp.Views
@@ -23,7 +14,6 @@ namespace XelsDesktopWalletApp.Views
 
         WalletCreation _walletcreate = new WalletCreation();
 
-
         //private string _mnemonic;
         //public string _Mnemonic
         //{
@@ -32,7 +22,6 @@ namespace XelsDesktopWalletApp.Views
         //}
 
         #endregion
-
 
         public CreateShowMnemonic()
         {
@@ -43,28 +32,27 @@ namespace XelsDesktopWalletApp.Views
         public CreateShowMnemonic(WalletCreation model)
         {
             InitializeComponent();
-            textBoxTextToMnemonic.Text = model.mnemonic;
+            this.textBoxTextToMnemonic.Text = model.Mnemonic;
 
             InitializeWalletCreationModel(model);
         }
 
-        private void InitializeWalletCreationModel(WalletCreation cr)
+        private void InitializeWalletCreationModel(WalletCreation CreateWallet)
         {
-            _walletcreate.name = cr.name;
-            _walletcreate.passphrase = cr.passphrase;
-            _walletcreate.password = cr.password;
-            _walletcreate.mnemonic = cr.mnemonic;
+            this._walletcreate.Name = CreateWallet.Name;
+            this._walletcreate.Passphrase = CreateWallet.Passphrase;
+            this._walletcreate.Password = CreateWallet.Password;
+            this._walletcreate.Mnemonic = CreateWallet.Mnemonic;
         }
-
 
         private void copyClipboardButton_Click(object sender, RoutedEventArgs e)
         {
-            Clipboard.SetText(textBoxTextToMnemonic.Text);
+            Clipboard.SetText(this.textBoxTextToMnemonic.Text);
         }
 
         private void continueButton_Click(object sender, RoutedEventArgs e)
         {
-            CreateConfirmMnemonic ccm = new CreateConfirmMnemonic(_walletcreate);
+            CreateConfirmMnemonic ccm = new CreateConfirmMnemonic(this._walletcreate);
             ccm.Show();
             this.Close();
         }

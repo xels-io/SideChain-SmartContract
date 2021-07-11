@@ -1,22 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 using Newtonsoft.Json;
+
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 using XelsDesktopWalletApp.Views;
+using XelsDesktopWalletApp.Views.layout;
 
 namespace XelsDesktopWalletApp
 {
@@ -26,146 +21,97 @@ namespace XelsDesktopWalletApp
     public partial class MainWindow : Window
     {
 
-       
         string baseURL = URLConfiguration.BaseURL;
-
-        //public List<WalletLoadRequest> _myList { get; set; }
-        private List<WalletLoadRequest> myList = new List<WalletLoadRequest>();
-        private WalletLoadRequest selectedWallet = new WalletLoadRequest();
-
-        public List<WalletLoadRequest> MyList
-        {
-            get
-            {
-                return this.myList;
-            }
-            set
-            {
-                this.myList = value;
-            }
-        }
-        public WalletLoadRequest SelectedWallet
-        {
-            get
-            {
-                return this.selectedWallet;
-            }
-            set
-            {
-                this.selectedWallet = value;
-            }
-        }
-
+        
+        private WalletLoadRequest UserWallet;
+        List<WalletLoadRequest> walletList;
 
         public MainWindow()
         {
+            this.UserWallet = new WalletLoadRequest();
+            this.walletList = new List<WalletLoadRequest>();
             InitializeComponent();
 
             this.DataContext = this;
 
-            LoadLoginAsync();
-        }
+            LoadWalletList();
+        } 
 
-
-        public async Task LoadLoginAsync()
+        private async Task LoadWalletList()
         {
             try
             {
-                await GetAPIAsync(this.baseURL);
-            }
-            catch (Exception e)
-            {
-
-                throw;
-            }
-           
-        }
-
-
-        private async Task GetAPIAsync(string path)
-        {
-            try
-            {
-                string getUrl = path + "/wallet/list-wallets";
+                string getUrl = this.baseURL + "/wallet/list-wallets";
                 var content = "";
 
                 HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
                 if (response.IsSuccessStatusCode)
                 {
                     content = await response.Content.ReadAsStringAsync();
-                    
+                  this.comboWallets.ItemsSource =  await WalletNamesforDropdown(content);
                 }
                 else
                 {
                     MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
                 }
-                converted(content);
             }
             catch (Exception e)
             {
-
-                throw;
+                MessageBox.Show($"Message-{e.Message}");
             }
-            
         }
 
-
-        private async Task converted(string data)
+        private async Task<List<WalletLoadRequest>> WalletNamesforDropdown(string data)
         {
-            string[] rowData = data.Split(':');
-            string[] rowDataMain = rowData[1].Split('\"');
+            
+            var walletNames = JsonConvert.DeserializeObject<WalletLoadRequest>(data);
 
-            foreach (var d in rowDataMain)
+            foreach (var d in walletNames.WalletNames)
             {
                 WalletLoadRequest wlr = new WalletLoadRequest();
-                wlr.name = d;
-                if (!(d.Contains("[") || d.Contains(",") || d.Contains("]")))
-                {
-                    this.myList.Add(wlr);
-
-                }
+                wlr.Name = d;
+                this.walletList.Add(wlr);
             }
-        }
 
+            return this.walletList;
+        }
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
             CreateOrRestore cr = new CreateOrRestore();
-            cr.Show();
+            cr.ShowDialog();
             this.Close();
         }
 
-
-
         private async void DecryptButton_ClickAsync(object sender, RoutedEventArgs e)
         {
+            this.UserWallet.Name = (string)this.comboWallets.SelectedValue;
 
-            if (this.SelectedWallet.name != null)
+            if (this.UserWallet.Name != null)
             {
-                this.selectedWallet.password = this.password.Password;
+                this.UserWallet.Password = this.password.Password;
 
                 string postUrl = this.baseURL + "/wallet/load/";
 
-                HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(this.SelectedWallet), Encoding.UTF8, "application/json"));
+                HttpResponseMessage response = await URLConfiguration.Client.PostAsJsonAsync(postUrl, this.UserWallet);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    // MessageBox.Show("Successfully logged in by " + this.SelectedWallet.name);
+                    //Dashboard db = new Dashboard(this.UserWallet.Name);//this.SelectedWallet.Name
+                    //db.Show();
+                    //this.Close();
 
-                    Dashboard db = new Dashboard(this.SelectedWallet.name);
-                    db.Show();
+
+                    MainLayout mainLayout = new MainLayout(this.UserWallet.Name);
+                    mainLayout.Show();
                     this.Close();
                 }
                 else
                 {
-                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                    MessageBox.Show($"Error Code{response.StatusCode} : Message - {response.ReasonPhrase}");
                 }
-
             }
-
-
         }
-
 
     }
 }

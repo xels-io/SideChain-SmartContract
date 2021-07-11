@@ -13,27 +13,4 @@ namespace XelsDesktopWalletApp.Models
     {
         public string user_code { get; set; }
     }
-
-
-    //error
-    public class ExchangeErr : Exception
-    {
-        public error error { get; set; }
-        public detail detail { get; set; }
-    }
-    public class error
-    {
-        public string err_code { get; set; }
-    }
-
-    public class detail
-    {
-        public user_code user_code { get; set; }
-    }
-    public class user_code
-    {
-        public string code { get; set; }
-        public string title { get; set; }
-        public string message { get; set; }
-    }
 }

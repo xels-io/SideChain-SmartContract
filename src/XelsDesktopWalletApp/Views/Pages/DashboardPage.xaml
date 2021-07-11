@@ -1,0 +1,440 @@
+﻿<Page x:Class="XelsDesktopWalletApp.Views.Pages.DashboardPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:XelsDesktopWalletApp.Views.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="550" d:DesignWidth="900"
+      Title="DashboardPage">
+
+    <StackPanel Background="White" Margin="5">
+
+        <!--- upper grid -->
+
+        <StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="4*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+
+                <!--- hybrid minning -->
+                <Border Grid.Column="0" Padding="5" Margin="15 15 0 0" BorderThickness="1" BorderBrush="Gray">
+                    <Grid>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height=".4*" />
+                            <RowDefinition Height=".2*" />
+                            <RowDefinition Height=".2*" />
+                            <RowDefinition Height=".2*" />
+                            <RowDefinition Height=".2*" />
+                            <RowDefinition Height=".2*" />
+                        </Grid.RowDefinitions>
+
+                        <!--- header  -->
+                        <Border Grid.Row="0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Label Grid.Row="0" Content="HYBRID-POW-POS MINING INFO" HorizontalAlignment="Left"   RenderTransformOrigin="-0.599,0.121"  FontFamily="Microsoft YaHei" Foreground="#FF9B9B9B" FontSize="9" FontWeight="DemiBold" Padding=" 0 5 0 0" />
+                            </Grid>
+                        </Border>
+
+                        <!---  hybrid weight -->
+                        <Border Grid.Row="1">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Label Grid.Column="0" Content="Hybrid weight:"/>
+                                <TextBlock Grid.Column="1"  x:Name="HybridWeightTxt" />
+
+                            </Grid>
+                        </Border>
+
+                        <!--- coins awaiting maturity -->
+                        <Border Grid.Row="2">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" TextWrapping="Wrap" Text="Coins awaiting maturity:"/>
+                                <TextBlock Grid.Column="1" x:Name="CoinsAwaitingMaturityTxt"/>
+
+                            </Grid>
+                        </Border>
+
+                        <!--- network weight -->
+                        <Border Grid.Row="3">
+                            <Grid >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Label Grid.Column="0" Content="Network weight:"/>
+                                <TextBlock Grid.Column="1" x:Name="NetworkWeightTxt" />
+
+                            </Grid>
+                        </Border>
+
+                        <Border Grid.Row="4">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" TextWrapping="Wrap" Text="Expected reward time :" />
+                                <TextBlock Grid.Column="1" x:Name="ExpectedRewardTimmeTxt" />
+
+                            </Grid>
+                        </Border>
+
+                        <Border Grid.Row="5" Margin="10">
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" /> 
+                                </Grid.RowDefinitions>
+
+                                <PasswordBox Grid.Row="0" x:Name="Password" />
+
+                                <!--<Button Grid.Column="1" x:Name="HybridMinginButton"  HorizontalAlignment="Center"  Margin="5 0 " FontSize="7"
+                                Click="StartHybridMiningButton_Click" Foreground="#FF9B9B9B" Background="White" BorderBrush="#FF9B9B9B" >
+                                    <TextBlock Text="Start Hybrid Mining" TextWrapping="Wrap" TextAlignment="Center"/>
+                                </Button>-->
+
+                                <Button Grid.Row="1" x:Name="HybridMinginButton" Content="Start Hybrid Mining" HorizontalAlignment="Center"  Margin="5 5 0 0  " 
+                                Click="StartHybridMiningButton_Click" Foreground="#FF9B9B9B" Background="White" BorderBrush="#FF9B9B9B" >
+                                    <Button.Resources>
+                                        <Style TargetType="{x:Type Border}">
+                                            <Setter  Property="CornerRadius" Value="2">                                                
+                                            </Setter>
+                                        </Style>
+                                    </Button.Resources>
+                                </Button>
+
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!--- balance -->
+                <Border Grid.Column="1" Padding="5" Margin="3 15 3 0" BorderThickness="1" BorderBrush="Gray" >
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- xels balance -->
+                        <Border Grid.Row="0">
+                            <Grid Margin="10 0 10 0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <Border Grid.Row="0">
+                                    <TextBlock  Margin="0,10,0,0" Text="AVAILABLE BALANCE" HorizontalAlignment="Center" FontFamily="Microsoft YaHei" Foreground="#FF9B9B9B" FontSize="13" FontWeight="DemiBold" />
+                                </Border>
+
+                                <Border Grid.Row="1" Background="WhiteSmoke" >
+                                    <TextBlock  Name="ConfirmedBalanceTxt"  FontSize="20" 
+                                                HorizontalAlignment="Center" 
+                                   FontFamily="Microsoft YaHei" Foreground="Green"/>
+                                </Border>
+
+                                <Border Grid.Row="2" >
+                                    <TextBlock  x:Name="UnconfirmedBalanceTxt" FontFamily="Microsoft YaHei Light" Foreground="#FF898989" FontSize="10" FontWeight="DemiBold" TextAlignment="Center" />
+                                </Border>
+
+
+
+                            </Grid>
+                        </Border>
+
+                        <!-- bels and sels  -->
+                        <Border Grid.Row="1">
+                            <Grid Margin="10 0 10 0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <Border Background="WhiteSmoke" Grid.Row="0" Margin=" 0 5">
+                                    <TextBlock  Name="SelsCoinTxt" HorizontalAlignment="Center" FontFamily="Microsoft YaHei Light" Foreground="Green"  FontSize="15" FontWeight="DemiBold" >
+                00.00000000 SELS</TextBlock>
+                                </Border>
+
+                                <Border Background="WhiteSmoke" Grid.Row="1" Margin=" 0 5">
+                                    <TextBlock  Name="BelsCoinTxt" HorizontalAlignment="Center" FontFamily="Microsoft YaHei Light" Foreground="Green" FontSize="15" FontWeight="DemiBold" >
+                00.00000000 BELS</TextBlock>
+                                </Border>
+
+                                <Border Grid.Row="2"  Margin=" 0 5">
+                                    <Button Content="Import XELS &amp; BELS Address" Click="ImportAddrButton_Click" FontFamily="Microsoft YaHei Light" Foreground="Green" Background="White" BorderBrush="Green" FontSize="13" FontWeight="DemiBold" >
+                                        <Button.Resources>
+                                            <Style TargetType="{x:Type Border}">
+                                                <Setter Property="CornerRadius" Value="2"/>
+                                            </Style>
+                                        </Button.Resources>
+                                    </Button>
+                                </Border>
+
+
+                            </Grid>
+                        </Border>
+
+
+                        <!--  receive and send button  -->
+
+                        <Border Grid.Row="2">
+                            <Grid Margin="10 30 10 0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button Grid.Column="0" x:Name="receiveButton" Click="receiveButton_Click"  Content="RECEIVE"  Padding="2" Background="Green" FontFamily="Microsoft YaHei Light" BorderThickness="0,0,0,0" Foreground="White" FontWeight="Normal" >
+                                    <Button.Resources>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="5"/>
+                                        </Style>
+                                    </Button.Resources>
+                                </Button>
+
+                                <Button Grid.Column="1" x:Name="sendButton" Click="sendButton_Click"  Content="SEND" Padding="2" Background="Green" FontFamily="Microsoft YaHei Light" BorderThickness="0,0,0,0" Foreground="White" FontWeight="Normal" Margin="10,0,0,0"  >
+                                    <Button.Resources>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="5"/>
+                                        </Style>
+                                    </Button.Resources>
+                                </Button>
+
+                            </Grid>
+                        </Border>
+
+                    </Grid>
+
+                </Border>
+
+                <!--- pow/pos minning -->
+                <Border Grid.Column="2" Padding="5" Margin=" 0 15 25 0 " BorderThickness="1" BorderBrush="Gray">
+
+                    <StackPanel >
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height=".4*"/>
+                                <RowDefinition Height=".2*"/>
+                                <RowDefinition Height=".2*"/>
+                                <RowDefinition Height=".2*"/>
+                                <RowDefinition Height=".2*"/>
+                                <RowDefinition Height=".2*"/>
+                                <RowDefinition Height=".2*"/>
+
+                            </Grid.RowDefinitions>
+
+                            <Border Grid.Row="0">
+                                <Grid Margin="5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Content="CONNECTION INFO" HorizontalAlignment="Center" FontSize="9" FontWeight="DemiBold" FontFamily="Microsoft YaHei"  VerticalAlignment="Top" RenderTransformOrigin="-0.599,0.121" Foreground="#FFB6AEAE"/>
+                                </Grid>
+                            </Border>
+
+                            <Border Grid.Row="1">
+                                <Grid Margin="5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="2.1*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock  Grid.Column="0" Name="ConnectionPercentTxt"
+                                                    FontFamily="Microsoft YaHei" FontSize="10" Foreground="Green" 
+                                                   TextAlignment="Right" Height="16" Width="40" />
+                                    <TextBlock TextWrapping="Wrap"  Grid.Column="1" Name="ConnectedCountTxt"
+                                                    FontFamily="Microsoft YaHei" FontSize="10" Foreground="Green" 
+                                                   TextAlignment="Right" Height="16" Width="83" Text="2 connections"/>
+
+                                    <Label x:Name="ConnectionNotifyTxt" ToolTip="{Binding ConnectionNotifyTxt}" Grid.Column="2" FontFamily="Microsoft YaHei" FontSize="10" Foreground="Green">
+                                        <Image Source="/Assets/Images/thumbsdown.png"  Width="40" Height="40" />
+                                    </Label>
+
+                                </Grid>
+                            </Border>
+
+                            <Border Grid.Row="2">
+                                <Grid Margin="5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Column="0" TextWrapping="Wrap" Text="Connection Status:" Padding="0" Margin="0"/>
+                                    <TextBlock Grid.Column="1" x:Name="ConnectionStatusTxt" TextWrapping="Wrap" Width="72"/>
+                                </Grid>
+                            </Border>
+
+                            <Border Grid.Row="3">
+                                <Grid Margin="5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Column="0" TextWrapping="Wrap" Text="Last Block Synced Height:" Padding="0" Margin="0"/>
+                                    <TextBlock Grid.Column="1" x:Name="LastBlockSyncedHeightTxt" />
+                                </Grid>
+                            </Border>
+
+                            <Border Grid.Row="4">
+                                <Grid Margin="5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Grid.Column="0" Content="Chain Tip:" Padding="0" Margin="0"/>
+                                    <TextBlock Grid.Column="1" x:Name="ChainTipTxt" />
+
+                                </Grid>
+                            </Border>
+
+                            <Border Grid.Row="5">
+                                <Grid Margin="5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Grid.Column="0" Content="Parent Synced:"  Padding="0" Margin="0"/>
+                                    <TextBlock Grid.Column="1" x:Name="ParentSyncedTxt"/>
+                                </Grid>
+
+
+
+                            </Border>
+
+                            <Border Grid.Row="6" >
+
+                                <Grid Margin="10 40 10 10">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Border Grid.Row="0" x:Name="startButton">
+
+                                        <Button x:Name="PowMiningButton" Content="Start POW Mining" HorizontalAlignment="Center" 
+                                Click="StartPOWMiningButton_Click" Foreground="#FF9B9B9B" Background="White" BorderBrush="#FF9B9B9B"  FontWeight="DemiBold">
+                                            <Button.Resources>
+                                                <Style TargetType="{x:Type Border}">
+                                                    <Setter Property="CornerRadius" Value="2"/>
+                                                </Style>
+                                            </Button.Resources>
+                                        </Button>
+
+                                    </Border>
+
+                                    <Border Grid.Row="1" x:Name="stopButton">
+
+                                        <Button Visibility="Hidden" x:Name="StopPowMiningButton" Content="Stop POW Mining" HorizontalAlignment="Center" 
+                                Click="StopPOWMiningButton_Click" Foreground="#FF9B9B9B" Background="White" BorderBrush="#FF9B9B9B"  FontWeight="DemiBold">
+                                            <Button.Resources>
+                                                <Style TargetType="{x:Type Border}">
+                                                    <Setter Property="CornerRadius" Value="2"/>
+                                                </Style>
+                                            </Button.Resources>
+                                        </Button>
+
+                                    </Border>
+                                    
+                                </Grid>
+
+                            </Border>
+
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+            </Grid>
+        </StackPanel>
+
+
+
+        <!--- lower grid -->
+        <!--- history  -->
+        <StackPanel Margin="0 15 0 0">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Border  Grid.Row="0" Margin="10,10,10,10" Grid.ColumnSpan="3">
+                    <Grid>
+                        <Grid Margin="0,-15,0,34">
+                            <ListView Margin="0,20,0,0" x:Name="HistoryList" FontSize="9" BorderThickness="0" >
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Confirmation in block" Width="200" 
+                                            DisplayMemberBinding="{Binding Path=transactionTypeName}"  />
+                                        <GridViewColumn Header="Type" Width="150"
+                                            DisplayMemberBinding="{Binding Path=transactionType}" />
+                                        <GridViewColumn Header="Amount" Width="150" 
+                                            DisplayMemberBinding="{Binding Path=transactionFinalAmount}"  />
+                                        <GridViewColumn Header="Time stamp" Width="150" 
+                                            DisplayMemberBinding="{Binding Path=transactionTimestamp}"  />
+                                        <GridViewColumn Header="" Width="150" 
+                                            >
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock FontWeight="Bold"  FontFamily="Microsoft YaHei Light" >
+                                                        <Button Tag="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListViewItem}}}"  
+                                                                 Content="Detail" Click="DetailButton_Click" />
+                                                    </TextBlock>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </Grid>
+
+                        <Button Content="Go to History" Click="GotoHistoryButton_Click" FontFamily="Microsoft YaHei Light" 
+                                Foreground="#FF0FD421" Background="White" BorderBrush="#FF30CD3E" FontSize="10" 
+                                Margin="0,79,0,10" HorizontalAlignment="Center" Width="77">
+                            <Button.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="2"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </Grid>
+                </Border>
+            </Grid>
+
+        </StackPanel>
+
+    </StackPanel>
+
+</Page>

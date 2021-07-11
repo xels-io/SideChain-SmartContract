@@ -1,15 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+
 using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 
@@ -30,6 +21,7 @@ namespace XelsDesktopWalletApp.Views
         private string[] walletHashArray;
         private string walletHash;
         private bool isCheckBoxChecked = false;
+
         public string WalletName
         {
             get
@@ -55,7 +47,7 @@ namespace XelsDesktopWalletApp.Views
             //HidePrivateKeyTxt();
 
             this.walletName = walletname;
-            this.walletInfo.walletName = this.walletName;
+            this.walletInfo.WalletName = this.walletName;
         }
 
         public bool isValid()
@@ -69,8 +61,6 @@ namespace XelsDesktopWalletApp.Views
 
             return true;
         }
-
-
 
         public bool isValidPKey()
         {
@@ -94,7 +84,6 @@ namespace XelsDesktopWalletApp.Views
             return true;
         }
 
-
         private string MnemonicToHash(string mnemonic)
         {
             this.walletHashArray = new string[mnemonic.Length];
@@ -113,7 +102,6 @@ namespace XelsDesktopWalletApp.Views
             
             return hashvalue;
         }
-
 
         private void TransactionIDCopyButton_Click(object sender, RoutedEventArgs e)
         {

@@ -7,13 +7,13 @@ namespace XelsDesktopWalletApp.Models
 {
     public class WalletGeneralInfoModel
     {
-        public string walletName { get; set; }
-        public string network { get; set; }
-        public string creationTime { get; set; }
-        public bool isDecrypted { get; set; }
-        public int? lastBlockSyncedHeight { get; set; }
-        public int? chainTip { get; set; }
-        public bool isChainSynced { get; set; }
-        public int connectedNodes { get; set; }
+        public string WalletName { get; set; }
+        public string Network { get; set; }
+        public string CreationTime { get; set; }
+        public bool IsDecrypted { get; set; }
+        public int? LastBlockSyncedHeight { get; set; }
+        public int? ChainTip { get; set; }
+        public bool IsChainSynced { get; set; }
+        public int ConnectedNodes { get; set; }
     }
 }

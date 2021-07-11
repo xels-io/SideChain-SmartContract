@@ -1,19 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using Newtonsoft.Json;
+
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 
@@ -25,7 +16,6 @@ namespace XelsDesktopWalletApp.Views
     public partial class Create : Window
     {
 
-        //static HttpClient client = new HttpClient();
         string baseURL = URLConfiguration.BaseURL; //"http://localhost:37221/api/wallet";
         string _mnemonic;
         bool canProceedPass = false;
@@ -33,65 +23,65 @@ namespace XelsDesktopWalletApp.Views
         public Create()
         {
             InitializeComponent();
-            LoadCreate();
+            LoadMnemonics();
         }
 
-        public async void LoadCreate()
+        public async void LoadMnemonics()
         {
-            this._mnemonic = await GetAPIAsync(this.baseURL);
+            this._mnemonic = await GetMnemonics(this.baseURL);
         }
-
-        public bool isValid()
+        
+        public bool IsValid()
         {
-            if (name.Text == string.Empty)
+            if (string.IsNullOrWhiteSpace(this.name.Text))
             {
                 MessageBox.Show("Name is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                name.Focus();
+                this.name.Focus();
                 return false;
             }
 
-            if (name.Text.Length < 1 || name.Text.Length > 24)
+            if (this.name.Text.Length < 1 || this.name.Text.Length > 24)
             {
                 MessageBox.Show("Name should be 1 to 24 characters long");
-                name.Focus();
+                this.name.Focus();
                 return false;
             }
 
             // Name: /^[a-zA-Z0-9]*$/
-            if (!Regex.IsMatch(name.Text, @"^[a-zA-Z0-9]*$"))
+            if (!Regex.IsMatch(this.name.Text, @"^[a-zA-Z0-9]*$"))
             {
                 MessageBox.Show("Please enter a valid wallet name. [a-Z] and [0-9] are the only characters allowed.");
-                name.Focus();
+                this.name.Focus();
                 return false;
             }
 
-            if (password.Password == "")
+            if (string.IsNullOrWhiteSpace(this.password.Password))
             {
                 MessageBox.Show("Password field is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                password.Focus();
+                this.password.Focus();
                 return false;
             }
 
-            if ( repassword.Password == "")
+            if (string.IsNullOrWhiteSpace(this.repassword.Password))
             {
                 MessageBox.Show("Confirm password field is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                repassword.Focus();
+                this.repassword.Focus();
                 return false;
             }
 
             // Password:  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!#$%&'()*+,-./:;<=>?@[\]^_`{|}~])[A-Za-z\d!#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{8,}$/
-            if (!Regex.IsMatch(password.Password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!#$%&'()*+,-./:;<=>?@[\]^_`{|}~])[A-Za-z\d!#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{8,}$"))
+            if (!Regex.IsMatch(this.password.Password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!#$%&'()*+,-./:;<=>?@[\]^_`{|}~])[A-Za-z\d!#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{8,}$"))
             {
                 MessageBox.Show("A password must contain at least one uppercase letter, one lowercase letter, one number and one special character.");
 
-                password.Focus();
+                this.password.Focus();
                 return false;
             }
 
-            if (password.Password.Length < 8 )
+            if (this.password.Password.Length < 8)
             {
                 MessageBox.Show("A password should be at least 8 characters long");
-                password.Focus();
+                this.password.Focus();
                 return false;
             }
 
@@ -100,7 +90,7 @@ namespace XelsDesktopWalletApp.Views
 
         public void CheckPassInput()
         {
-            if (password.Password == repassword.Password)
+            if (this.password.Password == this.repassword.Password)
             {
                 canProceedPass = true;
             }
@@ -112,10 +102,10 @@ namespace XelsDesktopWalletApp.Views
 
         private void Content_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (!name.Text.Equals(String.Empty) && password.Password.Equals(repassword.Password))
-                createButton.IsEnabled = true;
+            if (!this.name.Text.Equals(String.Empty) && this.password.Password.Equals(this.repassword.Password))
+                this.createButton.IsEnabled = true;
             else
-                createButton.IsEnabled = false;
+                this.createButton.IsEnabled = false;
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
@@ -125,11 +115,10 @@ namespace XelsDesktopWalletApp.Views
             this.Close();
         }
 
-
-        private async Task<string> GetAPIAsync(string path)
+        private async Task<string> GetMnemonics(string path)
         {
             string getUrl = path + "/wallet/mnemonic?language=English&wordCount=12";
-            var content ="";
+            var content = "";
 
             HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
             if (response.IsSuccessStatusCode)
@@ -143,31 +132,27 @@ namespace XelsDesktopWalletApp.Views
             return content;
         }
 
-
-        private void createButton_Click(object sender, RoutedEventArgs e)
+        private void CreateButton_Click(object sender, RoutedEventArgs e)
         {
-            if (isValid())
+            if (IsValid())
             {
                 CheckPassInput();
 
-                if (canProceedPass == true) {
+                if (this.canProceedPass == true)
+                {
 
                     WalletCreation creation = new WalletCreation();
-                    creation.name = name.Text;
-                    creation.password = password.Password;
-                    creation.passphrase = passphrase.Text;
-                    creation.mnemonic = _mnemonic;
+                    creation.Name = this.name.Text;
+                    creation.Password = this.password.Password;
+                    creation.Passphrase = this.passphrase.Text;
+                    creation.Mnemonic = this._mnemonic;
 
                     CreateShowMnemonic csm = new CreateShowMnemonic(creation);
                     csm.Show();
                     this.Close();
                 }
-
             }
-
         }
-
-
 
     }
 }

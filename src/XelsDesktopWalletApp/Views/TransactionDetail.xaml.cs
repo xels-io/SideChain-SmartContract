@@ -15,10 +15,12 @@ namespace XelsDesktopWalletApp.Views
     public partial class TransactionDetail : Window
     {
         #region Base
-        //static HttpClient client = new HttpClient();
+      
         string baseURL = URLConfiguration.BaseURL;// "http://localhost:37221/api";
         #endregion
+
         #region Wallet Info
+
         private readonly WalletInfo walletInfo = new WalletInfo();
         private WalletGeneralInfoModel walletGeneralInfo = new WalletGeneralInfoModel();
 
@@ -34,21 +36,24 @@ namespace XelsDesktopWalletApp.Views
                 this.walletName = value;
             }
         }
+
         #endregion
 
         private int? lastBlockSyncedHeight;
         private int? confirmations;
         private TransactionInfo _transaction = new TransactionInfo();
+
         public TransactionDetail()
         {
             InitializeComponent();
         }
+
         public TransactionDetail(string walletname, TransactionInfo transaction)
         {
             InitializeComponent();
             this.DataContext = this;
             this.walletName = walletname;
-            this.walletInfo.walletName = this.walletName;
+            this.walletInfo.WalletName = this.walletName;
             GetTransaction(transaction);
             _ = GetGeneralWalletInfoAsync(this.baseURL);
             PopulateView();
@@ -67,7 +72,7 @@ namespace XelsDesktopWalletApp.Views
 
         private async Task GetGeneralWalletInfoAsync(string path)
         {
-            string getUrl = path + $"/wallet/general-info?Name={this.walletInfo.walletName}";
+            string getUrl = path + $"/wallet/general-info?Name={this.walletInfo.WalletName}";
             var content = "";
 
             HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
@@ -78,7 +83,7 @@ namespace XelsDesktopWalletApp.Views
 
                 this.walletGeneralInfo = JsonConvert.DeserializeObject<WalletGeneralInfoModel>(content);
 
-                this.lastBlockSyncedHeight = this.walletGeneralInfo.lastBlockSyncedHeight;
+                this.lastBlockSyncedHeight = this.walletGeneralInfo.LastBlockSyncedHeight;
                 GetConfirmations(this._transaction);
             }
             else
@@ -150,7 +155,6 @@ namespace XelsDesktopWalletApp.Views
             Clipboard.SetText(this.TransactionIDTxt.Text);
             this.TransactionIDTxt_Copyed.Visibility = Visibility.Visible;
         }
-
 
     }
 }

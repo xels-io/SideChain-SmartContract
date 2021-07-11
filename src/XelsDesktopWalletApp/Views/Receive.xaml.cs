@@ -1,21 +1,15 @@
-﻿using Newtonsoft.Json;
-using QRCoder;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.IO;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
+
+using QRCoder;
+
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 
@@ -27,12 +21,12 @@ namespace XelsDesktopWalletApp.Views
     public partial class Receive : Window
     {
 
-        //static HttpClient client = new HttpClient();
         string baseURL = URLConfiguration.BaseURL; //  "http://localhost:37221/api";
 
         private readonly WalletInfo walletInfo = new WalletInfo();
 
         private string walletName;
+
         public string WalletName
         {
             get
@@ -57,20 +51,18 @@ namespace XelsDesktopWalletApp.Views
             this.DataContext = this;
 
             this.walletName = walletname;
-            this.walletInfo.walletName = this.walletName;
+            this.walletInfo.WalletName = this.walletName;
             generateQRCode();
             LoadCreate();
         }
 
-
-        public async void LoadCreate()
+        public async Task LoadCreate()
         {
             string addr = await GetUnusedReceivedAddrAPIAsync(this.baseURL);
             addr = FreshAddress(addr);
 
             this.textBoxTextToQr.Text = addr;
         }
-
 
         private string FreshAddress(string adr)
         {
@@ -84,7 +76,6 @@ namespace XelsDesktopWalletApp.Views
             db.Show();
             this.Close();
         }
-
 
         private void generateQRCode()
         {
@@ -142,7 +133,7 @@ namespace XelsDesktopWalletApp.Views
 
         private async Task<string> GetUnusedReceivedAddrAPIAsync(string path)
         {
-            string getUrl = path + $"/wallet/unusedaddress?WalletName={this.walletInfo.walletName}&AccountName=account 0";
+            string getUrl = path + $"/wallet/unusedaddress?WalletName={this.walletInfo.WalletName}&AccountName=account 0";
             var content = "";
 
             HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
@@ -158,14 +149,15 @@ namespace XelsDesktopWalletApp.Views
             }
 
             return content;
-
         }
+
         private void xelsButton_Click(object sender, RoutedEventArgs e)
         {
             Receive r = new Receive(this.walletName);
             r.Show();
             this.Close();
         }
+
         private void selsButton_Click(object sender, RoutedEventArgs e)
         {
             //TextBlock tb = (TextBlock)this.spnael.FindName("showall");
@@ -174,14 +166,13 @@ namespace XelsDesktopWalletApp.Views
             rsb.Show();
             this.Close();
         }
+
         private void belsButton_Click(object sender, RoutedEventArgs e)
         {
             ReceiveSelsBels rsb = new ReceiveSelsBels(this.walletName);
             rsb.Show();
             this.Close();
         }
-
-
 
     }
 }

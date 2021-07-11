@@ -77,7 +77,7 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
             InitializeComponent();
             this.DataContext = this;
             this.walletName = walletname;
-            this.walletInfo.walletName = this.walletName;
+            this.walletInfo.WalletName = this.walletName;
             this.txtSender.Text = selectedAddress;
             this.txtAmount.Text = this.amountA.ToString();
             this.txtFee.Text = this.feeAmt.ToString();
@@ -87,11 +87,11 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
 
         }
 
-        private void Rectangle_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            this.Visibility = Visibility.Collapsed;
+        //private void Rectangle_MouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    this.Visibility = Visibility.Collapsed;
 
-        }
+        //}
 
         private void btn_CreateSubmit_Click(object sender, RoutedEventArgs e)
         {
@@ -238,9 +238,9 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
                 MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
             }
         }
-        private void btn_Create_Cancel_Click(object sender, RoutedEventArgs e)
-        {
-            this.Visibility = Visibility.Collapsed;
-        }
+        //private void btn_Create_Cancel_Click(object sender, RoutedEventArgs e)
+        //{
+        //    this.Visibility = Visibility.Collapsed;
+        //}
     }
 }

@@ -5,14 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+
 using System.Windows.Shapes;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 
@@ -36,10 +34,10 @@ namespace XelsDesktopWalletApp.Views
                 this.walletName = value;
             }
         }
-        //static HttpClient client = new HttpClient();
+        
         string baseURL = URLConfiguration.BaseURL;
             /*"http://localhost:37221/api"*/
-        //AddressLabel[] addresses = null;
+         
         List<AddressLabel> addresses = new List<AddressLabel>();
 
         public AddressBook()
@@ -54,44 +52,113 @@ namespace XelsDesktopWalletApp.Views
 
             this.DataContext = this;
 
-
             this.walletName = walletname;
             LoadAddresses();
-
         }
+
+        
+        public bool isValid()
+        {
+            if (this.LabelTxt.Text == string.Empty)
+            {
+                MessageBox.Show("Please enter a label for your address.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.LabelTxt.Focus();
+                return false;
+            }
+
+            if (this.LabelTxt.Text.Length < 2)
+            {
+                MessageBox.Show("A label needs to be at least 2 characters long.");
+                this.LabelTxt.Focus();
+                return false;
+            }
+
+            if (this.LabelTxt.Text.Length > 40)
+            {
+                MessageBox.Show("A label can't be more than 40 characters long.");
+                this.LabelTxt.Focus();
+                return false;
+            }
+
+            if (this.AddressTxt.Text == string.Empty)
+            {
+                MessageBox.Show("Please add a valid address.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.AddressTxt.Focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        //public void AddAddressManually()
+        //{
+        //    this.addresses = new List<AddressLabel>() {
+        //            new AddressLabel { label = "Towsif", address = "0bcds6f9df9gdbfgidbfrfbgfgdsgfdtowsif" },
+        //            new AddressLabel { label = "Shuvo", address = "63grkjbfcghsdggdgdgdgdgfhdfdgfdshuvo" },
+        //            new AddressLabel { label = "Mts", address = "a7sdf8s7fdfsgdfghgjfdhrfhffhdgffdhmts" }
+        //        };
+        //    this.AddressList.ItemsSource = this.addresses;
+
+        //    if (this.addresses.Count > 0)
+        //    {
+        //        this.NoData.Visibility = Visibility.Hidden;
+        //        this.ListData.Visibility = Visibility.Visible;
+        //    }
+        //    else
+        //    {
+        //        this.ListData.Visibility = Visibility.Hidden;
+        //        this.NoData.Visibility = Visibility.Visible;
+        //    }
+        //}
 
         public async void LoadAddresses()
         {
             this.addresses = await GetAPIAsync(this.baseURL);
+
+            if (this.addresses.Count > 0)
+            {
+                this.NoData.Visibility = Visibility.Hidden;
+                this.ListData.Visibility = Visibility.Visible;
+                this.AddressList.ItemsSource = this.addresses;
+            }
+            else
+            {
+                this.ListData.Visibility = Visibility.Hidden;
+                this.NoData.Visibility = Visibility.Visible;
+            }
         }
 
         private async Task<List<AddressLabel>> GetAPIAsync(string path)
         {
-            string getUrl = path + "/AddressBook";
-            var content = "";
+            try { 
+                string getUrl = path + "/AddressBook";
+                var content = "";
 
-            HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
-            if (response.IsSuccessStatusCode)
-            {
-                content = await response.Content.ReadAsStringAsync();
-            }
-            else
-            {
-                MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-            }
+                HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
+                if (response.IsSuccessStatusCode)
+                {
+                    content = await response.Content.ReadAsStringAsync();
+                    this.addresses = JsonConvert.DeserializeObject<List<AddressLabel>>(content);
+                }
+                else
+                {
+                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                }
 
-            List<AddressLabel> addresslist = ProcessAddresses(content);
-            return addresslist;
+                List<AddressLabel> addresslist = ProcessAddresses(content);
+                return addresslist;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
-
 
         public List<AddressLabel> ProcessAddresses(string _content)
         {
             JObject json = JObject.Parse(_content);
 
             AddressLabel addresslist = new AddressLabel();
-
-            //addresslist.label = json.addresses.label;
 
             return null ;
         }
@@ -101,7 +168,6 @@ namespace XelsDesktopWalletApp.Views
             Send send = new Send();
             send.Show();
             this.Close();
-            //MyPopup.IsOpen = true;
         }
 
         private void receiveButton_Click(object sender, RoutedEventArgs e)
@@ -155,7 +221,6 @@ namespace XelsDesktopWalletApp.Views
             this.Close();
         }
 
-
         private void Hyperlink_NavigateAdvanced(object sender, RequestNavigateEventArgs e)
         {
             Advanced adv = new Advanced(this.walletName);
@@ -164,12 +229,81 @@ namespace XelsDesktopWalletApp.Views
         }
 
 
-        private void Hyperlink_NavigateAddAddress(object sender, RequestNavigateEventArgs e)
+        private void AddAddress_Click(object sender, RoutedEventArgs e)
         {
-            AddressBookAddNew addaddr = new AddressBookAddNew(this.walletName);
-            addaddr.Show();
-            this.Close();
+            this.NewAddressPopup.IsOpen = true;
         }
 
+        private void HidePopup_Click(object sender, RoutedEventArgs e)
+        {
+            this.NewAddressPopup.IsOpen = false;
+        }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.NewAddressPopup.IsOpen = false;
+        }
+
+        private void Create_Click(object sender, RoutedEventArgs e)
+        {
+            AddressLabel address = new AddressLabel();
+            address.label = LabelTxt.Text;
+            address.address = AddressTxt.Text;
+            AddNewAddress(address);
+        }
+
+        public async Task AddNewAddress(AddressLabel newaddress)
+        {
+            try
+            {
+                if (isValid())
+                {
+                    string postUrl = this.baseURL + "/AddressBook/address";
+
+                    HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(newaddress), Encoding.UTF8, "application/json"));
+                    
+                    if (response.IsSuccessStatusCode)
+                    {
+                        MessageBox.Show("Successfully created with label: " + newaddress.label);
+
+                        this.NewAddressPopup.IsOpen = false;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
+        private void SendButton_Click(object sender, RoutedEventArgs e)
+        {
+            AddressLabel item = (AddressLabel)((sender as Button)?.Tag as ListViewItem)?.DataContext;
+
+            //Send td = new Send(this.walletName);
+            //td.Show();
+            //this.Close();
+        }
+
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            AddressLabel item = (AddressLabel)((sender as Button)?.Tag as ListViewItem)?.DataContext;
+        }
+        
+
+        private void CopyButton_Click(object sender, RoutedEventArgs e)
+        {
+            DataGrid dataGrid = AddressList;
+            DataGridRow Row = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromIndex(dataGrid.SelectedIndex);
+            DataGridCell RowAndColumn = (DataGridCell)dataGrid.Columns[1].GetCellContent(Row).Parent;
+            string CellValue = ((TextBlock)RowAndColumn.Content).Text;
+
+            Clipboard.SetText(CellValue);
+        }
     }
+
 }

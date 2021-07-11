@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+
 using NBitcoin;
+
 using Newtonsoft.Json;
+
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 
@@ -25,7 +19,6 @@ namespace XelsDesktopWalletApp.Views
     public partial class Send : Window
     {
 
-        //private static HttpClient client = new HttpClient();
         private readonly string baseURL = URLConfiguration.BaseURL;// "http://localhost:37221/api";
 
         private readonly WalletInfo walletInfo = new WalletInfo();
@@ -34,7 +27,7 @@ namespace XelsDesktopWalletApp.Views
 
         private WalletBalanceArray balances = new WalletBalanceArray();
         private BuildTransaction buildTransaction = new BuildTransaction();
-        
+
         private Money totalBalance;
         private Xels.Bitcoin.Features.Wallet.CoinType cointype;
         private Money spendableBalance;
@@ -43,7 +36,7 @@ namespace XelsDesktopWalletApp.Views
         private bool isSending = false;
 
         private Money opReturnAmount = 1;
-        
+
         private string walletName;
         public string WalletName
         {
@@ -69,7 +62,7 @@ namespace XelsDesktopWalletApp.Views
             this.DataContext = this;
 
             this.walletName = walletname;
-            this.walletInfo.walletName = this.walletName;
+            this.walletInfo.WalletName = this.walletName;
             LoadCreateAsync();
         }
 
@@ -221,7 +214,7 @@ namespace XelsDesktopWalletApp.Views
 
         private async Task GetWalletBalanceAsync(string path)
         {
-            string getUrl = path + $"/wallet/balance?WalletName={this.walletInfo.walletName}&AccountName=account 0";
+            string getUrl = path + $"/wallet/balance?WalletName={this.walletInfo.WalletName}&AccountName=account 0";
             var content = "";
 
             HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
@@ -233,9 +226,9 @@ namespace XelsDesktopWalletApp.Views
 
                 this.balances = JsonConvert.DeserializeObject<WalletBalanceArray>(content);
 
-                this.totalBalance = this.balances.balances[0].amountConfirmed + this.balances.balances[0].amountUnconfirmed;
-                this.cointype = this.balances.balances[0].coinType;
-                this.spendableBalance = this.balances.balances[0].spendableAmount;
+                this.totalBalance = this.balances.Balances[0].AmountConfirmed + this.balances.Balances[0].AmountUnconfirmed;
+                this.cointype = this.balances.Balances[0].CoinType;
+                this.spendableBalance = this.balances.Balances[0].SpendableAmount;
 
                 this.textAvailableCoin.Content = this.totalBalance.ToString();
                 this.textCoinType.Content = this.cointype.ToString();
@@ -257,7 +250,7 @@ namespace XelsDesktopWalletApp.Views
             var content = "";
 
             MaximumBalance maximumBalance = new MaximumBalance();
-            maximumBalance.WalletName = this.walletInfo.walletName;
+            maximumBalance.WalletName = this.walletInfo.WalletName;
             maximumBalance.AccountName = "account 0";
             maximumBalance.FeeType = "medium";
             maximumBalance.AllowUnconfirmed = true;
@@ -301,7 +294,7 @@ namespace XelsDesktopWalletApp.Views
                 var content = "";
 
                 FeeEstimation feeEstimation = new FeeEstimation();
-                feeEstimation.walletName = this.walletInfo.walletName;
+                feeEstimation.walletName = this.walletInfo.WalletName;
                 feeEstimation.accountName = "account 0";
                 feeEstimation.recipients = recipients;
                 feeEstimation.feeType = this.textTransactionFee.Text;
@@ -331,7 +324,7 @@ namespace XelsDesktopWalletApp.Views
             string postUrl = this.baseURL + $"/wallet/build-transaction";
             var content = "";
 
-            this.transactionBuilding.walletName = this.walletInfo.walletName;
+            this.transactionBuilding.walletName = this.walletInfo.WalletName;
             this.transactionBuilding.accountName = "account 0";
             this.transactionBuilding.password = this.password.Password;
             this.transactionBuilding.recipients = recipients;
