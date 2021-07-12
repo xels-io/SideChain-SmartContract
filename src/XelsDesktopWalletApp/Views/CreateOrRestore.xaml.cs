@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Navigation;
 
 using XelsDesktopWalletApp.Views.Pages;
@@ -8,7 +9,7 @@ namespace XelsDesktopWalletApp.Views
     /// <summary>
     /// Interaction logic for CreateOrRestore.xaml
     /// </summary>
-    public partial class CreateOrRestore : Window
+    public partial class CreateOrRestore : Page
     {
         public CreateOrRestore()
         {
@@ -20,21 +21,21 @@ namespace XelsDesktopWalletApp.Views
             //this.Content = new RestoreWalletPage();
             Restore restore = new Restore();
             restore.Show();
-            this.Close();
+           // this.Close();
         }
 
         private void createButton_Click(object sender, RoutedEventArgs e)
         {
             Create create = new Create();
             create.Show();
-            this.Close();
+           // this.Close();
         }
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
             MainWindow mw = new MainWindow();
             mw.Show();
-            this.Close();
+           // this.Close();
         }
     }
 }

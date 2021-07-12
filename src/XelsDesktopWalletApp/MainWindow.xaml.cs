@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
+using XelsDesktopWalletApp.Models.SmartContractModels;
 using XelsDesktopWalletApp.Views;
 using XelsDesktopWalletApp.Views.layout;
 
@@ -79,8 +80,9 @@ namespace XelsDesktopWalletApp
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
             CreateOrRestore cr = new CreateOrRestore();
-            cr.ShowDialog();
-            Close();
+            this.Content = cr;
+            //cr.ShowDialog();
+            //Close();
         }
 
         private async void DecryptButton_ClickAsync(object sender, RoutedEventArgs e)
@@ -101,7 +103,7 @@ namespace XelsDesktopWalletApp
                     //db.Show();
                     //this.Close();
 
-
+                    GlobalPropertyModel.WalletName = this.UserWallet.Name;
                     MainLayout mainLayout = new MainLayout(this.UserWallet.Name);
                     mainLayout.Show();
                     this.Close();

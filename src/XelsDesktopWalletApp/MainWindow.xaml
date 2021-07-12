@@ -101,6 +101,8 @@
 
 
     </StackPanel>-->
+    <Grid>
+        
     <Border Background="White" BorderBrush="#FFBBBBBB" BorderThickness="1,1,1,1" CornerRadius="10,10,10,10">
 
         <Grid Margin="5,5,5,5">
@@ -156,4 +158,6 @@
             <Image Source="/Assets/Images/icon.ico" Width="100" Height="100" VerticalAlignment="Top" Margin="30"/>
         </Grid>
     </Border>
+
+    </Grid>
 </Window>

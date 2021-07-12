@@ -16,6 +16,7 @@ using Newtonsoft.Json;
 using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
+using XelsDesktopWalletApp.Models.SmartContractModels;
 
 namespace XelsDesktopWalletApp.Views.Pages
 {
@@ -110,9 +111,9 @@ namespace XelsDesktopWalletApp.Views.Pages
             InitializeComponent();
             this.DataContext = this;
 
-            this.walletName = walletname;
-            this.walletInfo.WalletName = this.walletName;
-            this.mywallet = this.createWallet.GetLocalWalletDetails(this.walletInfo.WalletName);
+            this.walletName = GlobalPropertyModel.WalletName.ToString();
+            this.walletInfo.WalletName = GlobalPropertyModel.WalletName.ToString();
+            this.mywallet = this.createWallet.GetLocalWalletDetails(GlobalPropertyModel.WalletName.ToString());
             Task.Run(async () => await LoadCreateAsync());
             Task.Run(async () => await UpdateExchangeListAsync());
             this.updatesuccess = false;
@@ -317,9 +318,10 @@ namespace XelsDesktopWalletApp.Views.Pages
                 {
                     mWallet.Address = addre;
                     mWallet.Walletname = walltName;
-                    mWallet.Coin = coin;
+                    mWallet.Coin = "TST";
                     mWallet.Wallethash = wathash;
                     mWallet.PrivateKey= Encryption.DecryptPrivateKey(privtKey);
+                   // mWallet.PrivateKey = "0x7732fa830d3bc3e6008fafd15f49ef42eea7fb44b91db2cf0646a4ad6f39cdfb";
                 }
                 //Initialize
                 // Transfer
