@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:XelsDesktopWalletApp.Views"
         mc:Ignorable="d"
-        Title="CreateOrRestore" Height="600" Width="1100">
+         Height="600" Width="1100">
     
     
     <!--Border Padding="10"-->
-        <StackPanel>
+    <StackPanel Margin="5,5,5,5">
             <StackPanel>
 
-                <Grid Background="LimeGreen" Margin="10" Height="100">
+                <Grid Background="LimeGreen" Margin="5,5,5,5" Height="100">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
@@ -70,12 +70,12 @@
                 </Button>
 
             </Grid>
-        <Grid Background="#FFCFCFCF">
+        <!--<Grid Background="#FFCFCFCF">
             <ScrollViewer>
                 <Frame x:Name="PageContent" />
 
             </ScrollViewer>
-        </Grid>
+        </Grid>-->
     </StackPanel>
     
     <!--</Border>-->

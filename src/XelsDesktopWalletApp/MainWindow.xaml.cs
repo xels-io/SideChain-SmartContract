@@ -80,7 +80,7 @@ namespace XelsDesktopWalletApp
         {
             CreateOrRestore cr = new CreateOrRestore();
             cr.ShowDialog();
-            this.Close();
+            Close();
         }
 
         private async void DecryptButton_ClickAsync(object sender, RoutedEventArgs e)

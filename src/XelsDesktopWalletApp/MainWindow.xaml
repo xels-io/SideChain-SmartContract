@@ -101,49 +101,49 @@
 
 
     </StackPanel>-->
+    <Border Background="White" BorderBrush="#FFBBBBBB" BorderThickness="1,1,1,1" CornerRadius="10,10,10,10">
 
+        <Grid Margin="5,5,5,5">
 
-    <Grid>
+            <Rectangle Height="280" VerticalAlignment="Top" RadiusY="10" RadiusX="10">
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF41A43C"/>
+                        <GradientStop Color="#FF41A43C" Offset="1"/>
+                        <GradientStop Color="#FF41A43C" Offset="0.546"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
 
-        <Rectangle Height="280" VerticalAlignment="Top">
-            <Rectangle.Fill>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF41A43C"/>
-                    <GradientStop Color="#FF41A43C" Offset="1"/>
-                    <GradientStop Color="#FF41A43C" Offset="0.546"/>
-                </LinearGradientBrush>
-            </Rectangle.Fill>
-        </Rectangle>
-
-        <Rectangle Width="280" Height="240" VerticalAlignment="Bottom" Margin="0,80" RadiusY="10" RadiusX="10" Fill="White">
-            <Rectangle.Effect>
-                <DropShadowEffect BlurRadius="15" Direction="0" RenderingBias="Quality" ShadowDepth="1" Color="#FFBBBBBB"/>
-            </Rectangle.Effect>
-        </Rectangle>
-        <Grid VerticalAlignment="Bottom" Margin="35,80" Height="240">
-            <Label Content="LOGIN" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5" Foreground="Gray" FontSize="18"/>
-            <StackPanel VerticalAlignment="Center" Margin="15">
-                <ComboBox x:Name="comboWallets" ItemsSource="{Binding  Path=walletList, Mode=TwoWay}"
+            <Rectangle Width="280" Height="240" VerticalAlignment="Bottom" Margin="0,80" RadiusY="10" RadiusX="10" Fill="White">
+                <Rectangle.Effect>
+                    <DropShadowEffect BlurRadius="15" Direction="0" RenderingBias="Quality" ShadowDepth="1" Color="#FFBBBBBB"/>
+                </Rectangle.Effect>
+            </Rectangle>
+            <Grid VerticalAlignment="Bottom" Margin="35,80" Height="240">
+                <Label Content="LOGIN" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5" Foreground="Gray" FontSize="18"/>
+                <StackPanel VerticalAlignment="Center" Margin="15">
+                    <ComboBox x:Name="comboWallets" ItemsSource="{Binding  Path=walletList, Mode=TwoWay}"
                            DisplayMemberPath="Name" SelectedValuePath="Name"
                           Margin="0,10" materialDesign:HintAssist.Hint="WALLET NAME" 
                           Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                           FontFamily="Champagne &amp; Limousines" FontSize="15" >
 
-                </ComboBox>
-                <!-- 
+                    </ComboBox>
+                    <!-- 
                 
                 
                 SelectedItem="{Binding Path=SelectedWallet, Mode=TwoWay}"
                 <TextBox Margin="0,10" materialDesign:HintAssist.Hint="EMAIL" Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontFamily="Champagne &amp; Limousines" FontSize="18"/>-->
-                <PasswordBox Name="password"  PasswordChar="*" Margin="0,10" materialDesign:HintAssist.Hint="PASSWORD" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" FontFamily="Champagne &amp; Limousines" FontSize="15"/>
-            </StackPanel>
-        </Grid>
-        <Button Width="150" x:Name="decryptButton" Click="DecryptButton_ClickAsync" HorizontalAlignment="Center" Background="#FF41A43C" VerticalAlignment="Bottom" Margin="0,65" Content="DECRYPT"/>
-        <Button x:Name="ButtonClose" Click="ButtonClose_Click" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="30" Height="30" Margin="300,0,0,468" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White">
-            <materialDesign:PackIcon Kind="HighlightOff" Foreground="Red" VerticalAlignment="Center"/>
-        </Button>
-        <!--<TextBlock Text="CREATE OR RSTORE A WALLET" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="30" Foreground="Gray" Cursor="Hand"/>-->
-        <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="30" Foreground="Gray" Cursor="Hand">
+                    <PasswordBox Name="password"  PasswordChar="*" Margin="0,10" materialDesign:HintAssist.Hint="PASSWORD" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" FontFamily="Champagne &amp; Limousines" FontSize="15"/>
+                </StackPanel>
+            </Grid>
+            <Button Width="150" x:Name="decryptButton" Click="DecryptButton_ClickAsync" HorizontalAlignment="Center" Background="#FF41A43C" VerticalAlignment="Bottom" Margin="0,65" Content="DECRYPT"/>
+            <Button x:Name="ButtonClose" Click="ButtonClose_Click" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="30" Height="25" Margin="300,0,0,468" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White">
+                <materialDesign:PackIcon Kind="HighlightOff" Foreground="Red" VerticalAlignment="Center"/>
+            </Button>
+            <!--<TextBlock Text="CREATE OR RSTORE A WALLET" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="30" Foreground="Gray" Cursor="Hand"/>-->
+            <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="30" Foreground="Gray" Cursor="Hand">
                 <Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="http://www.google.com"  TextDecorations="">
                     <Hyperlink.Style>
                     <Style TargetType="{x:Type Hyperlink}"
@@ -152,8 +152,8 @@
                     </Style>
                 </Hyperlink.Style><Run Text="CREATE OR RESTORE A WALLET"/>
                 </Hyperlink>
-        </TextBlock>
-        <Image Source="/Assets/Images/icon.ico" Width="100" Height="100" VerticalAlignment="Top" Margin="30"/>
-    </Grid>
-
+            </TextBlock>
+            <Image Source="/Assets/Images/icon.ico" Width="100" Height="100" VerticalAlignment="Top" Margin="30"/>
+        </Grid>
+    </Border>
 </Window>
