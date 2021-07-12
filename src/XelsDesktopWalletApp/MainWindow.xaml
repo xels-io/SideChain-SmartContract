@@ -139,6 +139,9 @@
             </StackPanel>
         </Grid>
         <Button Width="150" x:Name="decryptButton" Click="DecryptButton_ClickAsync" HorizontalAlignment="Center" Background="#FF41A43C" VerticalAlignment="Bottom" Margin="0,65" Content="DECRYPT"/>
+        <Button x:Name="ButtonClose" Click="ButtonClose_Click" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="30" Height="30" Margin="300,0,0,468" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White">
+            <materialDesign:PackIcon Kind="HighlightOff" Foreground="Red" VerticalAlignment="Center"/>
+        </Button>
         <!--<TextBlock Text="CREATE OR RSTORE A WALLET" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="30" Foreground="Gray" Cursor="Hand"/>-->
         <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="30" Foreground="Gray" Cursor="Hand">
                 <Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="http://www.google.com"  TextDecorations="">

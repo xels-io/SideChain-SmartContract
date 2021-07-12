@@ -113,5 +113,9 @@ namespace XelsDesktopWalletApp
             }
         }
 
+        private void ButtonClose_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
     }
 }
