@@ -92,6 +92,12 @@ namespace XelsDesktopWalletApp.Views.layout
             this.PageContent.Content = new HistoryPage(this.walletName);
         }
 
+        private void btn_Exchange_Click(object sender, RoutedEventArgs e)
+        {
+            this.PageContent.Content = null;
+            this.PageContent.Content = new ExchangePage(this.walletName);
+        }
+
         //private void ButtonOpenMenu_Click(object sender, RoutedEventArgs e)
         //{
         //    this.ButtonCloseMenu.Visibility = Visibility.Visible;
