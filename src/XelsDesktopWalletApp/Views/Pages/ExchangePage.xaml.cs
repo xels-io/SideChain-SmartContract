@@ -101,8 +101,6 @@ namespace XelsDesktopWalletApp.Views.Pages
         }
 
         #endregion
-
-
         public ExchangePage()
         {
             InitializeComponent();
