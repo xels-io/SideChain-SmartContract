@@ -167,9 +167,9 @@
                             <ColumnDefinition Width="211*"></ColumnDefinition>
                             <ColumnDefinition Width="573*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <StackPanel Orientation="Vertical" Margin="0,10,0,66"  Grid.Column="0" Grid.ColumnSpan="2" >
-                            <Label Content="About" Height="34" Width="710" Foreground="LightGray"
-                                FontFamily="Microsoft YaHei" FontSize="18" Padding="0"/>
+                        <StackPanel Orientation="Vertical" Margin="0,20,0,66"  Grid.Column="0" Grid.ColumnSpan="2" >
+                            <Label Content="ABOUT" Height="34" Width="710" Foreground="LightGray"
+                                FontFamily="Microsoft YaHei" FontSize="16" Padding="0"/>
 
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="10,64,0,66"  Grid.Column="0" >
@@ -296,9 +296,13 @@
                                 FontFamily="Microsoft YaHei" FontSize="14" Padding="0" RenderTransformOrigin="0.502,0.463"  />
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="100,230,50,0"  HorizontalAlignment="Left" Width="190"  >
-                            <DatePicker x:Name="RescanFromDate" DisplayDate="2019-01-01" Padding="5 "
-                                        FontSize="14" Foreground="#FF615858" Height="31"
-                                        BorderThickness="1" BorderBrush="LightGray" />
+                            <DatePicker x:Name="RescanFromDate"
+                                        DisplayDate="2019-01-01" Padding="5 " FontSize="14" Foreground="#FF615858" 
+                                        Height="31" BorderThickness="1" BorderBrush="LightGray" >
+                                <!--<DatePicker.BlackoutDates>
+                                    <CalendarDateRange Start="9/8/2009" />
+                                </DatePicker.BlackoutDates>-->
+                            </DatePicker>
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="50,280,50,0"  HorizontalAlignment="Center"  >
                             <Button x:Name="RescanButton" Click="Rescan_Click" Content="Rescan" Padding="5" 
