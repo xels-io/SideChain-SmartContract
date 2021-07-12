@@ -34,10 +34,10 @@ namespace XelsDesktopWalletApp.Views
                 this.walletName = value;
             }
         }
-        
+
         string baseURL = URLConfiguration.BaseURL;
-            /*"http://localhost:37221/api"*/
-         
+        /*"http://localhost:37221/api"*/
+
         List<AddressLabel> addresses = new List<AddressLabel>();
 
         public AddressBook()
@@ -56,7 +56,7 @@ namespace XelsDesktopWalletApp.Views
             LoadAddresses();
         }
 
-        
+
         public bool isValid()
         {
             if (this.LabelTxt.Text == string.Empty)
@@ -130,11 +130,13 @@ namespace XelsDesktopWalletApp.Views
 
         private async Task<List<AddressLabel>> GetAPIAsync(string path)
         {
-            try { 
+            try
+            {
                 string getUrl = path + "/AddressBook";
                 var content = "";
 
-                HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
+                HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl); // Error : e = {"No connection could be made because the target machine actively refused it."}
+
                 if (response.IsSuccessStatusCode)
                 {
                     content = await response.Content.ReadAsStringAsync();
@@ -160,7 +162,7 @@ namespace XelsDesktopWalletApp.Views
 
             AddressLabel addresslist = new AddressLabel();
 
-            return null ;
+            return null;
         }
 
         private void Show_Click(object sender, RoutedEventArgs e)
@@ -261,7 +263,7 @@ namespace XelsDesktopWalletApp.Views
                     string postUrl = this.baseURL + "/AddressBook/address";
 
                     HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(newaddress), Encoding.UTF8, "application/json"));
-                    
+                    // Error : e = {"No connection could be made because the target machine actively refused it."}
                     if (response.IsSuccessStatusCode)
                     {
                         MessageBox.Show("Successfully created with label: " + newaddress.label);
@@ -282,18 +284,36 @@ namespace XelsDesktopWalletApp.Views
 
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
-            AddressLabel item = (AddressLabel)((sender as Button)?.Tag as ListViewItem)?.DataContext;
-
-            //Send td = new Send(this.walletName);
-            //td.Show();
-            //this.Close();
+            Send td = new Send(this.walletName);
+            td.Show();
+            this.Close();
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
             AddressLabel item = (AddressLabel)((sender as Button)?.Tag as ListViewItem)?.DataContext;
+
+            //try
+            //{
+            //    string postUrl = this.baseURL + "/AddressBook/address";
+            //    string deleteParameter = item.label;
+            //    HttpResponseMessage response = URLConfiguration.Client.DeleteAsync(postUrl);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        MessageBox.Show("Successfully deleted address with label: " + item.label);
+            //    }
+            //    else
+            //    {
+            //        MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+            //    }
+            //}
+            //catch (Exception e)
+            //{
+            //    throw;
+            //}
         }
-        
+
 
         private void CopyButton_Click(object sender, RoutedEventArgs e)
         {

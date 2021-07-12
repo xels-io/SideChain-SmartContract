@@ -199,9 +199,9 @@ namespace XelsDesktopWalletApp.Views
                     this.HistoryList.Visibility = Visibility.Visible;
 
                     TransactionItemModel[] historyResponse = new TransactionItemModel[transactionsLen];
-                    historyResponse = this.historyModelArray.History[0].TransactionsHistory;
+                   // historyResponse = this.historyModelArray.History[0].TransactionsHistory;
 
-                    GetTransactionInfo(historyResponse);
+                   // GetTransactionInfo(historyResponse);
                 }
                 else
                 {
@@ -215,93 +215,93 @@ namespace XelsDesktopWalletApp.Views
             }
         }
 
-        private void GetTransactionInfo(TransactionItemModel[] transactions)
-        {
+        //private void GetTransactionInfo(TransactionItemModel[] transactions)
+        //{
 
-            foreach (TransactionItemModel transaction in transactions)
-            {
-                TransactionInfo transactionInfo = new TransactionInfo();
+        //    foreach (TransactionItemModel transaction in transactions)
+        //    {
+        //        TransactionInfo transactionInfo = new TransactionInfo();
 
-                //Type
-                if (transaction.Type == TransactionItemType.Send)
-                {
-                    transactionInfo.transactionType = "sent";
-                }
-                else if (transaction.Type == TransactionItemType.Received)
-                {
-                    transactionInfo.transactionType = "received";
-                }
-                else if (transaction.Type == TransactionItemType.Staked)
-                {
-                    transactionInfo.transactionType = "hybrid reward";
-                }
-                else if (transaction.Type == TransactionItemType.Mined)
-                {
-                    transactionInfo.transactionType = "pow reward";
-                }
+        //        //Type
+        //        if (transaction.Type == TransactionItemType.Send)
+        //        {
+        //            transactionInfo.transactionType = "sent";
+        //        }
+        //        else if (transaction.Type == TransactionItemType.Received)
+        //        {
+        //            transactionInfo.transactionType = "received";
+        //        }
+        //        else if (transaction.Type == TransactionItemType.Staked)
+        //        {
+        //            transactionInfo.transactionType = "hybrid reward";
+        //        }
+        //        else if (transaction.Type == TransactionItemType.Mined)
+        //        {
+        //            transactionInfo.transactionType = "pow reward";
+        //        }
 
-                //Id
-                transactionInfo.transactionId = transaction.Id;
+        //        //Id
+        //        transactionInfo.transactionId = transaction.Id;
 
-                //Amount
-                transactionInfo.transactionAmount = transaction.Amount ?? 0;
+        //        //Amount
+        //        transactionInfo.transactionAmount = transaction.Amount ?? 0;
 
-                //Fee
-                if (transaction.Fee != null)
-                {
-                    transactionInfo.transactionFee = transaction.Fee;
-                }
-                else
-                {
-                    transactionInfo.transactionFee = 0;
-                }
+        //        //Fee
+        //        if (transaction.Fee != null)
+        //        {
+        //            transactionInfo.transactionFee = transaction.Fee;
+        //        }
+        //        else
+        //        {
+        //            transactionInfo.transactionFee = 0;
+        //        }
 
-                //FinalAmount
-                if (transactionInfo.transactionType != null)
-                {
-                    if (transactionInfo.transactionType == "sent")
-                    {
-                        Money finalAmt = transactionInfo.transactionAmount + transactionInfo.transactionFee;
-                        transactionInfo.transactionFinalAmount = $" - {finalAmt}";
-                    }
-                    else if (transactionInfo.transactionType == "received")
-                    {
-                        Money finalAmt = transactionInfo.transactionAmount + transactionInfo.transactionFee;
-                        transactionInfo.transactionFinalAmount = $" + {finalAmt}";
-                    }
-                    else if (transactionInfo.transactionType == "hybrid reward")
-                    {
-                        Money finalAmt = transactionInfo.transactionAmount + transactionInfo.transactionFee;
-                        transactionInfo.transactionFinalAmount = $" + {finalAmt}";
-                    }
-                    else if (transactionInfo.transactionType == "pow reward")
-                    {
-                        Money finalAmt = transactionInfo.transactionAmount + transactionInfo.transactionFee;
-                        transactionInfo.transactionFinalAmount = $" + {finalAmt}";
-                    }
-                }
-                //ConfirmedInBlock
-                transactionInfo.transactionConfirmedInBlock = transaction.ConfirmedInBlock;
-                if (transactionInfo.transactionConfirmedInBlock != 0 || transactionInfo.transactionConfirmedInBlock != null)
-                {
-                    transactionInfo.transactionTypeName = TransactionItemTypeName.Confirmed;
-                }
-                else
-                {
-                    transactionInfo.transactionTypeName = TransactionItemTypeName.Unconfirmed;
-                }
+        //        //FinalAmount
+        //        if (transactionInfo.transactionType != null)
+        //        {
+        //            if (transactionInfo.transactionType == "sent")
+        //            {
+        //                Money finalAmt = transactionInfo.transactionAmount + transactionInfo.transactionFee;
+        //                transactionInfo.transactionFinalAmount = $" - {finalAmt}";
+        //            }
+        //            else if (transactionInfo.transactionType == "received")
+        //            {
+        //                Money finalAmt = transactionInfo.transactionAmount + transactionInfo.transactionFee;
+        //                transactionInfo.transactionFinalAmount = $" + {finalAmt}";
+        //            }
+        //            else if (transactionInfo.transactionType == "hybrid reward")
+        //            {
+        //                Money finalAmt = transactionInfo.transactionAmount + transactionInfo.transactionFee;
+        //                transactionInfo.transactionFinalAmount = $" + {finalAmt}";
+        //            }
+        //            else if (transactionInfo.transactionType == "pow reward")
+        //            {
+        //                Money finalAmt = transactionInfo.transactionAmount + transactionInfo.transactionFee;
+        //                transactionInfo.transactionFinalAmount = $" + {finalAmt}";
+        //            }
+        //        }
+        //        //ConfirmedInBlock
+        //        transactionInfo.transactionConfirmedInBlock = transaction.ConfirmedInBlock;
+        //        if (transactionInfo.transactionConfirmedInBlock != 0 || transactionInfo.transactionConfirmedInBlock != null)
+        //        {
+        //            transactionInfo.transactionTypeName = TransactionItemTypeName.Confirmed;
+        //        }
+        //        else
+        //        {
+        //            transactionInfo.transactionTypeName = TransactionItemTypeName.Unconfirmed;
+        //        }
 
-                //Timestamp
-                transactionInfo.transactionTimestamp = transaction.Timestamp;
+        //        //Timestamp
+        //        transactionInfo.transactionTimestamp = transaction.Timestamp;
 
-                transactionInfo.transactionType = transactionInfo.transactionType.ToUpper();
-                this.transactions.Add(transactionInfo);
-                //this.transactions.Take(5);
-            }
+        //        transactionInfo.transactionType = transactionInfo.transactionType.ToUpper();
+        //        this.transactions.Add(transactionInfo);
+        //        //this.transactions.Take(5);
+        //    }
 
-            this.HistoryList.ItemsSource = this.transactions.Take(5);
+        //    this.HistoryList.ItemsSource = this.transactions.Take(5);
 
-        }
+        //}
 
         public async Task GetGeneralInfoAsync()
         {

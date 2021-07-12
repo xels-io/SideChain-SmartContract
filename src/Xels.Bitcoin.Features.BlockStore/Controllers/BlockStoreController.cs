@@ -158,7 +158,7 @@ namespace Xels.Bitcoin.Features.BlockStore.Controllers
         }
 
         /// <summary>
-        /// Neo: We've to find some way to invoke this method from PosCoinViewRule
+        /// Neo: We've to find some way to invoke this method from CoinViewRule
         /// </summary>
         /// <param name="height"></param>
         /// <returns></returns>
