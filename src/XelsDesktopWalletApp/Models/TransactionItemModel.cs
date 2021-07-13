@@ -12,6 +12,7 @@ namespace XelsDesktopWalletApp.Models
 
         private string _type;
         private string _timeStamp;
+        private double _amount;
 
         public string Type
         {
@@ -34,7 +35,15 @@ namespace XelsDesktopWalletApp.Models
             }
         }
         public string ToAddress { get; set; }
-        public decimal Amount { get; set; }
+        public double Amount {
+
+            get {
+                return (this._amount / 100000000);
+            }
+            set {
+                this._amount = value;
+            }
+        }
         public string Id { get; set; }
 
         public string Timestamp 
@@ -56,17 +65,7 @@ namespace XelsDesktopWalletApp.Models
 
         // List<TransactionItemModel> TransactionsHistory { get; set; }
 
-        private string ConvertToDate(string d)
-        {
-            int date = Convert.ToInt32(d);
-
-            int day = date % 100;
-            int month = (date / 100) % 100;
-            int year = date / 10000;
-
-            var result = Convert.ToString(new DateTime(year, month, day));
-            return result;
-        }
+        
     }
 
     public class TransactionItemModelArray

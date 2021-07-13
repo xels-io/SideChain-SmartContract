@@ -4,6 +4,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 using XelsDesktopWalletApp.Views.Pages;
@@ -49,7 +50,7 @@ namespace XelsDesktopWalletApp.Views.layout
             InitializeComponent();
             this.DataContext = this;
 
-            
+
             //GetGeneralInfoAsync();
             //LoadLoginAsync();
             //GetHistoryAsync();
@@ -87,8 +88,8 @@ namespace XelsDesktopWalletApp.Views.layout
             this.PageContent.Content = null;
             this.PageContent.Content = new SmtAddressSelection(this.walletName);
         }
-        
-             private void btnHistory_Click(object sender, RoutedEventArgs e)
+
+        private void btnHistory_Click(object sender, RoutedEventArgs e)
         {
             this.PageContent.Content = null;
             this.PageContent.Content = new HistoryPage(this.walletName);

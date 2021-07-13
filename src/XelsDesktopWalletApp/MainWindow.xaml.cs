@@ -13,6 +13,7 @@ using XelsDesktopWalletApp.Models.CommonModels;
 using XelsDesktopWalletApp.Models.SmartContractModels;
 using XelsDesktopWalletApp.Views;
 using XelsDesktopWalletApp.Views.layout;
+using XelsDesktopWalletApp.Views.Pages;
 
 namespace XelsDesktopWalletApp
 {
@@ -80,9 +81,9 @@ namespace XelsDesktopWalletApp
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
             CreateOrRestore cr = new CreateOrRestore();
-            this.Content = cr;
-            //cr.ShowDialog();
-            //Close();
+
+            cr.ShowDialog();
+            Close();
         }
 
         private async void DecryptButton_ClickAsync(object sender, RoutedEventArgs e)
@@ -98,11 +99,7 @@ namespace XelsDesktopWalletApp
                 HttpResponseMessage response = await URLConfiguration.Client.PostAsJsonAsync(postUrl, this.UserWallet);
 
                 if (response.IsSuccessStatusCode)
-                {
-                    Dashboard db = new Dashboard(this.UserWallet.Name);//this.SelectedWallet.Name
-                    db.Show();
-                    this.Close();
-
+                {       
                     GlobalPropertyModel.WalletName = this.UserWallet.Name;
                     MainLayout mainLayout = new MainLayout(this.UserWallet.Name);
                     mainLayout.Show();

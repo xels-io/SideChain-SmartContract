@@ -135,10 +135,10 @@ namespace XelsDesktopWalletApp.Views.Pages
                 {
                     this.walletBalanceArray = JsonConvert.DeserializeObject<WalletBalanceArray>(content);
 
-                    this.ConfirmedBalanceTxt.Text = $"{this.walletBalanceArray.Balances[0].AmountConfirmed} xlc";
-                    this.UnconfirmedBalanceTxt.Text = $"{this.walletBalanceArray.Balances[0].AmountUnconfirmed} (unconfirmed)";
+                    this.ConfirmedBalanceTxt.Text = $"{(this.walletBalanceArray.Balances[0].AmountConfirmed/100000000)} xlc";
+                    this.UnconfirmedBalanceTxt.Text = $"{(this.walletBalanceArray.Balances[0].AmountUnconfirmed/100000000)} (unconfirmed)";
 
-                    this.spendableBalance = this.walletBalanceArray.Balances[0].SpendableAmount;
+                    this.spendableBalance = (this.walletBalanceArray.Balances[0].SpendableAmount/100000000);
 
                     if ((this.walletBalanceArray.Balances[0].AmountConfirmed + this.walletBalanceArray.Balances[0].AmountUnconfirmed) > 0)
                     {

@@ -350,7 +350,7 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <Label Grid.Column="0" Content="Parent Synced:"  Padding="0" Margin="0"/>
+                                    <Label Grid.Column="0" Content="Parcent Synced:"  Padding="0" Margin="0"/>
                                     <TextBlock Grid.Column="1" x:Name="ParentSyncedTxt"/>
                                 </Grid>
 
