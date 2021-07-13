@@ -347,7 +347,7 @@ namespace XelsDesktopWalletApp.Views
             mWallet.PrivateKey = Encryption.DecryptPrivateKey(mWallet.PrivateKey);
             //Initialize
             // Transfer
-            var tx = await this.createWallet.TransferAsync(mWallet, exchangeResponse, amount);
+            //var tx = await this.createWallet.TransferAsync(mWallet, exchangeResponse, amount);
         }
 
 

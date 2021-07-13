@@ -52,6 +52,7 @@ namespace XelsDesktopWalletApp.Views.Pages
         bool updatesuccess = false;
         private readonly StoredWallet mywallet = new StoredWallet();
         private CreateWallet createWallet = new CreateWallet();
+        private TransactionWallet transactionWalletObj = new TransactionWallet();
         public List<ExchangeResponse> exchangedatalist = new List<ExchangeResponse>();
 
         #region Exchanges
@@ -325,7 +326,8 @@ namespace XelsDesktopWalletApp.Views.Pages
                 }
                 //Initialize
                 // Transfer
-                var tx = await this.createWallet.TransferAsync(mWallet, exchangeResponse, amount);
+                //var tx = await this.createWallet.TransferAsync(mWallet, exchangeResponse, amount);
+                var tx = await this.transactionWalletObj.TransferAsync(mWallet, exchangeResponse, amount);
 
             }
             catch (Exception e)

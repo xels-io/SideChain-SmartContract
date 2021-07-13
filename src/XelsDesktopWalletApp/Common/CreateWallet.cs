@@ -6,13 +6,21 @@ using System.Numerics;
 using System.Threading.Tasks;
 using Nethereum.Web3.Accounts;
 using Newtonsoft.Json;
-
+using Nethereum.Contracts.Extensions;
 using Nethereum.Web3;
+using Nethereum.ABI.FunctionEncoding.Attributes;
+using Nethereum.Contracts.CQS;
+using Nethereum.Util;
+using Nethereum.Web3.Accounts;
+using Nethereum.Hex.HexConvertors.Extensions;
+using Nethereum.Contracts;
+using Nethereum.Contracts.Extensions;
+using System.Numerics;
 using Nethereum.Contracts.ContractHandlers;
 using Xels.Bitcoin.Features.Interop.ETHClient;
 using Nethereum.RPC.Eth.DTOs;
 using XelsDesktopWalletApp.Models;
-using Nethereum.Util;
+
 
 namespace XelsDesktopWalletApp.Common
 {
@@ -35,21 +43,6 @@ namespace XelsDesktopWalletApp.Common
     public class CreateWallet
     {
         Token token = new Token();
-
-        //public Wallet WalletCreation(string mnemonic)
-        //{
-        //    Wallet wallet = new Wallet();
-
-        //    //// creates new mnemonic only
-        //    //Mnemonic mnemo = new Mnemonic(Wordlist.English, WordCount.Twelve);
-        //    //ExtKey hdRoot = mnemo.DeriveExtKey("my password");
-       
-        //    var privateKey = "0000000000000000000000000000000000000000000000000000000000000001";
-        //    var account = new Account(privateKey);
-
-        //    return wallet;
-        //}
-
 
         public Wallet WalletCreationFromPk(string pKey)
         {
@@ -240,66 +233,6 @@ namespace XelsDesktopWalletApp.Common
 
                 return wallet;
             }
-        }
-
-
-
-
-
-        public async Task<TransactionReceipt> TransferAsync(StoredWallet sWallet, ExchangeResponse exchangeResponse, double amount)
-        {
-            try
-            {
-                Wallet wallet = new Wallet();
-                var account = new Account(sWallet.PrivateKey);
-
-                //var url = "https://mainnet.infura.io/v3/15851454d7644cff846b1b8701403647";
-                var url = "https://kovan.infura.io/v3/15851454d7644cff846b1b8701403647";
-                var web3 = new Web3(account, url);
-
-                string contractAddress = "";
-
-                if (sWallet.Coin == "SELS")
-                {
-                    contractAddress = "0x0E74264EAd02B3a9768Dc4F1A509fA7F49952df6";
-                }
-                else if (sWallet.Coin == "BELS")
-                {
-                    contractAddress = "0x6fcf304f636d24ca102ab6e4e4e089115c04ebae";
-                }
-                else if (sWallet.Coin == "TST")
-                {
-                    contractAddress = "0x7fe767fD13a09f748f9b3d62467e14047368875b";
-                }
-
-                var transferHandler = web3.Eth.GetContractTransactionHandler<TransferFunction>();
-                BigInteger amt = (BigInteger)amount; 
-                var transfer = new TransferFunction()
-                {
-                   To = exchangeResponse.deposit_address,
-                    //TokenAmount = (BigInteger)exchangeResponse.xels_amount,
-                    TokenAmount = 100,
-                };
-                transfer.FromAddress = sWallet.Address;
-                transfer.AmountToSend = Nethereum.Web3.Web3.Convert.ToWei(1);
-                transfer.GasPrice = Nethereum.Web3.Web3.Convert.ToWei(25, UnitConversion.EthUnit.Gwei);
-                transfer.Gas = 60000;
-                transfer.Nonce = 2;
-                //transfer.AmountToSend = Web3.Convert.ToWei(exchangeResponse.deposit_amount);
-                //transfer.GasPrice = Web3.Convert.ToWei(25, UnitConversion.EthUnit.Gwei);
-                //var estimate = await transferHandler.EstimateGasAsync(contractAddress, transfer);
-                //transfer.Gas = estimate.Value;
-
-                var transactionReceipt = await transferHandler.SendRequestAndWaitForReceiptAsync(contractAddress, transfer);
-                
-                return transactionReceipt;
-            }
-
-            catch (Exception e)
-            {
-                throw;
-            }
-
         }
 
 
