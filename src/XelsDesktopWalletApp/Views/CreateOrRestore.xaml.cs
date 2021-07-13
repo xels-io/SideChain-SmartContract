@@ -33,7 +33,7 @@ namespace XelsDesktopWalletApp.Views
         {
             MainWindow mw = new MainWindow();
             mw.Show();
-           // this.Close();
+           this.Close();
         }
     }
 }
