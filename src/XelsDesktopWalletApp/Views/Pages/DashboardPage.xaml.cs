@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,7 +10,7 @@ using Newtonsoft.Json;
 using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
-using System.Text;
+using XelsDesktopWalletApp.Views.Pages.Modals;
 
 namespace XelsDesktopWalletApp.Views.Pages
 {
@@ -60,9 +59,9 @@ namespace XelsDesktopWalletApp.Views.Pages
         public bool stakingEnabled = false;
 
         private bool hasBalance;
-        private Money confirmedBalance;
-        private Money unconfirmedBalance;
-        private Money spendableBalance;
+        private decimal confirmedBalance;
+        private decimal unconfirmedBalance;
+        private decimal spendableBalance;
 
         private string percentSynced;
 
@@ -324,14 +323,16 @@ namespace XelsDesktopWalletApp.Views.Pages
                 {
                     if (this.selswallet.Address != null)
                     {
-                        this.sels = await this.createWallet.GetBalanceAsync(this.selswallet.Address, "SELS");
+                        //this.sels = await this.createWallet.GetBalanceAsync(this.selswallet.Address, "SELS"); 
+                        // found error
                     }
                 }
                 if (this.belswallet != null)
                 {
                     if (this.belswallet.Address != null)
                     {
-                        this.bels = await this.createWallet.GetBalanceAsync(this.belswallet.Address, "BELS");
+                        //this.bels = await this.createWallet.GetBalanceAsync(this.belswallet.Address, "BELS");
+                        // found error
                     }
                 }
                 // Populate coins
@@ -341,16 +342,20 @@ namespace XelsDesktopWalletApp.Views.Pages
             }
         }
 
-        private void receiveButton_Click(object sender, RoutedEventArgs e)
+        private void ReceiveButton_Click(object sender, RoutedEventArgs e)
         {
+            //this.Dashboard.Children.Add(new ReceiveUserControl(this.walletName));
+
             Receive receive = new Receive(this.walletName);
-            receive.Show();
+            receive.ShowDialog();
 
         }
-        private void sendButton_Click(object sender, RoutedEventArgs e)
+        private void SendButton_Click(object sender, RoutedEventArgs e)
         {
             Send send = new Send(this.walletName);
             send.Show();
+
+            // this.Dashboard.Children.Add(new SendUserControl());
 
         }
 
@@ -405,6 +410,7 @@ namespace XelsDesktopWalletApp.Views.Pages
             HttpResponseMessage response = await URLConfiguration.Client.PostAsJsonAsync(apiUrl, UserWallet);
 
             string content = await response.Content.ReadAsStringAsync();
+
             if (response.IsSuccessStatusCode)
             {
                 this.UnlockGrid.Visibility = Visibility.Hidden;
@@ -412,6 +418,17 @@ namespace XelsDesktopWalletApp.Views.Pages
                 this.Password.Password = "";
                 this.MiningInfoBorder.Visibility = Visibility.Visible;
                 this.t.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+
+                var errors = JsonConvert.DeserializeObject<ErrorModel>(content);               
+
+                foreach(var error in errors.Errors)
+                {
+                    MessageBox.Show(error.Message);
+                }
+                
             }
 
         }

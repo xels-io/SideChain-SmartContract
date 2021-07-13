@@ -43,11 +43,13 @@ namespace XelsDesktopWalletApp.Views.layout
 
         public MainLayout(string walletname)
         {
+            this.walletName = walletname;
+            this.walletInfo.WalletName = this.walletName;
+
             InitializeComponent();
             this.DataContext = this;
 
-            this.walletName = walletname;
-            this.walletInfo.WalletName = this.walletName;
+            
             //GetGeneralInfoAsync();
             //LoadLoginAsync();
             //GetHistoryAsync();
@@ -97,6 +99,19 @@ namespace XelsDesktopWalletApp.Views.layout
             this.PageContent.Content = null;
             this.PageContent.Content = new ExchangePage(this.walletName);
         }
+
+        private void LogOut_Button(object sender, RoutedEventArgs e)
+        {
+            LogoutConfirm lc = new LogoutConfirm(this.walletName);
+            lc.Show();
+            this.Close();
+        }
+
+        private void Window_Initialized(object sender, System.EventArgs e)
+        {
+            this.PageContent.Content = new DashboardPage(this.walletName);
+        }
+
 
         //private void ButtonOpenMenu_Click(object sender, RoutedEventArgs e)
         //{

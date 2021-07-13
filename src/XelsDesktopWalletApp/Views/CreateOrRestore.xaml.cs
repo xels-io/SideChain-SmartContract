@@ -17,17 +17,15 @@ namespace XelsDesktopWalletApp.Views
 
         private void RestoreWalletButton_Click(object sender, RoutedEventArgs e)
         {
-            //this.Content = new RestoreWalletPage();
-            Restore restore = new Restore();
-            restore.Show();
-            this.Close();
+            this.Content = new RestoreWalletPage();
+            //Restore restore = new Restore();
+            //restore.Show();
+            //this.Close();
         }
 
         private void createButton_Click(object sender, RoutedEventArgs e)
         {
-            Create create = new Create();
-            create.Show();
-            this.Close();
+            this.Content = new CreateWalletPage();
         }
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)

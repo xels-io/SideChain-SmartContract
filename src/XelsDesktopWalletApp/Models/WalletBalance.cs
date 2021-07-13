@@ -12,12 +12,12 @@ namespace XelsDesktopWalletApp.Models
         public string AccountName { get; set; }
         public string AccountHdPath { get; set; }
 
-        public CoinType CoinType { get; set; }
+        public string CoinType { get; set; }
 
-        public Money AmountConfirmed { get; set; }
-        public Money AmountUnconfirmed { get; set; }
-        public Money SpendableAmount { get; set; }
-        public IEnumerable<AddressModel> Addresses { get; set; }
+        public decimal AmountConfirmed { get; set; }
+        public decimal AmountUnconfirmed { get; set; }
+        public decimal SpendableAmount { get; set; }
+        //public IEnumerable<AddressModel> Addresses { get; set; }
 
     }
 

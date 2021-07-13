@@ -1,26 +1,22 @@
-﻿using System.Net.Http;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-
-using NBitcoin;
+using System.Windows.Controls;
+using System.Net.Http;
+using System.Text.RegularExpressions;
 
 using Newtonsoft.Json;
-
-using Xels.Bitcoin.Features.Wallet;
 
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 
-namespace XelsDesktopWalletApp.Views
+namespace XelsDesktopWalletApp.Views.Pages.SendPages
 {
     /// <summary>
-    /// Interaction logic for SendSideChain.xaml
+    /// Interaction logic for SidechainPage.xaml
     /// </summary>
-    public partial class SendSideChain : Window
+    public partial class SidechainPage : Page
     {
-
         private readonly string baseURL = URLConfiguration.BaseURL; // "http://localhost:37221/api";
 
         private readonly WalletInfo walletInfo = new WalletInfo();
@@ -52,12 +48,12 @@ namespace XelsDesktopWalletApp.Views
             }
         }
 
-        public SendSideChain()
+        public SidechainPage()
         {
             InitializeComponent();
         }
 
-        public SendSideChain(string walletname)
+        public SidechainPage(string walletname)
         {
             InitializeComponent();
             this.DataContext = this;
@@ -160,46 +156,10 @@ namespace XelsDesktopWalletApp.Views
         {
             Dashboard ds = new Dashboard(this.walletName);
             ds.Show();
-            this.Close();
+           // this.Close();
         }
 
-        private void XELS_Button_Click(object sender, RoutedEventArgs e)
-        {
-            Send send = new Send(this.walletName);
-            send.Show();
-            this.Close();
-        }
-
-        private void SELS_Button_Click(object sender, RoutedEventArgs e)
-        {
-            SendSelsBels sendsb = new SendSelsBels(this.walletName);
-            sendsb.Show();
-            this.Close();
-        }
-
-        private void BELS_Button_Click(object sender, RoutedEventArgs e)
-        {
-            SendSelsBels sendsb = new SendSelsBels(this.walletName);
-            sendsb.Show();
-            this.Close();
-        }
-
-        private void Mainchain_Button_Click(object sender, RoutedEventArgs e)
-        {
-
-            Send send = new Send(this.walletName);
-            send.Show();
-            this.Close();
-        }
-
-        private void Sidechain_Button_Click(object sender, RoutedEventArgs e)
-        {
-            SendSideChain sendSC = new SendSideChain(this.walletName);
-            sendSC.Show();
-            this.Close();
-
-        }
-
+       
         private void TxtAmount_LostFocus(object sender, RoutedEventArgs e)
         {
             if (this.textSidechainDestinationAddress.Text != "" && this.textAmount.Text != "")
@@ -312,7 +272,7 @@ namespace XelsDesktopWalletApp.Views
                 if (response.IsSuccessStatusCode)
                 {
                     content = await response.Content.ReadAsStringAsync();
-                   // this.estimatedSidechainFee = Money.Parse(content);
+                    // this.estimatedSidechainFee = Money.Parse(content);
                 }
                 else
                 {
@@ -385,7 +345,7 @@ namespace XelsDesktopWalletApp.Views
 
                     SendConfirmationSideChain sendConf = new SendConfirmationSideChain(sendConfirmationSc, this.walletName);
                     sendConf.Show();
-                    this.Close();
+                   // this.Close();
                 }
                 else
                 {

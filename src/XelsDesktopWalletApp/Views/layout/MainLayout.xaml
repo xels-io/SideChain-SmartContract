@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:XelsDesktopWalletApp.Views.layout"
             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-          mc:Ignorable="d" Height="600" Width="1100" Foreground="White" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None">
+          mc:Ignorable="d" Height="600" Width="1100" Foreground="White" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" Initialized="Window_Initialized">
     <Window.Resources>
         <ResourceDictionary>
             <Style x:Key="ScrollThumbs" TargetType="{x:Type Thumb}">
@@ -182,7 +182,7 @@
                         <Button Content="Address Book"/>
                         <Button Content="Advance"/>
                         <Separator/>
-                        <Button Content="Logout"/>
+                        <Button Content="Logout" Click="LogOut_Button"/>
                     </StackPanel>
                 </materialDesign:PopupBox>
 

@@ -12,7 +12,7 @@
         <StackPanel>
             <StackPanel>
 
-                <Grid Background="LimeGreen" Margin="10" Height="100">
+            <Grid Background="Green" Margin="10" Height="100">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
@@ -53,7 +53,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-            <Button Width="200" x:Name="restoreWalletButton" Click="RestoreWalletButton_Click" Margin="0,0,10,0" Grid.Column="0" Content="Restore" Height="28" VerticalAlignment="Center" TextBlock.FontFamily="Microsoft YaHei Light" Background="White" Foreground="#FF53E253" BorderThickness="1,1,1,1" BorderBrush="#FF53E253" FontSize="14" Padding="5,5,5,5" >
+            <Button Width="200" x:Name="restoreWalletButton" Click="RestoreWalletButton_Click" Margin="0,0,10,0" Grid.Column="0" Content="Restore" Height="28" VerticalAlignment="Center" TextBlock.FontFamily="Microsoft YaHei Light" Background="White" Foreground="Green" BorderThickness="1,1,1,1" BorderBrush="Green" FontSize="14" Padding="5,5,5,5" >
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="5"/>
@@ -61,7 +61,7 @@
                     </Button.Resources>
                 </Button>
 
-                <Button Width="200" x:Name="createButton" Click="createButton_Click" Grid.Column="1" Content="Create" TextBlock.FontFamily="Microsoft YaHei Light" Background="#FF53E253" FontFamily="Microsoft YaHei Light" BorderThickness="0,0,0,0" Foreground="White" FontSize="14" Padding="5,5,5,5">
+            <Button Width="200" x:Name="createButton" Click="createButton_Click" Grid.Column="1" Content="Create" TextBlock.FontFamily="Microsoft YaHei Light" Background="Green" FontFamily="Microsoft YaHei Light" BorderThickness="0,0,0,0" Foreground="White" FontSize="14" Padding="5,5,5,5">
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="5"/>
@@ -70,11 +70,8 @@
                 </Button>
 
             </Grid>
-        <Grid Background="#FFCFCFCF">
-            <ScrollViewer>
-                <Frame x:Name="PageContent" />
-
-            </ScrollViewer>
+        <Grid>           
+                <Frame x:Name="PageContent" />          
         </Grid>
     </StackPanel>
     

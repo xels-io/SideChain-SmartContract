@@ -69,9 +69,9 @@ namespace XelsDesktopWalletApp.Views
         public bool stakingEnabled = false;
 
         private bool hasBalance = false;
-        private Money confirmedBalance;
-        private Money unconfirmedBalance;
-        private Money spendableBalance;
+        private decimal confirmedBalance;
+        private decimal unconfirmedBalance;
+        private decimal spendableBalance;
 
         private string percentSynced;
 
@@ -87,7 +87,7 @@ namespace XelsDesktopWalletApp.Views
         public bool isStopping = false;
 
         private StakingInfoModel stakingInfo = new StakingInfoModel();
-        public Money awaitingMaturity = 0;
+        public decimal awaitingMaturity = 0;
 
         #endregion
 

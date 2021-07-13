@@ -110,8 +110,8 @@ namespace XelsDesktopWalletApp.Views
         {
             ReceiveWalletArray convertedList = new ReceiveWalletArray();
 
-            this.rcvWalletListsArray.addresses = _content.addresses;
-            var mylist = this.rcvWalletListsArray.addresses;
+            this.rcvWalletListsArray.Addresses = _content.Addresses;
+            var mylist = this.rcvWalletListsArray.Addresses;
 
 
             foreach (ReceiveWalletStatus address in mylist)

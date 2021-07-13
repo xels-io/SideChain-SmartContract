@@ -1,21 +1,22 @@
-﻿using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using System.Windows;
+using System.Windows.Controls;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 using Newtonsoft.Json;
 
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 
-namespace XelsDesktopWalletApp.Views
+
+namespace XelsDesktopWalletApp.Views.Pages.SendPages
 {
     /// <summary>
-    /// Interaction logic for SendSelsBels.xaml
+    /// Interaction logic for BelsPage.xaml
     /// </summary>
-    public partial class SendSelsBels : Window
+    public partial class BelsPage : Page
     {
-
         private readonly string baseURL = URLConfiguration.BaseURL; // "http://localhost:37221/api";
 
         private readonly WalletInfo walletInfo = new WalletInfo();
@@ -34,12 +35,12 @@ namespace XelsDesktopWalletApp.Views
             }
         }
 
-        public SendSelsBels()
+        public BelsPage()
         {
             InitializeComponent();
         }
 
-        public SendSelsBels(string walletname)
+        public BelsPage(string walletname)
         {
             InitializeComponent();
             this.DataContext = this;
@@ -48,35 +49,7 @@ namespace XelsDesktopWalletApp.Views
             this.walletInfo.WalletName = this.walletName;
         }
 
-        private void backButton_Click(object sender, RoutedEventArgs e)
-        {
-            Dashboard ds = new Dashboard(this.walletName);
-            ds.Show();
-            this.Close();
-        }
-
-        private void XELS_Button_Click(object sender, RoutedEventArgs e)
-        {
-            Send send = new Send(this.walletName);
-            send.Show();
-            this.Close();
-        }
-
-        private void SELS_Button_Click(object sender, RoutedEventArgs e)
-        {
-            SendSelsBels sendsb = new SendSelsBels(this.walletName);
-            sendsb.Show();
-            this.Close();
-        }
-
-        private void BELS_Button_Click(object sender, RoutedEventArgs e)
-        {
-            SendSelsBels sendsb = new SendSelsBels(this.walletName);
-            sendsb.Show();
-            this.Close();
-        }
-
-        private void sendButton_Click(object sender, RoutedEventArgs e)
+        private void SendButton_Click(object sender, RoutedEventArgs e)
         {
             _ = SendTransactionAsync();
         }
@@ -97,6 +70,5 @@ namespace XelsDesktopWalletApp.Views
             }
 
         }
-
     }
 }

@@ -5,143 +5,61 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:XelsDesktopWalletApp.Views"
         mc:Ignorable="d"
-        Title="Send" Height="538" Width="800">
+        Title="Send" Height="650" Width="1000" Initialized="Window_Initialized">
 
+    <StackPanel Margin="0,0,0,0" >
+        <Grid Margin="100 5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-    <Border Padding="10" Margin="0,0,0,4">
-        <StackPanel Margin="0,0,0,0">
-            <Grid Height="489" Width="776">
+            <Border Grid.Row="0" Margin="0 0 0 15">
+                <Label Content="Send" HorizontalAlignment="Center"  FontSize="20" FontWeight="DemiBold" RenderTransformOrigin="0.515,-0.184" />
+            </Border>
+            <Border Grid.Row="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
+                    <Button Grid.Column="0" Content="XELS" Click="XELS_Button_Click"  
+                        Background="Green" Foreground="White" RenderTransformOrigin="0.174,0.571" 
+                        FontWeight="Normal" >
+                        <Button.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius" Value="5"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+                    <Button Grid.Column="1" Content="SELS" Click="SELS_Button_Click"  
+                        Background="Green"   Foreground="White" FontWeight="Normal" >
+                        <Button.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius" Value="5"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+                    <Button Grid.Column="2" Content="BELS" Click="BELS_Button_Click"
+                        RenderTransformOrigin="2.423,0.568"  Background="Green" 
+                        Foreground="White" FontWeight="Normal">
+                        <Button.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius" Value="5"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
 
-                <Label Content="Send" HorizontalAlignment="Center"  FontSize="20" FontFamily="Microsoft YaHei Light"  
-                       Margin="0,16,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.515,-0.184" Width="60"/>
-
-                <Button Content="XELS" Click="XELS_Button_Click" HorizontalAlignment="Left"  Margin="313,68,0,0" VerticalAlignment="Top" 
-                        Background="#FF53E253" Width="50" FontFamily="Microsoft YaHei Light" BorderThickness="0,0,0,0" 
-                        Padding="0,0,0,0" Foreground="White" RenderTransformOrigin="0.174,0.571" 
-                        FontWeight="Normal" Height="25">
-                    <Button.Resources>
-                        <Style TargetType="{x:Type Border}">
-                            <Setter Property="CornerRadius" Value="5"/>
-                        </Style>
-                    </Button.Resources>
-                </Button>
-                <Button Content="SELS" Click="SELS_Button_Click" HorizontalAlignment="Left" Margin="368,68,0,0" VerticalAlignment="Top" 
-                        Background="#FF53E253" Width="45" FontFamily="Microsoft YaHei Light" BorderThickness="0,0,0,0" 
-                        Padding="0,0,0,0" Foreground="White" FontWeight="Normal" Height="25">
-                    <Button.Resources>
-                        <Style TargetType="{x:Type Border}">
-                            <Setter Property="CornerRadius" Value="5"/>
-                        </Style>
-                    </Button.Resources>
-                </Button>
-                <Button Content="BELS" Click="BELS_Button_Click" HorizontalAlignment="Left"  Margin="418,68,0,0" VerticalAlignment="Top" 
-                        RenderTransformOrigin="2.423,0.568" Width="50" Background="#FF53E253" 
-                        FontFamily="Microsoft YaHei Light" BorderThickness="0,0,0,0" Padding="0,0,0,0" 
-                        Foreground="White" FontWeight="Normal" Height="25">
-                    <Button.Resources>
-                        <Style TargetType="{x:Type Border}">
-                            <Setter Property="CornerRadius" Value="5"/>
-                        </Style>
-                    </Button.Resources>
-                </Button>
-
-
-                <Button Content="MainChain" HorizontalAlignment="Left"  Margin="223,106,0,0" VerticalAlignment="Top" 
-                        Background="#FF53E253" Width="165" FontFamily="Microsoft YaHei Light" BorderThickness="0,0,0,0" 
-                        Padding="5,5,5,5" Height="28" Foreground="White" FontSize="13" Click="Mainchain_Button_Click">
-                    <Button.Resources>
-                        <Style TargetType="{x:Type Border}">
-                            <Setter Property="CornerRadius" Value="5"/>
-                        </Style>
-                    </Button.Resources>
-                </Button>
-                <Button Content="SideChain" HorizontalAlignment="Left" Margin="393,106,0,0" VerticalAlignment="Top" 
-                        Background="#FFE4EAE1" Width="153" FontFamily="Microsoft YaHei Light" BorderThickness="0,0,0,0" 
-                        Padding="5,5,5,5" Height="28" Foreground="#FF53E253" FontSize="13" Click="Sidechain_Button_Click">
-                    <Button.Resources>
-                        <Style TargetType="{x:Type Border}">
-                            <Setter Property="CornerRadius" Value="5"/>
-                        </Style>
-                    </Button.Resources>
-                </Button>
-
-
-                <Button  x:Name="backButton" Click="backButton_Click" Padding="2" 
-                         Background="White" BorderThickness="1,1,1,1" Foreground="#FF53E253" 
-                    Content="Back" HorizontalAlignment="Right" Margin="0,354,494,0" VerticalAlignment="Top" 
-                    Height="26" Width="90" FontFamily="Microsoft YaHei Light" BorderBrush="#FF53E253" >
-                    <Button.Resources>
-                        <Style TargetType="{x:Type Border}">
-                            <Setter Property="CornerRadius" Value="5"/>
-                        </Style>
-                    </Button.Resources>
-                </Button>
-
-                <Button x:Name="sendButton" Click="sendButton_Click"  Content="Send" Padding="2" 
-                        Background="#FF53E253" FontFamily="Microsoft YaHei Light" BorderThickness="0,0,0,0" 
-                        Foreground="White" Margin="286,354,182,109">
-                    <Button.Resources>
-                        <Style TargetType="{x:Type Border}">
-                            <Setter Property="CornerRadius" Value="5"/>
-                        </Style>
-                    </Button.Resources>
-                </Button>
-
-
-                <Label Content="Amount" HorizontalAlignment="Left" Margin="186,139,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.158,-0.076" Width="48" Height="23" FontFamily="Microsoft YaHei Light" FontSize="9"/>
-                <Label Content="Available:" HorizontalAlignment="Left" Margin="429,139,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.158,-0.076" Width="49" Height="23" FontFamily="Microsoft YaHei Light" FontSize="9"/>
-
-                <Label  x:Name="textAvailableCoin" 
-                          HorizontalAlignment="Left" Margin="478,139,0,0" 
-                           VerticalAlignment="Top" RenderTransformOrigin="1.158,-0.076" Width="83" 
-                           Height="23" FontFamily="Microsoft YaHei Light" FontSize="9" />
-
-                <Label  x:Name="textCoinType" 
-                          HorizontalAlignment="Left" Margin="566,139,0,0" 
-                           VerticalAlignment="Top" RenderTransformOrigin="1.158,-0.076" Width="37" 
-                           Height="23" FontFamily="Microsoft YaHei Light" FontSize="9" />
-                <!--Amount-->
-                <TextBox  x:Name="textAmount"
-                          IsReadOnly="False" Focusable="True" FocusManager.LostFocus="TxtAmount_LostFocus"
-                          HorizontalAlignment="Left" Margin="189,162,0,0" Text="" 
-                          TextWrapping="Wrap" VerticalAlignment="Top" Width="403" BorderBrush="#FFC9D6C9" 
-                          BorderThickness="2" FontFamily="Microsoft YaHei Light" FontSize="11" Height="23" />
-
-
-                <!--Address-->
-
-                <Label Content="Sidechain destination address" HorizontalAlignment="Left" 
-                       Margin="189,190,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.158,-0.076" Width="403" 
-                       Height="23" FontFamily="Microsoft YaHei Light" FontSize="9"/>
-                
-                <TextBox x:Name="textSidechainDestinationAddress" 
-                          IsReadOnly="False" Focusable="True" FocusManager.LostFocus="TxtAddress_LostFocus"
-                           HorizontalAlignment="Left" Margin="189,213,0,0" TextWrapping="Wrap" VerticalAlignment="Top" 
-                           Width="402" FontFamily="Microsoft YaHei Light" FontSize="11" Height="25"/>
-
-                <Label Content="Transaction fee" HorizontalAlignment="Left" Margin="189,238,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.158,-0.076" Width="403" Height="23" FontFamily="Microsoft YaHei Light" FontSize="9"/>
-                <TextBox  x:Name="textTransactionFee" HorizontalAlignment="Left" 
-                    Margin="189,261,0,0" Text="" 
-                    TextWrapping="Wrap" VerticalAlignment="Top" Width="402" BorderBrush="#FFC9D6C9" 
-                    BorderThickness="2" FontFamily="Microsoft YaHei Light" FontSize="11" Height="25" />
-
-                <!--password-->
-                <Label Content="Wallet Password" HorizontalAlignment="Left" Margin="189,286,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.158,-0.076" Width="403" Height="21" FontFamily="Microsoft YaHei Light" FontSize="9"/>
-                <PasswordBox x:Name="password" PasswordChar="*" Width="402" Padding="2" 
-                             RenderTransformOrigin="0.792,0.552" FontFamily="Microsoft YaHei Light" 
-                             BorderBrush="#FFC9D6C9" HorizontalAlignment="Left" 
-                             Margin="192,307,0,0" VerticalAlignment="Top"  
-                             BorderThickness="2"  FontSize="11" Height="25"/>
-
-            </Grid>
-
-
-
-        </StackPanel>
-    </Border>
-
-
-
+                </Grid>
+            </Border>
+            <Border Grid.Row="2">
+                <Frame x:Name="SendFrame" NavigationUIVisibility="Hidden" />
+            </Border>
+        </Grid>
+ 
+    </StackPanel>
 
 </Window>
