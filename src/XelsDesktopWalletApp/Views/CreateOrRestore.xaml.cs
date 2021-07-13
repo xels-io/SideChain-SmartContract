@@ -9,7 +9,7 @@ namespace XelsDesktopWalletApp.Views
     /// <summary>
     /// Interaction logic for CreateOrRestore.xaml
     /// </summary>
-    public partial class CreateOrRestore : Page
+    public partial class CreateOrRestore : Window
     {
         public CreateOrRestore()
         {
