@@ -111,7 +111,7 @@ namespace XelsDesktopWalletApp.Views
         private void cancelButton_Click(object sender, RoutedEventArgs e)
         {
             CreateOrRestore cr = new CreateOrRestore();
-            cr.Show();
+            //cr.Show();
             this.Close();
         }
 

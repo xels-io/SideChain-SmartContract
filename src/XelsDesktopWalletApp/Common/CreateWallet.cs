@@ -12,6 +12,7 @@ using Nethereum.Contracts.ContractHandlers;
 using Xels.Bitcoin.Features.Interop.ETHClient;
 using Nethereum.RPC.Eth.DTOs;
 using XelsDesktopWalletApp.Models;
+using Nethereum.Util;
 
 namespace XelsDesktopWalletApp.Common
 {
@@ -252,7 +253,8 @@ namespace XelsDesktopWalletApp.Common
                 Wallet wallet = new Wallet();
                 var account = new Account(sWallet.PrivateKey);
 
-                var url = "https://mainnet.infura.io/v3/15851454d7644cff846b1b8701403647";
+                //var url = "https://mainnet.infura.io/v3/15851454d7644cff846b1b8701403647";
+                var url = "https://kovan.infura.io/v3/15851454d7644cff846b1b8701403647";
                 var web3 = new Web3(account, url);
 
                 string contractAddress = "";
@@ -265,22 +267,31 @@ namespace XelsDesktopWalletApp.Common
                 {
                     contractAddress = "0x6fcf304f636d24ca102ab6e4e4e089115c04ebae";
                 }
+                else if (sWallet.Coin == "TST")
+                {
+                    contractAddress = "0x7fe767fD13a09f748f9b3d62467e14047368875b";
+                }
 
                 var transferHandler = web3.Eth.GetContractTransactionHandler<TransferFunction>();
                 BigInteger amt = (BigInteger)amount; 
                 var transfer = new TransferFunction()
                 {
-                    To = exchangeResponse.deposit_address,
-                    TokenAmount = (BigInteger)exchangeResponse.xels_amount
+                   To = exchangeResponse.deposit_address,
+                    //TokenAmount = (BigInteger)exchangeResponse.xels_amount,
+                    TokenAmount = 100,
                 };
-
-                transfer.AmountToSend = Web3.Convert.ToWei(exchangeResponse.deposit_amount);
+                transfer.FromAddress = sWallet.Address;
+                transfer.AmountToSend = Nethereum.Web3.Web3.Convert.ToWei(1);
+                transfer.GasPrice = Nethereum.Web3.Web3.Convert.ToWei(25, UnitConversion.EthUnit.Gwei);
+                transfer.Gas = 60000;
+                transfer.Nonce = 2;
+                //transfer.AmountToSend = Web3.Convert.ToWei(exchangeResponse.deposit_amount);
                 //transfer.GasPrice = Web3.Convert.ToWei(25, UnitConversion.EthUnit.Gwei);
                 //var estimate = await transferHandler.EstimateGasAsync(contractAddress, transfer);
                 //transfer.Gas = estimate.Value;
 
                 var transactionReceipt = await transferHandler.SendRequestAndWaitForReceiptAsync(contractAddress, transfer);
-
+                
                 return transactionReceipt;
             }
 

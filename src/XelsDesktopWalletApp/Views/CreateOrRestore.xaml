@@ -1,15 +1,15 @@
-﻿<Window x:Class="XelsDesktopWalletApp.Views.CreateOrRestore"
+﻿<Page x:Class="XelsDesktopWalletApp.Views.CreateOrRestore"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:XelsDesktopWalletApp.Views"
         mc:Ignorable="d"
-        Title="CreateOrRestore" Height="600" Width="1100">
+         Height="600" Width="1100">
     
     
     <!--Border Padding="10"-->
-        <StackPanel>
+    <StackPanel Margin="5,5,5,5">
             <StackPanel>
 
             <Grid Background="Green" Margin="10" Height="100">
@@ -76,4 +76,4 @@
     </StackPanel>
     
     <!--</Border>-->
-</Window>
+</Page>

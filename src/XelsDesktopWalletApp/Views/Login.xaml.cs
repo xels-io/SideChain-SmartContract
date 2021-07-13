@@ -102,7 +102,7 @@ namespace XelsDesktopWalletApp.Views
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
             CreateOrRestore cr = new CreateOrRestore();
-            cr.Show();
+           // cr.Show();
             this.Close();
         }
         
