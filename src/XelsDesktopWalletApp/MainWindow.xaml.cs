@@ -92,8 +92,10 @@ namespace XelsDesktopWalletApp
                 this.UserWallet.Password = this.password.Password;
 
                 string postUrl = this.baseURL + "/wallet/load/";
+                var content = "";
 
                 HttpResponseMessage response = await URLConfiguration.Client.PostAsJsonAsync(postUrl, this.UserWallet);
+                content = await response.Content.ReadAsStringAsync();
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -105,6 +107,12 @@ namespace XelsDesktopWalletApp
                     //MainLayout mainLayout = new MainLayout(this.UserWallet.Name);
                     //mainLayout.Show();
                     //this.Close();
+                }
+                else if (content != "" || content != null)
+                {
+                    LoginError loginError = new LoginError();
+                    loginError = JsonConvert.DeserializeObject<LoginError>(content);
+                    MessageBox.Show($"{loginError.errors[0].message}");
                 }
                 else
                 {
