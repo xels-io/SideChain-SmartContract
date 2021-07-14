@@ -45,6 +45,7 @@ namespace XelsDesktopWalletApp.Views
 
         private HistoryModelArray historyModelArray = new HistoryModelArray();
         private List<TransactionInfo> transactions = new List<TransactionInfo>();
+        private int confirmations = 0;
         public History()
         {
             InitializeComponent();
@@ -229,12 +230,26 @@ namespace XelsDesktopWalletApp.Views
 
         private void DetailsButton_Click(object sender, RoutedEventArgs e)
         {
-            TransactionInfo item = (TransactionInfo)((sender as Button)?.Tag as ListViewItem)?.DataContext;
+            TransactionItemModel item = (TransactionItemModel)((sender as Button)?.Tag as ListViewItem)?.DataContext;
 
             this.DetailsPopup.IsOpen = true;
             //TransactionDetail td = new TransactionDetail(this.walletName, item);
             //td.Show();
 
+            this.TypeTxt.Text = item.Type;
+            this.TotalAmountTxt.Text = item.Amount.ToString();
+            this.AmountSentTxt.Text = item.Amount.ToString();
+            this.FeeTxt.Text = item.Fee.ToString();
+            this.DateTxt.Text = item.Timestamp.ToString();
+            this.BlockTxt.Text = item.ConfirmedInBlock.ToString();
+            this.ConfirmationsTxt.Text = this.confirmations.ToString();
+            this.TransactionIDTxt.Text = item.Id.ToString();
+
+        }
+
+        private void Copy_Click(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(this.TransactionIDTxt.Text);
         }
 
         private void HidePopup_Click(object sender, RoutedEventArgs e)

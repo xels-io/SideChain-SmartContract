@@ -133,7 +133,15 @@
                             <GridViewColumn>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button Name="DetailsButton" Content="Details" Click="DetailsButton_Click" Background="Green" Padding="5" Margin="10 0" />
+                                        <Button Tag="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListViewItem}}}"  
+                                                Content="Details" Click="DetailsButton_Click"  Padding="5" Margin="10 0"
+                                                Background="ForestGreen" Height="30" FontSize="12" >
+                                            <Button.Resources>
+                                                <Style TargetType="{x:Type Border}">
+                                                    <Setter Property="CornerRadius" Value="5"/>
+                                                </Style>
+                                            </Button.Resources>
+                                        </Button>
                                     </DataTemplate>
 
                                 </GridViewColumn.CellTemplate>
@@ -152,9 +160,9 @@
                 </ListView>
 
                 <Popup Name="DetailsPopup" Placement="Center"  AllowsTransparency="False">
-                    <Grid Width="800"  Height="700">
-                        <Rectangle Width="800" Height="700" Fill="WhiteSmoke"  />
-                        <Button Click="HidePopup_Click" Margin="20" Height="20" Width="20" 
+                    <Grid Width="900"  Height="700">
+                        <Rectangle Width="900" Height="700" Fill="WhiteSmoke"  />
+                        <Button Click="HidePopup_Click" Background="Black" Foreground="White"
                                 VerticalAlignment="Top" HorizontalAlignment="Right" Content="X" >
 
                             <Button.Resources>
@@ -253,10 +261,10 @@
 
                             <StackPanel Orientation="Vertical" Margin="50,400,0,66"  Grid.Column="0" Grid.ColumnSpan="2">
                                 <Button  x:Name="OkButton" Click="Ok_Click" Padding="2" 
-                                Background="White" BorderThickness="1,1,1,1" Foreground="#FF53E253" 
+                                Background="White" BorderThickness="1,1,1,1" Foreground="ForestGreen" 
                                 Content="OK"
                                  HorizontalAlignment="Left" VerticalAlignment="Top" 
-                                Height="30" Width="300" FontFamily="Microsoft YaHei Light" BorderBrush="#FF53E253" >
+                                Height="30" Width="300" FontFamily="Microsoft YaHei" BorderBrush="ForestGreen" >
                                     <Button.Resources>
                                         <Style TargetType="{x:Type Border}">
                                             <Setter Property="CornerRadius" Value="5"/>
