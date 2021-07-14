@@ -179,7 +179,8 @@ namespace XelsDesktopWalletApp.Common
         {
             try
             {
-                Web3 web3 = new Web3("https://mainnet.infura.io/v3/15851454d7644cff846b1b8701403647");
+                //Web3 web3 = new Web3("https://mainnet.infura.io/v3/15851454d7644cff846b1b8701403647");
+                Web3 web3 = new Web3("https://kovan.infura.io/v3/15851454d7644cff846b1b8701403647"); //test er jonno
 
                 string contractAddress = "";
 
@@ -190,6 +191,10 @@ namespace XelsDesktopWalletApp.Common
                 else if (cointype == "BELS")
                 {
                     contractAddress = "0x6fcf304f636d24ca102ab6e4e4e089115c04ebae";
+                }
+                else if (cointype == "TST")//test er jonno
+                {
+                    contractAddress = "0xfcb525e2c7351900a204d09bd507a522cebac783";
                 }
 
                 var balanceOfFunctionMessage = new BalanceOfFunction()

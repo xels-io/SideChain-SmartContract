@@ -19,6 +19,8 @@ namespace XelsDesktopWalletApp.Common
 
     public class  TransactionWallet
     {
+        private readonly CreateWallet createWallet = new CreateWallet();
+
         public async Task<TransactionReceipt> TransferAsync(StoredWallet sWallet, ExchangeResponse exchangeResponse, double amount)
         {
             try
@@ -42,39 +44,22 @@ namespace XelsDesktopWalletApp.Common
                 }
                 else if (sWallet.Coin == "TST")
                 {
-                    //contractAddress = "0x7fe767fD13a09f748f9b3d62467e14047368875b";
                     contractAddress = "0xfcb525e2c7351900a204d09bd507a522cebac783";
                 }
-                var balanceOfFunctionMessage = new BalanceOfFunction()
-                {
-                    Owner = account.Address,
-                };
-
-                var balanceHandler = web3.Eth.GetContractQueryHandler<BalanceOfFunction>();
-                var balance = await balanceHandler.QueryAsync<BigInteger>(contractAddress, balanceOfFunctionMessage);
+               string balance = await this.createWallet.GetBalanceAsync(account.Address,sWallet.Coin);
 
                 var transferHandler = web3.Eth.GetContractTransactionHandler<TransferFunction>();
 
-                BigInteger amt = (BigInteger)amount;
+                BigInteger amt = (BigInteger)amount * 100000000;
                 var transfer = new TransferFunction()
                 {
                     FromAddress = sWallet.Address,
                     To = exchangeResponse.deposit_address,
-                    // TokenAmount = (BigInteger)exchangeResponse.deposit_amount,
-                    TokenAmount = 100,
+                    TokenAmount = amt,
                 };
-                //transfer.GasPrice = Nethereum.Web3.Web3.Convert.ToWei(10, UnitConversion.EthUnit.Gwei);
-                //var estimatedGas = await transferHandler.EstimateGasAsync(contractAddress, transfer);
-                //transfer.Gas = estimatedGas.Value;
-                //transfer.AmountToSend = Nethereum.Web3.Web3.Convert.ToWei(1);
-
-                //BigInteger currentNonce = await web3.Eth.Transactions.GetTransactionCount.SendRequestAsync(account.Address, BlockParameter.CreatePending());
-                //transfer.Nonce = currentNonce + 1;
 
                 var transactionReceipt = await transferHandler.SendRequestAndWaitForReceiptAsync(contractAddress, transfer);
-
-               
-                return null;
+                return transactionReceipt;
             }
 
             catch (Exception e)

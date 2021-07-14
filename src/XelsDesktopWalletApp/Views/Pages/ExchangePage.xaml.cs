@@ -322,11 +322,9 @@ namespace XelsDesktopWalletApp.Views.Pages
                     mWallet.Coin = "TST";
                     mWallet.Wallethash = wathash;
                     mWallet.PrivateKey= Encryption.DecryptPrivateKey(privtKey);
-                   // mWallet.PrivateKey = "0x7732fa830d3bc3e6008fafd15f49ef42eea7fb44b91db2cf0646a4ad6f39cdfb";
+                   
                 }
-                //Initialize
                 // Transfer
-                //var tx = await this.createWallet.TransferAsync(mWallet, exchangeResponse, amount);
                 var tx = await this.transactionWalletObj.TransferAsync(mWallet, exchangeResponse, amount);
 
             }
@@ -373,6 +371,8 @@ namespace XelsDesktopWalletApp.Views.Pages
                 return exchangedata;
             }
         }
+
+
         private void DepositButton_Click(object sender, RoutedEventArgs e)
         {
             DataGrid dataGrid = this.ExchangesList;
