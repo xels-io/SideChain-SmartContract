@@ -8,6 +8,7 @@
         Title="Send" Height="650" Width="1000" Initialized="Window_Initialized">
 
     <StackPanel Margin="0,0,0,0" >
+
         <Grid Margin="100 5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />

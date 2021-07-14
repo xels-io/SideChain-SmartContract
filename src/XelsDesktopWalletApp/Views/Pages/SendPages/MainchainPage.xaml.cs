@@ -1,4 +1,6 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -9,12 +11,11 @@ using Newtonsoft.Json;
 
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
+using XelsDesktopWalletApp.Views.layout;
 
 namespace XelsDesktopWalletApp.Views.Pages.SendPages
 {
-    /// <summary>
-    /// Interaction logic for MainchainPage.xaml
-    /// </summary>
+
     public partial class MainchainPage : Page
     {
         private readonly string baseURL = URLConfiguration.BaseURL;// "http://localhost:37221/api";
@@ -23,15 +24,15 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
 
         private TransactionSending transactionSending = new TransactionSending();
         private TransactionBuilding transactionBuilding = new TransactionBuilding();
+        private WalletBalance WalletBalance = new WalletBalance();
 
-        private WalletBalanceArray balances = new WalletBalanceArray();
         private BuildTransaction buildTransaction = new BuildTransaction();
 
-        private decimal totalBalance;
+        private double totalBalance;
         private string cointype;
-        private decimal spendableBalance;
+        private double spendableBalance;
 
-        private decimal estimatedFee = 0;
+        private double estimatedFee = 0;
         private bool isSending = false;
 
         private decimal opReturnAmount = 1;
@@ -57,59 +58,60 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
 
         public MainchainPage(string walletname)
         {
-            InitializeComponent();
-            this.DataContext = this;
 
             this.walletName = walletname;
             this.walletInfo.WalletName = this.walletName;
-            LoadCreateAsync();
+            InitializeComponent();
+            this.DataContext = this;
+
+            GetWalletBalanceAsync();
         }
 
 
 
-        private void TxtAmount_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (this.textSidechainDestinationAddress.Text != "" && this.SendAmountText.Text != "")
-            {
-                EstimateFeeAsync();
-                this.SendAmountText.Focus();
-            }
-        }
-        private void TxtAddress_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (this.textSidechainDestinationAddress.Text != "" && this.SendAmountText.Text != "")
-            {
-                EstimateFeeAsync();
-                this.textSidechainDestinationAddress.Focus();
-            }
-        }
+        //private void TxtAmount_LostFocus(object sender, RoutedEventArgs e)
+        //{
+        //    if (this.DestinationAddressText.Text != "" && this.SendAmountText.Text != "")
+        //    {
+        //        EstimateFeeAsync();
+        //        this.SendAmountText.Focus();
+        //    }
+        //}
+        //private void TxtAddress_LostFocus(object sender, RoutedEventArgs e)
+        //{
+        //    if (this.DestinationAddressText.Text != "" && this.SendAmountText.Text != "")
+        //    {
+        //        EstimateFeeAsync();
+        //        this.DestinationAddressText.Focus();
+        //    }
+        //}
 
-        private void sendButton_Click(object sender, RoutedEventArgs e)
+        private void SendButton_Click(object sender, RoutedEventArgs e)
         {
             this.isSending = true;
             _ = BuildTransactionAsync();
         }
 
-        private void backButton_Click(object sender, RoutedEventArgs e)
+        private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            Dashboard ds = new Dashboard(this.walletName);
+            MainLayout ds = new MainLayout(this.walletName);
             ds.Show();
             //this.Close();
         }
 
         public bool IsAddressAndAmountValid()
         {
-            if (this.textSidechainDestinationAddress.Text == string.Empty)
+            if (this.DestinationAddressText.Text == string.Empty)
             {
                 MessageBox.Show("An address is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                this.textSidechainDestinationAddress.Focus();
+                this.DestinationAddressText.Focus();
                 return false;
             }
 
-            if (this.textSidechainDestinationAddress.Text.Length < 26)
+            if (this.DestinationAddressText.Text.Length < 26)
             {
                 MessageBox.Show("An address is at least 26 characters long.");
-                this.textSidechainDestinationAddress.Focus();
+                this.DestinationAddressText.Focus();
                 return false;
             }
 
@@ -125,21 +127,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
                 MessageBox.Show("The amount has to be more or equal to 1.");
                 this.SendAmountText.Focus();
                 return false;
-            }
-
-            if (this.SendAmountText.Text.Length > ((this.spendableBalance - this.estimatedFee) / 100000000))
-            {
-                MessageBox.Show("The total transaction amount exceeds your spendable balance.");
-                this.SendAmountText.Focus();
-                return false;
-            }
-
-            if (!Regex.IsMatch(this.SendAmountText.Text, @"^([0-9]+)?(\.[0-9]{0,8})?$"))
-            {
-                MessageBox.Show("Enter a valid transaction amount. Only positive numbers and no more than 8 decimals are allowed.");
-                this.SendAmountText.Focus();
-                return false;
-            }
+            }           
 
             return true;
         }
@@ -149,10 +137,10 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
             if (IsAddressAndAmountValid())
             {
 
-                if (this.textTransactionFee.Text == "")
+                if (this.TransactionFeeText.Text == "")
                 {
                     MessageBox.Show("Transaction Fee is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                    this.textTransactionFee.Focus();
+                    this.TransactionFeeText.Focus();
                     return false;
                 }
 
@@ -167,33 +155,25 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
             return true;
         }
 
-        public async void LoadCreateAsync()
+        
+        private async Task GetWalletBalanceAsync()
         {
-            await GetWalletBalanceAsync(this.baseURL);
-
-        }
-
-        private async Task GetWalletBalanceAsync(string path)
-        {
-            string getUrl = path + $"/wallet/balance?WalletName={this.walletInfo.WalletName}&AccountName=account 0";
+            string getUrl = this.baseURL + $"/wallet/balance?WalletName={this.walletInfo.WalletName}&AccountName=account 0";
             var content = "";
 
             HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
 
-
+            content = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
-            {
-                content = await response.Content.ReadAsStringAsync();
+            {        
+                var balances = JsonConvert.DeserializeObject<WalletBalanceArray>(content);
 
-                this.balances = JsonConvert.DeserializeObject<WalletBalanceArray>(content);
-
-                this.totalBalance = this.balances.Balances[0].AmountConfirmed + this.balances.Balances[0].AmountUnconfirmed;
-                this.cointype = this.balances.Balances[0].CoinType;
-                this.spendableBalance = this.balances.Balances[0].SpendableAmount;
-
-                this.textAvailableCoin.Content = this.totalBalance.ToString();
-                // this.textCoinType.Content = this.cointype.ToString();
-
+                foreach(var balance in balances.Balances)
+                {
+                    this.WalletBalance = balance;
+                    this.textAvailableCoin.Content = (balance.AmountConfirmed/100000000).ToString() ;
+                    this.textCoinType.Content = balance.CoinType.ToString();
+                } 
             }
             else
             {
@@ -228,41 +208,46 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
 
         }
 
-        private Recipient[] GetRecipient()
+        private List<Recipient> GetRecipient()
         {
 
-            Recipient[] recipients = new Recipient[1];
+            List<Recipient> list = new List<Recipient>() {
 
-            recipients[0].DestinationAddress = this.textSidechainDestinationAddress.Text.Trim();
-            recipients[0].Amount = this.SendAmountText.Text;
+               new Recipient{ DestinationAddress = this.DestinationAddressText.Text.Trim(),
+               Amount = this.SendAmountText.Text}
+            };
 
-            return recipients;
+            //recipients[0].DestinationAddress = this.DestinationAddressText.Text.Trim();
+            //recipients[0].Amount = this.SendAmountText.Text;
+
+            return list;
         }
 
         private async void EstimateFeeAsync()
         {
             if (IsAddressAndAmountValid())
             {
-                this.textTransactionFee.Text = "medium";
-                Recipient[] recipients = GetRecipient();
+                this.TransactionFeeTypeLabel.Content = "medium";
+                //Recipient[] recipients = GetRecipient();
+                var d = this.DestinationAddressText.Text;
 
                 string postUrl = this.baseURL + $"/wallet/estimate-txfee";
                 var content = "";
 
                 FeeEstimation feeEstimation = new FeeEstimation();
-                feeEstimation.walletName = this.walletInfo.WalletName;
-                feeEstimation.accountName = "account 0";
-                feeEstimation.recipients = recipients;
-                feeEstimation.feeType = this.textTransactionFee.Text;
-                feeEstimation.allowUnconfirmed = true;
+                feeEstimation.WalletName = this.walletInfo.WalletName;
+                feeEstimation.AccountName = "account 0";
+                feeEstimation.Recipients = GetRecipient();
+                feeEstimation.FeeType = this.TransactionFeeTypeLabel.Content.ToString();
+                feeEstimation.AllowUnconfirmed = true;
 
                 HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(feeEstimation), Encoding.UTF8, "application/json"));
 
-
+                content = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
-                    content = await response.Content.ReadAsStringAsync();
-                    //this.estimatedFee = Money.Parse(content);
+                    this.estimatedFee = (Convert.ToDouble(content) / 100000000);
+                    this.TransactionFeeText.Text = (Convert.ToDouble(content) /100000000).ToString();
                 }
                 else
                 {
@@ -274,7 +259,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
 
         private async Task BuildTransactionAsync()
         {
-            Recipient[] recipients = GetRecipient();
+            //Recipient[] recipients = GetRecipient();
 
 
             string postUrl = this.baseURL + $"/wallet/build-transaction";
@@ -283,19 +268,28 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
             this.transactionBuilding.WalletName = this.walletInfo.WalletName;
             this.transactionBuilding.AccountName = "account 0";
             this.transactionBuilding.Password = this.password.Password;
-            this.transactionBuilding.Recipients = recipients;
-            this.transactionBuilding.FeeAmount = this.estimatedFee / 100000000;
+            this.transactionBuilding.Recipients = GetRecipient();
+            this.transactionBuilding.FeeAmount = this.estimatedFee;
             this.transactionBuilding.AllowUnconfirmed = true;
             this.transactionBuilding.ShuffleOutputs = false;
 
 
             HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(this.transactionBuilding), Encoding.UTF8, "application/json"));
 
-
+            content = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
-                content = await response.Content.ReadAsStringAsync();
-                this.buildTransaction = JsonConvert.DeserializeObject<BuildTransaction>(content);
+                try
+                {
+                    this.buildTransaction = JsonConvert.DeserializeObject<BuildTransaction>(content);
+
+                }
+                catch (Exception e)
+                {
+
+                    throw;
+                }
+                
 
                 this.estimatedFee = this.buildTransaction.Fee;
                 this.transactionSending.Hex = this.buildTransaction.Hex;
@@ -309,7 +303,25 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
             else
             {
                 this.isSending = false;
-                MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+
+                try
+                {
+                    var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
+
+                    foreach (var error in errors.Errors)
+                    {
+                        MessageBox.Show(error.Message);
+
+                        //MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                    }
+                }
+                catch (Exception e)
+                {
+
+                    throw;
+                }
+                
+                
             }
 
         }
@@ -319,15 +331,14 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
             if (isValid())
             {
                 string postUrl = this.baseURL + $"/wallet/send-transaction";
-                // var content = "";
+                 var content = "";
 
                 HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(tranSending), Encoding.UTF8, "application/json"));
 
+                 content = await response.Content.ReadAsStringAsync();
 
                 if (response.IsSuccessStatusCode)
-                {
-                    // content = await response.Content.ReadAsStringAsync();
-
+                {        
                     SendConfirmation sendConfirmation = new SendConfirmation();
                     sendConfirmation.Transaction = this.transactionBuilding;
                     sendConfirmation.TransactionFee = this.estimatedFee;
@@ -341,16 +352,46 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
                 else
                 {
                     this.isSending = false;
-                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                    var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
+
+                    foreach (var error in errors.Errors)
+                    {
+                        MessageBox.Show(error.Message);
+
+                        //MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                    }
                 }
             }
 
         }
 
+
+        private void CheckSendAmount_OnChange(object sender, RoutedEventArgs e)
+        {
+            double sendingAmount = Convert.ToDouble(this.SendAmountText.Text);
+            if ( sendingAmount > ((this.WalletBalance.AmountConfirmed - this.estimatedFee) / 100000000))
+            {
+                MessageBox.Show("The total transaction amount exceeds your spendable balance.");  
+            }
+
+            if (!Regex.IsMatch(this.SendAmountText.Text, @"^([0-9]+)?(\.[0-9]{0,8})?$"))
+            {
+                MessageBox.Show("Enter a valid transaction amount. Only positive numbers and no more than 8 decimals are allowed.");           
+            }
+
+            this.SendAmountText.Focus();
+        }
+
+
         private void CalculateTransactionFee_OnChange(object sender, RoutedEventArgs e)
         {
-            var amount = this.SendAmountText.Text;
+            if (this.DestinationAddressText.Text != "" && this.SendAmountText.Text != "")
+            {
+                EstimateFeeAsync();
+                this.DestinationAddressText.Focus();
+            }
         }
+
 
 
     }

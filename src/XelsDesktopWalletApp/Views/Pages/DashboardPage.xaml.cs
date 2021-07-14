@@ -59,9 +59,9 @@ namespace XelsDesktopWalletApp.Views.Pages
         public bool stakingEnabled = false;
 
         private bool hasBalance;
-        private decimal confirmedBalance;
-        private decimal unconfirmedBalance;
-        private decimal spendableBalance;
+        private double confirmedBalance;
+        private double unconfirmedBalance;
+        private double spendableBalance;
 
         private string percentSynced;
 
@@ -344,18 +344,18 @@ namespace XelsDesktopWalletApp.Views.Pages
 
         private void ReceiveButton_Click(object sender, RoutedEventArgs e)
         {
-            //this.Dashboard.Children.Add(new ReceiveUserControl(this.walletName));
+            this.Dashboard.Children.Add(new ReceiveUserControl(this.walletName));
 
-            Receive receive = new Receive(this.walletName);
-            receive.ShowDialog();
+            //Receive receive = new Receive(this.walletName);
+            //receive.ShowDialog();
 
         }
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
-            Send send = new Send(this.walletName);
-            send.Show();
+            //Send send = new Send(this.walletName);
+            //send.Show();
 
-            // this.Dashboard.Children.Add(new SendUserControl());
+             this.Dashboard.Children.Add(new SendUserControl(this.walletName));
 
         }
 

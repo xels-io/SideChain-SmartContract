@@ -28,12 +28,12 @@ namespace XelsDesktopWalletApp.Models
         public string AccountName { get; set; }
         public string Password { get; set; }
 
-        public Recipient[] Recipients { get; set; }
+        public List<Recipient> Recipients { get; set; }
 
         //public string destinationAddress { get; set; }
         //public string amount { get; set; }
         
-        public Decimal FeeAmount { get; set; }
+        public double FeeAmount { get; set; }
         public bool AllowUnconfirmed { get; set; }
         public bool ShuffleOutputs { get; set; }
 
@@ -52,7 +52,7 @@ namespace XelsDesktopWalletApp.Models
         //public string destinationAddress { get; set; }
         //public string amount { get; set; }
 
-        public Decimal FeeAmount { get; set; }
+        public double FeeAmount { get; set; }
         public bool AllowUnconfirmed { get; set; }
         public bool ShuffleOutputs { get; set; }
 
