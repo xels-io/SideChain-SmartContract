@@ -20,7 +20,7 @@ namespace XelsDesktopWalletApp.Models
         public string WalletName { get; set; }
         public string AccountName { get; set; }
 
-        public RecipientSidechain[] Recipients { get; set; }
+        public List<RecipientSidechain> Recipients { get; set; }
         public string OpReturnData { get; set; } // destinationaddr
 
         public string FeeType { get; set; }

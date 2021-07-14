@@ -43,10 +43,10 @@
                             <Label Grid.Column="0" Content="Amount"/>
                             <Label Grid.Column="1" Content="Available:" />
 
-                            <Label Grid.Column="2"  x:Name="textAvailableCoin" 
+                            <Label Grid.Column="2"  x:Name="AvailableBalanceText" 
                          />
 
-                            <Label  Grid.Column="3" x:Name="textCoinType" 
+                            <Label  Grid.Column="3" x:Name="CoinTypeText" 
                           />
 
                         </Grid>
@@ -54,8 +54,8 @@
                     
                     
                     <Border Grid.Row="1">
-                        <TextBox  x:Name="textAmount"
-                          Focusable="True" FocusManager.LostFocus="TxtAmount_LostFocus"
+                        <TextBox  x:Name="SendAmountText"
+                          TextChanged="CheckSendAmount_OnChange"
                           BorderBrush="#FFC9D6C9"  />
                     </Border>
                     
@@ -73,7 +73,7 @@
 
                    
                     <Label Grid.Row="0" Content="Mainchain federation address"/>
-                    <TextBox Grid.Row="1"  x:Name="textMainchainFederationAddress" />
+                    <TextBox Grid.Row="1"  x:Name="MainchainFederationAddressText" />
                 </Grid>
             </Border>
             
@@ -88,8 +88,7 @@
 
                     <Label Grid.Row="0" Content="Sidechain destination address" />
 
-                    <TextBox Grid.Row="1" x:Name="textSidechainDestinationAddress" 
-                          Focusable="True" FocusManager.LostFocus="TxtAddress_LostFocus"
+                    <TextBox Grid.Row="1" x:Name="SidechainDestinationAddressText"  TextChanged="CalculateTransactionFee_OnChange"
                           />
 
                 </Grid>
@@ -106,7 +105,8 @@
                     </Grid.RowDefinitions>
 
                     <Label Grid.Row="0" Content="Transaction Fee" />
-                    <TextBox Grid.Row="1"  x:Name="textTransactionFee" IsReadOnly="True"  />
+                    <TextBox Grid.Row="1"  x:Name="TransactionFeeText" IsReadOnly="True"  />
+                    <Label Grid.Row="2" x:Name="TransactionFeeTypeLabel"  RenderTransformOrigin="1.158,-0.076" />
                     <TextBlock Grid.Row="2" Text="Please, enter valid amount, fedaration and destination address to calculate the fee." Foreground="Red" />
 
                 </Grid>

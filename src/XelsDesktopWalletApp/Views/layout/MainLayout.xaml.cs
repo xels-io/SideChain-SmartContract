@@ -110,15 +110,18 @@ namespace XelsDesktopWalletApp.Views.layout
 
         private void AddressBookButton_Click(object sender, RoutedEventArgs e)
         {
-            AddressBook AddressBook = new AddressBook(this.walletName);
-            AddressBook.Show();
+
+            this.PageContent.Content = new AddressBookPage(this.walletName);
+            //AddressBook AddressBook = new AddressBook(this.walletName);
+            //AddressBook.Show();
             //this.Close();
         }
 
         private void AdvancedButton_Click(object sender, RoutedEventArgs e)
         {
-            Advanced Advanced = new Advanced(this.walletName);
-            Advanced.Show();
+            this.PageContent.Content = new AdvancedPage(this.walletName);
+            //Advanced Advanced = new Advanced(this.walletName);
+            //Advanced.Show();
             //this.Close();
         }
 

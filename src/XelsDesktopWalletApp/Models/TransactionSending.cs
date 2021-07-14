@@ -19,6 +19,7 @@ namespace XelsDesktopWalletApp.Models
     public class RecipientSidechain
     {
         public string FederationAddress { get; set; }
+        public string DestinationAddress { get; set; }
         public string Amount { get; set; }
     }
 
@@ -47,7 +48,7 @@ namespace XelsDesktopWalletApp.Models
         public string AccountName { get; set; }
         public string Password { get; set; }
 
-        public RecipientSidechain[] Recipients { get; set; }
+        public List<RecipientSidechain> Recipients { get; set; }
 
         //public string destinationAddress { get; set; }
         //public string amount { get; set; }

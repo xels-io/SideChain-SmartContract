@@ -11,5 +11,7 @@ namespace XelsDesktopWalletApp.Models
         public string Description { get; set; }
 
         public ErrorModel[] Errors { get; set; }
+        public List<ErrorModel> Errorss { get; set; }
     }
+
 }

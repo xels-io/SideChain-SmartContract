@@ -302,7 +302,7 @@ namespace XelsDesktopWalletApp.Views
                 FeeEstimationSideChain feeEstimation = new FeeEstimationSideChain();
                 feeEstimation.WalletName = this.walletInfo.WalletName;
                 feeEstimation.AccountName = "account 0";
-                feeEstimation.Recipients = recipients;
+                //feeEstimation.Recipients = GetRecipient();
                 feeEstimation.OpReturnData = this.textSidechainDestinationAddress.Text.Trim();
                 feeEstimation.FeeType = this.textTransactionFee.Text;
                 feeEstimation.AllowUnconfirmed = true;
@@ -322,11 +322,7 @@ namespace XelsDesktopWalletApp.Views
         }
 
         private async void BuildTransactionSideChainAsync()
-        {
-            var opRet = this.opReturnAmount / 100000000;
-            this.opReturnAmount = opRet;
-            string myAmt = opRet.ToString();
-
+        {             
             RecipientSidechain[] recipients = GetRecipient();
 
             string postUrl = this.baseURL + $"/wallet/build-transaction";
@@ -335,12 +331,12 @@ namespace XelsDesktopWalletApp.Views
             this.transactionBuilding.WalletName = this.walletInfo.WalletName;
             this.transactionBuilding.AccountName = "account 0";
             this.transactionBuilding.Password = this.password.Password;
-            this.transactionBuilding.Recipients = recipients;
-            this.transactionBuilding.FeeAmount = this.estimatedSidechainFee / 100000000;
+            //this.transactionBuilding.Recipients = recipients;
+            //this.transactionBuilding.FeeAmount = this.estimatedSidechainFee / 100000000;
             this.transactionBuilding.AllowUnconfirmed = true;
             this.transactionBuilding.ShuffleOutputs = false;
             this.transactionBuilding.OpReturnData = this.textSidechainDestinationAddress.Text.Trim();
-            this.transactionBuilding.OpReturnAmount = myAmt;
+            //this.transactionBuilding.OpReturnAmount = this.opReturnAmount / 100000000;
 
             HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(this.transactionBuilding), Encoding.UTF8, "application/json"));
 
