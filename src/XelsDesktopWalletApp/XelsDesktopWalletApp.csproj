@@ -6,6 +6,11 @@
     <UseWPF>true</UseWPF>
     <StartupObject>XelsDesktopWalletApp.Program</StartupObject>
     <ApplicationIcon>icon.ico</ApplicationIcon>
+    <NoWin32Manifest>true</NoWin32Manifest>
+    <Version>5.0.0</Version>
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <AssemblyOriginatorKeyFile>XelsSigningKey.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
