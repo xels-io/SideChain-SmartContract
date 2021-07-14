@@ -99,14 +99,14 @@ namespace XelsDesktopWalletApp
 
                 if (response.IsSuccessStatusCode)
                 {
-                    //Dashboard db = new Dashboard(this.UserWallet.Name);//this.SelectedWallet.Name
-                    //db.Show();
-                    //this.Close();
-
-
-                    MainLayout mainLayout = new MainLayout(this.UserWallet.Name);
-                    mainLayout.Show();
+                    Dashboard db = new Dashboard(this.UserWallet.Name);//this.SelectedWallet.Name
+                    db.Show();
                     this.Close();
+
+
+                    //MainLayout mainLayout = new MainLayout(this.UserWallet.Name);
+                    //mainLayout.Show();
+                    //this.Close();
                 }
                 else if (content != "" || content != null)
                 {
