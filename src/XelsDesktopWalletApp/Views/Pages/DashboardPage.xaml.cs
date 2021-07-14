@@ -52,6 +52,9 @@ namespace XelsDesktopWalletApp.Views.Pages
                 this.walletName = value;
             }
         }
+        // Hisotory detail data
+        private int? lastBlockSyncedHeight = 0;
+        private int? confirmations = 0;
 
         #region Own Property
 
@@ -200,7 +203,47 @@ namespace XelsDesktopWalletApp.Views.Pages
             {
                 MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
             }
-        }       
+        }
+
+        private void DetailsButton_Click(object sender, RoutedEventArgs e)
+        {
+            TransactionItemModel item = (TransactionItemModel)((sender as Button)?.Tag as ListViewItem)?.DataContext;
+            this.DetailsPopup.IsOpen = true;
+
+            this.TypeTxt.Text = item.Type;
+            this.TotalAmountTxt.Text = item.Amount.ToString();
+            this.AmountSentTxt.Text = item.Amount.ToString();
+            this.FeeTxt.Text = item.Fee.ToString();
+            this.DateTxt.Text = item.Timestamp.ToString();
+            this.BlockTxt.Text = item.ConfirmedInBlock.ToString();
+
+            if (item.ConfirmedInBlock != 0 || item.ConfirmedInBlock != null)
+            {
+                this.confirmations = this.lastBlockSyncedHeight - item.ConfirmedInBlock + 1; 
+            }
+            else
+            {
+                this.confirmations = 0;
+            }
+            this.ConfirmationsTxt.Text = this.confirmations.ToString();
+
+            this.TransactionIDTxt.Text = item.Id.ToString();
+        }
+
+        private void Copy_Click(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(this.TransactionIDTxt.Text);
+        }
+
+        private void HidePopup_Click(object sender, RoutedEventArgs e)
+        {
+            this.DetailsPopup.IsOpen = false;
+        }
+
+        private void Ok_Click(object sender, RoutedEventArgs e)
+        {
+            this.DetailsPopup.IsOpen = false;
+        }
 
         private async Task GetGeneralWalletInfoAsync()
         {
@@ -213,6 +256,8 @@ namespace XelsDesktopWalletApp.Views.Pages
             {
 
                 this.walletGeneralInfoModel = JsonConvert.DeserializeObject<WalletGeneralInfoModel>(content);
+
+                this.lastBlockSyncedHeight = this.walletGeneralInfoModel.LastBlockSyncedHeight; // for history data
 
                 this.processedText = $"Processed { this.walletGeneralInfoModel.LastBlockSyncedHeight ?? 0} out of { this.walletGeneralInfoModel.ChainTip} blocks.";
                 this.blockChainStatus = $"Synchronizing.  { this.processedText}";
@@ -447,15 +492,6 @@ namespace XelsDesktopWalletApp.Views.Pages
                 this.MiningInfoBorder.Visibility = Visibility.Hidden;
                 this.t.Visibility = Visibility.Visible;
             }
-        }
-
-        private void DetailsButton_Click(object sender, RoutedEventArgs e)
-        {
-            TransactionInfo item = (TransactionInfo)((sender as Button)?.Tag as ListViewItem)?.DataContext;
-
-            TransactionDetail td = new TransactionDetail(this.walletName, item);
-            td.Show();
-
         }
 
         private void GotoHistoryButton_Click(object sender, RoutedEventArgs e)
