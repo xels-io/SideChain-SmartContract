@@ -57,7 +57,10 @@ namespace XelsDesktopWalletApp.Views.Pages
 
         private HistoryModelArray historyModelArray = new HistoryModelArray();
         private List<TransactionInfo> transactions = new List<TransactionInfo>();
-         
+        // Hisotory detail data
+        private int? lastBlockSyncedHeight = 0;
+        private int? confirmations = 0;
+
         public HistoryPage(string walletname)
         {
             InitializeComponent();            
@@ -66,7 +69,26 @@ namespace XelsDesktopWalletApp.Views.Pages
 
             this.walletName = walletname;
             this.walletInfo.WalletName = this.walletName;
+            GetGeneralWalletInfoAsync();
             _ = GetWalletHistoryAsync(this.baseURL);
+        }
+
+        private async Task GetGeneralWalletInfoAsync()
+        {
+            string getUrl = this.baseURL + $"/wallet/general-info?Name={this.walletInfo.WalletName}";
+            var content = "";
+
+            HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
+            content = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                var wallet = JsonConvert.DeserializeObject<WalletGeneralInfoModel>(content);
+                this.lastBlockSyncedHeight = wallet.LastBlockSyncedHeight; // for history detail data
+            }
+            else
+            {
+                MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+            }
         }
 
         private async Task GetWalletHistoryAsync(string path)
@@ -103,13 +125,52 @@ namespace XelsDesktopWalletApp.Views.Pages
             }
         }
 
+        //private void DetailsButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    TransactionInfo item = (TransactionInfo)((sender as Button)?.Tag as ListViewItem)?.DataContext;
+
+        //    TransactionDetail td = new TransactionDetail(this.walletName, item);
+        //    td.Show();
+
+        //}
         private void DetailsButton_Click(object sender, RoutedEventArgs e)
         {
-            TransactionInfo item = (TransactionInfo)((sender as Button)?.Tag as ListViewItem)?.DataContext;
+            TransactionItemModel item = (TransactionItemModel)((sender as Button)?.Tag as ListViewItem)?.DataContext;
+            this.DetailsPopup.IsOpen = true;
 
-            TransactionDetail td = new TransactionDetail(this.walletName, item);
-            td.Show();
+            this.TypeTxt.Text = item.Type;
+            this.TotalAmountTxt.Text = item.Amount.ToString();
+            this.AmountSentTxt.Text = item.Amount.ToString();
+            this.FeeTxt.Text = item.Fee.ToString();
+            this.DateTxt.Text = item.Timestamp.ToString();
+            this.BlockTxt.Text = item.ConfirmedInBlock.ToString();
 
+            if (item.ConfirmedInBlock != 0 || item.ConfirmedInBlock != null)
+            {
+                this.confirmations = this.lastBlockSyncedHeight - item.ConfirmedInBlock + 1;
+            }
+            else
+            {
+                this.confirmations = 0;
+            }
+            this.ConfirmationsTxt.Text = this.confirmations.ToString();
+
+            this.TransactionIDTxt.Text = item.Id.ToString();
+        }
+
+        private void Copy_Click(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(this.TransactionIDTxt.Text);
+        }
+
+        private void HidePopup_Click(object sender, RoutedEventArgs e)
+        {
+            this.DetailsPopup.IsOpen = false;
+        }
+
+        private void Ok_Click(object sender, RoutedEventArgs e)
+        {
+            this.DetailsPopup.IsOpen = false;
         }
 
 

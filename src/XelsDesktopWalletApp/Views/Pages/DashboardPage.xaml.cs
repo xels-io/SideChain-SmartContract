@@ -53,7 +53,7 @@ namespace XelsDesktopWalletApp.Views.Pages
                 this.walletName = value;
             }
         }
-        // Hisotory data
+        // Hisotory detail data
         private int? lastBlockSyncedHeight = 0;
         private int? confirmations = 0;
 
@@ -105,7 +105,6 @@ namespace XelsDesktopWalletApp.Views.Pages
             GetWalletBalanceAsync();
 
             GetHistoryAsync();
-            AddtoHistoryList();
 
             if (this.hasBalance && URLConfiguration.Chain != "-sidechain")// (!this.sidechainEnabled)
             {
@@ -189,10 +188,10 @@ namespace XelsDesktopWalletApp.Views.Pages
                 {
                     var history = JsonConvert.DeserializeObject<HistoryModelArray>(content);
 
-                    //foreach (var h in history.History)
-                    //{
-                    //    this.HistoryListBinding.ItemsSource = h.TransactionsHistory;
-                    //}
+                    foreach (var h in history.History)
+                    {
+                        this.HistoryListBinding.ItemsSource = h.TransactionsHistory;
+                    }
                 }
                 catch (Exception e)
                 {
@@ -205,37 +204,6 @@ namespace XelsDesktopWalletApp.Views.Pages
             {
                 MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
             }
-        }
-        private void AddtoHistoryList()
-        {
-            List<TransactionItemModel> list = new List<TransactionItemModel>();
-            List<PaymentDetailModel> paymentlist = new List<PaymentDetailModel>();
-
-            TransactionItemModel data1 = new TransactionItemModel();
-            data1.Type = "mined";
-            data1.ToAddress = "XHZn7EbwkdqG1cmdVajD8H1UvzgLHXBAdE";
-            data1.Id = "a18cad8faedacf5768157013e45a3331c604955a4735a7c01f6dd1edbfdbcbd8";
-            data1.Amount = 5000000000;
-            data1.Payments = paymentlist;
-            data1.ConfirmedInBlock = 6627;
-            data1.Timestamp = "1624276245";
-            data1.TxOutputTime = 1624276245;
-            data1.TxOutputIndex = 0;
-            list.Add(data1);
-
-            TransactionItemModel data2 = new TransactionItemModel();
-            data2.Type = "mined";
-            data2.ToAddress = "XHZn7EbwkdqG1cmdVajD8H1UvzgLHXBAdE";
-            data2.Id = "ef55855a89553405dcf6c26317f4ed189d728bd1c970c40b7469559086f30709";
-            data2.Amount = 5000000000;
-            data2.Payments = paymentlist;
-            data2.ConfirmedInBlock = 6625;
-            data2.Timestamp = "1624276144";
-            data2.TxOutputTime = 1624276144;
-            data2.TxOutputIndex = 0;
-            list.Add(data2);
-
-            this.HistoryListBinding.ItemsSource = list;
         }
 
         private void DetailsButton_Click(object sender, RoutedEventArgs e)

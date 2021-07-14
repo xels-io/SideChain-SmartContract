@@ -26,9 +26,23 @@
                                 <GridViewColumn  Width="150" 
                                             DisplayMemberBinding="{Binding Path=Timestamp}"  />
                             <GridViewColumn>
-                                <GridViewColumn.CellTemplate>
+                                <!--<GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button Name="BtnYourButton" Content="Details" Click="DetailsButton_Click" Background="Green" Padding="5" Margin="10 0" />
+                                    </DataTemplate>
+
+                                </GridViewColumn.CellTemplate>-->
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Tag="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListViewItem}}}"  
+                                                Content="Details" Click="DetailsButton_Click"  Padding="5" Margin="10 0"
+                                                Background="ForestGreen" Height="30" FontSize="12" >
+                                            <Button.Resources>
+                                                <Style TargetType="{x:Type Border}">
+                                                    <Setter Property="CornerRadius" Value="5"/>
+                                                </Style>
+                                            </Button.Resources>
+                                        </Button>
                                     </DataTemplate>
 
                                 </GridViewColumn.CellTemplate>
@@ -41,7 +55,125 @@
                             <Setter Property="HorizontalContentAlignment" Value="Center"/>
                         </Style>
                     </ListView.ItemContainerStyle>
-                </ListView>                
+                </ListView>
+
+                <Popup Name="DetailsPopup" Placement="Center"  AllowsTransparency="False">
+                    <Grid Width="900"  Height="700">
+                        <Rectangle Width="900" Height="700" Fill="WhiteSmoke"  />
+                        <Button Click="HidePopup_Click" Background="Black" Foreground="White"
+                                VerticalAlignment="Top" HorizontalAlignment="Right" Content="X" >
+
+                            <Button.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="50"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+
+
+
+                        <Label Content="Transaction Details" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="30" 
+                               FontFamily="Microsoft YaHei" Margin="50,30,0,0" />
+
+                        <Grid Name="AboutGrid" Height="500" Background="White" Margin="50" Width="784" HorizontalAlignment="Left">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="211*"></ColumnDefinition>
+                                <ColumnDefinition Width="573*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Orientation="Vertical" Margin="10,64,0,66"  Grid.Column="0" >
+                                <Label Content="Type:" Height="30" Width="178" Foreground="#FF615858"  HorizontalAlignment="Right"
+                                FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
+                                <Label Content="Total Amount:" Height="30" Width="178" Foreground="#FF615858"  HorizontalAlignment="Right"
+                                FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
+                                <Label Content="Amount Sent:" Height="30" Width="178" Foreground="#FF615858"  HorizontalAlignment="Right"
+                                FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
+                                <Label Content="Fee:" Height="30" Width="178" Foreground="#FF615858" HorizontalAlignment="Right"
+                                FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
+                                <Label Content="Date:" Height="30" Width="178" Foreground="#FF615858" HorizontalAlignment="Right"
+                                FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
+                                <Label Content="Block:" Height="30" Width="178" Foreground="#FF615858" HorizontalAlignment="Right"
+                                FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
+                                <Label Content="Confirmations:" Height="30" Width="178" Foreground="#FF615858" HorizontalAlignment="Right"
+                                FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
+                                <Label Content="Transaction ID:" Height="30" Width="178" Foreground="#FF615858" HorizontalAlignment="Right"
+                                FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
+
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Margin="0,64,0,66"  Grid.Column="1" HorizontalAlignment="Left" Width="559" >
+                                <TextBlock x:Name="TypeTxt" Text="TypeText"
+                                     TextWrapping="Wrap" Width="555" Padding="4" 
+                                     FontFamily="Microsoft YaHei" FontSize="14" Foreground="ForestGreen" 
+                                     TextAlignment="Left" Height="30">
+                                </TextBlock>
+                                <TextBlock x:Name="TotalAmountTxt" Text="TotalAmount"
+                                     TextWrapping="Wrap" Width="555" Padding="4" 
+                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="#FF615858" 
+                                     TextAlignment="Left" Height="30">
+                                </TextBlock>
+                                <TextBlock x:Name="AmountSentTxt"  Text="AmountSent"
+                                     TextWrapping="Wrap" Width="555" Padding="4" 
+                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="#FF615858" 
+                                     TextAlignment="Left" Height="30">
+                                </TextBlock>
+                                <TextBlock x:Name="FeeTxt"  Text="Fee"
+                                     TextWrapping="Wrap" Width="555" Padding="4" 
+                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="#FF615858" 
+                                     TextAlignment="Left" Height="30">
+                                </TextBlock>
+                                <TextBlock x:Name="DateTxt"  Text="Date"
+                                     TextWrapping="Wrap" Width="555" Padding="4" 
+                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="#FF615858" 
+                                     TextAlignment="Left" Height="30">
+                                </TextBlock>
+                                <TextBlock x:Name="BlockTxt"  Text="Block"
+                                     TextWrapping="Wrap" Width="555" Padding="4" 
+                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="#FF615858" 
+                                     TextAlignment="Left" Height="30">
+                                </TextBlock>
+                                <TextBlock x:Name="ConfirmationsTxt"  Text="Confirmations"
+                                     TextWrapping="Wrap" Width="555" Padding="4" 
+                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="ForestGreen" 
+                                     TextAlignment="Left" Height="30">
+                                </TextBlock>
+                                <TextBlock x:Name="TransactionIDTxt"  Text="TransactionID"
+                                     TextWrapping="Wrap" Width="555" Padding="4" 
+                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="ForestGreen" 
+                                     TextAlignment="Left" Height="30">
+                                </TextBlock>
+                                <TextBlock x:Name="TransactionIDCopy"  TextAlignment="Left" Height="30" Width="555">
+                                    <Button  x:Name="CopyButton" Click="Copy_Click" Padding="2" 
+                                Background="White" BorderThickness="1,1,1,1" Foreground="Gray" 
+                                Content="Copy"
+                                 HorizontalAlignment="Left" VerticalAlignment="Top" 
+                                Height="25" Width="50" FontFamily="Microsoft YaHei Light" BorderBrush="Gray" >
+                                    <Button.Resources>
+                                        <Style TargetType="{x:Type Border}">
+                                            <Setter Property="CornerRadius" Value="5"/>
+                                        </Style>
+                                    </Button.Resources>
+                                </Button>
+                                </TextBlock>
+
+                            </StackPanel>
+
+                            <StackPanel Orientation="Vertical" Margin="50,400,0,66"  Grid.Column="0" Grid.ColumnSpan="2">
+                                <Button  x:Name="OkButton" Click="Ok_Click" Padding="2" 
+                                Background="White" BorderThickness="1,1,1,1" Foreground="ForestGreen" 
+                                Content="OK"
+                                 HorizontalAlignment="Left" VerticalAlignment="Top" 
+                                Height="30" Width="300" FontFamily="Microsoft YaHei" BorderBrush="ForestGreen" >
+                                    <Button.Resources>
+                                        <Style TargetType="{x:Type Border}">
+                                            <Setter Property="CornerRadius" Value="5"/>
+                                        </Style>
+                                    </Button.Resources>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+
+                    </Grid>
+                </Popup>
             </Grid>
            
             
