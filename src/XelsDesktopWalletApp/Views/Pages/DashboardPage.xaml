@@ -8,7 +8,7 @@
       d:DesignHeight="550" d:DesignWidth="900"
       Title="DashboardPage">
 
-    <StackPanel Background="White" Margin="5">DetailsButton_Click
+    <StackPanel Background="White" Margin="5">
 
         <!--- upper grid -->
 
