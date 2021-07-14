@@ -236,7 +236,7 @@
                                      TextAlignment="Left" Height="30">
                                 </TextBlock>
                                 <TextBlock x:Name="TransactionIDCopy"  TextAlignment="Left" Height="30" Width="555">
-                                    <Button  x:Name="CopyButton" Click="Copy_Click" Padding="2" 
+                                    <Button  x:Name="CopyButton"  Padding="2" 
                                 Background="White" BorderThickness="1,1,1,1" Foreground="Gray" 
                                 Content="Copy"
                                  HorizontalAlignment="Left" VerticalAlignment="Top" 
