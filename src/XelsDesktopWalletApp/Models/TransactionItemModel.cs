@@ -65,7 +65,28 @@ namespace XelsDesktopWalletApp.Models
 
         // List<TransactionItemModel> TransactionsHistory { get; set; }
 
-        
+        private string ConvertToDate(string d)
+        {
+            int date = Convert.ToInt32(d);
+
+            int day = date % 100;
+            int month = (date / 100) % 100;
+            int year = date / 10000;
+
+            var result = Convert.ToString(new DateTime(year, month, day));
+            return result;
+        }
+
+
+        public List<PaymentDetailModel> Payments { get; set; } // new added for detail 
+        public long TxOutputTime { get; set; } // new added for detail 
+        public int TxOutputIndex { get; set; } // new added for detail 
+    }
+    public class PaymentDetailModel
+    {
+        public string DestinationAddress { get; set; }
+        public double Amount { get; set; }
+        public bool IsChange { get; set; }
     }
 
     public class TransactionItemModelArray

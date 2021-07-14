@@ -316,7 +316,7 @@
                                 <StackPanel Orientation="Vertical" Margin="0,158,0,43" >
                                     <StackPanel Orientation="Horizontal" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Center" Width="166" Height="16">
 
-                                        <Label Content="Parent Synced:" Height="15" Width="113" 
+                                        <Label Content="Percent Synced:" Height="15" Width="113" 
                                                Foreground="LimeGreen"
                                                FontFamily="Microsoft YaHei" FontSize="10" Padding="0" Margin="0"/>
                                         <TextBlock x:Name="ParentSyncedTxt" FontFamily="Microsoft YaHei" FontSize="9" Foreground="LimeGreen" 
