@@ -16,7 +16,6 @@ namespace XelsDesktopWalletApp.Models
 
         public string Type
         {
-
             get
             {
                 if (_type == "mined")
@@ -50,7 +49,8 @@ namespace XelsDesktopWalletApp.Models
         { 
             get { return _timeStamp; } 
             set {
-                _timeStamp = new DateTime(Convert.ToInt32(value), System.DateTimeKind.Utc ).ToString(); //ConvertToDate(value);
+                _timeStamp = Utils.UnixTimeToDateTime(Convert.ToInt64(value)).ToString("F");
+                    //new DateTime(Convert.ToInt32(value), System.DateTimeKind.Utc ).ToString(); //ConvertToDate(value);
             }
             //
             //DateTime.ParseExact(value,
