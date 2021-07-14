@@ -86,7 +86,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
         //    }
         //}
 
-        private void SendButton_Click(object sender, RoutedEventArgs e)
+        private void sendButton_Click(object sender, RoutedEventArgs e)
         {
             this.isSending = true;
             _ = BuildTransactionAsync();

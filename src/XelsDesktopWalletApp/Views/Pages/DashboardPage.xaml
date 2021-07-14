@@ -429,18 +429,6 @@
                                         <GridViewColumn  Width="250" 
                                             DisplayMemberBinding="{Binding Path=Timestamp}"  />
 
-<GridViewColumn>
-                                            <GridViewColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <Button Name="DetailsButton" Content="Details" Click="DetailsButton_Click" Background="Green" Padding="5" Margin="10 0" />
-                                                </DataTemplate>
-
-                                            </GridViewColumn.CellTemplate>
-
-
-                                        </GridViewColumn>
-
-
                                     <GridViewColumn>
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
@@ -469,11 +457,13 @@
                                 </Style>
                             </ListView.ItemContainerStyle>
 
-                        </ListView>
+                        </ListView>                                     
+
+
 
                         <Popup Name="DetailsPopup" Placement="Center"  AllowsTransparency="False">
-                            <Grid Width="900"  Height="700">
-                                <Rectangle Width="900" Height="700" Fill="WhiteSmoke"  />
+                            <Grid Width="900"  Height="600">
+                                <Rectangle Width="900" Height="600" Fill="WhiteSmoke"  />
                                 <Button Click="HidePopup_Click" Background="Black" Foreground="White"
                                 VerticalAlignment="Top" HorizontalAlignment="Right" Content="X" >
 
@@ -588,20 +578,6 @@
 
                             </Grid>
                         </Popup>
-                                        
-                                    </GridView>
-                                </ListView.View>
-                                <ListView.ItemContainerStyle>
-                                    <Style TargetType="ListViewItem">
-                                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                                        <Setter Property="Padding" Value="0"/>
-                                        <Setter Property="Margin" Value="0"/>
-                                        <Setter Property="BorderThickness" Value="0"/>
-                                    </Style>
-                                </ListView.ItemContainerStyle>
-
-                            </ListView>
-
 
                         </Grid>
                     </Border>
