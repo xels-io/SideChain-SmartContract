@@ -175,44 +175,56 @@ namespace XelsDesktopWalletApp.Views.Pages
                 throw;
             }
         }
-
+        //this is for new oreder submit button function
         public async Task NewOrderAsync(ExchangeOrder order)
         {
-            try
+            string balance = await this.createWallet.GetBalanceAsync(this.mywallet.Address, this.mywallet.Coin);
+            if (Convert.ToInt64(balance) > 0)
             {
-                string postUrl = URLConfiguration.BaseURLExchange + "/api/new-order";
-
-                var content = "";
-                ExchangeResponse exchangedata = new ExchangeResponse();
-                HttpClient client = new HttpClient();
-
-                client.DefaultRequestHeaders.Add("Authorization", "1234567890");
-
-                HttpResponseMessage response = await client.PostAsJsonAsync(postUrl, order);
-                content = await response.Content.ReadAsStringAsync();
-
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    exchangedata = JsonConvert.DeserializeObject<ExchangeResponse>(content);
+              
+                    string postUrl = URLConfiguration.BaseURLExchange + "/api/new-order";
 
-                    await UpdateExchangeListAsync();
+                    var content = "";
+                    ExchangeResponse exchangedata = new ExchangeResponse();
+                    HttpClient client = new HttpClient();
+                    client.DefaultRequestHeaders.Add("Authorization", "1234567890");
 
-                    //if (this.updatesuccess == true) {
-                    await DepositAsync(order.deposit_symbol, order.deposit_amount, exchangedata);
-                    //}
+                    HttpResponseMessage response = await client.PostAsJsonAsync(postUrl, order);
+                    content = await response.Content.ReadAsStringAsync();
 
-                }
-                else
-                {
-                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-                }
+                    if (response.IsSuccessStatusCode)
+                    {
+                        exchangedata = JsonConvert.DeserializeObject<ExchangeResponse>(content);
 
-            }
+                        await UpdateExchangeListAsync();
+
+                        //if (this.updatesuccess == true) {
+                        await DepositAsync(order.deposit_symbol, order.deposit_amount, exchangedata);
+                        //}
+
+                    }
+                    else
+                    {
+                        this.exchangeSubmit.IsEnabled = true;
+                        MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                    }
+                
+                 }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message.ToString());
             }
+            }
+            else
+            {
+                MessageBox.Show("You have Insufficient Balance for this address.");
+               // this.exchangeSubmit.IsEnabled = true;
+            }
+
         }
+        //end
         #endregion
 
         public async Task UpdateExchangeListAsync()
@@ -237,6 +249,7 @@ namespace XelsDesktopWalletApp.Views.Pages
                                 // Processed data
                                 foreach (ExchangeResponse data in this.exchangedatalist)
                                 {
+                                    
                                     ExchangeData edata = new ExchangeData();
                                     edata.excid = data.id;
                                     edata.deposit_address_amount_symbol = $"{data.deposit_address} {data.deposit_amount} {data.deposit_symbol}";
@@ -245,14 +258,17 @@ namespace XelsDesktopWalletApp.Views.Pages
                                     if (data.status == 0)
                                     {
                                         edata.showstatus = "Wating for deposit";
+                                        edata.IsDepositEnableBtn = true;
                                     }
                                     else if (data.status == 1)
                                     {
                                         edata.showstatus = "Pending Exchange";
+                                        edata.IsDepositEnableBtn = false;
                                     }
                                     else if (data.status == 2)
                                     {
                                         edata.showstatus = "Complete";
+                                        edata.IsDepositEnableBtn = false;
                                     }
 
                                     this.exchangelist.Add(edata);
@@ -315,6 +331,7 @@ namespace XelsDesktopWalletApp.Views.Pages
             StoredWallet mWallet = new StoredWallet();
             try
             {
+                
                 if (symbol == coin)
                 {
                     mWallet.Address = addre;
@@ -325,15 +342,25 @@ namespace XelsDesktopWalletApp.Views.Pages
                    
                 }
                 // Transfer
-                var tx = await this.transactionWalletObj.TransferAsync(mWallet, exchangeResponse, amount);
+                var deporesult = await this.transactionWalletObj.TransferAsync(mWallet, exchangeResponse, amount);
+                if (deporesult.Item1 != null && deporesult.Item2.ToString()== "SUCCESS")
+                {
+                    MessageBox.Show("Token has been sent Successfully.");
+                }
+                else
+                {
+                    MessageBox.Show(deporesult.Item2.ToString());
+                }
 
             }
             catch (Exception e)
             {
+
                 MessageBox.Show(e.Message.ToString());
             }
         }
      
+        //This is for deposit now button function
         public async Task<ExchangeResponse> GetOrderAsync(string orderId)
         {
             ExchangeResponse exchangedata = new ExchangeResponse();
@@ -371,7 +398,7 @@ namespace XelsDesktopWalletApp.Views.Pages
                 return exchangedata;
             }
         }
-
+        //end
 
         private void DepositButton_Click(object sender, RoutedEventArgs e)
         {
@@ -392,24 +419,31 @@ namespace XelsDesktopWalletApp.Views.Pages
 
         private void ExchangeOrderSubmitButton_Click(object sender, RoutedEventArgs e)
         {
+            
             if (isValid())
             {
+
                 if (this.mywallet == null || this.mywallet.PrivateKey == null)
                 {
                     MessageBox.Show($"Your ethereum address is not imported properly. Please import your address again");
                 }
                 else
                 {
+                    this.exchangeSubmit.IsEnabled = false;
                     ExchangeOrder exchangeOrder = new ExchangeOrder();
                     exchangeOrder.xels_address = this.addr;
                     exchangeOrder.deposit_amount = Convert.ToDouble(this.AmountTxt.Text);
                     exchangeOrder.deposit_symbol = this.SelectedCoin.Name;
                     exchangeOrder.user_code = this.mywallet.Wallethash;
                     Task.Run(async () => await NewOrderAsync(exchangeOrder));
+                    
                 }
             }
         }
 
-
+        private void depositStactPannal_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            this.exchangeSubmit.IsEnabled = true;
+        }
     }
 }

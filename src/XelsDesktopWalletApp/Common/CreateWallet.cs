@@ -179,8 +179,8 @@ namespace XelsDesktopWalletApp.Common
         {
             try
             {
-                //Web3 web3 = new Web3("https://mainnet.infura.io/v3/15851454d7644cff846b1b8701403647");
-                Web3 web3 = new Web3("https://kovan.infura.io/v3/15851454d7644cff846b1b8701403647"); //test er jonno
+                Web3 web3 = new Web3("https://mainnet.infura.io/v3/15851454d7644cff846b1b8701403647");
+                //Web3 web3 = new Web3("https://kovan.infura.io/v3/15851454d7644cff846b1b8701403647"); //test er jonno
 
                 string contractAddress = "";
 
