@@ -13,6 +13,7 @@ using Nethereum.Web3;
 using Nethereum.Web3.Accounts;
 using Xels.Bitcoin.Features.Interop.ETHClient;
 using XelsDesktopWalletApp.Models;
+using XelsDesktopWalletApp.Models.CommonModels;
 using Xunit;
 
 namespace XelsDesktopWalletApp.Common
@@ -29,26 +30,26 @@ namespace XelsDesktopWalletApp.Common
             {
                 Wallet wallet = new Wallet();
                 var account = new Account(sWallet.PrivateKey);
-                string balance = await this.createWallet.GetBalanceAsync(account.Address, sWallet.Coin);
-                if (Convert.ToInt64(balance) > 0)
+                double balance = await this.createWallet.GetBalanceMainAsync(account.Address, sWallet.Coin);
+                BigInteger bgBalance = (BigInteger)balance;
+                if (bgBalance > 0 && bgBalance != 0)
                 {
-                    var url = "https://mainnet.infura.io/v3/15851454d7644cff846b1b8701403647";
-                    //var url = "https://kovan.infura.io/v3/15851454d7644cff846b1b8701403647";
+                    var url = URLConfiguration.Wb3URLExchangeKoven;
                     var web3 = new Web3(account, url);
 
                     string contractAddress = "";
 
                     if (sWallet.Coin == "SELS")
                     {
-                        contractAddress = "0x0E74264EAd02B3a9768Dc4F1A509fA7F49952df6";
+                        contractAddress = URLConfiguration.SELSContractAddress;
                     }
                     else if (sWallet.Coin == "BELS")
                     {
-                        contractAddress = "0x6fcf304f636d24ca102ab6e4e4e089115c04ebae";
+                        contractAddress = URLConfiguration.BELSContractAddress;
                     }
                     else if (sWallet.Coin == "TST")
                     {
-                        contractAddress = "0xfcb525e2c7351900a204d09bd507a522cebac783";
+                        contractAddress = URLConfiguration.TSTContractAddress;
                     }
 
                     var transferHandler = web3.Eth.GetContractTransactionHandler<TransferFunction>();

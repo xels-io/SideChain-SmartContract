@@ -20,7 +20,7 @@ using Nethereum.Contracts.ContractHandlers;
 using Xels.Bitcoin.Features.Interop.ETHClient;
 using Nethereum.RPC.Eth.DTOs;
 using XelsDesktopWalletApp.Models;
-
+using XelsDesktopWalletApp.Models.CommonModels;
 
 namespace XelsDesktopWalletApp.Common
 {
@@ -174,27 +174,63 @@ namespace XelsDesktopWalletApp.Common
         //    }
         //}
 
-
-        public async Task<string> GetBalanceAsync(string address, string cointype)
+        public async Task<double> GetBalanceMainAsync(string address, string cointype)
         {
             try
             {
-                Web3 web3 = new Web3("https://mainnet.infura.io/v3/15851454d7644cff846b1b8701403647");
-                //Web3 web3 = new Web3("https://kovan.infura.io/v3/15851454d7644cff846b1b8701403647"); //test er jonno
-
+                var url = URLConfiguration.Wb3URLExchangeKoven;
+                Web3 web3 = new Web3(url);
                 string contractAddress = "";
 
                 if (cointype == "SELS")
                 {
-                    contractAddress = "0x0E74264EAd02B3a9768Dc4F1A509fA7F49952df6";
+                    contractAddress = URLConfiguration.SELSContractAddress;
                 }
                 else if (cointype == "BELS")
                 {
-                    contractAddress = "0x6fcf304f636d24ca102ab6e4e4e089115c04ebae";
+                    contractAddress = URLConfiguration.BELSContractAddress;
                 }
                 else if (cointype == "TST")//test er jonno
                 {
-                    contractAddress = "0xfcb525e2c7351900a204d09bd507a522cebac783";
+                    contractAddress = URLConfiguration.TSTContractAddress;
+                }
+
+                var balanceOfFunctionMessage = new BalanceOfFunction()
+                {
+                    Owner = address
+                };
+
+                IContractQueryHandler<BalanceOfFunction> balanceHandler = web3.Eth.GetContractQueryHandler<BalanceOfFunction>();
+                BigInteger balance = await balanceHandler.QueryAsync<BigInteger>(contractAddress, balanceOfFunctionMessage);
+
+                double balanceconvert = (double)balance * 0.00000001;
+                return balanceconvert;
+            }
+
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+        public async Task<string> GetBalanceAsync(string address, string cointype)
+        {
+            try
+            {
+                var url = URLConfiguration.Wb3URLExchangeKoven;
+                Web3 web3 = new Web3(url);
+                string contractAddress = "";
+
+                if (cointype == "SELS")
+                {
+                    contractAddress = URLConfiguration.SELSContractAddress;
+                }
+                else if (cointype == "BELS")
+                {
+                    contractAddress = URLConfiguration.BELSContractAddress;
+                }
+                else if (cointype == "TST")//test er jonno
+                {
+                    contractAddress = URLConfiguration.TSTContractAddress;
                 }
 
                 var balanceOfFunctionMessage = new BalanceOfFunction()

@@ -14,7 +14,7 @@
             <RowDefinition Height="194*"/>
         </Grid.RowDefinitions>
         <Border Background="White" BorderBrush="White" BorderThickness="2,1,1,1" Margin="5,5, 5,5" CornerRadius="10,10,10,10">
-            <StackPanel Orientation="Vertical" Name="depositStactPannal" Grid.Row="0" HorizontalAlignment="Center" Width="868" MouseDown="depositStactPannal_MouseDown">
+            <StackPanel Orientation="Vertical" Name="depositStactPannal" Grid.Row="0" HorizontalAlignment="Center" Width="868">
 
                 <Grid Background="White" Width="800" Height="116" Margin="0 20 0 0">
 
@@ -120,7 +120,7 @@
                                 <DataGridTemplateColumn Header="Actions" Width="Auto">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Button  Background="Green" Name="DepositButton" IsEnabled="{Binding IsDepositEnableBtn}"  Click="DepositButton_Click">Deposit Now</Button>
+                                            <Button Name="DepositButton"  Background="Green"  IsEnabled="{Binding IsDepositEnableBtn}"  Click="DepositButton_Click">Deposit Now</Button>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
