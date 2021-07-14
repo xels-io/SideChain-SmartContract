@@ -10,7 +10,7 @@
 
 
     <StackPanel Background="White">
-        <Grid Margin="100 015" >
+        <Grid Margin="100 010" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>

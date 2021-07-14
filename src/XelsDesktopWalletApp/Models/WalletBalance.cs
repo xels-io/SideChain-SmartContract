@@ -14,9 +14,9 @@ namespace XelsDesktopWalletApp.Models
 
         public string CoinType { get; set; }
 
-        public decimal AmountConfirmed { get; set; }
-        public decimal AmountUnconfirmed { get; set; }
-        public decimal SpendableAmount { get; set; }
+        public double AmountConfirmed { get; set; }
+        public double AmountUnconfirmed { get; set; }
+        public double SpendableAmount { get; set; }
         //public IEnumerable<AddressModel> Addresses { get; set; }
 
     }

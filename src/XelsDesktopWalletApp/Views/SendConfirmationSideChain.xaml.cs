@@ -29,7 +29,7 @@ namespace XelsDesktopWalletApp.Views
 
         private void bindData(SendConfirmationSC data)
         {
-            decimal amountSent = data.Transaction.FeeAmount - data.TransactionFee;
+            double amountSent = data.Transaction.FeeAmount - data.TransactionFee;
             this.AmountSent.Content = amountSent;
             this.AmountSentType.Content = data.cointype;
 

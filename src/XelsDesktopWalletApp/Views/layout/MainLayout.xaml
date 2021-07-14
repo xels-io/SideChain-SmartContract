@@ -179,8 +179,8 @@
                         <materialDesign:PackIcon Kind="Settings" Foreground="White" />
                     </materialDesign:PopupBox.ToggleContent>
                     <StackPanel Width="150">
-                        <Button Content="Address Book"/>
-                        <Button Content="Advance"/>
+                        <Button Content="Address Book" Click="AddressBookButton_Click" />
+                        <Button Content="Advance" Click="AdvancedButton_Click" />
                         <Separator/>
                         <Button Content="Logout" Click="LogOut_Button"/>
                     </StackPanel>

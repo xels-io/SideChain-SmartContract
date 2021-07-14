@@ -26,13 +26,13 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
         private WalletBalanceArray balances = new WalletBalanceArray();
         private BuildTransaction buildTransaction = new BuildTransaction();
 
-        private decimal totalBalance;
+        private double totalBalance;
         private string cointype;
-        private decimal spendableBalance;
+        private double spendableBalance;
 
-        private decimal estimatedSidechainFee = 0;
+        private double estimatedSidechainFee = 0;
         private bool isSending = false;
-        private decimal opReturnAmount = 1;
+        private double opReturnAmount = 1;
 
         private string walletName;
 
@@ -116,7 +116,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
 
             if (!Regex.IsMatch(this.textAmount.Text, @"^([0-9]+)?(\.[0-9]{0,8})?$"))
             {
-                MessageBox.Show("Enter a valid transaction amount. Only positive numbers and no more than 8 decimals are allowed.");
+                MessageBox.Show("Enter a valid transaction amount. Only positive numbers and no more than 8 doubles are allowed.");
                 this.textAmount.Focus();
                 return false;
             }
@@ -260,12 +260,12 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
                 var content = "";
 
                 FeeEstimationSideChain feeEstimation = new FeeEstimationSideChain();
-                feeEstimation.walletName = this.walletInfo.WalletName;
-                feeEstimation.accountName = "account 0";
-                feeEstimation.recipients = recipients;
-                feeEstimation.opreturndata = this.textSidechainDestinationAddress.Text.Trim();
-                feeEstimation.feeType = this.textTransactionFee.Text;
-                feeEstimation.allowUnconfirmed = true;
+                feeEstimation.WalletName = this.walletInfo.WalletName;
+                feeEstimation.AccountName = "account 0";
+                feeEstimation.Recipients = recipients;
+                feeEstimation.OpReturnData = this.textSidechainDestinationAddress.Text.Trim();
+                feeEstimation.FeeType = this.textTransactionFee.Text;
+                feeEstimation.AllowUnconfirmed = true;
 
                 HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(feeEstimation), Encoding.UTF8, "application/json"));
 

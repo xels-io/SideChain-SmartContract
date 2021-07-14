@@ -49,12 +49,10 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
 
         public ReceiveUserControl(string walletname)
         {
-            InitializeComponent();
-            this.DataContext = this;
-
             this.walletName = walletname;
             this.walletInfo.WalletName = this.walletName;
-
+            InitializeComponent();
+            this.DataContext = this;
         }
 
         private void restoreButton_Click(object sender, RoutedEventArgs e)
@@ -79,6 +77,11 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
             //this.Close();
         }
 
+        private void Rectangle_MouseDown(object sender, RoutedEventArgs e)
+        {
+            this.Visibility = Visibility.Collapsed;
+        }
+
         private void BelsButton_Click(object sender, RoutedEventArgs e)
         {
             this.ReceiveContent.Content = new BelsPage(this.walletName);
@@ -87,5 +90,17 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
             //rsb.Show();
             //this.Close();
         }
+
+        private void UserControl_Initialized(object sender, EventArgs e)
+        {
+            this.ReceiveContent.Content = new XelsPage(this.walletName);
+                this.XelsButton.Focus();
+        }
+
+        //private void XelsButton_Initialized(object sender, EventArgs e)
+        //{
+        //    this.ReceiveContent.Content = new XelsPage(this.walletName);
+        //    this.XelsButton.Focus();
+        //}
     }
 }

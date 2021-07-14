@@ -108,6 +108,20 @@ namespace XelsDesktopWalletApp.Views.layout
             this.Close();
         }
 
+        private void AddressBookButton_Click(object sender, RoutedEventArgs e)
+        {
+            AddressBook AddressBook = new AddressBook(this.walletName);
+            AddressBook.Show();
+            //this.Close();
+        }
+
+        private void AdvancedButton_Click(object sender, RoutedEventArgs e)
+        {
+            Advanced Advanced = new Advanced(this.walletName);
+            Advanced.Show();
+            //this.Close();
+        }
+
         private void Window_Initialized(object sender, System.EventArgs e)
         {
             this.PageContent.Content = new DashboardPage(this.walletName);

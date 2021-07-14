@@ -40,6 +40,7 @@
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width=".6*" />
                                         <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width=".5*" />
                                     </Grid.ColumnDefinitions>
                                     <Border Grid.Column="0">
                                         <Label Content="Amount"  RenderTransformOrigin="1.158,-0.076" />
@@ -51,12 +52,17 @@
                                         <Label  x:Name="textAvailableCoin" HorizontalAlignment="Left" 
                            RenderTransformOrigin="1.158,-0.076" FontWeight="DemiBold"/>
                                     </Border>
+                                    <Border Grid.Column="3">
+                                        <Label  Grid.Column="3" x:Name="textCoinType" 
+                          />
+                                    </Border>
                                 </Grid>
                             </Border>
 
                             <Border Grid.Row="1">
                                 <!--Amount-->
-                                <TextBox  x:Name="SendAmountText"  Focusable="True"  />
+                                <TextBox  x:Name="SendAmountText" 
+               TextChanged="CheckSendAmount_OnChange"/>
                             </Border>
                         </Grid>
                     </Border>
@@ -71,10 +77,10 @@
 
                             <Label Grid.Row="0" Content="Sidechain destination address" RenderTransformOrigin="1.158,-0.076"/>
 
-                            <TextBox Grid.Row="1" x:Name="textSidechainDestinationAddress" 
-                         Focusable="True" FocusManager.LostFocus="TxtAddress_LostFocus" TextChanged="CalculateTransactionFee_OnChange"
+                            <TextBox Grid.Row="1" x:Name="DestinationAddressText" 
+                          TextChanged="CalculateTransactionFee_OnChange"
                         />
-
+                            <!--Focusable="True" FocusManager.LostFocus="TxtAddress_LostFocus"-->
 
                         </Grid>
                     </Border>
@@ -86,11 +92,13 @@
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
                             <Label Grid.Row="0" Content="Transaction fee"  RenderTransformOrigin="1.158,-0.076" />
-                            <TextBox Grid.Row="1"  x:Name="textTransactionFee" BorderBrush="Green" IsReadOnly="True"  />
-                            <TextBlock Grid.Row="2" Text="Please enter a valid amount and destination address to calculate the fee" TextWrapping="Wrap"  Foreground="Red" />
+                            <TextBox Grid.Row="1"  x:Name="TransactionFeeText" BorderBrush="Green" IsReadOnly="True"  />
+                            <Label Grid.Row="2" x:Name="TransactionFeeTypeLabel"  RenderTransformOrigin="1.158,-0.076" />
+                            <TextBlock Grid.Row="3" Text="Please enter a valid amount and destination address to calculate the fee" TextWrapping="Wrap"  Foreground="Red" />
                         </Grid>
                     </Border>
 
@@ -120,7 +128,7 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Button Grid.Column="0"  x:Name="backButton" Content="Cancel" Click="backButton_Click" Padding="2" 
+                    <Button Grid.Column="0"  x:Name="backButton" Content="Cancel" Click="BackButton_Click" Padding="2"  Margin="0 0 5 0"
                          Background="White" BorderThickness="1" Foreground="Green" 
                      BorderBrush="Green" >
                         <Button.Resources>
@@ -130,7 +138,7 @@
                         </Button.Resources>
                     </Button>
 
-                    <Button Grid.Column="1" x:Name="sendButton" Click="sendButton_Click"  Content="Send" Padding="2" 
+                    <Button Grid.Column="1" x:Name="SendButton" Click="sendButton_Click"  Content="Send" Padding="2" Margin="0 0 5 0"
                         Background="#FF53E253"
                             Foreground="White">
                         <Button.Resources>
