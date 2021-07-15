@@ -39,6 +39,7 @@ namespace XelsDesktopWalletApp.Views
         /*"http://localhost:37221/api"*/
 
         List<AddressLabel> addresses = new List<AddressLabel>();
+        private AddressLabelArray addressLabelArray = new AddressLabelArray();
 
         public AddressBook()
         {
@@ -113,7 +114,7 @@ namespace XelsDesktopWalletApp.Views
 
         public async void LoadAddresses()
         {
-            this.addresses = await GetAPIAsync(this.baseURL);
+            await GetAddressBookAddressesAsync(this.baseURL);
 
             if (this.addresses.Count > 0)
             {
@@ -128,32 +129,40 @@ namespace XelsDesktopWalletApp.Views
             }
         }
 
-        private async Task<List<AddressLabel>> GetAPIAsync(string path)
+        private async Task GetAddressBookAddressesAsync(string path)
         {
-            try
+            string getUrl = path + "/AddressBook";
+            var content = "";
+
+            HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl); 
+            content = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
             {
-                string getUrl = path + "/AddressBook";
-                var content = "";
-
-                HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl); // Error : e = {"No connection could be made because the target machine actively refused it."}
-
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    content = await response.Content.ReadAsStringAsync();
-                    this.addresses = JsonConvert.DeserializeObject<List<AddressLabel>>(content);
-                }
-                else
-                {
-                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-                }
+                    this.addressLabelArray = JsonConvert.DeserializeObject<AddressLabelArray>(content);
 
-                List<AddressLabel> addresslist = ProcessAddresses(content);
-                return addresslist;
+                    foreach (var addr in this.addressLabelArray.Addresses)
+                    {
+                        AddressLabel addressLabel = new AddressLabel();
+                        addressLabel.label = addr.label;
+                        addressLabel.address = addr.address;
+                        this.addresses.Add(addressLabel);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
             }
-            catch (Exception ex)
+            else
             {
-                throw;
+                MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
             }
+
+            List<AddressLabel> addresslist = ProcessAddresses(content);
+
         }
 
         public List<AddressLabel> ProcessAddresses(string _content)
@@ -263,12 +272,12 @@ namespace XelsDesktopWalletApp.Views
                     string postUrl = this.baseURL + "/AddressBook/address";
 
                     HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(newaddress), Encoding.UTF8, "application/json"));
-                    // Error : e = {"No connection could be made because the target machine actively refused it."}
+                    
                     if (response.IsSuccessStatusCode)
                     {
-                        MessageBox.Show("Successfully created with label: " + newaddress.label);
-
                         this.NewAddressPopup.IsOpen = false;
+                        MessageBox.Show("Successfully created with label: " + newaddress.label);
+                        LoadAddresses();
                     }
                     else
                     {
@@ -291,29 +300,42 @@ namespace XelsDesktopWalletApp.Views
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            AddressLabel item = (AddressLabel)((sender as Button)?.Tag as ListViewItem)?.DataContext;
+            // AddressLabel item = (AddressLabel)((sender as Button)?.Tag as ListViewItem)?.DataContext;
+            // Button button = sender as Button:
+            // AddressLabel selectedRow = button.DataContext as AddressLabel;
+            // string CellValue = selectedRow.label;
 
-            //try
-            //{
-            //    string postUrl = this.baseURL + "/AddressBook/address";
-            //    string deleteParameter = item.label;
-            //    HttpResponseMessage response = URLConfiguration.Client.DeleteAsync(postUrl);
+            DataGrid dataGrid = this.AddressList;
+            DataGridRow Row = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromIndex(dataGrid.SelectedIndex);
+            DataGridCell RowAndColumn = (DataGridCell)dataGrid.Columns[0].GetCellContent(Row).Parent;
+            string CellValue = ((TextBlock)RowAndColumn.Content).Text;
 
-            //    if (response.IsSuccessStatusCode)
-            //    {
-            //        MessageBox.Show("Successfully deleted address with label: " + item.label);
-            //    }
-            //    else
-            //    {
-            //        MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-            //    }
-            //}
-            //catch (Exception e)
-            //{
-            //    throw;
-            //}
+            DeleteAddressAsync(CellValue);
         }
 
+        private async Task DeleteAddressAsync(string item)
+        {
+            try
+            {
+                string postUrl = this.baseURL + "/AddressBook/address?" + item;
+                HttpResponseMessage response = await URLConfiguration.Client.DeleteAsync(postUrl);
+                // response = {StatusCode: 500, ReasonPhrase: 'Internal Server Error', Version: 1.1, Content: System.Net.Http.HttpConnectionResponseContent, Headers:
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Successfully deleted address with label: " + item);
+                    LoadAddresses();
+                }
+                else
+                {
+                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                }
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
 
         private void CopyButton_Click(object sender, RoutedEventArgs e)
         {

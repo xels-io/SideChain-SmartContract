@@ -185,10 +185,10 @@
                     </DataGrid>
                 </Grid>
 
-                <Popup Name="NewAddressPopup" Placement="Center"  HorizontalOffset="-100" VerticalOffset="-100" AllowsTransparency="False">
+                <Popup Name="NewAddressPopup" Placement="Center" VerticalOffset="-100" AllowsTransparency="False">
                     <Grid Width="400" Height="350" >
-                        <Rectangle Width="400" Height="350" Fill="WhiteSmoke"  />
-                        <Button Click="HidePopup_Click" Margin="20" Height="20" Width="20" 
+                        <Rectangle Width="400" Height="350" Fill="White"  />
+                        <Button Click="HidePopup_Click" Background="White" Foreground="Black"
                                 VerticalAlignment="Top" HorizontalAlignment="Right" Content="X" >
 
                             <Button.Resources>

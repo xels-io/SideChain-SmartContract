@@ -9,4 +9,8 @@ namespace XelsDesktopWalletApp.Models
         public string label { get; set; }
         public string address { get; set; }
     }
+    public class AddressLabelArray
+    {
+        public AddressLabel[] Addresses { get; set; }
+    }
 }
