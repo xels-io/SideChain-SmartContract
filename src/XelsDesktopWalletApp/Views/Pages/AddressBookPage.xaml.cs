@@ -13,6 +13,7 @@ using Newtonsoft.Json.Linq;
 
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
+using XelsDesktopWalletApp.Views.Pages.SendPages;
 using XelsDesktopWalletApp.Views.ViewPage;
 
 namespace XelsDesktopWalletApp.Views.Pages
@@ -22,6 +23,10 @@ namespace XelsDesktopWalletApp.Views.Pages
     /// </summary>
     public partial class AddressBookPage : Page
     {
+        #region Base
+        string baseURL = URLConfiguration.BaseURL; /*"http://localhost:37221/api"*/
+        #endregion
+        #region Local Info
         private string walletName;
         public string WalletName
         {
@@ -34,11 +39,7 @@ namespace XelsDesktopWalletApp.Views.Pages
                 this.walletName = value;
             }
         }
-
-        string baseURL = URLConfiguration.BaseURL;
-        /*"http://localhost:37221/api"*/
-
-        List<AddressLabel> addresses = new List<AddressLabel>();
+        private List<AddressLabel> addresses = new List<AddressLabel>();
         private AddressLabelArray addressLabelArray = new AddressLabelArray();
 
         public AddressBookPage()
@@ -56,8 +57,9 @@ namespace XelsDesktopWalletApp.Views.Pages
             this.walletName = walletname;
             LoadAddresses();
         }
+        #endregion
 
-
+        #region Validations
         public bool isValid()
         {
             if (this.LabelTxt.Text == string.Empty)
@@ -90,7 +92,9 @@ namespace XelsDesktopWalletApp.Views.Pages
 
             return true;
         }
+        #endregion
 
+        #region Get Addresses
         public async void LoadAddresses()
         {
             await GetAddressBookAddressesAsync(this.baseURL);
@@ -107,7 +111,6 @@ namespace XelsDesktopWalletApp.Views.Pages
                 this.NoData.Visibility = Visibility.Visible;
             }
         }
-
         private async Task GetAddressBookAddressesAsync(string path)
         {
             string getUrl = path + "/AddressBook";
@@ -122,6 +125,7 @@ namespace XelsDesktopWalletApp.Views.Pages
                 {
                     this.addressLabelArray = JsonConvert.DeserializeObject<AddressLabelArray>(content);
 
+                    this.addresses.Clear();
                     foreach (var addr in this.addressLabelArray.Addresses)
                     {
                         AddressLabel addressLabel = new AddressLabel();
@@ -140,51 +144,81 @@ namespace XelsDesktopWalletApp.Views.Pages
                 MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
             }
 
-            List<AddressLabel> addresslist = ProcessAddresses(content);
-
         }
+        #endregion
 
-        public List<AddressLabel> ProcessAddresses(string _content)
+        private void CopyButton_Click(object sender, RoutedEventArgs e)
         {
-            JObject json = JObject.Parse(_content);
+            DataGrid dataGrid = this.AddressList;
+            DataGridRow Row = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromIndex(dataGrid.SelectedIndex);
+            DataGridCell RowAndColumn = (DataGridCell)dataGrid.Columns[1].GetCellContent(Row).Parent;
+            string CellValue = ((TextBlock)RowAndColumn.Content).Text;
 
-            AddressLabel addresslist = new AddressLabel();
-
-            return null;
+            Clipboard.SetText(CellValue);
         }
-
-        private void Show_Click(object sender, RoutedEventArgs e)
-        {
-            //Send send = new Send();
-            //send.Show();
-            //this.Close();
-        }
-
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
-        }
-        
+            DataGrid dataGrid = this.AddressList;
+            DataGridRow Row = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromIndex(dataGrid.SelectedIndex);
+            DataGridCell RowAndColumn = (DataGridCell)dataGrid.Columns[1].GetCellContent(Row).Parent;
+            string CellValue = ((TextBlock)RowAndColumn.Content).Text;
 
+
+            NavigationService navService = NavigationService.GetNavigationService(this);
+            MainchainPage page2Obj = new MainchainPage(this.walletName, CellValue);
+            navService.Navigate(page2Obj);
+        }
+
+        #region Delete Address
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            DataGrid dataGrid = this.AddressList;
+            DataGridRow Row = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromIndex(dataGrid.SelectedIndex);
+            DataGridCell RowAndColumn = (DataGridCell)dataGrid.Columns[0].GetCellContent(Row).Parent;
+            string item = ((TextBlock)RowAndColumn.Content).Text;
+
+            DeleteAddressAsync(item);
+        }
+
+        private async Task DeleteAddressAsync(string label)
+        {
+            try
+            {
+                string postUrl = this.baseURL + "/AddressBook/address?label=" + label;
+                HttpResponseMessage response = await URLConfiguration.Client.DeleteAsync(postUrl);
+                var content = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Successfully deleted address with label: " + label);
+
+                    NavigationService navService = NavigationService.GetNavigationService(this);
+                    AddressBookPage page2Obj = new AddressBookPage(this.walletName);
+                    navService.Navigate(page2Obj);
+                }
+                else
+                {
+                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                }
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+        #endregion
+
+        #region Add New Address
         private void AddAddress_Click(object sender, RoutedEventArgs e)
         {
             this.NewAddressPopup.IsOpen = true;
         }
 
-        private void HidePopup_Click(object sender, RoutedEventArgs e)
-        {
-            this.NewAddressPopup.IsOpen = false;
-        }
-
-        private void Cancel_Click(object sender, RoutedEventArgs e)
-        {
-            this.NewAddressPopup.IsOpen = false;
-        }
-
         private void Create_Click(object sender, RoutedEventArgs e)
         {
             AddressLabel address = new AddressLabel();
-            address.label = LabelTxt.Text;
-            address.address = AddressTxt.Text;
+            address.label = this.LabelTxt.Text;
+            address.address = this.AddressTxt.Text;
             AddNewAddress(address);
         }
 
@@ -202,10 +236,14 @@ namespace XelsDesktopWalletApp.Views.Pages
                     {
                         this.NewAddressPopup.IsOpen = false;
                         MessageBox.Show("Successfully created with label: " + newaddress.label);
-                        LoadAddresses();
+
+                        NavigationService navService = NavigationService.GetNavigationService(this);
+                        AddressBookPage page2Obj = new AddressBookPage(this.walletName);
+                        navService.Navigate(page2Obj);
                     }
                     else
                     {
+                        this.NewAddressPopup.IsOpen = false;
                         MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
                     }
                 }
@@ -215,48 +253,15 @@ namespace XelsDesktopWalletApp.Views.Pages
                 throw;
             }
         }
-        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+
+        private void HidePopup_Click(object sender, RoutedEventArgs e)
         {
-            DataGrid dataGrid = this.AddressList;
-            DataGridRow Row = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromIndex(dataGrid.SelectedIndex);
-            DataGridCell RowAndColumn = (DataGridCell)dataGrid.Columns[0].GetCellContent(Row).Parent;
-            string CellValue = ((TextBlock)RowAndColumn.Content).Text;
-
-            DeleteAddressAsync(CellValue);
+            this.NewAddressPopup.IsOpen = false;
         }
-
-        private async Task DeleteAddressAsync(string item)
+        private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                string postUrl = this.baseURL + "/AddressBook/address?" + item;
-                HttpResponseMessage response = await URLConfiguration.Client.DeleteAsync(postUrl);
-                // response = {StatusCode: 500, ReasonPhrase: 'Internal Server Error', Version: 1.1, Content: System.Net.Http.HttpConnectionResponseContent, Headers:
-
-                if (response.IsSuccessStatusCode)
-                {
-                    MessageBox.Show("Successfully deleted address with label: " + item);
-                    LoadAddresses();
-                }
-                else
-                {
-                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-                }
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
+            this.NewAddressPopup.IsOpen = false;
         }
-
-        private void CopyButton_Click(object sender, RoutedEventArgs e)
-        {
-            DataGrid dataGrid = AddressList;
-            DataGridRow Row = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromIndex(dataGrid.SelectedIndex);
-            DataGridCell RowAndColumn = (DataGridCell)dataGrid.Columns[1].GetCellContent(Row).Parent;
-            string CellValue = ((TextBlock)RowAndColumn.Content).Text;
-
-            Clipboard.SetText(CellValue);
-        }
+        #endregion
     }
 }

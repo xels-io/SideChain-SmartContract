@@ -68,6 +68,19 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
             GetWalletBalanceAsync();
         }
 
+        // Design is broken // address: navigation from address book
+        public MainchainPage(string walletname, string address)
+        {
+
+            this.walletName = walletname;
+            this.walletInfo.WalletName = this.walletName;
+            InitializeComponent();
+            this.DataContext = this;
+            this.DestinationAddressText.Text = address;
+
+            GetWalletBalanceAsync();
+        }
+
 
 
         //private void TxtAmount_LostFocus(object sender, RoutedEventArgs e)
