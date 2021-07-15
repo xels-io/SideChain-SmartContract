@@ -407,9 +407,9 @@ namespace XelsDesktopWalletApp.Views.Pages
 
         private void ImportAddrButton_Click(object sender, RoutedEventArgs e)
         {
-            //this.Dashboard.Children.Add(new ImportSelsBelsUserControl(this.walletName));
-            EthImport eImp = new EthImport(this.walletName);
-            eImp.Show();
+            this.Dashboard.Children.Add(new ImportSelsBelsUserControl(this.walletName));
+            //EthImport eImp = new EthImport(this.walletName);
+            //eImp.Show();
         }
 
         private async void StartPOWMiningButton_Click(object sender, RoutedEventArgs e)
