@@ -32,9 +32,11 @@ namespace XelsDesktopWalletApp.Common
                 var account = new Account(sWallet.PrivateKey);
                 double balance = await this.createWallet.GetBalanceMainAsync(account.Address, sWallet.Coin);
                 BigInteger bgBalance = (BigInteger)balance;
+                double balanceconvert = (double)amount * 0.00000001;
+
                 if (bgBalance > 0 && bgBalance != 0)
                 {
-                    var url = URLConfiguration.Wb3URLExchangeKoven;
+                    var url = URLConfiguration.Wb3URLExchangeMain;
                     var web3 = new Web3(account, url);
 
                     string contractAddress = "";

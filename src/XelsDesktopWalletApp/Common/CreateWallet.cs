@@ -178,7 +178,7 @@ namespace XelsDesktopWalletApp.Common
         {
             try
             {
-                var url = URLConfiguration.Wb3URLExchangeKoven;
+                var url = URLConfiguration.Wb3URLExchangeMain;
                 Web3 web3 = new Web3(url);
                 string contractAddress = "";
 
@@ -216,7 +216,7 @@ namespace XelsDesktopWalletApp.Common
         {
             try
             {
-                var url = URLConfiguration.Wb3URLExchangeKoven;
+                var url = URLConfiguration.Wb3URLExchangeMain;
                 Web3 web3 = new Web3(url);
                 string contractAddress = "";
 
