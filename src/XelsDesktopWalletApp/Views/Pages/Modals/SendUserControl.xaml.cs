@@ -64,8 +64,9 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
 
         private void backButton_Click(object sender, RoutedEventArgs e)
         {
-            Dashboard ds = new Dashboard(this.walletName);
-            ds.Show();
+            this.Visibility = Visibility.Collapsed;
+            //Dashboard ds = new Dashboard(this.walletName);
+            //ds.Show();
             //this.Close();
         }
 
@@ -89,7 +90,7 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
 
         private void BELS_Button_Click(object sender, RoutedEventArgs e)
         {
-            this.SendFrame.Content = new BelsPage(this.walletName);
+           this.SendFrame.Content = new BelsPage(this.walletName);
 
             //SendSelsBels sendsb = new SendSelsBels(this.walletName);
             //sendsb.Show();

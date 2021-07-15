@@ -8,7 +8,6 @@
       d:DesignHeight="800" d:DesignWidth="1000"
       Title="XelsPage" Initialized="Window_Initialized">
 
-
     <StackPanel Background="White">
         <Grid Margin="100 010" >
             <Grid.RowDefinitions>

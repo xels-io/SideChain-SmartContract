@@ -7,63 +7,46 @@
              mc:Ignorable="d" 
              d:HorizontalAlignment="Stretch" d:VerticalAlignment="Stretch" Initialized="UserControl_Initialized">
 
-        <StackPanel Background="White" Margin="15 0" >
 
-            <Rectangle Fill="AliceBlue" Opacity=".8" MouseDown="Rectangle_MouseDown" />
-            
-            
-            <Grid Margin="100 5">
+    <Grid>
+        <Rectangle Fill="#e9eeeb" Opacity=".8" MouseDown="Rectangle_MouseDown" />
+
+        <Border CornerRadius="10"  Background="White" Height="550" Width="700">
+            <Grid Margin="5,5,5,5">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-
-                <Border Grid.Row="0" Margin="0 0 0 15">
-                    <Label Content="Send" HorizontalAlignment="Center"  FontSize="20" FontWeight="DemiBold" RenderTransformOrigin="0.515,-0.184" />
-                </Border>
-                <Border Grid.Row="1">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <Button Grid.Column="0" Content="XELS" Click="XELS_Button_Click"  
+                <Label Grid.Row="0" Content="Send" HorizontalAlignment="Center"  FontSize="20" FontWeight="DemiBold" RenderTransformOrigin="0.515,-0.184" Width="54" Margin="0,-10,0,10" />
+                <Button  Grid.Row="1" Content="XELS" Click="XELS_Button_Click"  
                         Background="Green" Foreground="White" RenderTransformOrigin="0.174,0.571" 
-                        FontWeight="Normal" >
-                            <Button.Resources>
-                                <Style TargetType="{x:Type Border}">
-                                    <Setter Property="CornerRadius" Value="5"/>
-                                </Style>
-                            </Button.Resources>
-                        </Button>
-                        <Button Grid.Column="1" Content="SELS" Click="SELS_Button_Click"  
-                        Background="Green"   Foreground="White" FontWeight="Normal" >
-                            <Button.Resources>
-                                <Style TargetType="{x:Type Border}">
-                                    <Setter Property="CornerRadius" Value="5"/>
-                                </Style>
-                            </Button.Resources>
-                        </Button>
-                        <Button Grid.Column="2" Content="BELS" Click="BELS_Button_Click"
+                        FontWeight="Normal" Margin="10,4,486,14">
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="5"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+                <Button  Grid.Row="1" Content="SELS" Click="SELS_Button_Click"  
+                        Background="Green"   Foreground="White" FontWeight="Normal" Margin="204,4,256,14" >
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="5"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+                <Button  Grid.Row="1" Content="BELS" Click="BELS_Button_Click"
                         RenderTransformOrigin="2.423,0.568"  Background="Green" 
-                        Foreground="White" FontWeight="Normal">
-                            <Button.Resources>
-                                <Style TargetType="{x:Type Border}">
-                                    <Setter Property="CornerRadius" Value="5"/>
-                                </Style>
-                            </Button.Resources>
-                        </Button>
-
-                    </Grid>
-                </Border>
-                <Border Grid.Row="2">
-                    <Frame x:Name="SendFrame" NavigationUIVisibility="Hidden" />
-                </Border>
+                        Foreground="White" FontWeight="Normal" Margin="434,4,10,14">
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="5"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+                <Frame x:Name="SendFrame" Grid.Row="2" NavigationUIVisibility="Hidden" />
             </Grid>
-
-        </StackPanel>
-     
+        </Border>
+    </Grid>
 </UserControl>
