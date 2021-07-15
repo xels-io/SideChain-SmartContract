@@ -173,6 +173,7 @@
 
         <Grid x:Name="GridBarraTitulo" Grid.ColumnSpan="2" Background="#FF41A43C" MouseDown="GridBarraTitulo_MouseDown">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,0">
+                <Label x:Name="labWalletName" Content="wallatename" Margin="10,0,15,0" Width="100" FontSize="14" Foreground="AliceBlue" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                 <materialDesign:PopupBox PlacementMode="BottomAndAlignLeftEdges" StaysOpen="False" Width="30">
                     <materialDesign:PopupBox.ToggleContent>
                         <materialDesign:PackIcon Kind="Settings" Foreground="White" />

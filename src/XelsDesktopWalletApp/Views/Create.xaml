@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:XelsDesktopWalletApp.Views"
+                      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="Create" Height="600" Width="1100">
     <Border Padding="10">
@@ -39,7 +40,7 @@
                     </Grid.RowDefinitions>
 
                     <Label Grid.Row="0"  Content="Name" Margin="5 0" FontSize="13" FontWeight="DemiBold"   />
-                    <TextBox Grid.Row="1" Name="name" MaxLength="24"  Padding="5"  AutomationProperties.HelpText="Enter a wallet name." />
+                    <TextBox Grid.Row="1" Name="name" MaxLength="24"  Padding="5" materialDesign:HintAssist.Hint="Enter a wallet name."  materialDesign:HintAssist.IsFloating="False"/>
 
                 </Grid>
             </Border>
@@ -51,7 +52,7 @@
                     </Grid.RowDefinitions>
 
                     <Label Grid.Row="0" Margin="5 0" Content="Password" FontSize="13" FontWeight="DemiBold"  />
-                    <PasswordBox Grid.Row="1" Name="password" PasswordChar="*" Padding="5"                                  AutomationProperties.HelpText="Enter password."  />
+                    <PasswordBox Grid.Row="1" Name="password" PasswordChar="*" Padding="5"  materialDesign:HintAssist.Hint="Enter Password"  materialDesign:HintAssist.IsFloating="False" />
                     
                 </Grid>
             </Border>
@@ -64,7 +65,7 @@
                     </Grid.RowDefinitions>
 
                     <Label Grid.Row="0" Margin="5 0" Content="Confirm password" FontSize="13" FontWeight="DemiBold" />
-                    <PasswordBox Grid.Row="1" x:Name="repassword"  PasswordChar="*" Padding="5" />
+                    <PasswordBox Grid.Row="1" x:Name="repassword" materialDesign:HintAssist.Hint="Confirm password"  materialDesign:HintAssist.IsFloating="False"  PasswordChar="*" Padding="5" />
 
                 </Grid>
             </Border>
@@ -77,7 +78,7 @@
                     </Grid.RowDefinitions>
 
                     <Label Grid.Row="0" Margin="5 0" Content="Passphrase (optional)" FontSize="13" FontWeight="DemiBold" />
-                    <TextBox Grid.Row="1" Name="passphrase" Padding="5" />
+                    <TextBox Grid.Row="1" Name="passphrase" Padding="5" materialDesign:HintAssist.Hint="Enter an optional Passphrase."  materialDesign:HintAssist.IsFloating="False" />
 
                 </Grid>                  
             </Border>

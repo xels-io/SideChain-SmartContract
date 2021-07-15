@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
        xmlns:sys="clr-namespace:System;assembly=mscorlib"
       xmlns:local="clr-namespace:XelsDesktopWalletApp.Views.Pages"
+              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="RestoreWalletPage">
@@ -31,7 +32,7 @@
 
                     <Label Grid.Row="0" Content="Name" Padding="1 " Margin="5" FontSize="13" FontWeight="DemiBold" />
 
-                    <TextBox Grid.Row="1" x:Name="name"
+                    <TextBox Grid.Row="1" x:Name="name"  materialDesign:HintAssist.Hint="Wallet Name"  materialDesign:HintAssist.IsFloating="False"
                      Padding="5 " Margin="0 5"
                      AutomationProperties.HelpText="Enter a 
                      wallet name." 
@@ -69,9 +70,8 @@
 
                     <Label Grid.Row="0" Margin="0 5" Content ="Secret Words" 
                       FontSize="13" FontWeight="DemiBold" Padding="1 " />
-                    <TextBox Grid.Row="1" x:Name="mnemonic" Margin="0 5" 
-                     Padding="5 " Text="Enter your secret 
-                     words."   BorderBrush="#FFAAAAAA" />
+                    <TextBox Grid.Row="1" x:Name="mnemonic" Margin="0 5" materialDesign:HintAssist.Hint="Enter your secret words."  materialDesign:HintAssist.IsFloating="False" 
+                     Padding="5 " BorderBrush="#FFAAAAAA" />
 
 
                 </Grid>
@@ -86,7 +86,7 @@
                     </Grid.RowDefinitions>
 
                     <Label Grid.Row="0" Margin="0 5" Content="Password" FontSize="13" FontWeight="DemiBold" Padding="1 " />
-                    <PasswordBox Grid.Row="1" x:Name="password" Margin="0 5 " 
+                    <PasswordBox Grid.Row="1" x:Name="password" Margin="0 5 "  materialDesign:HintAssist.Hint="Enter Password"  materialDesign:HintAssist.IsFloating="False" 
                      Padding="5" 
                      BorderBrush="#FFAAAAAA" />
 
@@ -105,7 +105,7 @@
                     <TextBlock Grid.Row="0" Margin="0 5" Text="Passphrase (optional)" FontSize="13" FontWeight="DemiBold" Padding="1" />
                     <TextBox Grid.Row="1" x:Name="passphrase" 
                              Padding="5 "  Margin="0 5"
-                             Text="Enter an optional Passphrase." BorderBrush="#FFAAAAAA" />
+                           materialDesign:HintAssist.Hint="Enter an optional Passphrase."  materialDesign:HintAssist.IsFloating="False" BorderBrush="#FFAAAAAA" />
                 </Grid>
             </Border>
 
