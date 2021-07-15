@@ -30,17 +30,17 @@ namespace XelsDesktopWalletApp.Views
 
         private void bindData(SendConfirmation data)
         {
-            Money amountSent = data.transaction.feeAmount - data.transactionFee;
+            double amountSent = data.Transaction.FeeAmount - data.TransactionFee;
             this.AmountSent.Content = amountSent;
-            this.AmountSentType.Content = data.cointype;
+            this.AmountSentType.Content = data.Cointype;
 
-            this.Fee.Content = data.transactionFee;
-            this.FeeType.Content = data.cointype;
+            this.Fee.Content = data.TransactionFee;
+            this.FeeType.Content = data.Cointype;
 
-            this.Total.Content = data.transaction.feeAmount;
-            this.TotalType.Content = data.cointype;
+            this.Total.Content = data.Transaction.FeeAmount;
+            this.TotalType.Content = data.Cointype;
 
-            this.Destination.Content = data.transaction.recipients[0].destinationAddress;
+            this.Destination.Content = data.Transaction.Recipients[0].DestinationAddress;
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)

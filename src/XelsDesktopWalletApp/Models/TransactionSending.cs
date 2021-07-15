@@ -7,35 +7,36 @@ namespace XelsDesktopWalletApp.Models
 {
     public class TransactionSending
     {
-        public string hex { get; set; }
+        public string Hex { get; set; }
     }
 
     public class Recipient
     {
-        public string destinationAddress { get; set; }
-        public string amount { get; set; }
+        public string DestinationAddress { get; set; }
+        public string Amount { get; set; }
     }
 
     public class RecipientSidechain
     {
-        public string federationAddress { get; set; }
-        public string amount { get; set; }
+        public string FederationAddress { get; set; }
+        public string DestinationAddress { get; set; }
+        public string Amount { get; set; }
     }
 
     public class TransactionBuilding
     {
-        public string walletName { get; set; }
-        public string accountName { get; set; }
-        public string password { get; set; }
+        public string WalletName { get; set; }
+        public string AccountName { get; set; }
+        public string Password { get; set; }
 
-        public Recipient[] recipients { get; set; }
+        public List<Recipient> Recipients { get; set; }
 
         //public string destinationAddress { get; set; }
         //public string amount { get; set; }
         
-        public Money feeAmount { get; set; }
-        public bool allowUnconfirmed { get; set; }
-        public bool shuffleOutputs { get; set; }
+        public double FeeAmount { get; set; }
+        public bool AllowUnconfirmed { get; set; }
+        public bool ShuffleOutputs { get; set; }
 
         //public string opReturnData { get; set; }
         //public string opReturnAmount { get; set; }
@@ -43,21 +44,21 @@ namespace XelsDesktopWalletApp.Models
 
     public class TransactionBuildingSidechain
     {
-        public string walletName { get; set; }
-        public string accountName { get; set; }
-        public string password { get; set; }
+        public string WalletName { get; set; }
+        public string AccountName { get; set; }
+        public string Password { get; set; }
 
-        public RecipientSidechain[] recipients { get; set; }
+        public List<RecipientSidechain> Recipients { get; set; }
 
         //public string destinationAddress { get; set; }
         //public string amount { get; set; }
 
-        public Money feeAmount { get; set; }
-        public bool allowUnconfirmed { get; set; }
-        public bool shuffleOutputs { get; set; }
+        public double FeeAmount { get; set; }
+        public bool AllowUnconfirmed { get; set; }
+        public bool ShuffleOutputs { get; set; }
 
-        public string opReturnData { get; set; }
-        public string opReturnAmount { get; set; }
+        public string OpReturnData { get; set; }
+        public string OpReturnAmount { get; set; }
     }
 
     public class MaximumBalance

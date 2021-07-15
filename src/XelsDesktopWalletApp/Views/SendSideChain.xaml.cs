@@ -30,13 +30,13 @@ namespace XelsDesktopWalletApp.Views
         private WalletBalanceArray balances = new WalletBalanceArray();
         private BuildTransaction buildTransaction = new BuildTransaction();
 
-        private Money totalBalance;
-        private CoinType cointype;
-        private Money spendableBalance;
+        private double totalBalance;
+        private string cointype;
+        private double spendableBalance;
 
-        private Money estimatedSidechainFee = 0;
+        private double estimatedSidechainFee = 0;
         private bool isSending = false;
-        private Money opReturnAmount = 1;
+        private double opReturnAmount = 1;
 
         private string walletName;
 
@@ -120,7 +120,7 @@ namespace XelsDesktopWalletApp.Views
 
             if (!Regex.IsMatch(this.textAmount.Text, @"^([0-9]+)?(\.[0-9]{0,8})?$"))
             {
-                MessageBox.Show("Enter a valid transaction amount. Only positive numbers and no more than 8 decimals are allowed.");
+                MessageBox.Show("Enter a valid transaction amount. Only positive numbers and no more than 8 doubles are allowed.");
                 this.textAmount.Focus();
                 return false;
             }
@@ -273,7 +273,7 @@ namespace XelsDesktopWalletApp.Views
             {
                 MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
             }
-            this.estimatedSidechainFee = Money.Parse(content);
+            //this.estimatedSidechainFee = Money.Parse(content);
 
         }
 
@@ -282,8 +282,8 @@ namespace XelsDesktopWalletApp.Views
 
             RecipientSidechain[] recipients = new RecipientSidechain[1];
 
-            recipients[0].federationAddress = this.textMainchainFederationAddress.Text.Trim();
-            recipients[0].amount = this.textAmount.Text;
+            recipients[0].FederationAddress = this.textMainchainFederationAddress.Text.Trim();
+            recipients[0].Amount = this.textAmount.Text;
 
             return recipients;
         }
@@ -300,19 +300,19 @@ namespace XelsDesktopWalletApp.Views
                 var content = "";
 
                 FeeEstimationSideChain feeEstimation = new FeeEstimationSideChain();
-                feeEstimation.walletName = this.walletInfo.WalletName;
-                feeEstimation.accountName = "account 0";
-                feeEstimation.recipients = recipients;
-                feeEstimation.opreturndata = this.textSidechainDestinationAddress.Text.Trim();
-                feeEstimation.feeType = this.textTransactionFee.Text;
-                feeEstimation.allowUnconfirmed = true;
+                feeEstimation.WalletName = this.walletInfo.WalletName;
+                feeEstimation.AccountName = "account 0";
+                //feeEstimation.Recipients = GetRecipient();
+                feeEstimation.OpReturnData = this.textSidechainDestinationAddress.Text.Trim();
+                feeEstimation.FeeType = this.textTransactionFee.Text;
+                feeEstimation.AllowUnconfirmed = true;
 
                 HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(feeEstimation), Encoding.UTF8, "application/json"));
 
                 if (response.IsSuccessStatusCode)
                 {
                     content = await response.Content.ReadAsStringAsync();
-                    this.estimatedSidechainFee = Money.Parse(content);
+                   // this.estimatedSidechainFee = Money.Parse(content);
                 }
                 else
                 {
@@ -322,25 +322,21 @@ namespace XelsDesktopWalletApp.Views
         }
 
         private async void BuildTransactionSideChainAsync()
-        {
-            var opRet = this.opReturnAmount / 100000000;
-            this.opReturnAmount = opRet;
-            string myAmt = opRet.ToString();
-
+        {             
             RecipientSidechain[] recipients = GetRecipient();
 
             string postUrl = this.baseURL + $"/wallet/build-transaction";
             var content = "";
 
-            this.transactionBuilding.walletName = this.walletInfo.WalletName;
-            this.transactionBuilding.accountName = "account 0";
-            this.transactionBuilding.password = this.password.Password;
-            this.transactionBuilding.recipients = recipients;
-            this.transactionBuilding.feeAmount = this.estimatedSidechainFee / 100000000;
-            this.transactionBuilding.allowUnconfirmed = true;
-            this.transactionBuilding.shuffleOutputs = false;
-            this.transactionBuilding.opReturnData = this.textSidechainDestinationAddress.Text.Trim();
-            this.transactionBuilding.opReturnAmount = myAmt;
+            this.transactionBuilding.WalletName = this.walletInfo.WalletName;
+            this.transactionBuilding.AccountName = "account 0";
+            this.transactionBuilding.Password = this.password.Password;
+            //this.transactionBuilding.Recipients = recipients;
+            //this.transactionBuilding.FeeAmount = this.estimatedSidechainFee / 100000000;
+            this.transactionBuilding.AllowUnconfirmed = true;
+            this.transactionBuilding.ShuffleOutputs = false;
+            this.transactionBuilding.OpReturnData = this.textSidechainDestinationAddress.Text.Trim();
+            //this.transactionBuilding.OpReturnAmount = this.opReturnAmount / 100000000;
 
             HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(this.transactionBuilding), Encoding.UTF8, "application/json"));
 
@@ -349,8 +345,8 @@ namespace XelsDesktopWalletApp.Views
                 content = await response.Content.ReadAsStringAsync();
                 this.buildTransaction = JsonConvert.DeserializeObject<BuildTransaction>(content);
 
-                this.estimatedSidechainFee = this.buildTransaction.fee;
-                this.transactionSending.hex = this.buildTransaction.hex;
+                this.estimatedSidechainFee = this.buildTransaction.Fee;
+                this.transactionSending.Hex = this.buildTransaction.Hex;
 
                 if (this.isSending)
                 {
@@ -378,9 +374,9 @@ namespace XelsDesktopWalletApp.Views
                 {
 
                     SendConfirmationSC sendConfirmationSc = new SendConfirmationSC();
-                    sendConfirmationSc.transaction = this.transactionBuilding;
-                    sendConfirmationSc.transactionFee = this.estimatedSidechainFee;
-                    sendConfirmationSc.opReturnAmount = this.opReturnAmount;
+                    sendConfirmationSc.Transaction = this.transactionBuilding;
+                    sendConfirmationSc.TransactionFee = this.estimatedSidechainFee;
+                    sendConfirmationSc.OpReturnAmount = this.opReturnAmount;
                     sendConfirmationSc.cointype = this.cointype;
 
                     SendConfirmationSideChain sendConf = new SendConfirmationSideChain(sendConfirmationSc, this.walletName);

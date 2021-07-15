@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,7 +10,7 @@ using Newtonsoft.Json;
 using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
-using System.Text;
+using XelsDesktopWalletApp.Views.Pages.Modals;
 
 namespace XelsDesktopWalletApp.Views.Pages
 {
@@ -53,6 +52,9 @@ namespace XelsDesktopWalletApp.Views.Pages
                 this.walletName = value;
             }
         }
+        // Hisotory detail data
+        private int? lastBlockSyncedHeight = 0;
+        private int? confirmations = 0;
 
         #region Own Property
 
@@ -60,9 +62,9 @@ namespace XelsDesktopWalletApp.Views.Pages
         public bool stakingEnabled = false;
 
         private bool hasBalance;
-        private Money confirmedBalance;
-        private Money unconfirmedBalance;
-        private Money spendableBalance;
+        private double confirmedBalance;
+        private double unconfirmedBalance;
+        private double spendableBalance;
 
         private string percentSynced;
 
@@ -136,10 +138,10 @@ namespace XelsDesktopWalletApp.Views.Pages
                 {
                     this.walletBalanceArray = JsonConvert.DeserializeObject<WalletBalanceArray>(content);
 
-                    this.ConfirmedBalanceTxt.Text = $"{this.walletBalanceArray.Balances[0].AmountConfirmed} xlc";
-                    this.UnconfirmedBalanceTxt.Text = $"{this.walletBalanceArray.Balances[0].AmountUnconfirmed} (unconfirmed)";
+                    this.ConfirmedBalanceTxt.Text = $"{(this.walletBalanceArray.Balances[0].AmountConfirmed/100000000)} xlc";
+                    this.UnconfirmedBalanceTxt.Text = $"{(this.walletBalanceArray.Balances[0].AmountUnconfirmed/100000000)} (unconfirmed)";
 
-                    this.spendableBalance = this.walletBalanceArray.Balances[0].SpendableAmount;
+                    this.spendableBalance = (this.walletBalanceArray.Balances[0].SpendableAmount/100000000);
 
                     if ((this.walletBalanceArray.Balances[0].AmountConfirmed + this.walletBalanceArray.Balances[0].AmountUnconfirmed) > 0)
                     {
@@ -201,7 +203,47 @@ namespace XelsDesktopWalletApp.Views.Pages
             {
                 MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
             }
-        }       
+        }
+
+        private void DetailsButton_Click(object sender, RoutedEventArgs e)
+        {
+            TransactionItemModel item = (TransactionItemModel)((sender as Button)?.Tag as ListViewItem)?.DataContext;
+            this.DetailsPopup.IsOpen = true;
+
+            this.TypeTxt.Text = item.Type;
+            this.TotalAmountTxt.Text = item.Amount.ToString();
+            this.AmountSentTxt.Text = item.Amount.ToString();
+            this.FeeTxt.Text = item.Fee.ToString();
+            this.DateTxt.Text = item.Timestamp.ToString();
+            this.BlockTxt.Text = item.ConfirmedInBlock.ToString();
+
+            if (item.ConfirmedInBlock != 0 || item.ConfirmedInBlock != null)
+            {
+                this.confirmations = this.lastBlockSyncedHeight - item.ConfirmedInBlock + 1; 
+            }
+            else
+            {
+                this.confirmations = 0;
+            }
+            this.ConfirmationsTxt.Text = this.confirmations.ToString();
+
+            this.TransactionIDTxt.Text = item.Id.ToString();
+        }
+
+        private void Copy_Click(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(this.TransactionIDTxt.Text);
+        }
+
+        private void HidePopup_Click(object sender, RoutedEventArgs e)
+        {
+            this.DetailsPopup.IsOpen = false;
+        }
+
+        private void Ok_Click(object sender, RoutedEventArgs e)
+        {
+            this.DetailsPopup.IsOpen = false;
+        }
 
         private async Task GetGeneralWalletInfoAsync()
         {
@@ -214,6 +256,8 @@ namespace XelsDesktopWalletApp.Views.Pages
             {
 
                 this.walletGeneralInfoModel = JsonConvert.DeserializeObject<WalletGeneralInfoModel>(content);
+
+                this.lastBlockSyncedHeight = this.walletGeneralInfoModel.LastBlockSyncedHeight; // for history data
 
                 this.processedText = $"Processed { this.walletGeneralInfoModel.LastBlockSyncedHeight ?? 0} out of { this.walletGeneralInfoModel.ChainTip} blocks.";
                 this.blockChainStatus = $"Synchronizing.  { this.processedText}";
@@ -324,14 +368,16 @@ namespace XelsDesktopWalletApp.Views.Pages
                 {
                     if (this.selswallet.Address != null)
                     {
-                        this.sels = await this.createWallet.GetBalanceAsync(this.selswallet.Address, "SELS");
+                        //this.sels = await this.createWallet.GetBalanceAsync(this.selswallet.Address, "SELS"); 
+                        // found error
                     }
                 }
                 if (this.belswallet != null)
                 {
                     if (this.belswallet.Address != null)
                     {
-                        this.bels = await this.createWallet.GetBalanceAsync(this.belswallet.Address, "BELS");
+                        //this.bels = await this.createWallet.GetBalanceAsync(this.belswallet.Address, "BELS");
+                        // found error
                     }
                 }
                 // Populate coins
@@ -341,16 +387,20 @@ namespace XelsDesktopWalletApp.Views.Pages
             }
         }
 
-        private void receiveButton_Click(object sender, RoutedEventArgs e)
+        private void ReceiveButton_Click(object sender, RoutedEventArgs e)
         {
-            Receive receive = new Receive(this.walletName);
-            receive.Show();
+            this.Dashboard.Children.Add(new ReceiveUserControl(this.walletName));
+
+            //Receive receive = new Receive(this.walletName);
+            //receive.ShowDialog();
 
         }
-        private void sendButton_Click(object sender, RoutedEventArgs e)
+        private void SendButton_Click(object sender, RoutedEventArgs e)
         {
-            Send send = new Send(this.walletName);
-            send.Show();
+            //Send send = new Send(this.walletName);
+            //send.Show();
+
+             this.Dashboard.Children.Add(new SendUserControl(this.walletName));
 
         }
 
@@ -405,6 +455,7 @@ namespace XelsDesktopWalletApp.Views.Pages
             HttpResponseMessage response = await URLConfiguration.Client.PostAsJsonAsync(apiUrl, UserWallet);
 
             string content = await response.Content.ReadAsStringAsync();
+
             if (response.IsSuccessStatusCode)
             {
                 this.UnlockGrid.Visibility = Visibility.Hidden;
@@ -412,6 +463,17 @@ namespace XelsDesktopWalletApp.Views.Pages
                 this.Password.Password = "";
                 this.MiningInfoBorder.Visibility = Visibility.Visible;
                 this.t.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+
+                var errors = JsonConvert.DeserializeObject<ErrorModel>(content);               
+
+                foreach(var error in errors.Errors)
+                {
+                    MessageBox.Show(error.Message);
+                }
+                
             }
 
         }
@@ -430,15 +492,6 @@ namespace XelsDesktopWalletApp.Views.Pages
                 this.MiningInfoBorder.Visibility = Visibility.Hidden;
                 this.t.Visibility = Visibility.Visible;
             }
-        }
-
-        private void DetailsButton_Click(object sender, RoutedEventArgs e)
-        {
-            TransactionInfo item = (TransactionInfo)((sender as Button)?.Tag as ListViewItem)?.DataContext;
-
-            TransactionDetail td = new TransactionDetail(this.walletName, item);
-            td.Show();
-
         }
 
         private void GotoHistoryButton_Click(object sender, RoutedEventArgs e)

@@ -29,21 +29,21 @@ namespace XelsDesktopWalletApp.Views
 
         private void bindData(SendConfirmationSC data)
         {
-            Money amountSent = data.transaction.feeAmount - data.transactionFee;
+            double amountSent = data.Transaction.FeeAmount - data.TransactionFee;
             this.AmountSent.Content = amountSent;
             this.AmountSentType.Content = data.cointype;
 
-            this.Fee.Content = data.transactionFee;
+            this.Fee.Content = data.TransactionFee;
             this.FeeType.Content = data.cointype;
 
-            this.OPreturn.Content = data.opReturnAmount;
+            this.OPreturn.Content = data.OpReturnAmount;
             this.OPreturnType.Content = data.cointype;
 
-            this.Total.Content = data.transaction.feeAmount;
+            this.Total.Content = data.Transaction.FeeAmount;
             this.TotalType.Content = data.cointype;
 
-            this.DestinationFederation.Content = data.transaction.recipients[0].federationAddress;
-            this.DestinationAddress.Content = data.transaction.opReturnData;
+            this.DestinationFederation.Content = data.Transaction.Recipients[0].FederationAddress;
+            this.DestinationAddress.Content = data.Transaction.OpReturnData;
 
         }
 

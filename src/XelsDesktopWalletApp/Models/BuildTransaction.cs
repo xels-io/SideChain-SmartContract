@@ -7,8 +7,8 @@ namespace XelsDesktopWalletApp.Models
 {
     public class BuildTransaction
     {
-        public Money fee { get; set; }
-        public string hex { get; set; }
-        public uint256 transactionId { get; set; }
+        public double Fee { get; set; }
+        public string Hex { get; set; }
+        public string TransactionId { get; set; }
     }
 }

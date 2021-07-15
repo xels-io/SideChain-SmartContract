@@ -46,7 +46,7 @@ namespace XelsDesktopWalletApp
            //args = new string[] {"-sidechain" };
 
             App app = new App();
-           // CreateShortCut();
+            //CreateShortCut();
 
             MainAsync(args).Wait(5);
 

@@ -4,6 +4,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 using XelsDesktopWalletApp.Views.Pages;
@@ -43,11 +44,13 @@ namespace XelsDesktopWalletApp.Views.layout
 
         public MainLayout(string walletname)
         {
+            this.walletName = walletname;
+            this.walletInfo.WalletName = this.walletName;
+
             InitializeComponent();
             this.DataContext = this;
 
-            this.walletName = walletname;
-            this.walletInfo.WalletName = this.walletName;
+
             //GetGeneralInfoAsync();
             //LoadLoginAsync();
             //GetHistoryAsync();
@@ -73,7 +76,7 @@ namespace XelsDesktopWalletApp.Views.layout
         {
             DragMove();
         }
-
+            
         private void btnDashboard_Click(object sender, RoutedEventArgs e)
         {
             this.PageContent.Content = new DashboardPage(this.walletName);
@@ -85,8 +88,8 @@ namespace XelsDesktopWalletApp.Views.layout
             this.PageContent.Content = null;
             this.PageContent.Content = new SmtAddressSelection(this.walletName);
         }
-        
-             private void btnHistory_Click(object sender, RoutedEventArgs e)
+
+        private void btnHistory_Click(object sender, RoutedEventArgs e)
         {
             this.PageContent.Content = null;
             this.PageContent.Content = new HistoryPage(this.walletName);
@@ -97,6 +100,36 @@ namespace XelsDesktopWalletApp.Views.layout
             this.PageContent.Content = null;
             this.PageContent.Content = new ExchangePage(this.walletName);
         }
+
+        private void LogOut_Button(object sender, RoutedEventArgs e)
+        {
+            LogoutConfirm lc = new LogoutConfirm(this.walletName);
+            lc.Show();
+            this.Close();
+        }
+
+        private void AddressBookButton_Click(object sender, RoutedEventArgs e)
+        {
+
+            this.PageContent.Content = new AddressBookPage(this.walletName);
+            //AddressBook AddressBook = new AddressBook(this.walletName);
+            //AddressBook.Show();
+            //this.Close();
+        }
+
+        private void AdvancedButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.PageContent.Content = new AdvancedPage(this.walletName);
+            //Advanced Advanced = new Advanced(this.walletName);
+            //Advanced.Show();
+            //this.Close();
+        }
+
+        private void Window_Initialized(object sender, System.EventArgs e)
+        {
+            this.PageContent.Content = new DashboardPage(this.walletName);
+        }
+
 
         //private void ButtonOpenMenu_Click(object sender, RoutedEventArgs e)
         //{

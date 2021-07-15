@@ -85,7 +85,7 @@ namespace XelsDesktopWalletApp.Views
         {
             string postUrl = this.baseURL + $"/wallet/send-transaction";
 
-            HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(this.transactionSending.hex), Encoding.UTF8, "application/json"));
+            HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(this.transactionSending.Hex), Encoding.UTF8, "application/json"));
 
             if (response.IsSuccessStatusCode)
             {

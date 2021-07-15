@@ -12,10 +12,10 @@ namespace XelsDesktopWalletApp.Models
 
         private string _type;
         private string _timeStamp;
+        private double _amount;
 
         public string Type
         {
-
             get
             {
                 if (_type == "mined")
@@ -34,14 +34,23 @@ namespace XelsDesktopWalletApp.Models
             }
         }
         public string ToAddress { get; set; }
-        public decimal Amount { get; set; }
+        public double Amount {
+
+            get {
+                return (this._amount / 100000000);
+            }
+            set {
+                this._amount = value;
+            }
+        }
         public string Id { get; set; }
 
         public string Timestamp 
         { 
             get { return _timeStamp; } 
             set {
-                _timeStamp = new DateTime(Convert.ToInt32(value), System.DateTimeKind.Utc ).ToString(); //ConvertToDate(value);
+                _timeStamp = Utils.UnixTimeToDateTime(Convert.ToInt64(value)).ToString("F");
+                    //new DateTime(Convert.ToInt32(value), System.DateTimeKind.Utc ).ToString(); //ConvertToDate(value);
             }
             //
             //DateTime.ParseExact(value,
@@ -67,6 +76,17 @@ namespace XelsDesktopWalletApp.Models
             var result = Convert.ToString(new DateTime(year, month, day));
             return result;
         }
+
+
+        public List<PaymentDetailModel> Payments { get; set; } // new added for detail 
+        public long TxOutputTime { get; set; } // new added for detail 
+        public int TxOutputIndex { get; set; } // new added for detail 
+    }
+    public class PaymentDetailModel
+    {
+        public string DestinationAddress { get; set; }
+        public double Amount { get; set; }
+        public bool IsChange { get; set; }
     }
 
     public class TransactionItemModelArray

@@ -6,25 +6,25 @@ namespace XelsDesktopWalletApp.Models
 {
     public class FeeEstimation
     {
-        public string walletName { get; set; }
-        public string accountName { get; set; }
+        public string WalletName { get; set; }
+        public string AccountName { get; set; }
 
-        public Recipient[] recipients { get; set; }
-        public string feeType { get; set; }
-        public bool allowUnconfirmed { get; set; }
+        public List<Recipient> Recipients { get; set; }
+        public string FeeType { get; set; }
+        public bool AllowUnconfirmed { get; set; }
 
 
     }
     public class FeeEstimationSideChain
     {
-        public string walletName { get; set; }
-        public string accountName { get; set; }
+        public string WalletName { get; set; }
+        public string AccountName { get; set; }
 
-        public RecipientSidechain[] recipients { get; set; }
-        public string opreturndata { get; set; } // destinationaddr
+        public List<RecipientSidechain> Recipients { get; set; }
+        public string OpReturnData { get; set; } // destinationaddr
 
-        public string feeType { get; set; }
-        public bool allowUnconfirmed { get; set; }
+        public string FeeType { get; set; }
+        public bool AllowUnconfirmed { get; set; }
 
     }
 }

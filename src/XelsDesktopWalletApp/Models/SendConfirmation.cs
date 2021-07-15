@@ -8,18 +8,18 @@ namespace XelsDesktopWalletApp.Models
 {
     public class SendConfirmation
     {
-        public TransactionBuilding transaction { get; set; }
-        public Money transactionFee { get; set; }
-        public CoinType cointype { get; set; }
+        public TransactionBuilding Transaction { get; set; }
+        public double TransactionFee { get; set; }
+        public string Cointype { get; set; }
     }
 
     public class SendConfirmationSC
     {
-        public TransactionBuildingSidechain transaction { get; set; }
-        public Money transactionFee { get; set; }
+        public TransactionBuildingSidechain Transaction { get; set; }
+        public double TransactionFee { get; set; }
         //public bool sidechainEnabled { get; set; }
-        public Money opReturnAmount { get; set; }
+        public double OpReturnAmount { get; set; }
         //public bool hasOpReturn { get; set; }
-        public CoinType cointype { get; set; }
+        public string cointype { get; set; }
     }
 }

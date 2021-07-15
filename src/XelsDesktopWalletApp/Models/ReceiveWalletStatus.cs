@@ -8,6 +8,10 @@ namespace XelsDesktopWalletApp.Models
 {
     public class ReceiveWalletStatus
     {
+
+        private bool _isUsed;
+        private bool _isChange;
+
         [JsonProperty(PropertyName = "address")]
         public string Address { get; set; }
 
@@ -17,14 +21,18 @@ namespace XelsDesktopWalletApp.Models
         [JsonProperty(PropertyName = "isChange")]
         public bool IsChange { get; set; }
 
-        public Money AmountConfirmed { get; set; }
-        public Money AmountUnconfirmed { get; set; }
+        public decimal AmountConfirmed { get; set; }
+        public decimal AmountUnconfirmed { get; set; }
+
+        public List<ReceiveWalletStatus> UsedAddresses { get; set; }
+        public List<ReceiveWalletStatus> UnusedAddresses { get; set; }
+        public List<ReceiveWalletStatus> ChangedAddresses { get; set; }
     }
 
     // After getting the full list of received wallet. Then put them into seperate arraylist 
     public class ReceiveWalletArray
     {
-        public ReceiveWalletStatus[] addresses { get; set; }
+        public ReceiveWalletStatus[] Addresses { get; set; }
     }
 
 }
