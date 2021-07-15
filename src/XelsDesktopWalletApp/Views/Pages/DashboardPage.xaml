@@ -425,7 +425,7 @@
                                             DisplayMemberBinding="{Binding Path=Type}"  />
 
                                         <GridViewColumn  Width="350" 
-                                            DisplayMemberBinding="{Binding Path=Amount}"  />
+                                            DisplayMemberBinding="{Binding Path= AmountWithUnit}"  />
                                         <GridViewColumn  Width="250" 
                                             DisplayMemberBinding="{Binding Path=Timestamp}"  />
 

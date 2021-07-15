@@ -11,6 +11,8 @@ using Newtonsoft.Json;
 
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
+using XelsDesktopWalletApp.Models.SmartContractModels;
+using XelsDesktopWalletApp.Views.layout;
 
 namespace XelsDesktopWalletApp.Views.Pages.SendPages
 {
@@ -129,7 +131,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
 
         private void backButton_Click(object sender, RoutedEventArgs e)
         {
-            Dashboard ds = new Dashboard(this.walletName);
+            MainLayout ds = new MainLayout(this.walletName);
             ds.Show();
             // this.Close();
         }
@@ -175,8 +177,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
                 foreach (var balance in balances.Balances)
                 {
                     this.WalletBalance = balance;
-                    this.AvailableBalanceText.Content = (balance.AmountConfirmed / 100000000).ToString();
-                    this.CoinTypeText.Content = balance.CoinType.ToString();
+                    this.AvailableBalanceText.Content = $"{(balance.AmountConfirmed / 100000000).ToString()} {GlobalPropertyModel.CoinUnit}"  ;                    
                 }
 
             }

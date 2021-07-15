@@ -25,10 +25,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Pages\Modals\ImportSelsBelsUserControl.xaml.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Assets\Images\home-xels-logo-01.png" />
     <None Remove="Assets\Images\icon.ico" />
     <None Remove="Assets\Images\loading-3.gif" />
     <None Remove="Views\home-xels-logo-01.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Remove="Views\Pages\Modals\ImportSelsBelsUserControl.xaml" />
   </ItemGroup>
 
   <ItemGroup>

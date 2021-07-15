@@ -5,6 +5,8 @@ using System.Text;
 
 using NBitcoin;
 
+using XelsDesktopWalletApp.Models.SmartContractModels;
+
 namespace XelsDesktopWalletApp.Models
 {
     public class TransactionItemModel
@@ -13,6 +15,7 @@ namespace XelsDesktopWalletApp.Models
         private string _type;
         private string _timeStamp;
         private double _amount;
+        private string _amountWithUnit;
 
         public string Type
         {
@@ -22,9 +25,17 @@ namespace XelsDesktopWalletApp.Models
                 {
                     return _type = "POW REWARD";
                 }
-                else
+                else if(_type == "staked")
                 {
                     return _type = "HYBRID REWARD";
+                }
+                else if(_type == "sent")
+                {
+                    return _type = "SENT";
+                }
+                else
+                {
+                    return _type = "RECEIVED";
                 }
             }
             set
@@ -43,6 +54,7 @@ namespace XelsDesktopWalletApp.Models
                 this._amount = value;
             }
         }
+        public string AmountWithUnit { get { return this.Amount.ToString()+" " + GlobalPropertyModel.CoinUnit; }   }
         public string Id { get; set; }
 
         public string Timestamp 

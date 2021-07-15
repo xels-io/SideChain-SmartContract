@@ -11,6 +11,7 @@ using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 using XelsDesktopWalletApp.Views.Pages.Modals;
+using XelsDesktopWalletApp.Models.SmartContractModels;
 
 namespace XelsDesktopWalletApp.Views.Pages
 {
@@ -138,7 +139,7 @@ namespace XelsDesktopWalletApp.Views.Pages
                 {
                     this.walletBalanceArray = JsonConvert.DeserializeObject<WalletBalanceArray>(content);
 
-                    this.ConfirmedBalanceTxt.Text = $"{(this.walletBalanceArray.Balances[0].AmountConfirmed/100000000)} xlc";
+                    this.ConfirmedBalanceTxt.Text = $"{(this.walletBalanceArray.Balances[0].AmountConfirmed/100000000)} {GlobalPropertyModel.CoinUnit}";
                     this.UnconfirmedBalanceTxt.Text = $"{(this.walletBalanceArray.Balances[0].AmountUnconfirmed/100000000)} (unconfirmed)";
 
                     this.spendableBalance = (this.walletBalanceArray.Balances[0].SpendableAmount/100000000);
@@ -406,7 +407,7 @@ namespace XelsDesktopWalletApp.Views.Pages
 
         private void ImportAddrButton_Click(object sender, RoutedEventArgs e)
         {
-
+            //this.Dashboard.Children.Add(new ImportSelsBelsUserControl(this.walletName));
             EthImport eImp = new EthImport(this.walletName);
             eImp.Show();
         }

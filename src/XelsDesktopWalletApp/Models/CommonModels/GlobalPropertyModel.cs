@@ -9,5 +9,7 @@ namespace XelsDesktopWalletApp.Models.SmartContractModels
         public static string WalletName { get; set; }
         public static string Address { get; set; }
         public static string AddressBalance { get; set; }
+
+        public static string CoinUnit { get; set; }
     }
 }

@@ -34,20 +34,20 @@
                     <Border Grid.Row="0">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width=".5*"/>
+                                <ColumnDefinition Width=".7*"/>
+                                <!--<ColumnDefinition Width="*"/>-->
                             </Grid.ColumnDefinitions>
 
-                            <Label Grid.Column="0" Content="Amount"/>
-                            <Label Grid.Column="1" Content="Available:" />
+                            <Label Grid.Column="0" Content="Amount" FontWeight="DemiBold" />
+                            <Label Grid.Column="1" Content="Available:" HorizontalAlignment="Right" FontWeight="DemiBold" />
 
-                            <Label Grid.Column="2"  x:Name="AvailableBalanceText" 
-                         />
+                            <Label Grid.Column="2"  x:Name="AvailableBalanceText" HorizontalAlignment="Left"
+                        FontWeight="DemiBold" />
 
-                            <Label  Grid.Column="3" x:Name="CoinTypeText" 
-                          />
+                            <!--<Label  Grid.Column="3" x:Name="CoinTypeText" 
+                          />-->
 
                         </Grid>
                     </Border>

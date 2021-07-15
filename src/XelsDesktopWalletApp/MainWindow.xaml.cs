@@ -27,12 +27,15 @@ namespace XelsDesktopWalletApp
         
         private WalletLoadRequest UserWallet;
         List<WalletLoadRequest> walletList;
+        NodeStatusModel NodeStatusModel;
 
         public MainWindow()
         {
             this.UserWallet = new WalletLoadRequest();
             this.walletList = new List<WalletLoadRequest>();
             InitializeComponent();
+
+            this.NodeStatusModel = new NodeStatusModel();
 
             this.DataContext = this;
 
@@ -62,6 +65,36 @@ namespace XelsDesktopWalletApp
                 MessageBox.Show($"Message-{e.Message}");
             }
         }
+
+
+        private async Task GetNodeStatus()
+        {
+            try
+            {
+                string getNodeStatusInterval = this.baseURL + $"/node/status";
+                var content = "";
+
+                HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getNodeStatusInterval);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    content = await response.Content.ReadAsStringAsync();
+                    this.NodeStatusModel = JsonConvert.DeserializeObject<NodeStatusModel>(content);
+
+                    GlobalPropertyModel.CoinUnit = this.NodeStatusModel.CoinTicker;
+                    
+                }
+                else
+                {
+                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                }
+            }
+            catch (Exception r)
+            {
+                throw;
+            }
+        }
+
 
         private async Task<List<WalletLoadRequest>> WalletNamesforDropdown(string data)
         {
@@ -101,8 +134,10 @@ namespace XelsDesktopWalletApp
                 content = await response.Content.ReadAsStringAsync();
 
                 if (response.IsSuccessStatusCode)
-                {       
+                {
+                    GetNodeStatus();
                     GlobalPropertyModel.WalletName = this.UserWallet.Name;
+
                     MainLayout mainLayout = new MainLayout(this.UserWallet.Name);
                     mainLayout.Show();
                     this.Close();
