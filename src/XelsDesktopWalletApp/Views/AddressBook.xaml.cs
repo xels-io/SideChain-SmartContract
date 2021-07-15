@@ -319,6 +319,8 @@ namespace XelsDesktopWalletApp.Views
             {
                 string postUrl = this.baseURL + "/AddressBook/address?" + item;
                 HttpResponseMessage response = await URLConfiguration.Client.DeleteAsync(postUrl);
+                var content = await response.Content.ReadAsStringAsync();
+
                 // response = {StatusCode: 500, ReasonPhrase: 'Internal Server Error', Version: 1.1, Content: System.Net.Http.HttpConnectionResponseContent, Headers:
 
                 if (response.IsSuccessStatusCode)
