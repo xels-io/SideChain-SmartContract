@@ -2,6 +2,8 @@
 using System.Windows;
 using System.Windows.Controls;
 
+using Newtonsoft.Json;
+
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 
@@ -75,13 +77,21 @@ namespace XelsDesktopWalletApp.Views.Pages
 
                 HttpResponseMessage response = await URLConfiguration.Client.PostAsJsonAsync(postUrl, recovery);
 
+                var content = await response.Content.ReadAsStringAsync();
+
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Successfully saved data with Name:{ recovery.name}");
+                    MessageBox.Show($"Successfully saved data with Name:{ recovery.Name}");
                 }
                 else
                 {
-                    MessageBox.Show($"Error Code{ response.StatusCode } : Message - { response.ReasonPhrase}");
+                    var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
+
+                    foreach(var error in errors.Errors)
+                    {
+                        MessageBox.Show(error.Message);
+                    }
+                    
                 }
             }
         }

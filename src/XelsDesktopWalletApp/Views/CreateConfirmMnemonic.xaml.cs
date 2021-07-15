@@ -151,6 +151,8 @@ namespace XelsDesktopWalletApp.Views
 
                 HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(this._walletcreateconfirm), Encoding.UTF8, "application/json"));
 
+                var content = await response.Content.ReadAsStringAsync(); 
+
                 if (response.IsSuccessStatusCode)
                 {
                     MessageBox.Show($"Successfully created wallet with Name: {this._walletcreateconfirm.Name}");
@@ -161,7 +163,12 @@ namespace XelsDesktopWalletApp.Views
                 }
                 else
                 {
-                    MessageBox.Show($"Error Code{ response.StatusCode } : Message - { response.ReasonPhrase}");
+                    var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
+
+                    foreach (var error in errors.Errors)
+                    {
+                        MessageBox.Show(error.Message);
+                    }
                 }
             }
         }
