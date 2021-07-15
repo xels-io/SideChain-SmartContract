@@ -32,7 +32,7 @@ namespace XelsDesktopWalletApp.Common
                 var account = new Account(sWallet.PrivateKey);
                 double balance = await this.createWallet.GetBalanceMainAsync(account.Address, sWallet.Coin);
                 BigInteger bgBalance = (BigInteger)balance;
-                double balanceconvert = (double)amount * 0.00000001;
+                //double balanceconvert = (double)amount * 0.00000001;
 
                 if (bgBalance > 0 && bgBalance != 0)
                 {

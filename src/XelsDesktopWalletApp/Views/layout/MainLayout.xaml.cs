@@ -130,6 +130,16 @@ namespace XelsDesktopWalletApp.Views.layout
             this.PageContent.Content = new DashboardPage(this.walletName);
         }
 
+        //private void windowMax_Click(object sender, RoutedEventArgs e)
+        //{
+        //    this.WindowState = WindowState.Maximized;
+        //}
+
+        private void windowMin_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
 
         //private void ButtonOpenMenu_Click(object sender, RoutedEventArgs e)
         //{

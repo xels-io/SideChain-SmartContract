@@ -6,7 +6,7 @@
     <Version>5.0.7.0</Version>
     <Authors>Xels Group Ltd.</Authors>
     <ApplicationIcon>icon.ico</ApplicationIcon>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>XelsSigningKey.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>

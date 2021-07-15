@@ -99,7 +99,6 @@
         <Grid Grid.Column="1" Grid.Row="1" Background="#FFCFCFCF">
             <ScrollViewer>
                 <Frame x:Name="PageContent" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="560" Width="880" NavigationUIVisibility="Hidden"></Frame>
-
             </ScrollViewer>
         </Grid>
 
@@ -111,7 +110,7 @@
                 </LinearGradientBrush>
             </Grid.Background>
             <Grid.RowDefinitions>
-                <RowDefinition Height="98"/>
+                <RowDefinition Height="100"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid.Effect>
@@ -174,7 +173,7 @@
 
         <Grid x:Name="GridBarraTitulo" Grid.ColumnSpan="2" Background="#FF41A43C" MouseDown="GridBarraTitulo_MouseDown">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,0">
-                <materialDesign:PopupBox PlacementMode="BottomAndAlignLeftEdges" StaysOpen="False">
+                <materialDesign:PopupBox PlacementMode="BottomAndAlignLeftEdges" StaysOpen="False" Width="30">
                     <materialDesign:PopupBox.ToggleContent>
                         <materialDesign:PackIcon Kind="Settings" Foreground="White" />
                     </materialDesign:PopupBox.ToggleContent>
@@ -192,9 +191,16 @@
                 <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White">
                     <materialDesign:PackIcon Kind="Account"/>
                 </Button>-->
-                <Button x:Name="ButtonFechar" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Click="ButtonFechar_Click">
-                    <materialDesign:PackIcon Kind="HighlightOff" Foreground="Red"/>
+                <!--<Button  x:Name="windowMax" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="30" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Click="windowMax_Click" >
+                    <materialDesign:PackIcon Kind="WindowMaximize" Foreground="Red" VerticalAlignment="Center" Width="20"/>
+                </Button>-->
+                <Button  x:Name="windowMin" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="30" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Click="windowMin_Click">
+                    <materialDesign:PackIcon Kind="WindowMinimize" Foreground="Red" VerticalAlignment="Center" Width="20"/>
                 </Button>
+                <Button x:Name="ButtonFechar" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="34" Height="26" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Click="ButtonFechar_Click">
+                    <materialDesign:PackIcon Kind="Close" Foreground="Red" VerticalAlignment="Center"/>
+                </Button>
+
             </StackPanel>
         </Grid>
     </Grid>
