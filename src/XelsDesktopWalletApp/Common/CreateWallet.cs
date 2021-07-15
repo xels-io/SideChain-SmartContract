@@ -243,7 +243,6 @@ namespace XelsDesktopWalletApp.Common
 
                 double balanceconvert = (double)balance * 0.00000001;
                 string balancemain = balanceconvert.ToString();
-
                 return balancemain;
             }
 

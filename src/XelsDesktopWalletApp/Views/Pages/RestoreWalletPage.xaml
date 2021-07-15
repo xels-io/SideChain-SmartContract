@@ -31,8 +31,7 @@
 
                     <Label Grid.Row="0" Content="Name" Padding="1 " Margin="5" FontSize="13" FontWeight="DemiBold" />
 
-                    <TextBox Grid.Row="1" x:Name="name"  
-                     Text="Enter a wallet name." 
+                    <TextBox Grid.Row="1" x:Name="name"
                      Padding="5 " Margin="0 5"
                      AutomationProperties.HelpText="Enter a 
                      wallet name." 
