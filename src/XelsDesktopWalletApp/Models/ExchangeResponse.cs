@@ -24,6 +24,7 @@ namespace XelsDesktopWalletApp.Models
         public string deposit_address_amount_symbol { get; set; }
         public string xels_address_amount { get; set; }
         public string showstatus { get; set; }
+        public bool IsDepositEnableBtn { get; set; }
     }
 
 
