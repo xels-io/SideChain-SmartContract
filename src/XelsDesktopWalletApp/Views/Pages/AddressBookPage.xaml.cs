@@ -13,6 +13,7 @@ using Newtonsoft.Json.Linq;
 
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
+using XelsDesktopWalletApp.Views.ViewPage;
 
 namespace XelsDesktopWalletApp.Views.Pages
 {
@@ -159,6 +160,10 @@ namespace XelsDesktopWalletApp.Views.Pages
             //this.Close();
         }
 
+        private void SendButton_Click(object sender, RoutedEventArgs e)
+        {
+        }
+        
 
         private void AddAddress_Click(object sender, RoutedEventArgs e)
         {
@@ -212,11 +217,6 @@ namespace XelsDesktopWalletApp.Views.Pages
         }
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            // AddressLabel item = (AddressLabel)((sender as Button)?.Tag as ListViewItem)?.DataContext;
-            // Button button = sender as Button:
-            // AddressLabel selectedRow = button.DataContext as AddressLabel;
-            // string CellValue = selectedRow.label;
-
             DataGrid dataGrid = this.AddressList;
             DataGridRow Row = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromIndex(dataGrid.SelectedIndex);
             DataGridCell RowAndColumn = (DataGridCell)dataGrid.Columns[0].GetCellContent(Row).Parent;

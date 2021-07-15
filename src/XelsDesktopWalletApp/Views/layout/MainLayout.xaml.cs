@@ -76,7 +76,7 @@ namespace XelsDesktopWalletApp.Views.layout
         {
             DragMove();
         }
-
+            
         private void btnDashboard_Click(object sender, RoutedEventArgs e)
         {
             this.PageContent.Content = new DashboardPage(this.walletName);
