@@ -11,15 +11,14 @@
     <Border Padding="10">
         <StackPanel>
 
-            <Grid Height="541" Background="WhiteSmoke" >
-
-
-                <TextBlock Background="WhiteSmoke" Margin="1032,22,0,495" HorizontalAlignment="Left" 
-                           Width="192" Foreground="#FF53E253" FontSize="13">
-                    <Button  x:Name="AddAddress" Click="AddAddress_Click" Padding="2" 
-                                Background="WhiteSmoke" BorderThickness="0" Foreground="#FF53E253" 
-                                Content="+ Add New Address" 
-                                 HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Microsoft YaHei Light"  >
+            <Grid Height="535" Background="White" >
+                 <!--new address button-->
+                <TextBlock Background="White"  HorizontalAlignment="Right"  Margin="0,20,0,0"
+                           Width="192" Foreground="#FF41A43C">
+                    <Button  x:Name="AddAddress" Click="AddAddress_Click" Padding="5" 
+                                Background="WhiteSmoke" BorderThickness="0" Foreground="#FF41A43C" 
+                                Content="+ Add New Address"  FontSize="12"
+                                 HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Microsoft YaHei"  >
                             <Button.Resources>
                                 <Style TargetType="{x:Type Border}">
                                     <Setter Property="CornerRadius" Value="5"/>
@@ -28,40 +27,41 @@
                         </Button>
                 </TextBlock>
 
-
-                <Grid x:Name="NoData" Margin="415,18,445,495">
-                    <Label Content="Looks like you haven't any address in your address book yet." FontFamily="Microsoft YaHei" 
-                       Margin="420,16,0,497" HorizontalAlignment="Left" />
+                <!--no list data-->
+                <Grid x:Name="NoData" Margin="0,70,0,0" HorizontalAlignment="Center">
+                    <Label Content="Looks like you haven't any address in your address book yet." 
+                           FontFamily="Microsoft YaHei" HorizontalAlignment="Center" />
                 </Grid>
 
-
-
-
-                <Grid Margin="0,60,0,0" x:Name="ListData">
+                <!--main list data-->
+                <Grid Margin="0,70,0,0" x:Name="ListData">
                     <DataGrid x:Name="AddressList" AutoGenerateColumns="False" HorizontalAlignment="Center" VerticalAlignment="Top" 
-                              Width="900" FontSize="12" BorderThickness="0" RowHeight="40"
-                              Background="LightGray" HeadersVisibility="None" GridLinesVisibility="None" IsReadOnly="True" >
+                              Width="750" FontSize="12" BorderThickness="0" 
+                              Background="White" HeadersVisibility="None" GridLinesVisibility="None" IsReadOnly="True"
+                              ScrollViewer.CanContentScroll="True" 
+                              ScrollViewer.VerticalScrollBarVisibility="Auto"
+                              ScrollViewer.HorizontalScrollBarVisibility="Auto">
                         <DataGrid.Columns >
                             <DataGridTextColumn Binding="{Binding Path=label}" IsReadOnly="True" Width="150" />
-                            <DataGridTextColumn Binding="{Binding Path=address}" IsReadOnly="True" Width="470" />
-                            <DataGridTemplateColumn Width="270">
+                            <DataGridTextColumn Binding="{Binding Path=address}" IsReadOnly="True" Width="300" />
+                            <DataGridTemplateColumn Width="Auto">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock FontWeight="Bold"  FontFamily="Microsoft YaHei Light" Margin="1 0 0 0" VerticalAlignment="Top">
+                                        <TextBlock FontWeight="Bold"  FontFamily="Microsoft YaHei" Margin="1 0 0 0" VerticalAlignment="Top">
                                             <InlineUIContainer>
-                                                <Button Content="Copy Address" Click="CopyButton_Click" Padding="10 2 10 2" FontFamily="Microsoft YaHei Light" Margin="10 0 0 0"
-                                                        Background="White" Foreground="#FF53E253" BorderBrush="#FF53E253"  IsEnabled="True" 
-                                                        HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                <Button Content="Copy Address" Click="CopyButton_Click" Padding="10 2 10 2" FontFamily="Microsoft YaHei" Margin="10 0 0 0"
+                                                        Background="White" Foreground="#FF41A43C" BorderBrush="#FF41A43C"  IsEnabled="True" BorderThickness="1"
+                                                        HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" />
                                             </InlineUIContainer>
                                             <InlineUIContainer>
                                                 <Button Tag="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListViewItem}}}"  
-                                                        Content="Send" Click="SendButton_Click" Padding="20 2 20 2" 
-                                                        Background="#FF53E253" Foreground="White" BorderBrush="#FF53E253" />
+                                                        Content="Send" Click="SendButton_Click" Padding="20 2 20 2"  BorderThickness="1"
+                                                        Background="#FF41A43C" Foreground="White" BorderBrush="#FF41A43C" FontSize="12" />
                                             </InlineUIContainer>
                                             <InlineUIContainer>
                                                 <Button Tag="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListViewItem}}}"  
-                                                        Content="X" Click="DeleteButton_Click" Padding="4 2 4 2" FontFamily="Microsoft YaHei"
-                                                        Background="White" Foreground="#FF53E253" BorderBrush="#FF53E253" />
+                                                        Content="X" Click="DeleteButton_Click" Padding="10 2 10 2" FontFamily="Microsoft YaHei" BorderThickness="1"
+                                                        Background="White" Foreground="#FF41A43C" BorderBrush="#FF41A43C" FontSize="12" />
                                             </InlineUIContainer>
                                         </TextBlock>
                                     </DataTemplate>
@@ -83,9 +83,10 @@
                     </DataGrid>
                 </Grid>
 
+                <!--pop up to add new address-->
                 <Popup Name="NewAddressPopup" Placement="Center" VerticalOffset="-100" AllowsTransparency="False">
                     <Grid Width="400" Height="350" >
-                        <Rectangle Width="400" Height="350" Fill="White"  />
+                        <Rectangle Width="400" Height="350" Fill="WhiteSmoke"  />
                         <Button Click="HidePopup_Click" Background="White" Foreground="Black"
                                 VerticalAlignment="Top" HorizontalAlignment="Right" Content="X" >
 
@@ -105,7 +106,7 @@
                           HorizontalAlignment="Left" Margin="20,100,0,0"
                            VerticalAlignment="Top" 
                             FontFamily="Microsoft YaHei Light" FontSize="14" />
-                        <TextBox  x:Name="LabelTxt"
+                        <TextBox  x:Name="LabelTxt" Background="White"
                           HorizontalAlignment="Left"  Margin="20,130,20,0"
                           TextWrapping="Wrap" VerticalAlignment="Top" Width="350" BorderBrush="#FFC9D6C9" 
                           BorderThickness="2" FontFamily="Microsoft YaHei Light" FontSize="12" Height="30" Padding="4" />
@@ -118,17 +119,17 @@
                           HorizontalAlignment="Left" Margin="20,180,0,0"
                            VerticalAlignment="Top" 
                             FontFamily="Microsoft YaHei Light" FontSize="14" />
-                        <TextBox  x:Name="AddressTxt"
+                        <TextBox  x:Name="AddressTxt" Background="White"
                           HorizontalAlignment="Left"  Margin="20,210,20,0"
                           TextWrapping="Wrap" VerticalAlignment="Top" Width="350" BorderBrush="#FFC9D6C9" 
                           BorderThickness="2" FontFamily="Microsoft YaHei Light" FontSize="12" Height="30" Padding="4" />
 
 
                         <Button  x:Name="CancelButton" Click="Cancel_Click" Padding="2" 
-                                Background="White" BorderThickness="1,1,1,1" Foreground="#FF53E253" 
+                                Background="WhiteSmoke" BorderThickness="1,1,1,1" Foreground="#FF41A43C" 
                                 Content="Cancel" Margin="20,270,0,0" 
                                  HorizontalAlignment="Left" VerticalAlignment="Top" 
-                                Height="30" Width="90" FontFamily="Microsoft YaHei Light" BorderBrush="#FF53E253" >
+                                Height="30" Width="90" FontFamily="Microsoft YaHei" BorderBrush="#FF41A43C" >
                             <Button.Resources>
                                 <Style TargetType="{x:Type Border}">
                                     <Setter Property="CornerRadius" Value="5"/>
@@ -137,7 +138,7 @@
                         </Button>
 
                         <Button x:Name="sendButton" Click="Create_Click"  Content="Create" Padding="2"  HorizontalAlignment="Center" VerticalAlignment="Top" 
-                                Background="#FF53E253" FontFamily="Microsoft YaHei Light" BorderThickness="1" BorderBrush="#FF53E253"
+                                Background="#FF41A43C" FontFamily="Microsoft YaHei" BorderThickness="1" BorderBrush="#FF41A43C"
                                 Foreground="White" Margin="120,270,30,0"  Height="30" Width="250" >
                             <Button.Resources>
                                 <Style TargetType="{x:Type Border}">
