@@ -351,20 +351,24 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
         private void CheckSendAmount_OnChange(object sender, RoutedEventArgs e)
         {
             string sendingAmount = this.SendAmountText.Text ;
-            if (Convert.ToDouble(sendingAmount) > ((this.WalletBalance.AmountConfirmed - this.estimatedFee) / 100000000))
-            {
-                MessageBox.Show("The total transaction amount exceeds your spendable balance.");  
-            }
 
-            if (!Regex.IsMatch(this.SendAmountText.Text, @"^([0-9]+)?(\.[0-9]{0,8})?$"))
+            if (!string.IsNullOrWhiteSpace(sendingAmount))
             {
-                MessageBox.Show("Enter a valid transaction amount. Only positive numbers and no more than 8 decimals are allowed.");           
-            }
+                if (Convert.ToDouble(sendingAmount) > ((this.WalletBalance.AmountConfirmed - this.estimatedFee) / 100000000))
+                {
+                    MessageBox.Show("The total transaction amount exceeds your spendable balance.");
+                }
 
-            if (this.DestinationAddressText.Text != "" && this.SendAmountText.Text != "")
-            {
-                EstimateFeeAsync();
-                this.DestinationAddressText.Focus();
+                if (!Regex.IsMatch(this.SendAmountText.Text, @"^([0-9]+)?(\.[0-9]{0,8})?$"))
+                {
+                    MessageBox.Show("Enter a valid transaction amount. Only positive numbers and no more than 8 decimals are allowed.");
+                }
+
+                if (this.DestinationAddressText.Text != "" && this.SendAmountText.Text != "")
+                {
+                    EstimateFeeAsync();
+                    this.DestinationAddressText.Focus();
+                }
             }
 
             this.SendAmountText.Focus();
