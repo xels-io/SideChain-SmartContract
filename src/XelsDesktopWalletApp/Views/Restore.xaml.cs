@@ -32,7 +32,7 @@ namespace XelsDesktopWalletApp.Views
             }
             if (string.IsNullOrWhiteSpace(this.mnemonic.Text))
             {
-                MessageBox.Show("Field is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Secret words required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
             if (string.IsNullOrWhiteSpace(this.creationDate.Text))

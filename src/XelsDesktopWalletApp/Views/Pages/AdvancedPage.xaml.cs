@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -238,6 +239,14 @@ namespace XelsDesktopWalletApp.Views.Pages
                 {
                     content = await response.Content.ReadAsStringAsync();
                     this.addresses = JsonConvert.DeserializeObject<string[]>(content);
+                    List<Address> addressList= new List<Address>();
+                    foreach (var address in this.addresses)
+                    {
+                        Address addr = new Address();
+                        addr.address = address;
+                        addressList.Add(addr);
+                    }
+                    this.AddressList.ItemsSource = addressList;
                 }
                 else
                 {
@@ -248,6 +257,16 @@ namespace XelsDesktopWalletApp.Views.Pages
             {
                 throw;
             }
+        }
+
+        private void CopyButton_Click(object sender, RoutedEventArgs e)
+        {
+            DataGrid dataGrid = this.AddressList;
+            DataGridRow Row = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromIndex(dataGrid.SelectedIndex);
+            DataGridCell RowAndColumn = (DataGridCell)dataGrid.Columns[0].GetCellContent(Row).Parent;
+            string CellValue = ((TextBlock)RowAndColumn.Content).Text;
+
+            Clipboard.SetText(CellValue);
         }
         #endregion
 
