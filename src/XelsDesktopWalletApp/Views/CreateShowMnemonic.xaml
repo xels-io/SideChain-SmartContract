@@ -50,7 +50,7 @@
         </Border>
 
         <Border Margin="250 5">
-            <Button x:Name="copyClipboardButton" Click="copyClipboardButton_Click" Content="Copy" Padding="5" TextBlock.FontFamily="Microsoft YaHei Light" Background="#FF53E253" Foreground="White" BorderThickness="0" FontSize="14">
+            <Button x:Name="copyClipboardButton" Click="copyClipboardButton_Click" Content="Copy" Padding="5" TextBlock.FontFamily="Microsoft YaHei Light" Background="green" Foreground="White" BorderThickness="0" FontSize="14">
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="5"/>
@@ -68,7 +68,7 @@
                     <ColumnDefinition Width="5*" />
                 </Grid.ColumnDefinitions>
 
-                <Button x:Name="cancelButton" Click="cancelButton_Click" Grid.Column="0" Content="Cancel" VerticalAlignment="Center" Padding="5" Margin="0 0 5 0"  TextBlock.FontFamily="Microsoft YaHei Light" Background="White" Foreground="#FF53E253" BorderThickness="1" BorderBrush="#FF53E253" FontSize="14" RenderTransformOrigin="0.331,0.533">
+                <Button x:Name="cancelButton" Click="cancelButton_Click" Grid.Column="0" Content="Cancel" VerticalAlignment="Center" Padding="5" Margin="0 0 5 0"  TextBlock.FontFamily="Microsoft YaHei Light" Background="White" Foreground="green" BorderThickness="1" BorderBrush="green" FontSize="14" RenderTransformOrigin="0.331,0.533">
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="5"/>
@@ -76,7 +76,7 @@
                     </Button.Resources>
                 </Button>
 
-                <Button x:Name="continueButton" Click="continueButton_Click" Grid.Column="1" Content="Continue" Padding="5"  Margin="5 0 0 0"   TextBlock.FontFamily="Microsoft YaHei Light" Background="#FF53E253" Foreground="White" BorderThickness="0,0,0,0" FontSize="14">
+                <Button x:Name="continueButton" Click="continueButton_Click" Grid.Column="1" Content="Continue" Padding="5"  Margin="5 0 0 0"   TextBlock.FontFamily="Microsoft YaHei Light" Background="green" Foreground="White" BorderThickness="0,0,0,0" FontSize="14">
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="5"/>

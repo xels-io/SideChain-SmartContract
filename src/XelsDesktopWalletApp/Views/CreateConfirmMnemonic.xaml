@@ -11,7 +11,7 @@
 
             <StackPanel>
 
-                <Grid Background="LimeGreen" Margin="10" Height="100">
+                <Grid Background="Green" Margin="10" Height="100">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
@@ -78,7 +78,7 @@
                     <ColumnDefinition Width="6*" />
                 </Grid.ColumnDefinitions>
 
-                <Button x:Name="cancelButton" Click="CancelButton_Click" Grid.Column="0" Content="back" Padding="5" Margin="5 0" TextBlock.FontFamily="Microsoft YaHei Light" Background="White" Foreground="#FF53E253" BorderThickness="1" BorderBrush="#FF53E253" FontSize="14" RenderTransformOrigin="0.331,0.533">
+                <Button x:Name="cancelButton" Click="CancelButton_Click" Grid.Column="0" Content="back" Padding="5" Margin="5 0" TextBlock.FontFamily="Microsoft YaHei Light" Background="White" Foreground="Green" BorderThickness="1" BorderBrush="Green" FontSize="14" RenderTransformOrigin="0.331,0.533">
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="5"/>
@@ -86,7 +86,7 @@
                     </Button.Resources>
                 </Button>
 
-                <Button x:Name="createButton" Click="CreateButton_Click" Grid.Column="1" Content="Confirm" Padding="5" Margin="5 0" TextBlock.FontFamily="Microsoft YaHei Light" Background="#FF53E253" Foreground="White" BorderThickness="0"  FontSize="14">
+                <Button x:Name="createButton" Click="CreateButton_Click" Grid.Column="1" Content="Confirm" Padding="5" Margin="5 0" TextBlock.FontFamily="Microsoft YaHei Light" Background="Green" Foreground="White" BorderThickness="0"  FontSize="14">
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="5"/>
