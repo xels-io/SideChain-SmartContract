@@ -60,10 +60,10 @@ namespace XelsDesktopWalletApp.Views.layout
             //    _ = GetStakingInfoAsync(this.baseURL);
             //}
 
-            //if (URLConfiguration.Chain == "-sidechain")// (!this.sidechainEnabled)
-            //{
-            //    this.buttonPowMining.Visibility = Visibility.Hidden;
-            //}
+            if (URLConfiguration.Chain != "-sidechain")// (!this.sidechainEnabled)
+            {
+                this.btn_SmartContract.Visibility = Visibility.Hidden;
+            }
             //PopulateTxt();
         }
 

@@ -290,19 +290,15 @@
                                         <Grid Margin="5">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="2.1*"/>
-                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width=".8*"/>
+                                                <ColumnDefinition Width="1.2*"/>
                                             </Grid.ColumnDefinitions>
 
                                             <TextBlock  Grid.Column="0" Name="ConnectionPercentTxt"
-                                                    FontFamily="Microsoft YaHei" FontSize="10" Foreground="Green" 
-                                                   TextAlignment="Right" Height="16" Width="40" />
-                                            <TextBlock TextWrapping="Wrap"  Grid.Column="1" Name="ConnectedCountTxt"
-                                                    FontFamily="Microsoft YaHei" FontSize="10" Foreground="Green" 
-                                                   TextAlignment="Right" Height="16" Width="83" Text="2 connections"/>
-
-                                            <Label x:Name="ConnectionNotifyTxt" ToolTip="{Binding ConnectionNotifyTxt}" Grid.Column="2" FontFamily="Microsoft YaHei" FontSize="10" Foreground="Green">
-                                                <Image Source="/Assets/Images/thumbsdown.png"  Width="40" Height="40" />
+                                                    FontFamily="Microsoft YaHei" FontSize="10" Foreground="Green"   />
+                                            <TextBlock Grid.Column="1" Name="ConnectedCountTxt" FontSize="10" Foreground="Green" />
+                                            <Label x:Name="StakingInfo" ToolTip="{Binding StakingInfo}" Grid.Column="2" Foreground="Green">
+                                                <!--<Image x:Name="StakingInfoImage" Width="40" Height="40" />-->
                                             </Label>
 
                                         </Grid>
@@ -353,7 +349,7 @@
                                             </Grid.ColumnDefinitions>
 
                                             <Label Grid.Column="0" Content="Parcent Synced:"  Padding="0" Margin="0"/>
-                                            <TextBlock Grid.Column="1" x:Name="ParentSyncedTxt"/>
+                                            <TextBlock Grid.Column="1" x:Name="ParcentSyncedTxt" Foreground="Green"/>
                                         </Grid>
 
 
@@ -462,120 +458,185 @@
 
 
 
-                                <Popup Name="DetailsPopup" Placement="Center"  AllowsTransparency="False">
-                                    <Grid Width="900"  Height="600">
-                                        <Rectangle Width="900" Height="600" Fill="WhiteSmoke"  />
-                                        <Button Click="HidePopup_Click" Background="Black" Foreground="White"
-                                VerticalAlignment="Top" HorizontalAlignment="Right" Content="X" >
+                                <Popup Name="DetailsPopup" Placement="Center"  AllowsTransparency="False"  HorizontalAlignment="Center" VerticalAlignment="Top" >
+                                    <Grid Width="500"  Height="400">
+                                        <Rectangle Width="500" Height="400" Fill="WhiteSmoke"  />
 
-                                            <Button.Resources>
-                                                <Style TargetType="{x:Type Border}">
-                                                    <Setter Property="CornerRadius" Value="50"/>
-                                                </Style>
-                                            </Button.Resources>
-                                        </Button>
+                                        <Grid Margin="20 20">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Border Grid.Row="0">
+                                                <Label Content="Transaction Details"
+                               FontFamily="Microsoft YaHei"/>
+                                            </Border>
+                                            
+                                            <Border Grid.Row="1">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width=".5*"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Label Grid.Column="0" Content="Type:"   Foreground="#FF615858"    FontSize="14" />
+
+                                                    <TextBlock Grid.Column="1" x:Name="TypeTxt" 
+                                     TextWrapping="Wrap"   
+                                      FontSize="14" Foreground="ForestGreen" 
+                                     />
+
+                                                </Grid>
+
+                                            </Border>
+
+                                            <Border Grid.Row="2">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width=".5*"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Label Grid.Column="0" Content="Total Amount:" Foreground="#FF615858" FontSize="14" Padding="4"/>
+
+                                                    <TextBlock Grid.Column="1" x:Name="TotalAmountTxt" Text="TotalAmount" TextWrapping="Wrap"  Padding="4"  FontSize="14" Foreground="#FF615858" />
 
 
 
-                                        <Label Content="Transaction Details" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="30" 
-                               FontFamily="Microsoft YaHei" Margin="50,30,0,0" />
+                                                </Grid>
 
-                                        <Grid Name="AboutGrid" Height="500" Background="White" Margin="50" Width="784" HorizontalAlignment="Left">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="211*"></ColumnDefinition>
-                                                <ColumnDefinition Width="573*"></ColumnDefinition>
-                                            </Grid.ColumnDefinitions>
+                                            </Border>
 
-                                            <StackPanel Orientation="Vertical" Margin="10,64,0,66"  Grid.Column="0" >
-                                                <Label Content="Type:" Height="30" Width="178" Foreground="#FF615858"  HorizontalAlignment="Right"
-                                FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
-                                                <Label Content="Total Amount:" Height="30" Width="178" Foreground="#FF615858"  HorizontalAlignment="Right"
-                                FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
-                                                <Label Content="Amount Sent:" Height="30" Width="178" Foreground="#FF615858"  HorizontalAlignment="Right"
-                                FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
-                                                <Label Content="Fee:" Height="30" Width="178" Foreground="#FF615858" HorizontalAlignment="Right"
-                                FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
-                                                <Label Content="Date:" Height="30" Width="178" Foreground="#FF615858" HorizontalAlignment="Right"
-                                FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
-                                                <Label Content="Block:" Height="30" Width="178" Foreground="#FF615858" HorizontalAlignment="Right"
-                                FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
-                                                <Label Content="Confirmations:" Height="30" Width="178" Foreground="#FF615858" HorizontalAlignment="Right"
-                                FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
-                                                <Label Content="Transaction ID:" Height="30" Width="178" Foreground="#FF615858" HorizontalAlignment="Right"
-                                FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
+                                            <Border Grid.Row="3">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width=".5*"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Label Grid.Column="0" Content="Amount Sent:" Foreground="#FF615858"  FontSize="14" Padding="4"/>
 
-                                            </StackPanel>
-                                            <StackPanel Orientation="Vertical" Margin="0,64,0,66"  Grid.Column="1" HorizontalAlignment="Left" Width="559" >
-                                                <TextBlock x:Name="TypeTxt" Text="TypeText"
-                                     TextWrapping="Wrap" Width="555" Padding="4" 
-                                     FontFamily="Microsoft YaHei" FontSize="14" Foreground="ForestGreen" 
-                                     TextAlignment="Left" Height="30">
-                                                </TextBlock>
-                                                <TextBlock x:Name="TotalAmountTxt" Text="TotalAmount"
-                                     TextWrapping="Wrap" Width="555" Padding="4" 
-                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="#FF615858" 
-                                     TextAlignment="Left" Height="30">
-                                                </TextBlock>
-                                                <TextBlock x:Name="AmountSentTxt"  Text="AmountSent"
-                                     TextWrapping="Wrap" Width="555" Padding="4" 
-                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="#FF615858" 
-                                     TextAlignment="Left" Height="30">
-                                                </TextBlock>
-                                                <TextBlock x:Name="FeeTxt"  Text="Fee"
-                                     TextWrapping="Wrap" Width="555" Padding="4" 
-                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="#FF615858" 
-                                     TextAlignment="Left" Height="30">
-                                                </TextBlock>
-                                                <TextBlock x:Name="DateTxt"  Text="Date"
-                                     TextWrapping="Wrap" Width="555" Padding="4" 
-                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="#FF615858" 
-                                     TextAlignment="Left" Height="30">
-                                                </TextBlock>
-                                                <TextBlock x:Name="BlockTxt"  Text="Block"
-                                     TextWrapping="Wrap" Width="555" Padding="4" 
-                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="#FF615858" 
-                                     TextAlignment="Left" Height="30">
-                                                </TextBlock>
-                                                <TextBlock x:Name="ConfirmationsTxt"  Text="Confirmations"
-                                     TextWrapping="Wrap" Width="555" Padding="4" 
-                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="ForestGreen" 
-                                     TextAlignment="Left" Height="30">
-                                                </TextBlock>
-                                                <TextBlock x:Name="TransactionIDTxt"  Text="TransactionID"
-                                     TextWrapping="Wrap" Width="555" Padding="4" 
-                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="ForestGreen" 
-                                     TextAlignment="Left" Height="30">
-                                                </TextBlock>
-                                                <TextBlock x:Name="TransactionIDCopy"  TextAlignment="Left" Height="30" Width="555">
-                                    <Button  x:Name="CopyButton" Click="Copy_Click" Padding="2" 
+                                                    <TextBlock Grid.Column="1" x:Name="AmountSentTxt"  Text="AmountSent" TextWrapping="Wrap" Padding="4" FontSize="14" Foreground="#FF615858" />
+
+                                                </Grid>
+
+                                            </Border>
+
+                                            <Border Grid.Row="4">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width=".5*"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <Label Grid.Column="0" Content="Fee:" Foreground="#FF615858"  FontSize="14" Padding="4"/>
+
+                                                    <TextBlock Grid.Column="1" x:Name="FeeTxt"  Text="Fee" TextWrapping="Wrap" Padding="4"  FontSize="14" Foreground="#FF615858" />
+
+                                                </Grid>
+
+                                            </Border>
+
+                                            <Border Grid.Row="5">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width=".5*"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Label Grid.Column="0" Content="Date:" Foreground="#FF615858" FontSize="14" Padding="4"/>
+
+                                                    <TextBlock Grid.Column="1" x:Name="DateTxt"  Text="Date" TextWrapping="Wrap" Padding="4" FontSize="14" Foreground="#FF615858" 
+                                  />
+
+                                                </Grid>
+
+                                            </Border>
+
+
+                                            <Border Grid.Row="6">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width=".5*"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <Label Grid.Column="0" Content="Block:" Foreground="#FF615858" FontSize="14" Padding="4"/>
+
+                                                    <TextBlock Grid.Column="1" x:Name="BlockTxt"  Text="Block" TextWrapping="Wrap" Padding="4" FontSize="14" Foreground="#FF615858" />
+
+                                                </Grid>
+
+                                            </Border>
+
+                                            <Border Grid.Row="7">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width=".5*"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <Label Grid.Column="0" Content="Confirmations:" Foreground="#FF615858" FontSize="14" Padding="4"/>
+
+                                                    <TextBlock Grid.Column="1" x:Name="ConfirmationsTxt"  Text="Confirmations"
+                                     TextWrapping="Wrap"  Padding="4" 
+                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="ForestGreen" />
+
+
+
+                                                </Grid>
+
+                                            </Border>
+
+                                            <Border Grid.Row="8">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width=".6*"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width=".4*"/>
+                                                    </Grid.ColumnDefinitions>
+
+
+                                                    <Label Grid.Column="0" Content="Transaction ID:" Foreground="#FF615858" FontSize="14" Padding="4"/>
+
+                                                    <TextBlock Grid.Column="1" x:Name="TransactionIDTxt"  Text="TransactionID" TextWrapping="Wrap"   Foreground="ForestGreen"  />
+
+                                                    <TextBlock Grid.Column="2" x:Name="TransactionIDCopy" >
+                                    <Button  x:Name="CopyButton" Click="Copy_Click" 
                                 Background="White" BorderThickness="1,1,1,1" Foreground="Gray" 
-                                Content="Copy"
-                                 HorizontalAlignment="Left" VerticalAlignment="Top" 
-                                Height="25" Width="50" FontFamily="Microsoft YaHei Light" BorderBrush="Gray" >
+                                Content="Copy" BorderBrush="Gray" Margin="8 0 0 0 " >
                                     <Button.Resources>
                                         <Style TargetType="{x:Type Border}">
                                             <Setter Property="CornerRadius" Value="5"/>
                                         </Style>
                                     </Button.Resources>
                                 </Button>
-                                                </TextBlock>
+                                                    </TextBlock>
 
-                                            </StackPanel>
+                                                </Grid>
 
-                                            <StackPanel Orientation="Vertical" Margin="50,400,0,66"  Grid.Column="0" Grid.ColumnSpan="2">
-                                                <Button  x:Name="OkButton" Click="Ok_Click" Padding="2" 
-                                Background="White" BorderThickness="1,1,1,1" Foreground="ForestGreen" 
-                                Content="OK"
-                                 HorizontalAlignment="Left" VerticalAlignment="Top" 
-                                Height="30" Width="300" FontFamily="Microsoft YaHei" BorderBrush="ForestGreen" >
+                                            </Border>
+
+                                            <Border Grid.Row="9">
+                                                <Button Click="HidePopup_Click" Background="Black" Foreground="White" Content="X" >
                                                     <Button.Resources>
                                                         <Style TargetType="{x:Type Border}">
-                                                            <Setter Property="CornerRadius" Value="5"/>
+                                                            <Setter Property="CornerRadius" Value="50"/>
                                                         </Style>
                                                     </Button.Resources>
                                                 </Button>
-                                            </StackPanel>
+                                            </Border>
                                         </Grid>
+
+                                      
+                                        <!--<Grid Name="AboutGrid" Height="500" Background="White" Margin="50" Width="784" HorizontalAlignment="Left"> </Grid>-->
+                                            
+                                        
 
                                     </Grid>
                                 </Popup>

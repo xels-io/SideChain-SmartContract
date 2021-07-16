@@ -378,6 +378,11 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
                 MessageBox.Show("Enter a valid transaction amount. Only positive numbers and no more than 8 doubles are allowed.");
 
             }
+            if (this.SidechainDestinationAddressText.Text != "" && this.SendAmountText.Text != "")
+            {
+                EstimateFeeSideChainAsync();
+                this.SidechainDestinationAddressText.Focus();
+            }
 
             this.SendAmountText.Focus();
         }

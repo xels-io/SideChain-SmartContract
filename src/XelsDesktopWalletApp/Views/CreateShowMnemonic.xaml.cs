@@ -1,6 +1,8 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 
 using XelsDesktopWalletApp.Models;
+using XelsDesktopWalletApp.Views.Pages;
 
 namespace XelsDesktopWalletApp.Views
 {
@@ -32,7 +34,17 @@ namespace XelsDesktopWalletApp.Views
         public CreateShowMnemonic(WalletCreation model)
         {
             InitializeComponent();
-            this.textBoxTextToMnemonic.Text = model.Mnemonic;
+            string words = model.Mnemonic.Replace("\"", "");
+            string[] mn = words.Split(' ');
+            string[] mnv = new string[12] ;
+
+            for(int i =0; i< mn.Length; i++)
+            {
+                mnv[i] = $"{ i + 1 }.{" "}{ mn[i] }{" "}";
+              
+            }
+
+             this.textBoxTextToMnemonic.Text = String.Join(" ", mnv); 
 
             InitializeWalletCreationModel(model);
         }

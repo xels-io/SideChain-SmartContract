@@ -43,9 +43,9 @@
             </TextBlock> 
         </Border>
 
-        <Border Margin="250 5" Height="100" >
+        <Border Margin="250 5" Height="120" Background="WhiteSmoke">
 
-            <TextBlock  x:Name="textBoxTextToMnemonic" TextWrapping="Wrap" FontFamily="Microsoft YaHei Light" FontSize="14"/>
+            <TextBlock Margin="15" x:Name="textBoxTextToMnemonic" TextWrapping="Wrap" Foreground="Green" FontSize="14" FontWeight="DemiBold" VerticalAlignment="Center" />
 
         </Border>
 

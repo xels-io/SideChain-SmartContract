@@ -218,10 +218,8 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
         {
             if (IsAddressAndAmountValid())
             {
-                this.TransactionFeeTypeLabel.Content = "medium";
-                
-                var d = this.DestinationAddressText.Text;
-
+                this.TransactionFeeTypeLabel.Content = "medium";               
+              
                 string postUrl = this.baseURL + $"/wallet/estimate-txfee";
                 var content = "";
 

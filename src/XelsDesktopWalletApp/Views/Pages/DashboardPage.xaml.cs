@@ -11,6 +11,7 @@ using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 using XelsDesktopWalletApp.Views.Pages.Modals;
 using XelsDesktopWalletApp.Models.SmartContractModels;
+using System.Windows.Media.Imaging;
 
 namespace XelsDesktopWalletApp.Views.Pages
 {
@@ -108,12 +109,22 @@ namespace XelsDesktopWalletApp.Views.Pages
             if (URLConfiguration.Chain == "-sidechain")// (!this.sidechainEnabled)
             {
                 this.PowMiningButton.Visibility = Visibility.Hidden;
+               
             }
 
-            //if( URLConfiguration.Chain != "-mainchain")
-            //{
-            //    
-            //}
+            if(GlobalPropertyModel.MiningStart == true)
+            {
+                this.StopPowMiningButton.Visibility = Visibility.Visible;
+            }
+
+            if (GlobalPropertyModel.StakingStart == true)
+            {
+                this.StopHybridMinginButton.Visibility = Visibility.Visible;
+                this.UnlockGrid.Visibility = Visibility.Hidden;
+                this.MiningInfoBorder.Visibility = Visibility.Visible;
+                this.t.Visibility = Visibility.Hidden;
+                this.StakingInfo.Content = "Staking";
+            }
 
             UpdateWalletAsync();
         }
@@ -184,7 +195,11 @@ namespace XelsDesktopWalletApp.Views.Pages
 
                     foreach (var h in history.History)
                     {
-                        this.HistoryListBinding.ItemsSource = h.TransactionsHistory;
+                        //for(int i =0; i< h.TransactionsHistory.Count;i++)
+                        //if(i <= 5)
+                        //{
+                            this.HistoryListBinding.ItemsSource = h.TransactionsHistory;
+                        //}                        
                     }
                 }
                 catch (Exception e)
@@ -252,7 +267,7 @@ namespace XelsDesktopWalletApp.Views.Pages
 
                 this.walletGeneralInfoModel = JsonConvert.DeserializeObject<WalletGeneralInfoModel>(content);
 
-                this.lastBlockSyncedHeight = this.walletGeneralInfoModel.LastBlockSyncedHeight; // for history data
+               // this.lastBlockSyncedHeight = this.walletGeneralInfoModel.LastBlockSyncedHeight; // for history data
 
                 this.processedText = $"Processed { this.walletGeneralInfoModel.LastBlockSyncedHeight ?? 0} out of { this.walletGeneralInfoModel.ChainTip} blocks.";
                 this.blockChainStatus = $"Synchronizing.  { this.processedText}";
@@ -262,14 +277,16 @@ namespace XelsDesktopWalletApp.Views.Pages
 
                 if (!this.walletGeneralInfoModel.IsChainSynced)
                 {
-                    this.ParentSyncedTxt.Text = "syncing...".ToString();
+                    this.ConnectionPercentTxt.Text =  this.ParcentSyncedTxt.Text = "syncing...".ToString();
+                    
                 }
                 else
                 {
                     this.percentSyncedNumber = ((this.walletGeneralInfoModel.LastBlockSyncedHeight / this.walletGeneralInfoModel.ChainTip) * 100) ?? 0;
+                    
                     if (Math.Round(this.percentSyncedNumber) == 100 && this.walletGeneralInfoModel.LastBlockSyncedHeight != this.walletGeneralInfoModel.ChainTip)
                     {
-                        this.ParentSyncedTxt.Text = "99";
+                        this.ParcentSyncedTxt.Text = "99";
                     }
 
                     this.percentSynced = $"{ Math.Round(this.percentSyncedNumber)} %";
@@ -285,17 +302,28 @@ namespace XelsDesktopWalletApp.Views.Pages
 
                 this.ChainTipTxt.Text = this.walletGeneralInfoModel.ChainTip.ToString();
 
-                this.ParentSyncedTxt.Text = this.percentSynced;
+       
 
-                this.ConnectionPercentTxt.Text = this.percentSynced;
-
-                if (!this.stakingEnabled && !this.sidechainEnabled)
+                if (!GlobalPropertyModel.StakingStart && !this.sidechainEnabled)
                 {
-                    this.ConnectionNotifyTxt.Content = "Not Staking";
+                    this.StakingInfo.Content = "Not Staking";
+                    //try
+                    //{
+                    //    this.StakingInfoImage.Source = new BitmapImage(new Uri("/Assets/Images/thumbsdown.png", UriKind.Relative));
+
+                    //    var uriSource = new Uri("/Assets/Images/thumbsdown.png");
+                    //    this.StakingInfoImage.Source = new BitmapImage(uriSource);
+                    //}
+                    //catch (Exception e)
+                    //{
+
+                    //    throw;
+                    //}
+
                 }
                 else if (this.stakingEnabled && !this.sidechainEnabled)
                 {
-                    this.ConnectionNotifyTxt.Content = "Staking";
+                    this.StakingInfo.Content = "Staking";
                 }
             }
             else
@@ -328,15 +356,15 @@ namespace XelsDesktopWalletApp.Views.Pages
 
                 if (stakingInfoModel.enabled && URLConfiguration.Chain != "-sidechain")
                 {
-                    this.isStarting = false;
-                    this.ConnectionNotifyTxt.Content = "Not Staking";
+                    this.isStarting = false;                  
                     this.MiningInfoBorder.Visibility = Visibility.Visible;
                     this.t.Visibility = Visibility.Hidden;
                 }
                 else
                 {
                     this.isStopping = false;                   
-                    this.ConnectionNotifyTxt.Content = "Staking";
+                    this.StakingInfo.Content = "Staking";
+                    //this.StakingInfoImage.Source;
                 }                
             }
             else
@@ -419,6 +447,7 @@ namespace XelsDesktopWalletApp.Views.Pages
             {
                 this.PowMiningButton.Visibility = Visibility.Hidden;
                 this.StopPowMiningButton.Visibility = Visibility.Visible;
+                GlobalPropertyModel.MiningStart = true;
             }
         }
 
@@ -434,6 +463,7 @@ namespace XelsDesktopWalletApp.Views.Pages
             {
                 this.PowMiningButton.Visibility = Visibility.Visible;
                 this.StopPowMiningButton.Visibility = Visibility.Hidden;
+                GlobalPropertyModel.MiningStart = false;
             }
         }
 
@@ -459,24 +489,27 @@ namespace XelsDesktopWalletApp.Views.Pages
                     this.Password.Password = "";
                     this.MiningInfoBorder.Visibility = Visibility.Visible;
                     this.t.Visibility = Visibility.Hidden;
+                    GlobalPropertyModel.StakingStart = true;
+
+                    this.StakingInfo.Content = "Staking";
                 }
                 else
                 {
-
                     var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
 
                     foreach (var error in errors.Errors)
                     {
                         MessageBox.Show(error.Message);
+                        
                     }
-
+                    this.Password.Password = "";
                 }
             }
             else
             {
                 MessageBox.Show("Please, enter password to unlock");
-            }
-            
+                
+            }           
 
         }
 
@@ -493,6 +526,8 @@ namespace XelsDesktopWalletApp.Views.Pages
                 this.StopHybridMinginButton.Visibility = Visibility.Hidden;
                 this.MiningInfoBorder.Visibility = Visibility.Hidden;
                 this.t.Visibility = Visibility.Visible;
+                GlobalPropertyModel.StakingStart = false;
+                this.StakingInfo.Content = "Not Staking";
             }
         }
 
