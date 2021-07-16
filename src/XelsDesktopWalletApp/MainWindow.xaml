@@ -105,7 +105,7 @@
         
     <Border Background="White" BorderBrush="#FFBBBBBB" BorderThickness="1,1,1,1" CornerRadius="10,10,10,10">
 
-        <Grid Margin="5,5,5,5">
+        <Grid Margin="5,5,5,5" KeyDown="Grid_KeyDown">
 
             <Rectangle Height="280" VerticalAlignment="Top" RadiusY="10" RadiusX="10">
                 <Rectangle.Fill>

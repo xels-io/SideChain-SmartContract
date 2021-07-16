@@ -14,17 +14,19 @@
             <Rectangle Fill="WhiteSmoke" Opacity=".5" MouseDown="Rectangle_MouseDown" />
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto"  />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Border Grid.Row="0" Margin="0,0,0,79">
-                    <Label Content="Receive" HorizontalAlignment="Center" FontWeight="DemiBold"  FontSize="20"
-                    RenderTransformOrigin="0.515,-0.184" />
-                </Border>
+
+
+                <Label Grid.Row="0" Content="Receive" HorizontalAlignment="Center" FontWeight="DemiBold" VerticalAlignment="Center"  VerticalContentAlignment="Center" FontSize="15"
+                    RenderTransformOrigin="0.515,-0.184" Margin="0,0,0,0" Width="94" />
                 <!-- buttons   -->
                 <Border Grid.Row="1">
                     <Grid Margin="100 5">
@@ -46,38 +48,39 @@
                         <Border Grid.Column="1" Margin="2 0">
                             <Button Content="SELS" Click="selsButton_Click"
                         Background="Green"
-                       Foreground="White" Margin="0,1,0,74">
-                                <Button.Resources>
-                                    <Style TargetType="{x:Type Border}">
-                                        <Setter Property="CornerRadius" Value="5"/>
-                                    </Style>
-                                </Button.Resources>
-                            </Button>
-                        </Border>
-                        <Border Grid.Column="2" Margin="2 0">
-                            <Button Content="BELS" Click="BelsButton_Click"
-                        RenderTransformOrigin="2.423,0.568"  Background="Green"
-                        Foreground="White" FontWeight="Normal" Margin="0,1,0,74" >
-                                <Button.Resources>
-                                    <Style TargetType="{x:Type Border}">
-                                        <Setter Property="CornerRadius" Value="5"/>
-                                    </Style>
-                                </Button.Resources>
-                            </Button>
-                        </Border>
-                    </Grid>
-                </Border>
-                <Border Grid.Row="2">
-                    <Frame x:Name="ReceiveContent" NavigationUIVisibility="Hidden" />
-                </Border>
-                <Border Grid.Row="3" Margin="100 2">
-                    <Button x:Name="restoreButton" Click="restoreButton_Click" Content="OK"
-                        Background="Green"
-                        Foreground="White" >
-                    </Button>
-                </Border>
+                       Foreground="White" Margin="244,5,220,0">
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="5"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+
+                <Button Grid.Row="1" Content="BELS" Click="BelsButton_Click" 
+                        RenderTransformOrigin="2.423,0.568"  Background="Green"                        
+                        Foreground="White" FontWeight="Normal" Margin="470,5,10,0" >
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="5"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+               
+                <Frame  Grid.Row="2" Grid.RowSpan="4" x:Name="ReceiveContent" NavigationUIVisibility="Hidden" Margin="10,10,5,10" />
+
+                <Button Grid.Row="7" x:Name="Cancel" Click="Cancel_Click" Content="CANCEL"
+                        Background="Red" 
+                        Foreground="White" Margin="10,24,451,25" >
+                </Button>
+
+                <Button Grid.Row="7" x:Name="restoreButton" Click="restoreButton_Click" Content="OK"
+                        Background="Green" 
+                        Foreground="White" Margin="244,24,10,25" >
+                </Button>
+
             </Grid>
         </Grid>
     </Grid>
-    </StackPanel>
+
+    <!--</StackPanel>-->
 </UserControl>

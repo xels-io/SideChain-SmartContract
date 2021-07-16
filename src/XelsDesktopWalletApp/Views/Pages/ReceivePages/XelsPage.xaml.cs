@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Net.Http;
@@ -129,22 +130,23 @@ namespace XelsDesktopWalletApp.Views.Pages.ReceivePages
                         if (address.IsUsed)
                         {
                             this.ReceiveWalletStatus.UsedAddresses.Add(address);
-
-                            this.UsedAddressList.ItemsSource = this.ReceiveWalletStatus.UsedAddresses;
+                           // this.UsedAddressList.ItemsSource = this.ReceiveWalletStatus.UsedAddresses;
                         }
                         else if (address.IsChange)
                         {
                             this.ReceiveWalletStatus.ChangedAddresses.Add(address);
-
-                            this.ChangedAddressList.ItemsSource = this.ReceiveWalletStatus.ChangedAddresses;
+                           // this.ChangedAddressList.ItemsSource = this.ReceiveWalletStatus.ChangedAddresses;
                         }
                         else
                         {
                             this.ReceiveWalletStatus.UnusedAddresses.Add(address);
-                            //this.UnusedAddressList.ItemsSource = this.ReceiveWalletStatus.UnusedAddresses;
+                          //  this.UnusedAddressList.ItemsSource = this.ReceiveWalletStatus.UnusedAddresses;
                         }
 
                     }
+                    this.UsedAddressList.ItemsSource = this.ReceiveWalletStatus.UsedAddresses;
+                    this.ChangedAddressList.ItemsSource = this.ReceiveWalletStatus.ChangedAddresses;
+                    this.UnusedAddressList.ItemsSource = this.ReceiveWalletStatus.UnusedAddresses;
                 }
                 catch (Exception e)
                 {
@@ -158,18 +160,19 @@ namespace XelsDesktopWalletApp.Views.Pages.ReceivePages
             }
         }
 
-        private void ShowAllAddressButton_Click(object sender, RoutedEventArgs e)
+        private  void ShowAllAddressButton_Click(object sender, RoutedEventArgs e)
         {
             GetAllAddresses();
             this.AllAddressList.Visibility = Visibility.Visible;
             this.BackSingleAddressButton.Visibility = Visibility.Visible;
             this.SingleAddress.Visibility = Visibility.Hidden;
+            this.BackShowAllAddressButton.Visibility = Visibility.Hidden;
         }
 
 
         private void GenerateQRCode()
         {
-            this.image.Source = QRCode.GenerateQRCode(this.textBoxTextToQr.Text);
+            this.image.Source = this.QRCode.GenerateQRCode(this.textBoxTextToQr.Text);
         }
 
         private void SingleAddress_Copy_Button_Click(object sender, RoutedEventArgs e)
@@ -179,8 +182,9 @@ namespace XelsDesktopWalletApp.Views.Pages.ReceivePages
 
         private void Address_Copy_Button_Click(object sender, RoutedEventArgs e)
         {
-            string item = ((sender as Button)?.Tag as ListViewItem)?.ToString();
-            Clipboard.SetText(item);
+            ReceiveWalletStatus item = (ReceiveWalletStatus)((sender as Button)?.Tag as ListViewItem)?.DataContext;
+            Clipboard.SetText(item.Address.ToString());
+            MessageBox.Show("Address Copied Successfully :- " + item.Address.ToString());
 
         }
 
@@ -196,6 +200,7 @@ namespace XelsDesktopWalletApp.Views.Pages.ReceivePages
             this.AllAddressList.Visibility = Visibility.Hidden;
             this.SingleAddress.Visibility = Visibility.Visible;
             this.BackSingleAddressButton.Visibility = Visibility.Hidden;
+            this.BackShowAllAddressButton.Visibility = Visibility.Visible;
         }
 
     }

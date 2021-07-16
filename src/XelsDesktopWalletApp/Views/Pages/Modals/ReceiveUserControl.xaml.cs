@@ -57,6 +57,7 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
 
         private void restoreButton_Click(object sender, RoutedEventArgs e)
         {
+            this.Visibility = Visibility.Collapsed;
             //this.Close();
         }
 
