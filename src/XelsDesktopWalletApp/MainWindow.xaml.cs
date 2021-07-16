@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Navigation;
 
 using Newtonsoft.Json;
@@ -121,43 +122,72 @@ namespace XelsDesktopWalletApp
 
         private async void DecryptButton_ClickAsync(object sender, RoutedEventArgs e)
         {
-            this.UserWallet.Name = (string)this.comboWallets.SelectedValue;
-
-            if (this.UserWallet.Name != null)
-            {
-                this.UserWallet.Password = this.password.Password;
-
-                string postUrl = this.baseURL + "/wallet/load/";
-                var content = "";
-
-                HttpResponseMessage response = await URLConfiguration.Client.PostAsJsonAsync(postUrl, this.UserWallet);
-                content = await response.Content.ReadAsStringAsync();
-
-                if (response.IsSuccessStatusCode)
-                {
-                    GetNodeStatus();
-                    GlobalPropertyModel.WalletName = this.UserWallet.Name;
-
-                    MainLayout mainLayout = new MainLayout(this.UserWallet.Name);
-                    mainLayout.Show();
-                    this.Close();
-                }
-                else if (content != "" || content != null)
-                {
-                    LoginError loginError = new LoginError();
-                    loginError = JsonConvert.DeserializeObject<LoginError>(content);
-                    MessageBox.Show($"{loginError.errors[0].message}");
-                }
-                else
-                {
-                    MessageBox.Show($"Error Code{response.StatusCode} : Message - {response.ReasonPhrase}");
-                }
-            }
+           await LoginFunctionAsync();
         }
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
+        }
+
+        private async Task<string> LoginFunctionAsync()
+        {
+            string msg = "";
+            try
+            {
+
+                this.UserWallet.Name = (string)this.comboWallets.SelectedValue;
+                this.UserWallet.Password = this.password.Password.Trim();
+
+                if (this.UserWallet.Name != null && this.UserWallet.Password != "")
+                {
+                    string postUrl = this.baseURL + "/wallet/load/";
+                    var content = "";
+
+                    HttpResponseMessage response = await URLConfiguration.Client.PostAsJsonAsync(postUrl, this.UserWallet);
+                    content = await response.Content.ReadAsStringAsync();
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        await GetNodeStatus();
+                        GlobalPropertyModel.WalletName = this.UserWallet.Name;
+
+                        MainLayout mainLayout = new MainLayout(this.UserWallet.Name);
+                        mainLayout.Show();
+                        this.Close();
+                    }
+                    else if (content != "" || content != null)
+                    {
+                        LoginError loginError = new LoginError();
+                        loginError = JsonConvert.DeserializeObject<LoginError>(content);
+                        MessageBox.Show($"{loginError.errors[0].message}");
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Error Code{response.StatusCode} : Message - {response.ReasonPhrase}");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show($"Enter Valid Information.");
+                }
+                return msg;
+            }
+            catch (Exception e)
+            {
+                msg = e.Message.ToString();
+                return msg;
+            }
+
+
+
+        }
+        private async void Grid_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+              await  LoginFunctionAsync();
+            }
         }
     }
 }

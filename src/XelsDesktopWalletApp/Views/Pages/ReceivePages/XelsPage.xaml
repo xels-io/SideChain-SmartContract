@@ -79,8 +79,8 @@
                                              ScrollViewer.VerticalScrollBarVisibility="Visible" MaxHeight="200"   
                                               ScrollViewer.CanContentScroll="False">
                                     <ListView.View>
-                                        <GridView>
-                                            <GridViewColumn Width="300" DisplayMemberBinding="{Binding Path=Address}"  />
+                                        <GridView x:Name="tablist">
+                                            <GridViewColumn Header="{Binding Path=Address}" Width="300" DisplayMemberBinding="{Binding Path=Address}"  />
 
                                             <GridViewColumn Width="90" >
                                                 <GridViewColumn.CellTemplate>
