@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
@@ -25,11 +24,6 @@ namespace XelsDesktopWalletApp.Views.Pages
 
         private WalletBalanceArray walletBalanceArray = new WalletBalanceArray();
 
-        private HistoryModelArray historyModelArray = new HistoryModelArray();
-
-        TransactionItemModelArray transactionItem = new TransactionItemModelArray();
-
-        private List<TransactionInfo> transactions = new List<TransactionInfo>();
 
         private CreateWallet createWallet = new CreateWallet();
 
@@ -445,37 +439,44 @@ namespace XelsDesktopWalletApp.Views.Pages
 
         private async void StartHybridMiningButton_Click(object sender, RoutedEventArgs e)
         {
-            WalletLoadRequest UserWallet = new WalletLoadRequest()
-            {
-                Name = this.walletName,
-                Password = this.Password.Password,
-            };
+            if (!string.IsNullOrWhiteSpace(this.Password.Password)) {
+                WalletLoadRequest UserWallet = new WalletLoadRequest()
+                {
+                    Name = this.walletName,
+                    Password = this.Password.Password,
+                };
 
-            string apiUrl = this.baseURL + $"/staking/startstaking";
+                string apiUrl = this.baseURL + $"/staking/startstaking";
 
-            HttpResponseMessage response = await URLConfiguration.Client.PostAsJsonAsync(apiUrl, UserWallet);
+                HttpResponseMessage response = await URLConfiguration.Client.PostAsJsonAsync(apiUrl, UserWallet);
 
-            string content = await response.Content.ReadAsStringAsync();
+                string content = await response.Content.ReadAsStringAsync();
 
-            if (response.IsSuccessStatusCode)
-            {
-                this.UnlockGrid.Visibility = Visibility.Hidden;
-                this.StopHybridMinginButton.Visibility = Visibility.Visible;
-                this.Password.Password = "";
-                this.MiningInfoBorder.Visibility = Visibility.Visible;
-                this.t.Visibility = Visibility.Hidden;
+                if (response.IsSuccessStatusCode)
+                {
+                    this.UnlockGrid.Visibility = Visibility.Hidden;
+                    this.StopHybridMinginButton.Visibility = Visibility.Visible;
+                    this.Password.Password = "";
+                    this.MiningInfoBorder.Visibility = Visibility.Visible;
+                    this.t.Visibility = Visibility.Hidden;
+                }
+                else
+                {
+
+                    var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
+
+                    foreach (var error in errors.Errors)
+                    {
+                        MessageBox.Show(error.Message);
+                    }
+
+                }
             }
             else
             {
-
-                var errors = JsonConvert.DeserializeObject<ErrorModel>(content);               
-
-                foreach(var error in errors.Errors)
-                {
-                    MessageBox.Show(error.Message);
-                }
-                
+                MessageBox.Show("Please, enter password to unlock");
             }
+            
 
         }
 
