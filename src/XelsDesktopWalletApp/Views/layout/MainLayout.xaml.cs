@@ -49,7 +49,7 @@ namespace XelsDesktopWalletApp.Views.layout
 
             InitializeComponent();
             this.DataContext = this;
-
+            this.labWalletName.Content = this.walletName;
 
             //GetGeneralInfoAsync();
             //LoadLoginAsync();

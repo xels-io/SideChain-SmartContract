@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using XelsDesktopWalletApp.Views.layout;
 
 namespace XelsDesktopWalletApp.Views
 {
@@ -31,7 +32,8 @@ namespace XelsDesktopWalletApp.Views
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
         {
-            Dashboard ds = new Dashboard(this.walletName);
+            //Dashboard ds = new Dashboard(this.walletName);
+            MainLayout ds = new MainLayout(this.walletName);
             ds.Show();
             this.Close();
         }

@@ -97,6 +97,11 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
                 this.XelsButton.Focus();
         }
 
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.Visibility = Visibility.Collapsed;
+        }
+
         //private void XelsButton_Initialized(object sender, EventArgs e)
         //{
         //    this.ReceiveContent.Content = new XelsPage(this.walletName);
