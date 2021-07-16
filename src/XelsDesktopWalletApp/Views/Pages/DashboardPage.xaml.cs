@@ -11,6 +11,9 @@ using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 using XelsDesktopWalletApp.Views.Pages.Modals;
 using XelsDesktopWalletApp.Models.SmartContractModels;
+using System.Windows.Threading;
+using XelsDesktopWalletApp.Views.layout;
+using System.Windows.Input;
 
 namespace XelsDesktopWalletApp.Views.Pages
 {
@@ -499,6 +502,36 @@ namespace XelsDesktopWalletApp.Views.Pages
         private void GotoHistoryButton_Click(object sender, RoutedEventArgs e)
         {
             this.NavigationService.Navigate(new HistoryPage(this.walletName));            
+        }
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            DispatcherTimer dispatcherTimer = new DispatcherTimer();
+            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 30);
+            dispatcherTimer.Start();
+        }
+        private async void dispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            InitializeComponent();
+            this.DataContext = this;
+            this.walletInfo.WalletName = this.walletName;
+            GetGeneralWalletInfoAsync();
+
+            GetWalletBalanceAsync();
+
+            GetHistoryAsync();
+
+            if (this.hasBalance && URLConfiguration.Chain != "-sidechain")// (!this.sidechainEnabled)
+            {
+                _ = GetStakingInfoAsync(this.baseURL);
+            }
+
+            if (URLConfiguration.Chain == "-sidechain")// (!this.sidechainEnabled)
+            {
+                this.PowMiningButton.Visibility = Visibility.Hidden;
+            }
+
+            UpdateWalletAsync();
         }
     }
 }
