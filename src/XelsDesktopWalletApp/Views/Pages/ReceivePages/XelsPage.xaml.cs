@@ -160,18 +160,19 @@ namespace XelsDesktopWalletApp.Views.Pages.ReceivePages
             }
         }
 
-        private void ShowAllAddressButton_Click(object sender, RoutedEventArgs e)
+        private  void ShowAllAddressButton_Click(object sender, RoutedEventArgs e)
         {
             GetAllAddresses();
             this.AllAddressList.Visibility = Visibility.Visible;
             this.BackSingleAddressButton.Visibility = Visibility.Visible;
             this.SingleAddress.Visibility = Visibility.Hidden;
+            this.BackShowAllAddressButton.Visibility = Visibility.Hidden;
         }
 
 
         private void GenerateQRCode()
         {
-            this.image.Source = QRCode.GenerateQRCode(this.textBoxTextToQr.Text);
+            this.image.Source = this.QRCode.GenerateQRCode(this.textBoxTextToQr.Text);
         }
 
         private void SingleAddress_Copy_Button_Click(object sender, RoutedEventArgs e)
@@ -199,6 +200,7 @@ namespace XelsDesktopWalletApp.Views.Pages.ReceivePages
             this.AllAddressList.Visibility = Visibility.Hidden;
             this.SingleAddress.Visibility = Visibility.Visible;
             this.BackSingleAddressButton.Visibility = Visibility.Hidden;
+            this.BackShowAllAddressButton.Visibility = Visibility.Visible;
         }
 
     }

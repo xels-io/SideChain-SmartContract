@@ -4,6 +4,7 @@ using System.Data;
 using System.Net.Http;
 using System.Numerics;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -462,6 +463,27 @@ namespace XelsDesktopWalletApp.Views.Pages
 
                 }
             }
+        }
+
+        private void AmountTxt_KeyUp(object sender, KeyEventArgs e)
+        {
+            this.MessageTxt.Text = "";
+            string amt = this.AmountTxt.Text;
+            if (amt != "")
+            {
+                e.Handled = Regex.IsMatch(amt, "[^0-9]+");
+                if (!e.Handled)
+                {
+                    double val = Convert.ToDouble(amt);
+                    string res = string.Format("{0:0.00}", val * 0.1);
+                    this.MessageTxt.Text = "You will get " + res + " XELS";
+                }
+                else
+                {
+                    MessageBox.Show("Data is not valid");
+                }
+            }
+           
         }
     }
 }

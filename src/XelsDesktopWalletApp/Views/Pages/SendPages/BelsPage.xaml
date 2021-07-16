@@ -23,7 +23,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <Label Grid.Row="0" Content="To Address" />
+                    <Label Grid.Row="0" FontSize="20" Margin="10,0,0,36" Content="To Address" />
 
                     <TextBox Grid.Row="1" x:Name="textToAddress" BorderBrush="#FFC9D6C9" />
 
@@ -38,7 +38,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <Label Grid.Row="0" Content="Amount"/>
+                    <Label Grid.Row="0" FontSize="20" Margin="10,0,0,36" Content="Amount"/>
 
 
                     <TextBox Grid.Row="1" x:Name="textAmount"  BorderBrush="#FFC9D6C9"  />
@@ -51,12 +51,21 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" x:Name="cencelButton" FontSize="20" Click="cencelButton_Click"  Content="Cencel" Padding="2" 
+                        Background="Red"  
+                        Foreground="White" Margin="10,54,10,54" >
+                        <Button.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius" Value="5"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
 
-                    <Button Grid.Column="0" x:Name="sendButton" Click="SendButton_Click"  Content="Send Now" Padding="2" 
+                    <Button Grid.Column="1" x:Name="sendButton" Click="SendButton_Click"  Content="Send Now" Padding="2" 
                         Background="Green"  
-                        Foreground="White" >
+                        Foreground="White" Margin="10,54,10,54" >
                         <Button.Resources>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="CornerRadius" Value="5"/>

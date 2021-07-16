@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
+using XelsDesktopWalletApp.Views.layout;
 
 namespace XelsDesktopWalletApp.Views.Pages.SendPages
 {
@@ -70,5 +71,10 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
 
         }
 
+        private void cencelButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainLayout ds = new MainLayout(this.walletName);
+            ds.Show();
+        }
     }
 }
