@@ -8,12 +8,10 @@
               d:DesignHeight="700" d:DesignWidth="900"
              HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Initialized="UserControl_Initialized" >
 
-    <!--<StackPanel Background="White">-->
     <Grid>
         <Rectangle Fill="WhiteSmoke" Opacity=".5" MouseDown="Rectangle_MouseDown" />
         <Border CornerRadius="10"  Background="White" Height="550" Width="700">
             <Grid Margin="5,5,5,5">
-
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"  />
                     <RowDefinition Height="Auto" />
@@ -24,12 +22,10 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-
-
                 <Label Grid.Row="0" Content="Receive" HorizontalAlignment="Center" FontWeight="DemiBold" VerticalAlignment="Center"  VerticalContentAlignment="Center" FontSize="15"
                     RenderTransformOrigin="0.515,-0.184" Margin="0,0,0,0" Width="94" />
                 <!-- buttons   -->
-                <Button Grid.Row="1" x:Name="XelsButton" Content="XELS" Click="XelsButton_Click"    VerticalAlignment="Top" 
+                <Button Grid.Row="1" x:Name="XelsButton" Content="XELS" Click="XelsButton_Click"    VerticalAlignment="Top"
                         Background="Green" RenderTransformOrigin="0.174,0.571" Margin="5,5,446,0" Height="32" >
                     <Button.Resources>
                         <Style TargetType="{x:Type Border}">
@@ -37,8 +33,7 @@
                         </Style>
                     </Button.Resources>
                 </Button>
-
-                <Button Grid.Row="1" Content="SELS" Click="selsButton_Click" 
+                <Button Grid.Row="1" Content="SELS" Click="selsButton_Click"
                         Background="Green"
                        Foreground="White" Margin="244,5,220,0">
                     <Button.Resources>
@@ -47,9 +42,8 @@
                         </Style>
                     </Button.Resources>
                 </Button>
-
-                <Button Grid.Row="1" Content="BELS" Click="BelsButton_Click" 
-                        RenderTransformOrigin="2.423,0.568"  Background="Green"                        
+                <Button Grid.Row="1" Content="BELS" Click="BelsButton_Click"
+                        RenderTransformOrigin="2.423,0.568"  Background="Green"
                         Foreground="White" FontWeight="Normal" Margin="470,5,10,0" >
                     <Button.Resources>
                         <Style TargetType="{x:Type Border}">
@@ -57,22 +51,16 @@
                         </Style>
                     </Button.Resources>
                 </Button>
-               
                 <Frame  Grid.Row="2" Grid.RowSpan="4" x:Name="ReceiveContent" NavigationUIVisibility="Hidden" Margin="10,10,5,10" />
-
                 <Button Grid.Row="7" x:Name="Cancel" Click="Cancel_Click" Content="CANCEL"
-                        Background="Red" 
+                        Background="Red"
                         Foreground="White" Margin="10,24,451,25" >
                 </Button>
-
                 <Button Grid.Row="7" x:Name="restoreButton" Click="restoreButton_Click" Content="OK"
-                        Background="Green" 
+                        Background="Green"
                         Foreground="White" Margin="244,24,10,25" >
                 </Button>
-
             </Grid>
         </Border>
     </Grid>
-
-    <!--</StackPanel>-->
 </UserControl>

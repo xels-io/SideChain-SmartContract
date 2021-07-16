@@ -21,7 +21,7 @@ namespace XelsDesktopWalletApp.Views
 
         string baseURL = URLConfiguration.BaseURL;//"http://localhost:37221/api/wallet";
 
-        WalletCreation _walletcreateconfirm = new WalletCreation();
+        WalletCreation Walletcreateconfirm = new WalletCreation();
 
         private bool canPassMnemonic = false;
 
@@ -43,10 +43,10 @@ namespace XelsDesktopWalletApp.Views
 
         private void InitializeWalletCreationModel(WalletCreation CreateWallet)
         {
-            this._walletcreateconfirm.Name = CreateWallet.Name;
-            this._walletcreateconfirm.Passphrase = CreateWallet.Passphrase;
-            this._walletcreateconfirm.Password = CreateWallet.Password;
-            this._walletcreateconfirm.Mnemonic = CreateWallet.Mnemonic;
+            this.Walletcreateconfirm.Name = CreateWallet.Name;
+            this.Walletcreateconfirm.Passphrase = CreateWallet.Passphrase;
+            this.Walletcreateconfirm.Password = CreateWallet.Password;
+            this.Walletcreateconfirm.Mnemonic = CreateWallet.Mnemonic;
         }
 
         #region field property 
@@ -87,11 +87,8 @@ namespace XelsDesktopWalletApp.Views
 
         private void RandomSelect()
         {
-            // Initialize array to check
 
-            string[] rowwords = this._walletcreateconfirm.Mnemonic.Split('\"');
-            this._walletcreateconfirm.Mnemonic = rowwords[1];
-            this.words = rowwords[1].Split(' ');
+            this.words =  this.Walletcreateconfirm.Mnemonic.Split(' ');
 
             //// Random number select
             for (int i = 0; i < 3; i++)
@@ -103,6 +100,7 @@ namespace XelsDesktopWalletApp.Views
                     this.randomidx[i] = idx;
                 }
             }
+            Array.Sort(this.randomidx);
             int fInd = this.randomidx[0] + 1;
             int sInd = this.randomidx[1] + 1;
             int tInd = this.randomidx[2] + 1;
@@ -123,7 +121,7 @@ namespace XelsDesktopWalletApp.Views
             string thirdword = this.words[this.randomidx[2]];
 
             // Check for validation
-            if (this._walletcreateconfirm.Mnemonic != "" && this.word1.Text == firstword &&
+            if (this.Walletcreateconfirm.Mnemonic != "" && this.word1.Text == firstword &&
                 this.word2.Text == secondword && this.word3.Text == thirdword)
             {
                 this.canPassMnemonic = true;
@@ -136,7 +134,7 @@ namespace XelsDesktopWalletApp.Views
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            Create cr = new Create();
+            CreateShowMnemonic cr = new CreateShowMnemonic(this.Walletcreateconfirm);
             cr.Show();
             this.Close();
         }
@@ -149,13 +147,13 @@ namespace XelsDesktopWalletApp.Views
             {
                 string postUrl = this.baseURL + "/wallet/create";
 
-                HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(this._walletcreateconfirm), Encoding.UTF8, "application/json"));
+                HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(this.Walletcreateconfirm), Encoding.UTF8, "application/json"));
 
                 var content = await response.Content.ReadAsStringAsync(); 
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show($"Successfully created wallet with Name: {this._walletcreateconfirm.Name}");
+                    MessageBox.Show($"Successfully created wallet with Name: {this.Walletcreateconfirm.Name}");
 
                     MainWindow mw = new MainWindow();
                     mw.Show();

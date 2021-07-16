@@ -1,18 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
@@ -130,17 +121,19 @@ namespace XelsDesktopWalletApp.Views.Pages
         {
             string getUrl = path + "/wallet/mnemonic?language=English&wordCount=12";
             var content = "";
+            string mnemonic = "";
 
             HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
+            content = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
-                content = await response.Content.ReadAsStringAsync();
+                mnemonic = content.Replace("\"", "");
             }
             else
             {
                 MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
             }
-            return content;
+            return mnemonic;
         }
 
         private void CreateButton_Click(object sender, RoutedEventArgs e)
