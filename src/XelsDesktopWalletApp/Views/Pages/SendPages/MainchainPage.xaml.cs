@@ -80,26 +80,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
 
             GetWalletBalanceAsync();
         }
-
-
-
-        //private void TxtAmount_LostFocus(object sender, RoutedEventArgs e)
-        //{
-        //    if (this.DestinationAddressText.Text != "" && this.SendAmountText.Text != "")
-        //    {
-        //        EstimateFeeAsync();
-        //        this.SendAmountText.Focus();
-        //    }
-        //}
-        //private void TxtAddress_LostFocus(object sender, RoutedEventArgs e)
-        //{
-        //    if (this.DestinationAddressText.Text != "" && this.SendAmountText.Text != "")
-        //    {
-        //        EstimateFeeAsync();
-        //        this.DestinationAddressText.Focus();
-        //    }
-        //}
-
+         
         private void sendButton_Click(object sender, RoutedEventArgs e)
         {
             this.isSending = true;
@@ -228,10 +209,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
 
                new Recipient{ DestinationAddress = this.DestinationAddressText.Text.Trim(),
                Amount = this.SendAmountText.Text}
-            };
-
-            //recipients[0].DestinationAddress = this.DestinationAddressText.Text.Trim();
-            //recipients[0].Amount = this.SendAmountText.Text;
+            }; 
 
             return list;
         }
@@ -241,7 +219,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
             if (IsAddressAndAmountValid())
             {
                 this.TransactionFeeTypeLabel.Content = "medium";
-                //Recipient[] recipients = GetRecipient();
+                
                 var d = this.DestinationAddressText.Text;
 
                 string postUrl = this.baseURL + $"/wallet/estimate-txfee";
@@ -261,6 +239,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
                 {
                     this.estimatedFee = (Convert.ToDouble(content) / 100000000);
                     this.TransactionFeeText.Text = (Convert.ToDouble(content) /100000000).ToString();
+                    this.TransactionWarningLabel.Visibility = Visibility.Hidden;
                 }
                 else
                 {
@@ -291,18 +270,8 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
 
             content = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
-            {
-                try
-                {
+            { 
                     this.BuildTransaction = JsonConvert.DeserializeObject<BuildTransaction>(content);
-
-                }
-                catch (Exception e)
-                {
-
-                    throw;
-                }
-                
 
                 this.estimatedFee = this.BuildTransaction.Fee;
                 this.TransactionSending.Hex = this.BuildTransaction.Hex;
@@ -358,7 +327,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
                     sendConfirmation.Cointype = this.cointype;
 
                     SendConfirmationMainChain sendConf = new SendConfirmationMainChain(sendConfirmation, this.walletName);
-                    sendConf.Show();
+                    //sendConf.Show();
                     // this.Close();
 
                 }
@@ -381,8 +350,8 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
 
         private void CheckSendAmount_OnChange(object sender, RoutedEventArgs e)
         {
-            double sendingAmount = Convert.ToDouble(this.SendAmountText.Text);
-            if ( sendingAmount > ((this.WalletBalance.AmountConfirmed - this.estimatedFee) / 100000000))
+            string sendingAmount = this.SendAmountText.Text ;
+            if (Convert.ToDouble(sendingAmount) > ((this.WalletBalance.AmountConfirmed - this.estimatedFee) / 100000000))
             {
                 MessageBox.Show("The total transaction amount exceeds your spendable balance.");  
             }
@@ -390,6 +359,12 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
             if (!Regex.IsMatch(this.SendAmountText.Text, @"^([0-9]+)?(\.[0-9]{0,8})?$"))
             {
                 MessageBox.Show("Enter a valid transaction amount. Only positive numbers and no more than 8 decimals are allowed.");           
+            }
+
+            if (this.DestinationAddressText.Text != "" && this.SendAmountText.Text != "")
+            {
+                EstimateFeeAsync();
+                this.DestinationAddressText.Focus();
             }
 
             this.SendAmountText.Focus();
