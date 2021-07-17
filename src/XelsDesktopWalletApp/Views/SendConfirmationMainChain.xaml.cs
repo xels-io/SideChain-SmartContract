@@ -56,5 +56,6 @@ namespace XelsDesktopWalletApp.Views
             this.Visibility = Visibility.Collapsed;
         }
 
+       
     }
 }

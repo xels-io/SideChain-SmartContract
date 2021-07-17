@@ -5,55 +5,128 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:XelsDesktopWalletApp.Views"
         mc:Ignorable="d"
-        Height="450" Width="800">
-    <StackPanel>
-
+         d:HorizontalAlignment="Stretch" d:VerticalAlignment="Stretch">
+    <Grid>
+        <Rectangle Fill="#e9eeeb" Opacity=".8" MouseDown="Rectangle_MouseDown" />
         <!--Title="SendConfirmationSideChain"-->
+        <Border Width="400" Margin="30 10">
 
-        <TextBlock Margin="0,1" Width="400" Height="109" FontSize="26" HorizontalAlignment="Center" FontFamily="Microsoft YaHei Light" Opacity="0.7"><Run/><LineBreak/><Run/><LineBreak/><Run Text="Sent"/></TextBlock>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal" Width="408">
-            <Label Content="Amount sent:" Width="158" FontFamily="Microsoft YaHei Light" FontSize="14"/>
-            <Label Name="AmountSent" Width="187" FontFamily="Microsoft YaHei Light" FontSize="12"/>
-            <Label Name="AmountSentType"  Width="51" FontFamily="Microsoft YaHei Light" FontSize="14"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Width="408">
-            <Label Content="Fee:" Width="158" FontFamily="Microsoft YaHei Light" FontSize="14"/>
-            <Label Name="Fee" Width="189" FontFamily="Microsoft YaHei Light" FontSize="12"/>
-            <Label x:Name="FeeType"  Width="51" FontFamily="Microsoft YaHei Light" FontSize="14"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Width="407">
-            <Label Content="OP return amount:" Width="159" FontFamily="Microsoft YaHei Light" FontSize="14"/>
-            <Label x:Name="OPreturn" Width="187" FontFamily="Microsoft YaHei Light" FontSize="12"/>
-            <Label x:Name="OPreturnType"  Width="51" FontFamily="Microsoft YaHei Light" FontSize="14"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Width="406">
-            <Label Content="Total:" Width="160" FontFamily="Microsoft YaHei Light" FontSize="14"/>
-            <Label x:Name="Total" Width="186" FontFamily="Microsoft YaHei Light" FontSize="12"/>
-            <Label x:Name="TotalType"  Width="51" FontFamily="Microsoft YaHei Light" FontSize="14"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Width="409">
-            <Label Content="Destination Federation:" Width="160" FontFamily="Microsoft YaHei Light" FontSize="14"/>
-            <Label Name="DestinationFederation" Width="242" FontFamily="Microsoft YaHei Light" FontSize="14"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Width="411">
-            <Label Content="Destination Address:" Width="160" FontFamily="Microsoft YaHei Light" FontSize="14"/>
-            <Label x:Name="DestinationAddress" Width="243" FontFamily="Microsoft YaHei Light" FontSize="14"/>
-        </StackPanel>
-        <Grid Width="206" Margin="0,20,0,0" RenderTransformOrigin="1.008,0.501">
+                <Border Grid.Row="0">
+                    <TextBlock FontSize="26" HorizontalAlignment="Center" Text="Sent"/>
+                </Border>
+                
+                <Border Grid.Row="1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Content="Amount sent:"  />
+                        <Label Grid.Column="1" Name="AmountSent" />
+                    </Grid>
+                </Border>
 
-            <Button x:Name="cancelButton" Click="cancelButton_Click" Content="Close" Height="28" VerticalAlignment="Top" TextBlock.FontFamily="Microsoft YaHei Light" Background="White" Foreground="Black" BorderThickness="1,1,1,1" BorderBrush="Black" FontSize="14" Padding="5,5,5,5" HorizontalAlignment="Center" Width="200" Margin="0,33,0,0" >
-                <Button.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="5"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
+                <Border Grid.Row="2">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-        </Grid>
-    </StackPanel>
+                        <Label Grid.Column="0" Content="Fee:" />
+                        <Label Name="Fee"  Grid.Column="1"/>
+                        <Label x:Name="FeeType"  Grid.Column="2" />
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="3">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="OP return amount:" Grid.Column="0" />
+                        <Label x:Name="OPreturn" Grid.Column="1" />
+                        <Label x:Name="OPreturnType"  Grid.Column="2" />
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="4">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="1.2*"/>
+                            
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Total:" Grid.Column="0" />
+                        <Label x:Name="Total" Grid.Column="1"/>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="5">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width=".8*"/>
+                            <ColumnDefinition Width="1.2*"/>
+
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Destination Federation:" Grid.Column="0"/>
+                        <Label Name="DestinationFederation" Grid.Column="1"/>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="6">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width=".8*"/>
+                            <ColumnDefinition Width="1.2*"/>
+
+                        </Grid.ColumnDefinitions>
+                        <Label  Content="Destination Address:" Grid.Column="0"/>
+                        <Label x:Name="DestinationAddress" Grid.Column="1"/>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="7" Margin="150 10">
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <Button Grid.Column="0" x:Name="cancelButton" Click="cancelButton_Click" Content="Close"  Background="White" Foreground="Black" BorderThickness="1,1,1,1" BorderBrush="Black" FontSize="14" >
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="5"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+
+                    </Grid>
+                </Border >
+            </Grid>
+            
+        </Border>
+
+        
+ 
+         
+         
+      
+    </Grid>
 </UserControl>

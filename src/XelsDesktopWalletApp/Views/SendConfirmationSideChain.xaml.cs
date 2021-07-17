@@ -1,9 +1,11 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 
 using NBitcoin;
 
 using XelsDesktopWalletApp.Models;
+using XelsDesktopWalletApp.Models.SmartContractModels;
 
 namespace XelsDesktopWalletApp.Views
 {
@@ -29,22 +31,20 @@ namespace XelsDesktopWalletApp.Views
         }
 
         private void bindData(SendConfirmationSC data)
-        {
-            double amountSent = data.Transaction.FeeAmount - data.TransactionFee;
-            this.AmountSent.Content = amountSent;
-            this.AmountSentType.Content = data.cointype;
+        {     
+            this.AmountSent.Content = data.Transaction.Recipients[0].Amount + " " + GlobalPropertyModel.CoinUnit; ;
+            //this.AmountSentType.Content = data.cointype;
 
-            this.Fee.Content = data.TransactionFee;
-            this.FeeType.Content = data.cointype;
+            this.Fee.Content = data.TransactionFee /100000000;
+             
+            this.OPreturn.Content = data.OpReturnAmount; 
 
-            this.OPreturn.Content = data.OpReturnAmount;
-            this.OPreturnType.Content = data.cointype;
+            this.Total.Content = (Convert.ToDouble(data.Transaction.FeeAmount) + Convert.ToDouble(data.Transaction.Recipients[0].Amount)).ToString() + " " + GlobalPropertyModel.CoinUnit;
 
-            this.Total.Content = data.Transaction.FeeAmount;
-            this.TotalType.Content = data.cointype;
 
-            //this.DestinationFederation.Content = data.Transaction.Recipients[0].FederationAddress;
-            this.DestinationAddress.Content = data.Transaction.OpReturnData;
+            this.DestinationFederation.Content = data.Transaction.OpReturnData; 
+
+            this.DestinationAddress.Content = data.Transaction.Recipients[0].DestinationAddress;
 
         }
 
@@ -54,5 +54,9 @@ namespace XelsDesktopWalletApp.Views
             //sendSc.Show();
             //this.Close();
         }
+        private void Rectangle_MouseDown(object sender, RoutedEventArgs e)
+        {
+            this.Visibility = Visibility.Collapsed;
+        }   
     }
 }

@@ -21,5 +21,6 @@ namespace XelsDesktopWalletApp.Models
         public double OpReturnAmount { get; set; }
         //public bool hasOpReturn { get; set; }
         public string cointype { get; set; }
+        public string FedarationAddress { get; set; }
     }
 }

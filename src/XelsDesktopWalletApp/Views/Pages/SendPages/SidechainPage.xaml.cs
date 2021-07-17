@@ -240,11 +240,18 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
                 string postUrl = this.baseURL + $"/wallet/estimate-txfee";
                 var content = "";
 
-                FeeEstimationSideChain feeEstimation = new FeeEstimationSideChain();
+                //FeeEstimationSideChain feeEstimation = new FeeEstimationSideChain();
+                //feeEstimation.WalletName = this.WalletInfo.WalletName;
+                //feeEstimation.AccountName = "account 0";
+                //feeEstimation.Recipients = GetRecipient();
+                ////feeEstimation.OpReturnData = this.SidechainDestinationAddressText.Text.Trim();
+                //feeEstimation.FeeType = this.TransactionFeeTypeLabel.Content.ToString();
+                //feeEstimation.AllowUnconfirmed = true;
+
+                FeeEstimation feeEstimation = new FeeEstimation();
                 feeEstimation.WalletName = this.WalletInfo.WalletName;
                 feeEstimation.AccountName = "account 0";
                 feeEstimation.Recipients = GetRecipient();
-                //feeEstimation.OpReturnData = this.SidechainDestinationAddressText.Text.Trim();
                 feeEstimation.FeeType = this.TransactionFeeTypeLabel.Content.ToString();
                 feeEstimation.AllowUnconfirmed = true;
 
@@ -334,10 +341,10 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
                     sendConfirmationSc.TransactionFee = this.estimatedSidechainFee;
                     sendConfirmationSc.OpReturnAmount = this.opReturnAmount;
                     sendConfirmationSc.cointype = this.cointype;
+                    sendConfirmationSc.FedarationAddress = this.TransactionBuilding.OpReturnData;
 
-                    //SendConfirmationSideChain sendConf = new SendConfirmationSideChain(sendConfirmationSc, this.walletName);
-                    //sendConf.Show();
-                    // this.Close();
+                    this.NavigationService.Navigate(new SendConfirmationSideChain(sendConfirmationSc, this.walletName));
+                     
                 }
                 else
                 {
@@ -353,7 +360,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
 
         private void CheckSendAmount_OnChange(object sender, RoutedEventArgs e)
         {
-            double sendingAmount = Convert.ToDouble(this.SendAmountText.Text);
+            string sendingAmount = this.SendAmountText.Text ;
 
             if (this.SendAmountText.Text == string.Empty)
             {
@@ -361,13 +368,13 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
 
             }
 
-            if (sendingAmount < 0.00001)
+            if (Convert.ToDouble(sendingAmount) < 0.00001)
             {
                 MessageBox.Show("The amount has to be more or equal to 1.");
 
             }
 
-            if (sendingAmount > ((this.WalletBalance.AmountConfirmed - this.estimatedSidechainFee) / 100000000))
+            if (Convert.ToDouble(sendingAmount) > ((this.WalletBalance.AmountConfirmed - this.estimatedSidechainFee) / 100000000))
             {
                 MessageBox.Show("The total transaction amount exceeds your spendable balance.");
 
@@ -382,7 +389,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
             {
                 EstimateFeeSideChainAsync();
                 this.SidechainDestinationAddressText.Focus();
-            }
+            }            
 
             this.SendAmountText.Focus();
         }
@@ -396,8 +403,5 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
                 this.SidechainDestinationAddressText.Focus();
             }
         }
-
-
-
     }
 }
