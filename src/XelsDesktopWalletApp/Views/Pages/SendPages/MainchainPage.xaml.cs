@@ -65,7 +65,8 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
             InitializeComponent();
             this.DataContext = this;
 
-            GetWalletBalanceAsync();
+            //GetWalletBalanceAsync();
+            GetMaxBalanceAsync();
         }
 
         // Design is broken // address: navigation from address book
@@ -78,7 +79,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
             this.DataContext = this;
             this.DestinationAddressText.Text = address;
 
-            GetWalletBalanceAsync();
+            //GetWalletBalanceAsync();
         }
          
         private void sendButton_Click(object sender, RoutedEventArgs e)
@@ -89,8 +90,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            MainLayout ds = new MainLayout(this.walletName);
-            ds.Show();
+            this.Visibility = Visibility.Collapsed;
             //this.Close();
         }
 
@@ -151,49 +151,57 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
         }
 
         
-        private async Task GetWalletBalanceAsync()
-        {
-            string getUrl = this.baseURL + $"/wallet/balance?WalletName={this.walletInfo.WalletName}&AccountName=account 0";
-            var content = "";
+        //private async Task GetWalletBalanceAsync()
+        //{
+        //    string getUrl = this.baseURL + $"/wallet/balance?WalletName={this.walletInfo.WalletName}&AccountName=account 0";
+        //    var content = "";
 
-            HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
+        //    HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
 
-            content = await response.Content.ReadAsStringAsync();
-            if (response.IsSuccessStatusCode)
-            {        
-                var balances = JsonConvert.DeserializeObject<WalletBalanceArray>(content);
+        //    content = await response.Content.ReadAsStringAsync();
+        //    if (response.IsSuccessStatusCode)
+        //    {        
+        //        var balances = JsonConvert.DeserializeObject<WalletBalanceArray>(content);
 
-                foreach(var balance in balances.Balances)
-                {
-                    this.WalletBalance = balance;
-                    this.textAvailableCoin.Content = $"{(balance.AmountConfirmed / 100000000).ToString()} {GlobalPropertyModel.CoinUnit}"; 
-                } 
-            }
-            else
-            {
-                MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-            }
-        }
+        //        foreach(var balance in balances.Balances)
+        //        {
+        //            this.WalletBalance = balance;
+        //            this.textAvailableCoin.Content = $"{(balance.AmountConfirmed / 100000000).ToString()} {GlobalPropertyModel.CoinUnit}"; 
+        //        } 
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+        //    }
+        //}
 
         private async Task GetMaxBalanceAsync()
-        {
-
-            string postUrl = this.baseURL + $"/wallet/send-transaction";
+        {            
             var content = "";
 
             MaximumBalance maximumBalance = new MaximumBalance();
             maximumBalance.WalletName = this.walletInfo.WalletName;
-            maximumBalance.AccountName = "account 0";
+           // maximumBalance.AccountName = "account 0";
             maximumBalance.FeeType = "medium";
             maximumBalance.AllowUnconfirmed = true;
 
-            HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(maximumBalance), Encoding.UTF8, "application/json"));
+            string postUrl = this.baseURL + 
+                $"/wallet/maximumbalancewpf?WalletName={maximumBalance.WalletName}&FeeType={maximumBalance.FeeType}&AllowUnconfirmed={maximumBalance.AllowUnconfirmed}" ;
+            //&accountName={maximumBalance.AccountName}
+            HttpResponseMessage response = await URLConfiguration.Client.GetAsync(postUrl);
 
-
+            content = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
-                content = await response.Content.ReadAsStringAsync();
-                //this.estimatedFee = Money.Parse(content);
+                var balance = JsonConvert.DeserializeObject<WalletBalance>(content);
+
+                //foreach (var balance in balances.Balances)
+                {
+                    this.WalletBalance = balance;
+                    
+                    this.textAvailableCoin.Content = $"{(balance.MaxSpendableAmount / 100000000).ToString()} {GlobalPropertyModel.CoinUnit}";
+
+                }
             }
             else
             {
@@ -320,11 +328,14 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
                 if (response.IsSuccessStatusCode)
                 {        
                     SendConfirmation sendConfirmation = new SendConfirmation();
+
                     sendConfirmation.Transaction = this.TransactionBuilding;
                     sendConfirmation.TransactionFee = this.estimatedFee;
                     sendConfirmation.Cointype = this.cointype;
 
-                    SendConfirmationMainChain sendConf = new SendConfirmationMainChain(sendConfirmation, this.walletName);
+
+                    this.NavigationService.Navigate(new SendConfirmationMainChain(sendConfirmation, this.walletName));
+                    //SendConfirmationMainChain sendConf = new SendConfirmationMainChain(sendConfirmation, this.walletName);
                     //sendConf.Show();
                     // this.Close();
 
@@ -352,7 +363,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
 
             if (!string.IsNullOrWhiteSpace(sendingAmount))
             {
-                if (Convert.ToDouble(sendingAmount) > ((this.WalletBalance.AmountConfirmed - this.estimatedFee) / 100000000))
+                if (Convert.ToDouble(sendingAmount) > ((this.WalletBalance.MaxSpendableAmount - this.WalletBalance.Fee) / 100000000))
                 {
                     MessageBox.Show("The total transaction amount exceeds your spendable balance.");
                 }

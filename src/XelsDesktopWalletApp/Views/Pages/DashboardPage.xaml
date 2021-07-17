@@ -8,6 +8,7 @@
       d:DesignHeight="700" d:DesignWidth="900"
       Title="Dashboard">
 
+
     <Grid x:Name="Dashboard" >
         <Border BorderThickness="1" CornerRadius="7" Background="White" BorderBrush="Gray"  >
             <StackPanel Background="White" Margin="5">
@@ -78,7 +79,7 @@
                                         <Border Grid.Row="1">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
+                                                    <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
 
@@ -92,11 +93,11 @@
                                         <Border Grid.Row="2">
                                             <Grid >
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
+                                                    <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
 
-                                                <Label Grid.Column="0" Content="Network weight:"/>
+                                                <TextBlock TextWrapping="Wrap" Grid.Column="0" Text="Network weight:"/>
                                                 <TextBlock Grid.Column="1" x:Name="NetworkWeightTxt" />
 
                                             </Grid>
@@ -297,8 +298,8 @@
                                             <TextBlock  Grid.Column="0" Name="ConnectionPercentTxt"
                                                     FontFamily="Microsoft YaHei" FontSize="10" Foreground="Green"   />
                                             <TextBlock Grid.Column="1" Name="ConnectedCountTxt" FontSize="10" Foreground="Green" />
-                                            <Label x:Name="StakingInfo" ToolTip="{Binding StakingInfo}" Grid.Column="2" Foreground="Green">
-                                                <!--<Image x:Name="StakingInfoImage" Width="40" Height="40" />-->
+                                            <Label x:Name="StakingInfo"  Grid.Column="2" Foreground="Green">
+                                                <!--<Image x:Name="StakingInfoImage" Width="40" Height="40" /> ToolTip="{Binding StakingInfo}"-->
                                             </Label>
 
                                         </Grid>

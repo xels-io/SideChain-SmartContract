@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 
 using NBitcoin;
 
@@ -9,7 +10,7 @@ namespace XelsDesktopWalletApp.Views
     /// <summary>
     /// Interaction logic for SendConfirmationSideChain.xaml
     /// </summary>
-    public partial class SendConfirmationSideChain : Window
+    public partial class SendConfirmationSideChain : UserControl
     {
         private string walletName;
 
@@ -42,16 +43,16 @@ namespace XelsDesktopWalletApp.Views
             this.Total.Content = data.Transaction.FeeAmount;
             this.TotalType.Content = data.cointype;
 
-            this.DestinationFederation.Content = data.Transaction.Recipients[0].FederationAddress;
+            //this.DestinationFederation.Content = data.Transaction.Recipients[0].FederationAddress;
             this.DestinationAddress.Content = data.Transaction.OpReturnData;
 
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
         {
-            SendSideChain sendSc = new SendSideChain(this.walletName);
-            sendSc.Show();
-            this.Close();
+            //SendSideChain sendSc = new SendSideChain(this.walletName);
+            //sendSc.Show();
+            //this.Close();
         }
     }
 }

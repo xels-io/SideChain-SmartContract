@@ -1,14 +1,14 @@
-﻿using System.Windows;
+﻿using System;
+using System.Threading;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using Microsoft.CodeAnalysis;
 
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 using XelsDesktopWalletApp.Views.Pages;
-using XelsDesktopWalletApp.Views.SmartContractView;
 using XelsDesktopWalletApp.Views.ViewPage;
 
 
@@ -65,6 +65,11 @@ namespace XelsDesktopWalletApp.Views.layout
                 this.btn_SmartContract.Visibility = Visibility.Hidden;
             }
             //PopulateTxt();
+
+            //DispatcherTimer timer = new DispatcherTimer();
+            //timer.Interval = TimeSpan.FromSeconds(10);
+            //timer.Tick += Window_Initialized;
+            //timer.Start();
         }
 
         private void ButtonFechar_Click(object sender, RoutedEventArgs e)
@@ -80,6 +85,7 @@ namespace XelsDesktopWalletApp.Views.layout
         private void btnDashboard_Click(object sender, RoutedEventArgs e)
         {
             this.PageContent.Content = new DashboardPage(this.walletName);
+ 
             this.btnDashboard.Focus();
         }
 
@@ -126,8 +132,11 @@ namespace XelsDesktopWalletApp.Views.layout
         }
 
         private void Window_Initialized(object sender, System.EventArgs e)
-        {
+        {            
             this.PageContent.Content = new DashboardPage(this.walletName);
+            //this.PageContent.Refresh();
+
+           
         }
 
         //private void windowMax_Click(object sender, RoutedEventArgs e)

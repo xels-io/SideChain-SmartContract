@@ -379,9 +379,9 @@ namespace XelsDesktopWalletApp.Views
                     sendConfirmationSc.OpReturnAmount = this.opReturnAmount;
                     sendConfirmationSc.cointype = this.cointype;
 
-                    SendConfirmationSideChain sendConf = new SendConfirmationSideChain(sendConfirmationSc, this.walletName);
-                    sendConf.Show();
-                    this.Close();
+                    this.Content = new SendConfirmationSideChain(sendConfirmationSc, this.walletName);
+                    //sendConf.Show();
+                    //this.Close();
                 }
                 else
                 {

@@ -366,6 +366,24 @@ namespace Xels.Bitcoin.Features.Wallet.Controllers
                     this.Json(await this.walletService.GetMaximumSpendableBalance(request, cancellationToken)));
         }
 
+        [Route("maximumbalancewpf")]
+        [HttpGet]
+        public async Task<IActionResult> GetMaximumSpendableBalanceWpf( string walletName,  string feeType, bool allowUnconfirmed,
+          CancellationToken cancellationToken = default(CancellationToken))
+        {
+            WalletMaximumBalanceRequest request = new WalletMaximumBalanceRequest()
+            {
+                WalletName = walletName,
+                AccountName = "account 0",
+                FeeType = feeType,
+                AllowUnconfirmed = allowUnconfirmed
+            };
+
+            return await this.Execute(request, cancellationToken,
+                async (req, token) =>
+                    this.Json(await this.walletService.GetMaximumSpendableBalance(request, cancellationToken)));
+        }
+
         /// <summary>
         /// Gets the spendable transactions for an account with the option to specify how many confirmations
         /// a transaction needs to be included.

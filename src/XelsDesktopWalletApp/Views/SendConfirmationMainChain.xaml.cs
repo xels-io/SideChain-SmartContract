@@ -1,9 +1,11 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 
 using NBitcoin;
 
 using XelsDesktopWalletApp.Models;
+using XelsDesktopWalletApp.Models.SmartContractModels;
 using XelsDesktopWalletApp.Views.layout;
 using XelsDesktopWalletApp.Views.Pages;
 
@@ -33,24 +35,20 @@ namespace XelsDesktopWalletApp.Views
 
         private void bindData(SendConfirmation data)
         {
-            double amountSent = data.Transaction.FeeAmount - data.TransactionFee;
-            this.AmountSent.Content = amountSent;
-            this.AmountSentType.Content = data.Cointype;
+            
+            this.AmountSent.Content = data.Transaction.Recipients[0].Amount +" " + GlobalPropertyModel.CoinUnit; 
+            
+            this.Fee.Content = data.TransactionFee / 100000000;
+             
 
-            this.Fee.Content = data.TransactionFee;
-            this.FeeType.Content = data.Cointype;
-
-            this.Total.Content = data.Transaction.FeeAmount;
-            this.TotalType.Content = data.Cointype;
-
+            this.Total.Content = (Convert.ToDouble(data.Transaction.FeeAmount) + Convert.ToDouble(data.Transaction.Recipients[0].Amount)).ToString() + " " + GlobalPropertyModel.CoinUnit;
+             
             this.Destination.Content = data.Transaction.Recipients[0].DestinationAddress;
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
         {
-            MainLayout ds = new MainLayout(this.walletName);
-            ds.Show();
-
+            this.Visibility = Visibility.Collapsed;
         }
 
         private void Rectangle_MouseDown(object sender, RoutedEventArgs e)

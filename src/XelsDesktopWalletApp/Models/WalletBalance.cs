@@ -17,6 +17,10 @@ namespace XelsDesktopWalletApp.Models
         public double AmountConfirmed { get; set; }
         public double AmountUnconfirmed { get; set; }
         public double SpendableAmount { get; set; }
+        public double MaxSpendableAmount { get; set; }
+
+        public double Fee { get; set; }
+
         //public IEnumerable<AddressModel> Addresses { get; set; }
 
     }

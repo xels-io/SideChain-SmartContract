@@ -13,5 +13,9 @@ namespace XelsDesktopWalletApp.Models.SmartContractModels
         public static string CoinUnit { get; set; }
         public static bool MiningStart{ get; set; }
         public static bool StakingStart { get; set; }
+        public static bool HasBalance { get; set; }
+
+        public static double SpendableBalance { get; set; }
+
     }
 }

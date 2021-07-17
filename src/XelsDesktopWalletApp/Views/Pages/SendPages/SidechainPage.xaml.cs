@@ -218,12 +218,12 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
 
         }
 
-        private List<RecipientSidechain> GetRecipient()
+        private List<Recipient> GetRecipient()
         {
 
-            List<RecipientSidechain> list = new List<RecipientSidechain>() {
+            List<Recipient> list = new List<Recipient>() {
 
-               new RecipientSidechain{ DestinationAddress = this.SidechainDestinationAddressText.Text.Trim(),
+               new Recipient{ DestinationAddress = this.SidechainDestinationAddressText.Text.Trim(),
                Amount = this.SendAmountText.Text}
             };
             return list;
@@ -335,8 +335,8 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
                     sendConfirmationSc.OpReturnAmount = this.opReturnAmount;
                     sendConfirmationSc.cointype = this.cointype;
 
-                    SendConfirmationSideChain sendConf = new SendConfirmationSideChain(sendConfirmationSc, this.walletName);
-                    sendConf.Show();
+                    //SendConfirmationSideChain sendConf = new SendConfirmationSideChain(sendConfirmationSc, this.walletName);
+                    //sendConf.Show();
                     // this.Close();
                 }
                 else
