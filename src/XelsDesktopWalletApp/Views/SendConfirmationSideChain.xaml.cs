@@ -41,10 +41,9 @@ namespace XelsDesktopWalletApp.Views
 
             this.Total.Content = (Convert.ToDouble(data.Transaction.FeeAmount) + Convert.ToDouble(data.Transaction.Recipients[0].Amount)).ToString() + " " + GlobalPropertyModel.CoinUnit;
 
+            this.DestinationFederation.Content = data.Transaction.Recipients[0].FederationAddress ; 
 
-            this.DestinationFederation.Content = data.Transaction.OpReturnData; 
-
-            this.DestinationAddress.Content = data.Transaction.Recipients[0].DestinationAddress;
+            this.DestinationAddress.Content = data.Transaction.OpReturnData;
 
         }
 

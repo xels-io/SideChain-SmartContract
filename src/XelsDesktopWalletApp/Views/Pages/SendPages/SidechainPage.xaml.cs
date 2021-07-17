@@ -218,12 +218,12 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
 
         }
 
-        private List<Recipient> GetRecipient()
+        private List<RecipientSidechain> GetRecipient()
         {
 
-            List<Recipient> list = new List<Recipient>() {
+            List<RecipientSidechain> list = new List<RecipientSidechain>() {
 
-               new Recipient{ DestinationAddress = this.SidechainDestinationAddressText.Text.Trim(),
+               new RecipientSidechain{ FederationAddress = this.MainchainFederationAddressText.Text.Trim(),
                Amount = this.SendAmountText.Text}
             };
             return list;
@@ -237,23 +237,20 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
                 this.TransactionFeeTypeLabel.Content = "medium";
 
 
-                string postUrl = this.baseURL + $"/wallet/estimate-txfee";
+                string postUrl = this.baseURL + $"/wallet/estimate-txfee"; 
+                
+                // problem while send for sidechain, sidechain destination address is returned invalid from api
+                // found dissimilarity with angular app, declare on model fedartion address as recipent list, but send destination address as recipient list, 
+
                 var content = "";
 
-                //FeeEstimationSideChain feeEstimation = new FeeEstimationSideChain();
-                //feeEstimation.WalletName = this.WalletInfo.WalletName;
-                //feeEstimation.AccountName = "account 0";
-                //feeEstimation.Recipients = GetRecipient();
-                ////feeEstimation.OpReturnData = this.SidechainDestinationAddressText.Text.Trim();
-                //feeEstimation.FeeType = this.TransactionFeeTypeLabel.Content.ToString();
-                //feeEstimation.AllowUnconfirmed = true;
-
-                FeeEstimation feeEstimation = new FeeEstimation();
+                FeeEstimationSideChain feeEstimation = new FeeEstimationSideChain();
                 feeEstimation.WalletName = this.WalletInfo.WalletName;
                 feeEstimation.AccountName = "account 0";
                 feeEstimation.Recipients = GetRecipient();
+                feeEstimation.OpReturnData = this.SidechainDestinationAddressText.Text.Trim();
                 feeEstimation.FeeType = this.TransactionFeeTypeLabel.Content.ToString();
-                feeEstimation.AllowUnconfirmed = true;
+                feeEstimation.AllowUnconfirmed = true;                 
 
                 HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(feeEstimation), Encoding.UTF8, "application/json"));
 
@@ -291,7 +288,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
             this.TransactionBuilding.FeeAmount = this.estimatedSidechainFee;
             this.TransactionBuilding.AllowUnconfirmed = true;
             this.TransactionBuilding.ShuffleOutputs = false;
-            this.TransactionBuilding.OpReturnData = this.MainchainFederationAddressText.Text.Trim();
+            this.TransactionBuilding.OpReturnData = this.SidechainDestinationAddressText.Text.Trim();
             this.TransactionBuilding.OpReturnAmount = (t).ToString("0." + new string('#', 10));
 
             HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(this.TransactionBuilding), Encoding.UTF8, "application/json"));
