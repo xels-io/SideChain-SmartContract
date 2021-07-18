@@ -41,7 +41,7 @@ namespace XelsDesktopWalletApp.Views
 
             this.Total.Content = (Convert.ToDouble(data.Transaction.FeeAmount) + Convert.ToDouble(data.Transaction.Recipients[0].Amount)).ToString() + " " + GlobalPropertyModel.CoinUnit;
 
-            this.DestinationFederation.Content = data.Transaction.Recipients[0].FederationAddress ; 
+            this.DestinationFederation.Content = data.Transaction.Recipients[0].DestinationAddress ; 
 
             this.DestinationAddress.Content = data.Transaction.OpReturnData;
 
@@ -49,6 +49,7 @@ namespace XelsDesktopWalletApp.Views
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
         {
+            this.Visibility = Visibility.Collapsed;
             //SendSideChain sendSc = new SendSideChain(this.walletName);
             //sendSc.Show();
             //this.Close();

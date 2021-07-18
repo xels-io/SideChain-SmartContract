@@ -282,7 +282,7 @@ namespace XelsDesktopWalletApp.Views
 
             RecipientSidechain[] recipients = new RecipientSidechain[1];
 
-            recipients[0].FederationAddress = this.textMainchainFederationAddress.Text.Trim();
+            recipients[0].DestinationAddress = this.textMainchainFederationAddress.Text.Trim();
             recipients[0].Amount = this.textAmount.Text;
 
             return recipients;

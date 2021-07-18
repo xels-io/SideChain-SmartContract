@@ -223,7 +223,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
 
             List<RecipientSidechain> list = new List<RecipientSidechain>() {
 
-               new RecipientSidechain{ FederationAddress = this.MainchainFederationAddressText.Text.Trim(),
+               new RecipientSidechain{ DestinationAddress = this.MainchainFederationAddressText.Text.Trim(),
                Amount = this.SendAmountText.Text}
             };
             return list;
@@ -247,8 +247,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
                 FeeEstimationSideChain feeEstimation = new FeeEstimationSideChain();
                 feeEstimation.WalletName = this.WalletInfo.WalletName;
                 feeEstimation.AccountName = "account 0";
-                feeEstimation.Recipients = GetRecipient();
-                feeEstimation.OpReturnData = this.SidechainDestinationAddressText.Text.Trim();
+                feeEstimation.Recipients = GetRecipient();               
                 feeEstimation.FeeType = this.TransactionFeeTypeLabel.Content.ToString();
                 feeEstimation.AllowUnconfirmed = true;                 
 
@@ -261,6 +260,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
                    
                     this.estimatedSidechainFee = Convert.ToDouble(content) / 100000000;
                     this.TransactionFeeText.Text = this.estimatedSidechainFee.ToString();
+                    this.WarningLabelSidechain.Visibility = Visibility.Hidden;
                 }
                 else
                 {

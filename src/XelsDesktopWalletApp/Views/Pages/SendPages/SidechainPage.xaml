@@ -106,7 +106,7 @@
                 <Label Grid.Row="0" Content="Transaction Fee" />
                 <TextBox Grid.Row="1"  x:Name="TransactionFeeText" IsReadOnly="True"  />
                 <Label Grid.Row="2" x:Name="TransactionFeeTypeLabel"  RenderTransformOrigin="1.158,-0.076" />
-                <TextBlock Grid.Row="2" Text="Please, enter valid amount, fedaration and destination address to calculate the fee." Foreground="Red" />
+                <TextBlock x:Name="WarningLabelSidechain" Grid.Row="3" Text="Please, enter valid amount, fedaration and destination address to calculate the fee." Foreground="Red" />
 
             </Grid>
         </Border>

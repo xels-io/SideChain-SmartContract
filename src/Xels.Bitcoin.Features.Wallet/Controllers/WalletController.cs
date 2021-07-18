@@ -22,7 +22,7 @@ namespace Xels.Bitcoin.Features.Wallet.Controllers
     [ApiController]
     public class WalletController : FeatureControllerBase
     {
-        private readonly IWalletService walletService;
+        private readonly IWalletService walletService; 
         private readonly IWalletManager walletManager;
         private readonly IWalletSyncManager walletSyncManager;
         private readonly ChainIndexer chainIndexer;

@@ -18,7 +18,7 @@ namespace XelsDesktopWalletApp.Models
 
     public class RecipientSidechain
     {
-        public string FederationAddress { get; set; }         
+        public string DestinationAddress { get; set; }         
         public string Amount { get; set; }
     }
 

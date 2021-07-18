@@ -405,11 +405,12 @@ namespace XelsDesktopWalletApp.Views.Pages
                     this.isStarting = false;                  
                     this.MiningInfoBorder.Visibility = Visibility.Visible;
                     this.t.Visibility = Visibility.Hidden;
+                    this.StakingInfo.Content = "Staking";
                 }
                 else
                 {
                     this.isStopping = false;                   
-                    this.StakingInfo.Content = "Staking";
+                    this.StakingInfo.Content = "Not Staking";
                     //this.StakingInfoImage.Source;
                 }                
             }
@@ -501,16 +502,26 @@ namespace XelsDesktopWalletApp.Views.Pages
         {
             string apiUrl = this.baseURL + $"/mining/stopmining";
 
-            HttpResponseMessage response = await URLConfiguration.Client.PostAsJsonAsync(apiUrl, true);
-
-            string content = await response.Content.ReadAsStringAsync();
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                this.PowMiningButton.Visibility = Visibility.Visible;
-                this.StopPowMiningButton.Visibility = Visibility.Hidden;
-                GlobalPropertyModel.MiningStart = false;
+                HttpResponseMessage response = await URLConfiguration.Client.PostAsJsonAsync(apiUrl, true);
+                string content = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    this.PowMiningButton.Visibility = Visibility.Visible;
+                    this.StopPowMiningButton.Visibility = Visibility.Hidden;
+                    GlobalPropertyModel.MiningStart = false;
+                }
             }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            
+
+            
         }
 
         private async void StartHybridMiningButton_Click(object sender, RoutedEventArgs e)
