@@ -8,7 +8,6 @@
               d:DesignHeight="700" d:DesignWidth="900"
              HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Initialized="UserControl_Initialized" >
 
-    <!--<StackPanel Background="White">-->
     <Grid>
         <Rectangle Fill="WhiteSmoke" Opacity=".5" MouseDown="Rectangle_MouseDown" />
         <Border CornerRadius="10"  Background="White" Height="550" Width="700">

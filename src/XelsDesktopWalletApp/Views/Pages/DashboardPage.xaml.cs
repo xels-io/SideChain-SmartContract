@@ -12,6 +12,9 @@ using XelsDesktopWalletApp.Models.CommonModels;
 using XelsDesktopWalletApp.Views.Pages.Modals;
 using XelsDesktopWalletApp.Models.SmartContractModels;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
+using XelsDesktopWalletApp.Views.layout;
+using System.Windows.Input;
 
 namespace XelsDesktopWalletApp.Views.Pages
 {
@@ -592,5 +595,6 @@ namespace XelsDesktopWalletApp.Views.Pages
         {
             this.NavigationService.Navigate(new HistoryPage(this.walletName));            
         }
+
     }
 }
