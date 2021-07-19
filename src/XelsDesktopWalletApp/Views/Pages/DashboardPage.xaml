@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:XelsDesktopWalletApp.Views.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="700" d:DesignWidth="900"
-      Title="Dashboard">
+      Title="Dashboard" Loaded="Page_Loaded">
 
 
     <Grid x:Name="Dashboard" >
