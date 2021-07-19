@@ -340,12 +340,12 @@ namespace XelsDesktopWalletApp.Views.Pages
                 {
                     mWallet.Address = addre;
                     mWallet.Walletname = walltName;
-                    mWallet.Coin = "TST";
+                    mWallet.Coin = coin;
                     mWallet.Wallethash = wathash;
                     mWallet.PrivateKey= Encryption.DecryptPrivateKey(privtKey);
                 }
                 // Transfer
-                 deporesult = await this.transactionWalletObj.TransferAsync(mWallet, exchangeResponse, amount);
+                 deporesult = await this.transactionWalletObj.TransferAsync(mWallet, exchangeResponse.deposit_address, amount);
                 return deporesult;
             }
             catch (Exception e)

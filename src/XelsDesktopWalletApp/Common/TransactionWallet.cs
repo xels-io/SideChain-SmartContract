@@ -23,7 +23,7 @@ namespace XelsDesktopWalletApp.Common
     {
         private readonly CreateWallet createWallet = new CreateWallet();
 
-        public async Task<Tuple<TransactionReceipt,string>> TransferAsync(StoredWallet sWallet, ExchangeResponse exchangeResponse, double amount)
+        public async Task<Tuple<TransactionReceipt,string>> TransferAsync(StoredWallet sWallet, string toAddress, double amount)
         {
             string retMesage = "";
             try
@@ -57,7 +57,7 @@ namespace XelsDesktopWalletApp.Common
                     var transfer = new TransferFunction()
                     {
                         FromAddress = sWallet.Address,
-                        To = exchangeResponse.deposit_address,
+                        To = toAddress,
                         TokenAmount = amt,
                     };
 
