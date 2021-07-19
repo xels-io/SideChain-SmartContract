@@ -53,7 +53,7 @@ namespace XelsDesktopWalletApp.Common
 
                     var transferHandler = web3.Eth.GetContractTransactionHandler<TransferFunction>();
 
-                    BigInteger amt = (BigInteger)amount * 100000000;
+                    BigInteger amt = (BigInteger)amount * 100000000;// all coin(SELS/BELS/XELS) er jonno ki same vabe amount jabe????
                     var transfer = new TransferFunction()
                     {
                         FromAddress = sWallet.Address,
