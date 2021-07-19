@@ -155,14 +155,14 @@
                             </TextBox>
 
                         </StackPanel>
-                        <StackPanel Orientation="Vertical" Margin="-1,56,0,41"  Grid.ColumnSpan="2" >
+                        <StackPanel Orientation="Vertical" Margin="-1,56,0,31"  Grid.ColumnSpan="2" >
                             <TextBlock x:Name="MessageTxt"  
                                        Text="{Binding ElementName=AmountTxt, Path=Text, StringFormat='You will get {0} XELS', Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                       Height="16" Width="547" Foreground="Black"
-                                       FontFamily="Microsoft YaHei" FontSize="10" Padding="0" Margin="0"/>
+                                       Height="27" Width="548" Foreground="Black"
+                                       FontFamily="Microsoft YaHei" FontSize="20" Padding="0" Margin="0"/>
 
                         </StackPanel>
-                        <StackPanel Orientation="Vertical" Margin="0,81,-1,13"  Grid.ColumnSpan="2" >
+                        <StackPanel Orientation="Vertical" Margin="0,87,-1,0"  Grid.ColumnSpan="2" >
                             <Button Content="Exchange Order Submit" Click="ExchangeOrderSubmitButton_Click" FontFamily="Microsoft YaHei Light" 
                                 Foreground="White" Background="#FF0FD421" BorderBrush="#FF30CD3E" FontSize="10" 
                                 Width="148" Height="23">
