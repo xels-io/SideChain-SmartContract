@@ -155,14 +155,6 @@ namespace XelsDesktopWalletApp.Views.Pages
             }
         }
 
-        //private void DetailsButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    TransactionInfo item = (TransactionInfo)((sender as Button)?.Tag as ListViewItem)?.DataContext;
-
-        //    TransactionDetail td = new TransactionDetail(this.walletName, item);
-        //    td.Show();
-
-        //}
         private void DetailsButton_Click(object sender, RoutedEventArgs e)
         {
             TransactionItemModel item = (TransactionItemModel)((sender as Button)?.Tag as ListViewItem)?.DataContext;
@@ -191,6 +183,7 @@ namespace XelsDesktopWalletApp.Views.Pages
         private void Copy_Click(object sender, RoutedEventArgs e)
         {
             Clipboard.SetText(this.TransactionIDTxt.Text);
+            //System.Windows.MessageBox.Show("Copied Successfully :- " + this.TransactionIDTxt.Text.ToString());
         }
 
         private void HidePopup_Click(object sender, RoutedEventArgs e)

@@ -25,9 +25,8 @@
                         <ColumnDefinition Width="0.5*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Border  Grid.Column="0"> 
-                        <TextBox  x:Name="textBoxTextToQr" IsReadOnly="True" BorderBrush="Green" />
-
+                    <Border  Grid.Column="0">
+                        <TextBox  x:Name="textBoxTextToQr" IsReadOnly="True" BorderBrush="Green" BorderThickness="1" Padding="5" />
                     </Border>
                     <Border Grid.Column="1" >
                         <Button Content="Copy" Click="CopyAddressButton_Click" Margin="5 2" RenderTransformOrigin="2.423,0.568" BorderThickness="1" BorderBrush="Green" Background="White" Foreground="Black">

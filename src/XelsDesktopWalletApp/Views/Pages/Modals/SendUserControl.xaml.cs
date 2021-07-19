@@ -106,5 +106,10 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
         {
             this.Visibility = Visibility.Collapsed;
         }
+
+        private void HidePopup_Click(object sender, RoutedEventArgs e)
+        {
+            this.Visibility = Visibility.Collapsed;
+        }
     }
 }
