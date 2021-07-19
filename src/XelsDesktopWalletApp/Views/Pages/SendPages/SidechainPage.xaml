@@ -24,7 +24,7 @@
 
 
         <!--Amount-->
-        <Border Grid.Row="0" >
+        <Border Grid.Row="0" Margin="50 2" >
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
@@ -52,17 +52,17 @@
                 </Border>
 
 
-                <Border Grid.Row="1">
+                <Border Grid.Row="1" >
                     <TextBox  x:Name="SendAmountText"
                           TextChanged="CheckSendAmount_OnChange"
-                          BorderBrush="#FFC9D6C9"  />
+                          BorderBrush="Green" />
                 </Border>
 
             </Grid>
         </Border>
 
         <!--Address-->
-        <Border Grid.Row="1">
+        <Border Grid.Row="1" Margin="50 2">
             <Grid>
 
                 <Grid.RowDefinitions>
@@ -72,11 +72,11 @@
 
 
                 <Label Grid.Row="0" Content="Mainchain federation address"/>
-                <TextBox Grid.Row="1"  x:Name="MainchainFederationAddressText" />
+                <TextBox Grid.Row="1"  x:Name="MainchainFederationAddressText" BorderBrush="Green" />
             </Grid>
         </Border>
 
-        <Border Grid.Row="2">
+        <Border Grid.Row="2" Margin="50 2">
             <Grid>
 
                 <Grid.RowDefinitions>
@@ -88,13 +88,13 @@
                 <Label Grid.Row="0" Content="Sidechain destination address" />
 
                 <TextBox Grid.Row="1" x:Name="SidechainDestinationAddressText"  TextChanged="CalculateTransactionFee_OnChange"
-                          />
+                   BorderBrush="Green"       />
 
             </Grid>
         </Border>
 
         <!--- transaction fee-->
-        <Border Grid.Row="3">
+        <Border Grid.Row="3" Margin="50 2">
             <Grid>
 
                 <Grid.RowDefinitions>
@@ -113,7 +113,7 @@
 
 
 
-        <Border Grid.Row="4" Margin=" 0 5"  >
+        <Border Grid.Row="4" Margin=" 50 5"  >
 
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -121,12 +121,12 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.Column="0" CornerRadius="3" Background="White" Margin=" 05 5" >
-                    <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="An aditional amount of 0.00000001 xlc will be used to send this transaction." FontSize="15" FontWeight="DemiBold"  Margin=" 0 15" />
+                <Border Grid.Column="0" CornerRadius="10" Background="WhiteSmoke" Margin=" 05 5"  >
+                    <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="An aditional amount of 0.00000001 xlc will be used to send this transaction."  FontWeight="DemiBold"  Margin=" 0 5" />
                 </Border>
 
-                <Border Grid.Column="1" CornerRadius="3" Background="White" Margin=" 05 5" >
-                    <TextBlock  HorizontalAlignment="Center" TextWrapping="Wrap" Text="Please note that sending from a sidechain to the mainchain requires 240 confirmations." FontSize="15" FontWeight="DemiBold"  Margin=" 0 15" />
+                <Border Grid.Column="1" CornerRadius="10" Background="WhiteSmoke" Margin=" 05 5" >
+                    <TextBlock  HorizontalAlignment="Center" TextWrapping="Wrap" Text="Please note that sending from a sidechain to the mainchain requires 240 confirmations."   FontWeight="DemiBold"  Margin=" 0 5" />
                 </Border>
             </Grid>
 
@@ -135,7 +135,7 @@
 
 
         <!--password-->
-        <Border Grid.Row="5" >
+        <Border Grid.Row="5" Margin="50 2" >
             <Grid>
 
                 <Grid.RowDefinitions>
@@ -144,21 +144,21 @@
                 </Grid.RowDefinitions>
 
                 <Label Grid.Row="0" Content="Wallet Password" Margin="0,0,0,16"/>
-                <PasswordBox x:Name="password" PasswordChar="*" Margin="0,23,0,20" Grid.RowSpan="2"/>
+                <PasswordBox x:Name="password" PasswordChar="*" Margin="0,23,0,20" Grid.RowSpan="2" BorderBrush="Green" />
             </Grid>
         </Border>
 
         <!---   button -->
-        <Border Grid.Row="5" Margin="0,61,0,0" Grid.RowSpan="2">
-            <Grid Margin="0,0,0,47">
+        <Border Grid.Row="6" Margin="50 2" >
+            <Grid >
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width=" *"/>
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
                 <Button Grid.Column="0" x:Name="backButton" Click="backButton_Click" Padding="2" 
                          Background="White" BorderThickness="1" Foreground="Green" 
-                    Content="Back"  BorderBrush="Green" >
+                    Content="Back"  BorderBrush="Green" Margin="0 0 05 0" >
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="5"/>
@@ -166,7 +166,7 @@
                     </Button.Resources>
                 </Button>
 
-                <Button Grid.Column="1" x:Name="sendButton" Click="sendButton_Click"  Content="Send" Padding="2" 
+                <Button Grid.Column="1" x:Name="sendButton" Click="sendButton_Click"  Content="Send" Padding="2" Margin="5 0 0 0"
                         Background="Green" 
                         Foreground="White">
                     <Button.Resources>

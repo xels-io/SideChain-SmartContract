@@ -13,6 +13,7 @@ using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 using XelsDesktopWalletApp.Models.SmartContractModels;
 using XelsDesktopWalletApp.Views.layout;
+using XelsDesktopWalletApp.Views.Pages.Modals;
 
 namespace XelsDesktopWalletApp.Views.Pages.SendPages
 {
@@ -28,15 +29,12 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
         private WalletBalance WalletBalance = new WalletBalance();
 
         private BuildTransaction BuildTransaction = new BuildTransaction();
-
-        private double totalBalance;
-        private string cointype;
-        private double spendableBalance;
+         
+        private string cointype; 
 
         private double estimatedFee = 0;
         private bool isSending = false;
-
-        private decimal opReturnAmount = 1;
+         
 
         private string walletName;
         public string WalletName
@@ -89,7 +87,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
-        {
+        { 
             this.Visibility = Visibility.Collapsed;
             //this.Close();
         }

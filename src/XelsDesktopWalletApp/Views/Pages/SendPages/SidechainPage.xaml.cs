@@ -29,10 +29,8 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
 
         private BuildTransaction BuildTransaction = new BuildTransaction();
         private WalletBalance WalletBalance = new WalletBalance();
-
-        private double totalBalance;
-        private string cointype;
-        private double availableBalance;
+ 
+        private string cointype; 
 
         private double estimatedSidechainFee = 0;
         private bool isSending = false;
@@ -131,8 +129,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
 
         private void backButton_Click(object sender, RoutedEventArgs e)
         {
-            MainLayout ds = new MainLayout(this.walletName);
-            ds.Show();
+            this.Visibility = Visibility.Collapsed;
             // this.Close();
         }
 
