@@ -13,7 +13,7 @@
         <Grid Margin="100 5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/> 
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
 
@@ -128,19 +128,9 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Button Grid.Column="0"  x:Name="backButton" Content="Cancel" Click="BackButton_Click" Padding="2"  Margin="0 0 5 0"
-                         Background="White" BorderThickness="1" Foreground="Green" 
-                     BorderBrush="Green" >
-                        <Button.Resources>
-                            <Style TargetType="{x:Type Border}">
-                                <Setter Property="CornerRadius" Value="5"/>
-                            </Style>
-                        </Button.Resources>
-                    </Button>
-
-                    <Button Grid.Column="1" x:Name="SendButton" Click="sendButton_Click"  Content="Send" Padding="2" Margin="0 0 5 0"
+                    <Button x:Name="SendButton" Click="sendButton_Click"  Content="Send" Padding="2" Margin="0,0,5,0"
                         Background="Green"
-                            Foreground="White">
+                            Foreground="White" Grid.ColumnSpan="2">
                         <Button.Resources>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="CornerRadius" Value="5"/>
@@ -152,8 +142,8 @@
             </Border>
 
         </Grid>
-        
-        
+
+
     </StackPanel>
-    
+
 </Page>

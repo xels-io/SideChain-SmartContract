@@ -69,17 +69,11 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
         private void Mainchain_Button_Click(object sender, RoutedEventArgs e)
         {
             this.xelsPageContent.Content = new MainchainPage(this.walletName);
-            //Send send = new Send(this.walletName);
-            //send.Show();
-            //this.Close();
         }
 
         private void Sidechain_Button_Click(object sender, RoutedEventArgs e)
         {
             this.xelsPageContent.Content = new SidechainPage(this.walletName);
-            //SendSideChain sendSC = new SendSideChain(this.walletName);
-            //sendSC.Show();
-            //this.Close();
         }
 
         private void Window_Initialized(object sender, System.EventArgs e)
