@@ -145,8 +145,29 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
                     }
                 }
 
-                this.createWallet.StoreLocally(this.sWallet, this.walletName, "SELS", this.walletHash);
-                this.createWallet.StoreLocally(this.bWallet, this.walletName, "BELS", this.walletHash);
+                bool swalletstatus = this.createWallet.StoreLocally(this.sWallet, this.walletName, "SELS", this.walletHash);
+                bool bwalletstatus = this.createWallet.StoreLocally(this.bWallet, this.walletName, "BELS", this.walletHash);
+
+                if (swalletstatus == true && bwalletstatus == true)
+                {
+                    if (this.sWallet.PrivateKey != null && this.bWallet.PrivateKey != null)
+                    {
+                        MessageBox.Show("Successfully imported.");
+                        NavigationService navService = NavigationService.GetNavigationService(this);
+                        DashboardPage page2Obj = new DashboardPage(this.walletName);
+                        navService.Navigate(page2Obj);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Imported without private keys.");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Import is not completed");
+                }
+
+
                 //}
 
                 //Dashboard ds = new Dashboard();

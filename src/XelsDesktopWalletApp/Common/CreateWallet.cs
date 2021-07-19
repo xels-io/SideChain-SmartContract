@@ -56,7 +56,7 @@ namespace XelsDesktopWalletApp.Common
             return wallet;
         }
 
-        public void StoreLocally(Wallet wallet, string walletname, string symbol, string wallethash)
+        public bool StoreLocally(Wallet wallet, string walletname, string symbol, string wallethash)
         {
             if (walletname != null)
             {
@@ -104,18 +104,11 @@ namespace XelsDesktopWalletApp.Common
                     }
                 }
 
-                if (wallet.PrivateKey != null)
-                {
-                    MessageBox.Show("Successfully imported.");
-                }
-                else
-                {
-                    MessageBox.Show("Imported without private keys.");
-                }
+                return true;
             }
             else
             {
-                MessageBox.Show("Wallet is not provided.");
+                return false;
             }
         }
 
