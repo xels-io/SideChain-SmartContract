@@ -29,7 +29,7 @@ namespace XelsDesktopWalletApp.Models
                 {
                     return _type = "HYBRID REWARD";
                 }
-                else if(_type == "sent")
+                else if(_type == "send")
                 {
                     return _type = "SENT";
                 }
