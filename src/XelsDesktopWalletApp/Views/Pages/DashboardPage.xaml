@@ -479,7 +479,7 @@
                                         </Border>
 
                                         <Border Grid.Row="1" Background="WhiteSmoke" CornerRadius="8" >
-                                            <TextBlock  Name="ConfirmedBalanceTxt"  FontSize="20" 
+                                            <TextBlock  Name="ConfirmedBalanceTxt"  Text="0" FontSize="20" 
                                                 HorizontalAlignment="Center" 
                                    FontFamily="Microsoft YaHei" Foreground="Green"/>
                                         </Border>

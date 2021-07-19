@@ -149,9 +149,10 @@ namespace XelsDesktopWalletApp.Views.Pages
                 if (response.IsSuccessStatusCode)
                 {
                     this.walletBalanceArray = JsonConvert.DeserializeObject<WalletBalanceArray>(content);
-
-                    this.ConfirmedBalanceTxt.Text = $"{(this.walletBalanceArray.Balances[0].AmountConfirmed/100000000).ToString("0.##############")} {GlobalPropertyModel.CoinUnit}";
-                    this.UnconfirmedBalanceTxt.Text = $"{(this.walletBalanceArray.Balances[0].AmountUnconfirmed/100000000).ToString("0.##############")} (unconfirmed)";
+                    //double val = Convert.ToDouble(this.ConfirmedBalanceTxt.Text) + 1;
+                    //this.ConfirmedBalanceTxt.Text = val.ToString();
+                    this.ConfirmedBalanceTxt.Text = $"{(this.walletBalanceArray.Balances[0].AmountConfirmed / 100000000).ToString("0.##############")} {GlobalPropertyModel.CoinUnit}";
+                    this.UnconfirmedBalanceTxt.Text = $"{(this.walletBalanceArray.Balances[0].AmountUnconfirmed / 100000000).ToString("0.##############")} (unconfirmed)";
 
                     this.spendableBalance = (this.walletBalanceArray.Balances[0].SpendableAmount/100000000);
 
@@ -645,7 +646,33 @@ namespace XelsDesktopWalletApp.Views.Pages
         }
         private void dispatcherTimer_Tick(object sender, EventArgs e)
         {
+            this.DataContext = this;
+            this.walletName = this.walletName;
+            this.walletInfo.WalletName = this.walletName;
             _ = GetWalletHistoryTimerAsync(this.baseURL);
+            _ = GetWalletBalanceAsync();
+           _ = GetMaxBalanceAsync();
+           UpdateWalletAsync();
+
+            if (URLConfiguration.Chain == "-sidechain")// (!this.sidechainEnabled)
+            {
+                this.PowMiningButton.Visibility = Visibility.Hidden;
+
+            }
+
+            if (GlobalPropertyModel.MiningStart == true)
+            {
+                this.StopPowMiningButton.Visibility = Visibility.Visible;
+            }
+
+            if (GlobalPropertyModel.StakingStart == true)
+            {
+                this.StopHybridMinginButton.Visibility = Visibility.Visible;
+                this.UnlockGrid.Visibility = Visibility.Hidden;
+                this.MiningInfoBorder.Visibility = Visibility.Visible;
+                this.t.Visibility = Visibility.Hidden;
+                this.StakingInfo.Content = "Staking";
+            }
         }
     }
 }
