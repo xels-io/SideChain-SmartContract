@@ -15,6 +15,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using XelsDesktopWalletApp.Views.layout;
 using System.Windows.Input;
+using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace XelsDesktopWalletApp.Views.Pages
 {
@@ -177,7 +179,8 @@ namespace XelsDesktopWalletApp.Views.Pages
 
         public async Task GetHistoryAsync()
         {
-            await GetWalletHistoryAsync(this.baseURL);
+            //await GetWalletHistoryAsync(this.baseURL);
+             await GetWalletHistoryTimerAsync(this.baseURL);
         }
 
         private async Task GetWalletHistoryAsync(string path)
@@ -204,6 +207,43 @@ namespace XelsDesktopWalletApp.Views.Pages
                             this.HistoryListBinding.ItemsSource = h.TransactionsHistory;
                         //}                        
                     }
+                }
+                catch (Exception e)
+                {
+
+                    throw;
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+            }
+        }
+
+        private async Task GetWalletHistoryTimerAsync(string path)
+        {
+            var content = "";
+            List<TransactionItemModel> HistoryListForTimer = new List<TransactionItemModel>();
+            ObservableCollection<TransactionItemModel> observableList = new ObservableCollection<TransactionItemModel>();
+            string getUrl = path + $"/wallet/history?WalletName={this.walletInfo.WalletName}&AccountName=account 0";
+
+            HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
+
+            content = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+            {
+                try
+                {
+                    var history = JsonConvert.DeserializeObject<HistoryModelArray>(content);
+
+                    foreach (var h in history.History)
+                    {
+                        HistoryListForTimer.AddRange(h.TransactionsHistory);
+                    }
+                    observableList = new ObservableCollection<TransactionItemModel>(HistoryListForTimer);
+                    this.HistoryListBinding.ItemsSource = observableList;
                 }
                 catch (Exception e)
                 {
@@ -539,5 +579,16 @@ namespace XelsDesktopWalletApp.Views.Pages
             this.NavigationService.Navigate(new HistoryPage(this.walletName));            
         }
 
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            DispatcherTimer dispatcherTimer = new DispatcherTimer();
+            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 10);
+            dispatcherTimer.Start();
+        }
+        private void dispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            _ = GetWalletHistoryTimerAsync(this.baseURL);
+        }
     }
 }
