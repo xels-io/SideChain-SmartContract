@@ -247,6 +247,10 @@ namespace XelsDesktopWalletApp.Views.Pages
                         MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
                     }
                 }
+                else
+                {
+                    this.NewAddressPopup.IsOpen = false;
+                }
             }
             catch (Exception e)
             {
