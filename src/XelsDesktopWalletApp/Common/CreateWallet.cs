@@ -21,6 +21,7 @@ using Xels.Bitcoin.Features.Interop.ETHClient;
 using Nethereum.RPC.Eth.DTOs;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
+using System.Windows;
 
 namespace XelsDesktopWalletApp.Common
 {
@@ -103,6 +104,18 @@ namespace XelsDesktopWalletApp.Common
                     }
                 }
 
+                if (wallet.PrivateKey != null)
+                {
+                    MessageBox.Show("Successfully imported.");
+                }
+                else
+                {
+                    MessageBox.Show("Imported without private keys.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Wallet is not provided.");
             }
         }
 
@@ -235,7 +248,7 @@ namespace XelsDesktopWalletApp.Common
 
                 var balanceOfFunctionMessage = new BalanceOfFunction()
                 {
-                    Owner = address 
+                    Owner = address
                 };
 
                 IContractQueryHandler<BalanceOfFunction> balanceHandler = web3.Eth.GetContractQueryHandler<BalanceOfFunction>();
