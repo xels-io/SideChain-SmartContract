@@ -12,6 +12,8 @@ using XelsDesktopWalletApp.Views.layout;
 using System.Text.RegularExpressions;
 using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models.SmartContractModels;
+using System;
+using Nethereum.RPC.Eth.DTOs;
 
 namespace XelsDesktopWalletApp.Views.Pages.SendPages
 {
@@ -25,6 +27,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
         private readonly WalletInfo walletInfo = new WalletInfo();
         private TransactionSending transactionSending = new TransactionSending();
         private CreateWallet createWallet = new CreateWallet();
+        private TransactionWallet transactionWallet = new TransactionWallet();
 
         private string walletName;
         public string WalletName
@@ -86,12 +89,37 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
 
         private async Task SendTransactionAsync()
         {
+            //wallet Password dibe ki na..pore jane nite hobe???
             if (isValid())
             {
+                var sendResult = new Tuple<TransactionReceipt, string>(null, null);
                 string coinType = this.selsHidden.Text.ToString();
                 StoredWallet localWallateData = this.createWallet.GetLocalWalletDetailsByWalletAndCoin(GlobalPropertyModel.WalletName.ToString(), coinType);
                 if (localWallateData.Address != null)
                 {
+                    StoredWallet mWallet = new StoredWallet();
+
+                    string toAddress = this.textToAddress.Text.ToString().Trim();
+                    double amount =Convert.ToDouble(this.textAmount.Text);
+
+                    mWallet.Address = localWallateData.Address;
+                    mWallet.Walletname = localWallateData.Walletname;
+                    mWallet.Coin = localWallateData.Coin;
+                    mWallet.Wallethash = localWallateData.Wallethash;
+                    mWallet.PrivateKey = Encryption.DecryptPrivateKey(localWallateData.PrivateKey);
+                    sendResult = await this.transactionWallet.TransferAsync(mWallet, toAddress, amount);
+                    if (sendResult.Item2 == "SUCCESS")
+                    {
+                        string tranID = sendResult.Item1.TransactionHash.ToString();
+                        string message = this.textAmount.Text + " Token successfully send to " + toAddress;
+                        MessageBox.Show(message, "SUCCESS", MessageBoxButton.OK);
+
+                    }
+                    else
+                    {
+                        MessageBox.Show(sendResult.Item2, "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                   
 
                 }
                 else
