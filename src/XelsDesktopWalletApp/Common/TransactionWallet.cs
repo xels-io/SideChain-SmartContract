@@ -23,7 +23,7 @@ namespace XelsDesktopWalletApp.Common
     {
         private readonly CreateWallet createWallet = new CreateWallet();
 
-        public async Task<Tuple<TransactionReceipt,string>> TransferAsync(StoredWallet sWallet, ExchangeResponse exchangeResponse, double amount)
+        public async Task<Tuple<TransactionReceipt,string>> TransferAsync(StoredWallet sWallet, string toAddress, double amount)
         {
             string retMesage = "";
             try
@@ -53,11 +53,11 @@ namespace XelsDesktopWalletApp.Common
 
                     var transferHandler = web3.Eth.GetContractTransactionHandler<TransferFunction>();
 
-                    BigInteger amt = (BigInteger)amount * 100000000;
+                    BigInteger amt = (BigInteger)amount * 100000000;// all coin(SELS/BELS/XELS) er jonno ki same vabe amount jabe????
                     var transfer = new TransferFunction()
                     {
                         FromAddress = sWallet.Address,
-                        To = exchangeResponse.deposit_address,
+                        To = toAddress,
                         TokenAmount = amt,
                     };
 

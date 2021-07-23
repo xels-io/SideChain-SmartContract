@@ -58,24 +58,17 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
         private void restoreButton_Click(object sender, RoutedEventArgs e)
         {
             this.Visibility = Visibility.Collapsed;
-            //this.Close();
         }
 
         private void XelsButton_Click(object sender, RoutedEventArgs e)
         {
             this.ReceiveContent.Content = new XelsPage(this.walletName);
             this.XelsButton.Focus();
-            //Receive r = new Receive(this.walletName);
-            //r.Show();
-            //this.Close();
         }
 
         private void selsButton_Click(object sender, RoutedEventArgs e)
         {
             this.ReceiveContent.Content = new SelsPage(this.walletName);
-            //ReceiveSelsBels rsb = new ReceiveSelsBels(this.walletName);
-            //rsb.Show();
-            //this.Close();
         }
 
         private void Rectangle_MouseDown(object sender, RoutedEventArgs e)
@@ -86,10 +79,6 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
         private void BelsButton_Click(object sender, RoutedEventArgs e)
         {
             this.ReceiveContent.Content = new BelsPage(this.walletName);
-
-            //ReceiveSelsBels rsb = new ReceiveSelsBels(this.walletName);
-            //rsb.Show();
-            //this.Close();
         }
 
         private void UserControl_Initialized(object sender, EventArgs e)
@@ -98,15 +87,15 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
                 this.XelsButton.Focus();
         }
 
-        private void Cancel_Click(object sender, RoutedEventArgs e)
-        {
-            this.Visibility = Visibility.Collapsed;
-        }
-
         private void XelsButton_Initialized(object sender, EventArgs e)
         {
             this.ReceiveContent.Content = new XelsPage(this.walletName);
             this.XelsButton.Focus();
+        }
+
+        private void HidePopup_Click(object sender, RoutedEventArgs e)
+        {
+            this.Visibility = Visibility.Collapsed;
         }
     }
 }

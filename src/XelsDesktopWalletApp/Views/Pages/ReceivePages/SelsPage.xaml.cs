@@ -83,6 +83,7 @@ namespace XelsDesktopWalletApp.Views.Pages.ReceivePages
         private void CopyAddressButton_Click(object sender, RoutedEventArgs e)
         {
             Clipboard.SetText(this.textBoxTextToQr.Text);
+            MessageBox.Show("Address Copied Successfully :- " + this.textBoxTextToQr.Text.ToString());
         }
 
         private async Task<string> GetAPIAsync(string path)

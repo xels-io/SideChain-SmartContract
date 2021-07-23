@@ -130,17 +130,14 @@ namespace XelsDesktopWalletApp.Views.Pages.ReceivePages
                         if (address.IsUsed)
                         {
                             this.ReceiveWalletStatus.UsedAddresses.Add(address);
-                           // this.UsedAddressList.ItemsSource = this.ReceiveWalletStatus.UsedAddresses;
                         }
                         else if (address.IsChange)
                         {
                             this.ReceiveWalletStatus.ChangedAddresses.Add(address);
-                           // this.ChangedAddressList.ItemsSource = this.ReceiveWalletStatus.ChangedAddresses;
                         }
                         else
                         {
                             this.ReceiveWalletStatus.UnusedAddresses.Add(address);
-                          //  this.UnusedAddressList.ItemsSource = this.ReceiveWalletStatus.UnusedAddresses;
                         }
 
                     }
@@ -178,6 +175,7 @@ namespace XelsDesktopWalletApp.Views.Pages.ReceivePages
         private void SingleAddress_Copy_Button_Click(object sender, RoutedEventArgs e)
         {
             Clipboard.SetText(this.textBoxTextToQr.Text);
+            MessageBox.Show("Address Copied Successfully :- " + this.textBoxTextToQr.Text.ToString());
         }
 
         private void Address_Copy_Button_Click(object sender, RoutedEventArgs e)
