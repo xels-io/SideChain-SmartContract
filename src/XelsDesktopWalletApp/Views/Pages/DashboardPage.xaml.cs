@@ -642,38 +642,48 @@ namespace XelsDesktopWalletApp.Views.Pages
         {
             DispatcherTimer dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 10);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 5);
             dispatcherTimer.Start();
         }
         private void dispatcherTimer_Tick(object sender, EventArgs e)
         {
-            this.DataContext = this;
-            this.walletName = this.walletName;
-            this.walletInfo.WalletName = this.walletName;
-            _ = GetWalletHistoryTimerAsync(this.baseURL);
-            _ = GetWalletBalanceAsync();
-           _ = GetMaxBalanceAsync();
-           UpdateWalletAsync();
-
-            if (URLConfiguration.Chain == "-sidechain")// (!this.sidechainEnabled)
+            try
             {
-                this.PowMiningButton.Visibility = Visibility.Hidden;
+                this.DataContext = this;
+                this.walletName = this.walletName;
+                this.walletInfo.WalletName = this.walletName;
+                _ = GetGeneralWalletInfoAsync();
+                _ = GetWalletHistoryTimerAsync(this.baseURL);
+                _ = GetWalletBalanceAsync();
+                _ = GetMaxBalanceAsync();
+                UpdateWalletAsync();
 
+                if (URLConfiguration.Chain == "-sidechain")// (!this.sidechainEnabled)
+                {
+                    this.PowMiningButton.Visibility = Visibility.Hidden;
+
+                }
+
+                if (GlobalPropertyModel.MiningStart == true)
+                {
+                    this.StopPowMiningButton.Visibility = Visibility.Visible;
+                }
+
+                if (GlobalPropertyModel.StakingStart == true)
+                {
+                    this.StopHybridMinginButton.Visibility = Visibility.Visible;
+                    this.UnlockGrid.Visibility = Visibility.Hidden;
+                    this.MiningInfoBorder.Visibility = Visibility.Visible;
+                    this.t.Visibility = Visibility.Hidden;
+                    this.StakingInfo.Content = "Staking";
+                }
             }
-
-            if (GlobalPropertyModel.MiningStart == true)
+            catch (Exception a)
             {
-                this.StopPowMiningButton.Visibility = Visibility.Visible;
+                string exMessage = a.Message.ToString();
+                throw;
             }
-
-            if (GlobalPropertyModel.StakingStart == true)
-            {
-                this.StopHybridMinginButton.Visibility = Visibility.Visible;
-                this.UnlockGrid.Visibility = Visibility.Hidden;
-                this.MiningInfoBorder.Visibility = Visibility.Visible;
-                this.t.Visibility = Visibility.Hidden;
-                this.StakingInfo.Content = "Staking";
-            }
+           
         }
     }
 }
