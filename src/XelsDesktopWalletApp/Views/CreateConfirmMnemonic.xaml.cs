@@ -121,8 +121,8 @@ namespace XelsDesktopWalletApp.Views
             string thirdword = this.words[this.randomidx[2]];
 
             // Check for validation
-            if (this.Walletcreateconfirm.Mnemonic != "" && this.word1.Text == firstword &&
-                this.word2.Text == secondword && this.word3.Text == thirdword)
+            if (this.Walletcreateconfirm.Mnemonic != "" && this.word1.Text.Trim() == firstword &&
+                this.word2.Text.Trim() == secondword && this.word3.Text.Trim() == thirdword)
             {
                 this.canPassMnemonic = true;
             }

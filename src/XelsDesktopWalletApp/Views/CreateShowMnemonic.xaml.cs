@@ -11,7 +11,7 @@ namespace XelsDesktopWalletApp.Views
     /// </summary>
     public partial class CreateShowMnemonic : Window
     {
-
+        private string copyMnemonicText; 
         #region Show Mnemonic Property
 
         WalletCreation _walletcreate = new WalletCreation();
@@ -36,15 +36,17 @@ namespace XelsDesktopWalletApp.Views
             InitializeComponent();
             string words = model.Mnemonic.Replace("\"", "");
             string[] mn = words.Split(' ');
-            string[] mnv = new string[12] ;
+            string[] mnv = new string[12];
+            string[] mnCopy = new string[12];
 
-            for(int i =0; i< mn.Length; i++)
+            for (int i =0; i< mn.Length; i++)
             {
                 mnv[i] = $"{ i + 1 }.{" "}{ mn[i] }{" "}";
-              
+                mnCopy[i] = mn[i];
             }
 
              this.textBoxTextToMnemonic.Text = String.Join(" ", mnv); 
+            this.copyMnemonicText = String.Join(" ", mnCopy);
 
             InitializeWalletCreationModel(model);
         }
@@ -59,7 +61,7 @@ namespace XelsDesktopWalletApp.Views
 
         private void copyClipboardButton_Click(object sender, RoutedEventArgs e)
         {
-            Clipboard.SetText(this.textBoxTextToMnemonic.Text);
+            Clipboard.SetText(this.copyMnemonicText);
         }
 
         private void continueButton_Click(object sender, RoutedEventArgs e)
