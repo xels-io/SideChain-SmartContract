@@ -111,7 +111,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
                     if (sendResult.Item2 == "SUCCESS")
                     {
                         string tranID = sendResult.Item1.TransactionHash.ToString();
-                        string message = this.textAmount.Text + " Token successfully send to " + toAddress;
+                        string message = this.textAmount.Text + " Token successfully send to " + toAddress + "and Transaction Id: "+ tranID;
                         MessageBox.Show(message, "SUCCESS", MessageBoxButton.OK);
 
                     }
