@@ -11,6 +11,7 @@ using Nethereum.Contracts.ContractHandlers;
 using Xels.Bitcoin.Features.Interop.ETHClient;
 using XelsDesktopWalletApp.Models.CommonModels;
 using NBitcoin;
+using System.Windows;
 
 namespace XelsDesktopWalletApp.Common
 {
@@ -62,7 +63,7 @@ namespace XelsDesktopWalletApp.Common
             return wallet;
         }
 
-        public void StoreLocally(Wallet wallet, string walletname, string symbol, string wallethash)
+        public bool StoreLocally(Wallet wallet, string walletname, string symbol, string wallethash)
         {
             if (walletname != null)
             {
@@ -110,6 +111,11 @@ namespace XelsDesktopWalletApp.Common
                     }
                 }
 
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -242,7 +248,7 @@ namespace XelsDesktopWalletApp.Common
 
                 var balanceOfFunctionMessage = new BalanceOfFunction()
                 {
-                    Owner = address 
+                    Owner = address
                 };
 
                 IContractQueryHandler<BalanceOfFunction> balanceHandler = web3.Eth.GetContractQueryHandler<BalanceOfFunction>();

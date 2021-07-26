@@ -51,20 +51,20 @@
                         </TextBox>
 
                     </StackPanel>
-                    <StackPanel Orientation="Vertical" Margin="-1,56,0,41"  Grid.ColumnSpan="2" >
+                    <StackPanel Orientation="Vertical" Margin="-1,56,0,0"  Grid.ColumnSpan="2" >
                         <!--<TextBlock x:Name="MessageTxt"  
                                        Text="{Binding ElementName=AmountTxt, Path=Text, StringFormat='You will get {0} XELS', Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                        Height="22" Width="578" Foreground="Black"
                                        FontFamily="Microsoft YaHei" FontSize="13" Padding="0" Margin="0"/>-->
 
-                        <TextBlock x:Name="MessageTxt" Height="22" Width="578" Foreground="Black"
-                                       FontFamily="Microsoft YaHei" FontSize="13" Padding="0" Margin="0"/>
+                        <TextBlock x:Name="MessageTxt" Height="40" Width="578" Foreground="Black"
+                                       FontFamily="Microsoft YaHei" FontSize="20" Padding="0" Margin="0"/>
 
                     </StackPanel>
-                    <StackPanel Orientation="Vertical" Margin="10,81,10,10"  Grid.ColumnSpan="2" >
+                    <StackPanel Orientation="Vertical" Margin="10,86,10,0"  Grid.ColumnSpan="2" >
                         <Button x:Name="exchangeSubmit" Content="Exchange Order Submit" Click="ExchangeOrderSubmitButton_Click" FontFamily="Microsoft YaHei Light" 
                                 Foreground="White" Background="#FF41A43C" BorderBrush="#FF41A43C" FontSize="10" 
-                                Width="148" Height="23">
+                                Width="148" Height="23" RenderTransformOrigin="0.492,1.438">
                             <Button.Resources>
                                 <Style TargetType="{x:Type Border}">
                                     <Setter Property="CornerRadius" Value="2"/>

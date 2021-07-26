@@ -83,6 +83,13 @@
                 </Grid>                  
             </Border>
 
+            <Border Margin="250 15" Background="#FFFBCADA">
+
+                <TextBlock TextWrapping="WrapWithOverflow" Padding="10" HorizontalAlignment="Center" TextAlignment="Center" Foreground="#FF5B5555">
+                    Your passphrase will be required to recover your wallet in the future. <LineBreak/> <Bold>Keep it safe if you choose to have one</Bold>.
+                </TextBlock>
+            </Border>
+
             <Border Margin="250 05">
                 <Grid>
 

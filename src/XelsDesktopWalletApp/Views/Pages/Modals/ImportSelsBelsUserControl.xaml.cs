@@ -20,7 +20,7 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
     /// Interaction logic for ImportSelsBelsUserControl.xaml
     /// </summary>
     public partial class ImportSelsBelsUserControl : UserControl
-    { 
+    {
 
         private readonly WalletInfo walletInfo = new WalletInfo();
         private string walletName;
@@ -80,21 +80,18 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
 
         public bool isValidPKey()
         {
-            if (isValid())
+            if (this.SELSPrivateKeyTxt.Text == string.Empty)
             {
-                if (this.SELSPrivateKeyTxt.Text == string.Empty)
-                {
-                    MessageBox.Show("SELS Private Key is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                    this.SELSPrivateKeyTxt.Focus();
-                    return false;
-                }
+                MessageBox.Show("SELS Private Key is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.SELSPrivateKeyTxt.Focus();
+                return false;
+            }
 
-                if (this.BELSPrivateKeyTxt.Text == string.Empty)
-                {
-                    MessageBox.Show("BELS Private Key is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                    this.BELSPrivateKeyTxt.Focus();
-                    return false;
-                }
+            if (this.BELSPrivateKeyTxt.Text == string.Empty)
+            {
+                MessageBox.Show("BELS Private Key is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.BELSPrivateKeyTxt.Focus();
+                return false;
             }
 
             return true;
@@ -134,8 +131,7 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
             //{
             if(this.SELSPrivateKeyTxt.IsEnabled == true && this.BELSPrivateKeyTxt.IsEnabled == true)
             {
-                this.sWallet = this.createWallet.WalletCreationFromPk(this.SELSPrivateKeyTxt.Text);
-                this.sWallet.PrivateKey = Encryption.EncryptPrivateKey(this.sWallet.PrivateKey);
+                this.walletHash = MnemonicToHash(this.MnemonicTxt.Text);
 
                 this.bWallet = this.createWallet.WalletCreationFromPk(this.BELSPrivateKeyTxt.Text);
                 this.bWallet.PrivateKey = Encryption.EncryptPrivateKey(this.bWallet.PrivateKey);
