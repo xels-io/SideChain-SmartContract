@@ -126,8 +126,7 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
 
             //if (this.isCheckBoxChecked == true)
             //{
-            //this.wallet = this.createWallet.WalletCreation(this.MnemonicTxt.Text);
-            //this.wallet.PrivateKey = this.encryption.encrypt(this.wallet.PrivateKey);
+           
             //this.Token.storeLocally(this.wallet, this.walletName, "SELS", this.walletHash);
             //this.Token.storeLocally(this.wallet, this.walletName, "BELS", this.walletHash);
             //}
@@ -141,15 +140,13 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
                 this.bWallet = this.createWallet.WalletCreationFromPk(this.BELSPrivateKeyTxt.Text);
                 this.bWallet.PrivateKey = Encryption.EncryptPrivateKey(this.bWallet.PrivateKey);
             }
-            
-
-            this.createWallet.StoreLocally(this.sWallet, this.walletName, "SELS", this.walletHash);
-            this.createWallet.StoreLocally(this.bWallet, this.walletName, "BELS", this.walletHash);
-            //}
-
-            //Dashboard ds = new Dashboard();
-            //ds.Show();
-            //this.Close();
+            else
+            {
+                this.wallet = this.createWallet.WalletCreation(this.MnemonicTxt.Text);
+                //this.wallet.PrivateKey = this.encryption.encrypt(this.wallet.PrivateKey);
+                this.createWallet.StoreLocally(this.wallet, this.walletName, "SELS", this.walletHash);
+                this.createWallet.StoreLocally(this.wallet, this.walletName, "BELS", this.walletHash);
+            } 
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
