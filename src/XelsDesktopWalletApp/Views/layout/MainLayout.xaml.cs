@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 using XelsDesktopWalletApp.Views.Pages;
+using XelsDesktopWalletApp.Views.Pages.Modals;
 using XelsDesktopWalletApp.Views.ViewPage;
 
 
@@ -109,40 +110,31 @@ namespace XelsDesktopWalletApp.Views.layout
 
         private void LogOut_Button(object sender, RoutedEventArgs e)
         {
-            LogoutConfirm lc = new LogoutConfirm(this.walletName);
-            lc.Show();
-            this.Close();
+            //LogoutConfirm lc = new LogoutConfirm(this.walletName);
+            //lc.Show();
+            //this.Close();
+            this.PageContent.Content= new LogoutConfirmUserControl(this.walletName);
         }
 
         private void AddressBookButton_Click(object sender, RoutedEventArgs e)
         {
 
             this.PageContent.Content = new AddressBookPage(this.walletName);
-            //AddressBook AddressBook = new AddressBook(this.walletName);
-            //AddressBook.Show();
-            //this.Close();
+
         }
 
         private void AdvancedButton_Click(object sender, RoutedEventArgs e)
         {
             this.PageContent.Content = new AdvancedPage(this.walletName);
-            //Advanced Advanced = new Advanced(this.walletName);
-            //Advanced.Show();
-            //this.Close();
+
         }
 
         private void Window_Initialized(object sender, System.EventArgs e)
         {            
             this.PageContent.Content = new DashboardPage(this.walletName);
-            //this.PageContent.Refresh();
 
            
         }
-
-        //private void windowMax_Click(object sender, RoutedEventArgs e)
-        //{
-        //    this.WindowState = WindowState.Maximized;
-        //}
 
         private void windowMin_Click(object sender, RoutedEventArgs e)
         {
