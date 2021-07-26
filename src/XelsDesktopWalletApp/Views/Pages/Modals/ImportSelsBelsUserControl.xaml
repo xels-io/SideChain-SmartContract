@@ -6,21 +6,18 @@
              xmlns:local="clr-namespace:XelsDesktopWalletApp.Views.Pages.Modals"
              mc:Ignorable="d" 
              d:HorizontalAlignment="Stretch" d:VerticalAlignment="Stretch" >
-
-    <!--d:DesignHeight="450" d:DesignWidth="500"-->
-    
+ 
 
     <Grid Background="White">
         <Rectangle Fill="AliceBlue" Opacity=".8" MouseDown="Rectangle_MouseDown" /> 
-        <!---->
-
-        <Border Margin="20" CornerRadius="10"  Background="White" Height="550" Width="700">
+        
+        <Border Margin="20" CornerRadius="10"  Background="White" Height="550" Width="600">
             <Grid Margin=" 5 5 5 5">
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height=".5*" />
+                    <RowDefinition Height=".4*" />
                     <RowDefinition Height="*" />                
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
@@ -28,10 +25,10 @@
                 <Border Grid.Row="0" >
 
                     <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <Label Margin="0 25 0 0" Content="Import Address" HorizontalAlignment="Center" FontSize="20" FontWeight="DemiBold"  />
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Margin="0 25 0 0" Content="Import Address" HorizontalAlignment="Center" FontSize="20" FontWeight="DemiBold"  />
                     </Grid>
                     
                 </Border>
@@ -41,26 +38,27 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
+                            <!--<RowDefinition Height="*"/>-->
                         </Grid.RowDefinitions>
 
                         <Label Grid.Row="0" Content="Your Wallet(Xels) Mnemonic:" BorderBrush="Green" />
                         <TextBox Grid.Row="1" Name="MnemonicTxt" BorderBrush="Green"  />
+                        <!--<PasswordBox  Grid.Row="2" x:Name="Password" />-->
 
                     </Grid>
                 </Border>
 
-                <Border Grid.Row="02" >
+                <Border Grid.Row="02"  Margin="5" >
                     <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height=".3*"/>
-                        </Grid.RowDefinitions>
-                        <CheckBox Grid.Row="0" x:Name="CheckboxPkey"  Content="Token address generate from the Mnemonics"
-                 Checked="CheckBox_Checked"  Margin="5" Unchecked="CheckBox_Unchecked"/>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <CheckBox Grid.Column="0" x:Name="CheckboxPkey"  Content="Token address generate from the Mnemonics" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
                     </Grid>
                     
                 </Border>
 
-                <Border Grid.Row="03" x:Name="SelsBelsBorder">
+                <Border Grid.Row="3" x:Name="SelsBelsBorder"  Margin="5">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
@@ -97,10 +95,11 @@
 
                 <Border Grid.Row="4" Margin="5">
                     <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>                             
-                        </Grid.RowDefinitions>
-                        <Button Grid.Row="0" x:Name="TransactionIDCopyButton"   Click="TransactionIDCopyButton_Click" 
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" x:Name="TransactionIDCopyButton"   Click="TransactionIDCopyButton_Click" 
                             Content="Import Now"  
                             Background="White" Foreground="Green"    BorderBrush="Green" RenderTransformOrigin="0.5,0.5">
                             <Button.Resources>
@@ -116,6 +115,14 @@
                                     <TranslateTransform X="0.439"/>
                                 </TransformGroup>
                             </Button.RenderTransform>
+                        </Button>
+                        <Button Grid.Column="1" Margin="15 0 0 0" Click="HidePopup_Click" Background="WhiteSmoke" Content="Close" Foreground="Green" >
+
+                            <Button.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="50"/>
+                                </Style>
+                            </Button.Resources>
                         </Button>
 
                     </Grid>

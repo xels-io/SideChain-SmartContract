@@ -37,8 +37,6 @@ namespace XelsDesktopWalletApp.Common
 
         public Wallet WalletCreation(string mnemonics)
         {
-            
-
             string keyPath = "m/44'/60'/0'/0";
             var mnemonic = new Mnemonic(mnemonics);
             var keyPathToDerive = NBitcoin.KeyPath.Parse(keyPath);

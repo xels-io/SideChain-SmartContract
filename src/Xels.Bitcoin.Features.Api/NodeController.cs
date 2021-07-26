@@ -36,6 +36,7 @@ namespace Xels.Bitcoin.Features.Api
     /// </summary>
     [ApiVersion("1")]
     [Route("api/[controller]")]
+    [ApiController]
     public class NodeController : Controller
     {
         /// <summary>Full Node.</summary>

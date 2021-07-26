@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -13,6 +15,7 @@ using System.Windows.Shapes;
 
 using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
+using XelsDesktopWalletApp.Models.CommonModels;
 
 namespace XelsDesktopWalletApp.Views.Pages.Modals
 {
@@ -21,7 +24,7 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
     /// </summary>
     public partial class ImportSelsBelsUserControl : UserControl
     {
-
+        string baseURL = URLConfiguration.BaseURL;
         private readonly WalletInfo walletInfo = new WalletInfo();
         private string walletName;
         private Wallet wallet = new Wallet();
@@ -118,31 +121,38 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
 
         private void TransactionIDCopyButton_Click(object sender, RoutedEventArgs e)
         {
-            this.walletHash = MnemonicToHash(this.MnemonicTxt.Text);
-
-
-            //if (this.isCheckBoxChecked == true)
-            //{
-           
-            //this.Token.storeLocally(this.wallet, this.walletName, "SELS", this.walletHash);
-            //this.Token.storeLocally(this.wallet, this.walletName, "BELS", this.walletHash);
-            //}
-            //else
-            //{
-            if(this.SELSPrivateKeyTxt.IsEnabled == true && this.BELSPrivateKeyTxt.IsEnabled == true)
+            //VerifyMnemonicsAsync();
+            if (isValid())
             {
+
                 this.walletHash = MnemonicToHash(this.MnemonicTxt.Text);
 
-                this.bWallet = this.createWallet.WalletCreationFromPk(this.BELSPrivateKeyTxt.Text);
-                this.bWallet.PrivateKey = Encryption.EncryptPrivateKey(this.bWallet.PrivateKey);
-            }
-            else
-            {
-                this.wallet = this.createWallet.WalletCreation(this.MnemonicTxt.Text);
-                //this.wallet.PrivateKey = this.encryption.encrypt(this.wallet.PrivateKey);
-                this.createWallet.StoreLocally(this.wallet, this.walletName, "SELS", this.walletHash);
-                this.createWallet.StoreLocally(this.wallet, this.walletName, "BELS", this.walletHash);
-            } 
+                if (this.SELSPrivateKeyTxt.IsEnabled == true && this.BELSPrivateKeyTxt.IsEnabled == true)
+                {
+                    if (isValidPKey())
+                    {
+                        this.sWallet = this.createWallet.WalletCreationFromPk(this.SELSPrivateKeyTxt.Text);
+                        this.sWallet.PrivateKey = Encryption.EncryptPrivateKey(this.sWallet.PrivateKey);
+
+                        this.bWallet = this.createWallet.WalletCreationFromPk(this.BELSPrivateKeyTxt.Text);
+                        this.bWallet.PrivateKey = Encryption.EncryptPrivateKey(this.bWallet.PrivateKey);
+
+                        this.createWallet.StoreLocally(this.sWallet, this.walletName, "SELS", this.walletHash);
+                        this.createWallet.StoreLocally(this.bWallet, this.walletName, "BELS", this.walletHash);
+                    }
+                }
+                else
+                {
+                    this.wallet = this.createWallet.WalletCreation(this.MnemonicTxt.Text);
+                    this.wallet.PrivateKey = Encryption.EncryptPrivateKey(this.wallet.PrivateKey);
+
+                    this.createWallet.StoreLocally(this.wallet, this.walletName, "SELS", this.walletHash);
+                    this.createWallet.StoreLocally(this.wallet, this.walletName, "BELS", this.walletHash);
+                }
+                MessageBox.Show("Import Done!");
+
+                this.Visibility = Visibility.Collapsed;
+            }            
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
@@ -152,6 +162,7 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
             this.SELSPrivateKeyTxt.IsEnabled = false;
             this.BELSPrivateKeyTxt.IsEnabled = false;
         }
+      
         private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             this.CheckboxPkey.IsChecked = false;
@@ -160,10 +171,29 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
             this.BELSPrivateKeyTxt.IsEnabled = true;
 
         }
+                
+        private void HidePopup_Click(object sender, RoutedEventArgs e)
+        {
+            this.Visibility = Visibility.Collapsed;
+        }
 
         private void Rectangle_MouseDown(object sender, RoutedEventArgs e)
         {
             this.Visibility = Visibility.Collapsed;
         }
+
+        //private async Task VerifyMnemonicsAsync()
+        //{
+        //    string postUrl = this.baseURL + "/Wallet/recover";
+
+        //    WalletRecovery recovery = new WalletRecovery();
+        //    recovery.Name = this.walletName;             
+        //    recovery.Mnemonic = this.MnemonicTxt.Text; 
+        //    recovery.Password = this.Password.Password;
+
+        //    HttpResponseMessage response = await URLConfiguration.Client.PostAsJsonAsync(postUrl, recovery);
+
+        //    var content = await response.Content.ReadAsStringAsync();
+        //}
     }
 }
