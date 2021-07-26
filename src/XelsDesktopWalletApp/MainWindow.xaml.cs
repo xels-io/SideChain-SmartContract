@@ -114,6 +114,8 @@ namespace XelsDesktopWalletApp
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
+            MainWindow parentWindow = (MainWindow)Window.GetWindow(this);
+            parentWindow.Visibility = Visibility.Collapsed;
             CreateOrRestore cr = new CreateOrRestore();
 
             cr.ShowDialog();
