@@ -6,21 +6,11 @@ using System.Numerics;
 using System.Threading.Tasks;
 using Nethereum.Web3.Accounts;
 using Newtonsoft.Json;
-using Nethereum.Contracts.Extensions;
 using Nethereum.Web3;
-using Nethereum.ABI.FunctionEncoding.Attributes;
-using Nethereum.Contracts.CQS;
-using Nethereum.Util;
-using Nethereum.Web3.Accounts;
-using Nethereum.Hex.HexConvertors.Extensions;
-using Nethereum.Contracts;
-using Nethereum.Contracts.Extensions;
-using System.Numerics;
 using Nethereum.Contracts.ContractHandlers;
 using Xels.Bitcoin.Features.Interop.ETHClient;
-using Nethereum.RPC.Eth.DTOs;
-using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
+using NBitcoin;
 
 namespace XelsDesktopWalletApp.Common
 {
@@ -43,6 +33,23 @@ namespace XelsDesktopWalletApp.Common
     public class CreateWallet
     {
         Token token = new Token();
+
+        public Wallet WalletCreation(string mnemonics)
+        {
+            
+
+            string keyPath = "m/44'/60'/0'/0";
+            var mnemonic = new Mnemonic(mnemonics);
+            var keyPathToDerive = NBitcoin.KeyPath.Parse(keyPath);
+            var pk = new ExtKey(mnemonic.DeriveSeed("")).Derive(keyPathToDerive);
+            ExtKey keyNew = pk.Derive(0);
+            var pkeyBytes = keyNew.PrivateKey.PubKey.ToHex();
+
+            var account = new Account("0x"+pkeyBytes);
+            Wallet Wallet = new Wallet() { Address = account.Address, PrivateKey = account.PrivateKey};
+
+            return Wallet;
+    }
 
         public Wallet WalletCreationFromPk(string pKey)
         {
