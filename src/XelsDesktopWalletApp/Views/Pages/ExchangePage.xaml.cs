@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using Nethereum.RPC.Eth.DTOs;
 using Newtonsoft.Json;
 using XelsDesktopWalletApp.Common;
@@ -121,6 +122,8 @@ namespace XelsDesktopWalletApp.Views.Pages
             Task.Run(async () => await LoadCreateAsync());
             Task.Run(async () => await UpdateExchangeListAsync());
             this.updatesuccess = false;
+           // URLConfiguration.Pagenavigation = true;
+           
         }
 
 

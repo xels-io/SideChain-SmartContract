@@ -83,6 +83,7 @@ namespace XelsDesktopWalletApp.Views.Pages
         private StakingInfoModel stakingInfo = new StakingInfoModel();
         public Money awaitingMaturity = 0;
 
+       public  DispatcherTimer dispatcherTimer = new DispatcherTimer();
         public DashboardPage()
         {
             InitializeComponent();
@@ -640,49 +641,62 @@ namespace XelsDesktopWalletApp.Views.Pages
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            DispatcherTimer dispatcherTimer = new DispatcherTimer();
-            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 5);
-            dispatcherTimer.Start();
+            //DispatcherTimer dispatcherTimer = new DispatcherTimer();
+            URLConfiguration.Pagenavigation = false;
+            this.dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+            this.dispatcherTimer.Interval = new TimeSpan(0, 0, 10);
+            //if (!URLConfiguration.Pagenavigation)
+           // {
+                this.dispatcherTimer.Start();
+            //}
+
         }
         private void dispatcherTimer_Tick(object sender, EventArgs e)
         {
-            try
-            {
-                this.DataContext = this;
-                this.walletName = this.walletName;
-                this.walletInfo.WalletName = this.walletName;
-                _ = GetGeneralWalletInfoAsync();
-                _ = GetWalletHistoryTimerAsync(this.baseURL);
-                _ = GetWalletBalanceAsync();
-                _ = GetMaxBalanceAsync();
-                UpdateWalletAsync();
-
-                if (URLConfiguration.Chain == "-sidechain")// (!this.sidechainEnabled)
+            //if (!URLConfiguration.Pagenavigation)
+            //{
+                try
                 {
-                    this.PowMiningButton.Visibility = Visibility.Hidden;
+                    this.DataContext = this;
+                    this.walletName = this.walletName;
+                    this.walletInfo.WalletName = this.walletName;
+                    _ = GetGeneralWalletInfoAsync();
+                    _ = GetWalletHistoryTimerAsync(this.baseURL);
+                    _ = GetWalletBalanceAsync();
+                    _ = GetMaxBalanceAsync();
+                    UpdateWalletAsync();
 
+                    if (URLConfiguration.Chain == "-sidechain")// (!this.sidechainEnabled)
+                    {
+                        this.PowMiningButton.Visibility = Visibility.Hidden;
+
+                    }
+
+                    if (GlobalPropertyModel.MiningStart == true)
+                    {
+                        this.StopPowMiningButton.Visibility = Visibility.Visible;
+                    }
+
+                    if (GlobalPropertyModel.StakingStart == true)
+                    {
+                        this.StopHybridMinginButton.Visibility = Visibility.Visible;
+                        this.UnlockGrid.Visibility = Visibility.Hidden;
+                        this.MiningInfoBorder.Visibility = Visibility.Visible;
+                        this.t.Visibility = Visibility.Hidden;
+                        this.StakingInfo.Content = "Staking";
+                    }
                 }
-
-                if (GlobalPropertyModel.MiningStart == true)
+                catch (Exception a)
                 {
-                    this.StopPowMiningButton.Visibility = Visibility.Visible;
+                    string exMessage = a.Message.ToString();
+                    throw;
                 }
-
-                if (GlobalPropertyModel.StakingStart == true)
-                {
-                    this.StopHybridMinginButton.Visibility = Visibility.Visible;
-                    this.UnlockGrid.Visibility = Visibility.Hidden;
-                    this.MiningInfoBorder.Visibility = Visibility.Visible;
-                    this.t.Visibility = Visibility.Hidden;
-                    this.StakingInfo.Content = "Staking";
-                }
-            }
-            catch (Exception a)
-            {
-                string exMessage = a.Message.ToString();
-                throw;
-            }
+            //}
+            //else
+            //{
+            //    this.dispatcherTimer.Stop();
+            //}
+          
            
         }
     }

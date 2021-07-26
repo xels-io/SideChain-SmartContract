@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
+using System.Windows.Threading;
 
 namespace XelsDesktopWalletApp.Models.CommonModels
 {
@@ -25,6 +26,7 @@ namespace XelsDesktopWalletApp.Models.CommonModels
         public static string SELSContractAddress = "0x0E74264EAd02B3a9768Dc4F1A509fA7F49952df6";
         public static string BELSContractAddress = "0x6fcf304f636d24ca102ab6e4e4e089115c04ebae";
         public static string TSTContractAddress = "0xfcb525e2c7351900a204d09bd507a522cebac783";
+        public static bool Pagenavigation;//timer stop korar jonno 
 
     }
 }
