@@ -6,14 +6,14 @@
       xmlns:local="clr-namespace:XelsDesktopWalletApp.Views.Pages"
        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="500" d:DesignWidth="800"
       Title="CreateWalletPage">
 
 
 
-    <StackPanel Background="White" Margin="20 15">
-      
-        <Border Margin="20 5">
+    <StackPanel Background="White" Margin="20 10">
+
+        <Border Margin="20 5" Background="Green" CornerRadius="5">
             <Label  Content="Create a wallet" HorizontalAlignment="Center" Margin="5 0" FontSize="28" FontWeight="DemiBold" />
         </Border>
 

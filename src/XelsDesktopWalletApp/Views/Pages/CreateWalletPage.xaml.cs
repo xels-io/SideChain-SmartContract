@@ -151,9 +151,10 @@ namespace XelsDesktopWalletApp.Views.Pages
                     creation.Passphrase = this.passphrase.Text;
                     creation.Mnemonic = this._mnemonic;
 
-                    CreateShowMnemonic csm = new CreateShowMnemonic(creation);
-                    csm.Show();
-                    //this.Close();
+                    CreateOrRestore parentWindow = (CreateOrRestore)Window.GetWindow(this);
+                    parentWindow.Content = new CreateShowMnemonic(creation);
+                    //CreateShowMnemonic csm = new CreateShowMnemonic(creation);
+                    //csm.Show();
                 }
             }
         }

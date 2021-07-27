@@ -82,6 +82,10 @@ namespace XelsDesktopWalletApp.Views.Pages
                 if (response.IsSuccessStatusCode)
                 {
                     MessageBox.Show($"Successfully saved data with Name:{ recovery.Name}");
+                    CreateOrRestore parentWindow = (CreateOrRestore)Window.GetWindow(this);
+                    parentWindow.Visibility = Visibility.Collapsed;
+                    MainWindow mw = new MainWindow();
+                    mw.Show();
                 }
                 else
                 {

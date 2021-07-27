@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows;
-
+using System.Windows.Controls;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Views.Pages;
 
@@ -9,7 +9,7 @@ namespace XelsDesktopWalletApp.Views
     /// <summary>
     /// Interaction logic for CreateShowMnemonic.xaml
     /// </summary>
-    public partial class CreateShowMnemonic : Window
+    public partial class CreateShowMnemonic : Page
     {
         private string copyMnemonicText; 
         #region Show Mnemonic Property
@@ -66,16 +66,16 @@ namespace XelsDesktopWalletApp.Views
 
         private void continueButton_Click(object sender, RoutedEventArgs e)
         {
-            CreateConfirmMnemonic ccm = new CreateConfirmMnemonic(this._walletcreate);
-            ccm.Show();
-            this.Close();
+            CreateOrRestore parentWindow = (CreateOrRestore)Window.GetWindow(this);
+            parentWindow.Content = new CreateConfirmMnemonic(this._walletcreate);
+
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
         {
-            Create create = new Create();
-            create.Show();
-            this.Close();
+            CreateOrRestore parentWindow = (CreateOrRestore)Window.GetWindow(this);
+            parentWindow.Content = new CreateWalletPage();
+          
         }
     }
 }

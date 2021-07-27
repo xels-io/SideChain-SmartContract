@@ -1,4 +1,4 @@
-﻿<Window x:Class="XelsDesktopWalletApp.Views.CreateConfirmMnemonic"
+﻿<Page x:Class="XelsDesktopWalletApp.Views.CreateConfirmMnemonic"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,8 +10,8 @@
         <StackPanel>
 
             <StackPanel>
-
-                <Grid Background="Green" Margin="10" Height="100">
+            <Border Margin="20 5" Height="109" Background="Green" CornerRadius="5">
+                <Grid Background="Green" Margin="10" Height="100" Width="1001">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
@@ -26,7 +26,8 @@
                         </Image>
                     </Border>
                 </Grid>
-            </StackPanel>
+            </Border>
+        </StackPanel>
 
         <Border>
             <Label Margin="0,10,0,0" Content="Confirm words" HorizontalAlignment="Center"  FontSize="28" FontWeight="DemiBold" />
@@ -100,4 +101,4 @@
            
         </StackPanel>
    
-</Window>
+</Page>

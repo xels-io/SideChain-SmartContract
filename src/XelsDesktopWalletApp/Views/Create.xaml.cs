@@ -148,7 +148,7 @@ namespace XelsDesktopWalletApp.Views
                     creation.Mnemonic = this._mnemonic;
 
                     CreateShowMnemonic csm = new CreateShowMnemonic(creation);
-                    csm.Show();
+                   // csm.Show();
                     this.Close();
                 }
             }

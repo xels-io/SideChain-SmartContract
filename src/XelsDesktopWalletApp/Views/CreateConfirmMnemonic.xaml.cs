@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-
+using System.Windows.Controls;
 using Newtonsoft.Json;
 
 using XelsDesktopWalletApp.Models;
@@ -16,7 +16,7 @@ namespace XelsDesktopWalletApp.Views
     /// <summary>
     /// Interaction logic for CreateConfirmMnemonic.xaml
     /// </summary>
-    public partial class CreateConfirmMnemonic : Window
+    public partial class CreateConfirmMnemonic : Page
     {
 
         string baseURL = URLConfiguration.BaseURL;//"http://localhost:37221/api/wallet";
@@ -134,9 +134,8 @@ namespace XelsDesktopWalletApp.Views
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            CreateShowMnemonic cr = new CreateShowMnemonic(this.Walletcreateconfirm);
-            cr.Show();
-            this.Close();
+            CreateOrRestore parentWindow = (CreateOrRestore)Window.GetWindow(this);
+            parentWindow.Content = new CreateShowMnemonic(this.Walletcreateconfirm);
         }
 
         private async void CreateButton_Click(object sender, RoutedEventArgs e)
@@ -154,10 +153,10 @@ namespace XelsDesktopWalletApp.Views
                 if (response.IsSuccessStatusCode)
                 {
                     MessageBox.Show($"Successfully created wallet with Name: {this.Walletcreateconfirm.Name}");
-
+                    CreateOrRestore parentWindow = (CreateOrRestore)Window.GetWindow(this);
+                    parentWindow.Visibility = Visibility.Collapsed;
                     MainWindow mw = new MainWindow();
                     mw.Show();
-                    this.Close();
                 }
                 else
                 {
