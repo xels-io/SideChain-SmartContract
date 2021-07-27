@@ -140,34 +140,43 @@ namespace XelsDesktopWalletApp.Views
 
         private async void CreateButton_Click(object sender, RoutedEventArgs e)
         {
-            CheckMnemonic();
-
-            if (this.canPassMnemonic == true)
+            try
             {
-                string postUrl = this.baseURL + "/wallet/create";
-
-                HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(this.Walletcreateconfirm), Encoding.UTF8, "application/json"));
-
-                var content = await response.Content.ReadAsStringAsync(); 
-
-                if (response.IsSuccessStatusCode)
+                this.IsEnabled = false;
+                CheckMnemonic();
+                if (this.canPassMnemonic == true)
                 {
-                    MessageBox.Show($"Successfully created wallet with Name: {this.Walletcreateconfirm.Name}");
-                    CreateOrRestore parentWindow = (CreateOrRestore)Window.GetWindow(this);
-                    parentWindow.Visibility = Visibility.Collapsed;
-                    MainWindow mw = new MainWindow();
-                    mw.Show();
-                }
-                else
-                {
-                    var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
+                    string postUrl = this.baseURL + "/wallet/create";
 
-                    foreach (var error in errors.Errors)
+                    HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(this.Walletcreateconfirm), Encoding.UTF8, "application/json"));
+
+                    var content = await response.Content.ReadAsStringAsync();
+
+                    if (response.IsSuccessStatusCode)
                     {
-                        MessageBox.Show(error.Message);
+                        MessageBox.Show($"Successfully created wallet with Name: {this.Walletcreateconfirm.Name}");
+                        CreateOrRestore parentWindow = (CreateOrRestore)Window.GetWindow(this);
+                        parentWindow.Visibility = Visibility.Collapsed;
+                        MainWindow mw = new MainWindow();
+                        mw.Show();
+                    }
+                    else
+                    {
+                        var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
+
+                        foreach (var error in errors.Errors)
+                        {
+                            MessageBox.Show(error.Message);
+                        }
                     }
                 }
             }
+            catch (Exception)
+            {
+                this.IsEnabled = true;
+                throw;
+            }
+            this.IsEnabled = true;
         }
 
     }

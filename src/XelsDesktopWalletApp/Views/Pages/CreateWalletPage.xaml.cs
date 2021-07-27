@@ -138,6 +138,7 @@ namespace XelsDesktopWalletApp.Views.Pages
 
         private void CreateButton_Click(object sender, RoutedEventArgs e)
         {
+            this.IsEnabled = false;
             if (IsValid())
             {
                 CheckPassInput();
@@ -153,9 +154,11 @@ namespace XelsDesktopWalletApp.Views.Pages
 
                     CreateOrRestore parentWindow = (CreateOrRestore)Window.GetWindow(this);
                     parentWindow.Content = new CreateShowMnemonic(creation);
-                    //CreateShowMnemonic csm = new CreateShowMnemonic(creation);
-                    //csm.Show();
                 }
+            }
+            else
+            {
+                this.IsEnabled = true;
             }
         }
     }

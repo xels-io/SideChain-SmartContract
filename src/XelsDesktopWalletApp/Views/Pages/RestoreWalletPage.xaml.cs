@@ -63,6 +63,7 @@ namespace XelsDesktopWalletApp.Views.Pages
 
         private async void RestoreButton_Click(object sender, RoutedEventArgs e)
         {
+            this.IsEnabled = false;
             if (isValid())
             {
                 string postUrl = this.baseURL + "/Wallet/recover";
@@ -97,6 +98,10 @@ namespace XelsDesktopWalletApp.Views.Pages
                     }
                     
                 }
+            }
+            else
+            {
+                this.IsEnabled = true;
             }
         }
     }

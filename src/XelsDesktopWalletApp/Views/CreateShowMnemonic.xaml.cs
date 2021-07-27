@@ -66,9 +66,19 @@ namespace XelsDesktopWalletApp.Views
 
         private void continueButton_Click(object sender, RoutedEventArgs e)
         {
-            CreateOrRestore parentWindow = (CreateOrRestore)Window.GetWindow(this);
-            parentWindow.Content = new CreateConfirmMnemonic(this._walletcreate);
+            try
+            {
+                this.IsEnabled = false;
+                CreateOrRestore parentWindow = (CreateOrRestore)Window.GetWindow(this);
+                parentWindow.Content = new CreateConfirmMnemonic(this._walletcreate);
+            }
+            catch (Exception)
+            {
+                this.IsEnabled = true;
+                throw;
+            }
 
+            this.IsEnabled = true;
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)

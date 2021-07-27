@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:XelsDesktopWalletApp.Views.Pages"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d" 
       d:DesignHeight="700" d:DesignWidth="900"
       Title="Dashboard" Loaded="Page_Loaded">
@@ -317,7 +318,7 @@
                                                 <RowDefinition  Height="*"/>
                                                 <RowDefinition  Height="*"/>
                                             </Grid.RowDefinitions>
-                                            <PasswordBox Grid.Row="0" x:Name="Password" />
+                                            <PasswordBox Grid.Row="0" x:Name="Password" materialDesign:HintAssist.Hint="Enter a wallet password."  materialDesign:HintAssist.IsFloating="False" />
 
                                             <Button Grid.Row="1" x:Name="HybridMinginButton" Content="Unlock" HorizontalAlignment="Center"  Margin="5 5 0 0  " 
                                 Click="StartHybridMiningButton_Click" Foreground="#FF9B9B9B" Background="White" BorderBrush="#FF9B9B9B" >
