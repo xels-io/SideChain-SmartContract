@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using Nethereum.RPC.Eth.DTOs;
 using Newtonsoft.Json;
 using XelsDesktopWalletApp.Common;
@@ -121,6 +122,8 @@ namespace XelsDesktopWalletApp.Views.Pages
             Task.Run(async () => await LoadCreateAsync());
             Task.Run(async () => await UpdateExchangeListAsync());
             this.updatesuccess = false;
+           // URLConfiguration.Pagenavigation = true;
+           
         }
 
 
@@ -151,13 +154,19 @@ namespace XelsDesktopWalletApp.Views.Pages
             {
                 string postUrl = this.baseURLExchange + "/api/getOrders";
                 var content = "";
-                HttpClient client = new HttpClient();
+                //this for Ssl Connection error.
+                HttpClientHandler clientHandler = new HttpClientHandler();
+                clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+                HttpClient client = new HttpClient(clientHandler);
+                //End
+               // HttpClient client = new HttpClient();
 
                 List<ExchangeResponse> exchangedata = new List<ExchangeResponse>();
                 PostHash code = new PostHash();
                 code.user_code = hash;
 
                 client.DefaultRequestHeaders.Add("Authorization", "1234567890");
+
 
                 HttpResponseMessage response = await client.PostAsJsonAsync(postUrl, code).ConfigureAwait(false);
                 content = await response.Content.ReadAsStringAsync();
