@@ -29,7 +29,6 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
         private WalletBalance WalletBalance = new WalletBalance();
 
         private BuildTransaction BuildTransaction = new BuildTransaction();
-         
         private string cointype; 
 
         private double estimatedFee = 0;
@@ -62,23 +61,12 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
             this.walletInfo.WalletName = this.walletName;
             InitializeComponent();
             this.DataContext = this;
-
-            //GetWalletBalanceAsync();
-            GetMaxBalanceAsync();
+            this.DestinationAddressText.Text = GlobalPropertyModel.selectAddressFromAddressBook;
+          
+            _= GetMaxBalanceAsync();
         }
 
-        // Design is broken // address: navigation from address book
-        public MainchainPage(string walletname, string address)
-        {
-
-            this.walletName = walletname;
-            this.walletInfo.WalletName = this.walletName;
-            InitializeComponent();
-            this.DataContext = this;
-            this.DestinationAddressText.Text = address;
-
-            //GetWalletBalanceAsync();
-        }
+      
          
         private void sendButton_Click(object sender, RoutedEventArgs e)
         {
@@ -89,7 +77,6 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
         private void BackButton_Click(object sender, RoutedEventArgs e)
         { 
             this.Visibility = Visibility.Collapsed;
-            //this.Close();
         }
 
         public bool IsAddressAndAmountValid()

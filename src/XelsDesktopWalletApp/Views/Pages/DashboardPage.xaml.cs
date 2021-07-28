@@ -531,15 +531,10 @@ namespace XelsDesktopWalletApp.Views.Pages
         {
             this.Dashboard.Children.Add(new ReceiveUserControl(this.walletName));
 
-            //Receive receive = new Receive(this.walletName);
-            //receive.ShowDialog();
-
         }
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
-            //Send send = new Send(this.walletName);
-            //send.Show();
-
+            GlobalPropertyModel.selectAddressFromAddressBook = ""; //addressbook a send click address assagin empty.
              this.Dashboard.Children.Add(new SendUserControl(this.walletName));
 
         }
@@ -547,8 +542,6 @@ namespace XelsDesktopWalletApp.Views.Pages
         private void ImportAddrButton_Click(object sender, RoutedEventArgs e)
         {
             this.Dashboard.Children.Add(new ImportSelsBelsUserControl(this.walletName));
-            //EthImport eImp = new EthImport(this.walletName);
-            //eImp.Show();
         }
 
         private async void StartPOWMiningButton_Click(object sender, RoutedEventArgs e)

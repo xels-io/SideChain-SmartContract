@@ -298,7 +298,11 @@ namespace XelsDesktopWalletApp.Views.Pages
 
                     }
 
-                }
+            }
+            else
+            {
+                MessageBox.Show("Wallet Data not Found.");
+            }
         }
 
         public async Task LoadCreateAsync()

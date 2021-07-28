@@ -13,6 +13,8 @@ using Newtonsoft.Json.Linq;
 
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
+using XelsDesktopWalletApp.Models.SmartContractModels;
+using XelsDesktopWalletApp.Views.Pages.Modals;
 using XelsDesktopWalletApp.Views.Pages.SendPages;
 using XelsDesktopWalletApp.Views.ViewPage;
 
@@ -163,10 +165,8 @@ namespace XelsDesktopWalletApp.Views.Pages
             DataGridCell RowAndColumn = (DataGridCell)dataGrid.Columns[1].GetCellContent(Row).Parent;
             string CellValue = ((TextBlock)RowAndColumn.Content).Text;
 
-
-            NavigationService navService = NavigationService.GetNavigationService(this);
-            MainchainPage page2Obj = new MainchainPage(this.walletName, CellValue);
-            navService.Navigate(page2Obj);
+            GlobalPropertyModel.selectAddressFromAddressBook = CellValue;
+            this.AddressBookContent.Children.Add(new SendUserControl(GlobalPropertyModel.WalletName));
         }
 
         #region Delete Address

@@ -17,5 +17,7 @@ namespace XelsDesktopWalletApp.Models.SmartContractModels
 
         public static double SpendableBalance { get; set; }
 
+        public static string selectAddressFromAddressBook { get; set; }
+
     }
 }

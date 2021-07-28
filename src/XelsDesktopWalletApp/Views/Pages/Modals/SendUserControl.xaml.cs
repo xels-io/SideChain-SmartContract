@@ -65,36 +65,22 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
         private void backButton_Click(object sender, RoutedEventArgs e)
         {
             this.Visibility = Visibility.Collapsed;
-            //Dashboard ds = new Dashboard(this.walletName);
-            //ds.Show();
-            //this.Close();
         }
 
         private void XELS_Button_Click(object sender, RoutedEventArgs e)
         {
 
             this.SendFrame.Content = new XelsPage(this.walletName);
-
-            //Send send = new Send(this.walletName);
-            //send.Show();
-            //this.Close();
         }
 
         private void SELS_Button_Click(object sender, RoutedEventArgs e)
         {
             this.SendFrame.Content = new SelsPage(this.walletName);
-            //SendSelsBels sendsb = new SendSelsBels(this.walletName);
-            //sendsb.Show();
-            //this.Close();
         }
 
         private void BELS_Button_Click(object sender, RoutedEventArgs e)
         {
            this.SendFrame.Content = new BelsPage(this.walletName);
-
-            //SendSelsBels sendsb = new SendSelsBels(this.walletName);
-            //sendsb.Show();
-            //this.Close();
         }
 
         private void UserControl_Initialized(object sender, System.EventArgs e)
