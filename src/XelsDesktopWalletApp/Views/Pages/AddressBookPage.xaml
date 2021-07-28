@@ -8,7 +8,7 @@
       d:DesignHeight="700" d:DesignWidth="800"
       Title="AddressBookPage">
     <Grid>
-    <Border Padding="10" CornerRadius="15" Background="White" BorderThickness="5">
+    <Border Padding="10" BorderBrush="Green" CornerRadius="15" Background="White" BorderThickness="3">
         <Grid  Background="White" x:Name="AddressBookContent">
             <!--new address button-->
             <TextBlock Background="White"  HorizontalAlignment="Right"  Margin="0,20,48,385"

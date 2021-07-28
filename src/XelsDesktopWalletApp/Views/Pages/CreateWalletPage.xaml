@@ -10,7 +10,7 @@
       Title="CreateWalletPage">
 
 
-
+    <Border Margin="10,10,10,10" Background="White" BorderBrush="Green" BorderThickness="3" CornerRadius="10">
     <StackPanel Background="White" Margin="20 10">
 
         <Border Margin="20 5" Background="Green" CornerRadius="5">
@@ -104,5 +104,5 @@
 
 
     </StackPanel>
-
+    </Border>
 </Page>

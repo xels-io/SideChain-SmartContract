@@ -7,10 +7,10 @@
       xmlns:local="clr-namespace:XelsDesktopWalletApp.Views.Pages"
               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="460" d:DesignWidth="800"
       Title="RestoreWalletPage">
-
-    <StackPanel Background="White">
+    <Border Margin="5,5,5,0" BorderBrush="Green" Background="White" BorderThickness="2" CornerRadius="10">
+        <StackPanel Background="White" Margin="10,10,10,0">
 
 
         <Border Margin="20 15" Width="731" Background="Green" CornerRadius="5">
@@ -19,7 +19,7 @@
                        FontSize="20" FontWeight="Bold"
                     FontFamily="Microsoft YaHei Light" />
         </Border>
-
+      
         <StackPanel>
 
             <!---  wallet name  -->
@@ -160,6 +160,7 @@
             </Border>
 
         </StackPanel>
-
+       
     </StackPanel>
+    </Border>
 </Page>

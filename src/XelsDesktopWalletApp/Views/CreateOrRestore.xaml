@@ -7,9 +7,9 @@
         mc:Ignorable="d"
          Height="600" Width="1100">
 
-
-    <!--Border Padding="10"-->
-    <StackPanel Margin="5,5,5,5">
+    <Border Margin="10,10,10,10" BorderBrush="Green" BorderThickness="3" CornerRadius="10">
+        <!--Border Padding="10"-->
+    <StackPanel>
         <StackPanel>
             <Border Height="109" Margin="5,5,5,5" Background="Green" CornerRadius="5">
                 <Grid Background="Green" Margin="10" Height="100">
@@ -75,5 +75,5 @@
         </Grid>
     </StackPanel>
 
-    <!--</Border>-->
+    </Border>
 </Window>
