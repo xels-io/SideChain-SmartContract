@@ -12,6 +12,7 @@ using Xels.Bitcoin.Features.Interop.ETHClient;
 using XelsDesktopWalletApp.Models.CommonModels;
 using NBitcoin;
 using System.Windows;
+using Newtonsoft.Json.Linq;
 
 namespace XelsDesktopWalletApp.Common
 {
@@ -39,16 +40,16 @@ namespace XelsDesktopWalletApp.Common
         {
             string keyPath = "m/44'/60'/0'/0";
             var mnemonic = new Mnemonic(mnemonics);
-            var keyPathToDerive = NBitcoin.KeyPath.Parse(keyPath);
+            var keyPathToDerive = NBitcoin.KeyPath.Parse("");
             var pk = new ExtKey(mnemonic.DeriveSeed("")).Derive(keyPathToDerive);
             ExtKey keyNew = pk.Derive(0);
             var pkeyBytes = keyNew.PrivateKey.PubKey.ToHex();
 
-            var account = new Account("0x"+pkeyBytes);
-            Wallet Wallet = new Wallet() { Address = account.Address, PrivateKey = account.PrivateKey};
+            var account = new Account("0x" + pkeyBytes);
+            Wallet Wallet = new Wallet() { Address = account.Address, PrivateKey = account.PrivateKey };
 
             return Wallet;
-    }
+        }
 
         public Wallet WalletCreationFromPk(string pKey)
         {
@@ -72,23 +73,41 @@ namespace XelsDesktopWalletApp.Common
 
                 if (returnedWallets != null)
                 {
-                    storedWallets = returnedWallets;
+                    storedWallets = returnedWallets;                     
                 }
 
-                StoredWallet storedWallet = new StoredWallet();
-                storedWallet.Address = wallet.Address;
-                storedWallet.PrivateKey = wallet.PrivateKey;
-                storedWallet.Walletname = walletname;
-                storedWallet.Coin = symbol;
-                storedWallet.Wallethash = wallethash;
+                foreach(var a in storedWallets.ToList())
+                {
+                    int i = storedWallets.FindIndex(w => w.Coin == symbol && w.Walletname == walletname);
 
-                storedWallets.Add(storedWallet);
+                    StoredWallet storedWallet = new StoredWallet();
+                    storedWallet.Address = wallet.Address;
+                    storedWallet.PrivateKey = wallet.PrivateKey;
+                    storedWallet.Walletname = walletname;
+                    storedWallet.Coin = symbol;
+                    storedWallet.Wallethash = wallethash;
+
+                    if (i != -1)
+                    {
+                        storedWallets[i] = storedWallet;
+                    }
+                    else
+                    {
+                        storedWallets.Add(storedWallet);
+                    }                   
+
+                }
+
+                
+
                 string JSONresult = JsonConvert.SerializeObject(storedWallets.ToArray(), Formatting.Indented);
 
                 string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
                 string walletFile = Path.Combine(walletCurrentDirectory, @"..\..\..\File\Wallets.json");
                 string path = Path.GetFullPath(walletFile);
+                File.SetAttributes(path, FileAttributes.Hidden);
+
 
                 if (File.Exists(path))
                 {
@@ -108,6 +127,7 @@ namespace XelsDesktopWalletApp.Common
                         sw.Close();
                     }
                 }
+
 
                 return true;
             }
@@ -286,7 +306,7 @@ namespace XelsDesktopWalletApp.Common
             }
         }
 
-        public StoredWallet GetLocalWalletDetailsByWalletAndCoin(string walletname,string coin)
+        public StoredWallet GetLocalWalletDetailsByWalletAndCoin(string walletname, string coin)
         {
             StoredWallet wallet = new StoredWallet();
 
