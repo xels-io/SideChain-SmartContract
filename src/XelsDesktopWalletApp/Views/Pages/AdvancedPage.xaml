@@ -8,8 +8,8 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="AdvancedPage">
 
-    <Border Padding="10">
-        <StackPanel>
+    <Border Margin="5" BorderBrush="AntiqueWhite"  Background="White" BorderThickness="2" CornerRadius="10">
+        <StackPanel Margin="10">
             <Grid Height="550" Background="White">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="200"></ColumnDefinition>
