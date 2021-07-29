@@ -158,7 +158,7 @@ namespace XelsDesktopWalletApp.Views.Pages
 
         private void DetailsButton_Click(object sender, RoutedEventArgs e)
         {
-            TransactionItemModel item = (TransactionItemModel)((sender as Button)?.Tag as ListViewItem)?.DataContext;
+            TransactionItemModel item = (TransactionItemModel)((sender as Button))?.DataContext;
             this.DetailsPopup.IsOpen = true;
 
             this.TypeTxt.Text = item.Type;

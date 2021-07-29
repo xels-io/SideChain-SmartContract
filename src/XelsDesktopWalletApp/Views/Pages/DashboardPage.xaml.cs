@@ -44,14 +44,6 @@ namespace XelsDesktopWalletApp.Views.Pages
 
         private string walletName = GlobalPropertyModel.WalletName;
 
-        public string WalletName
-        {
-            get => this.walletName;
-            set
-            {
-                this.walletName = value;
-            }
-        }
         // Hisotory detail data
         private int? lastBlockSyncedHeight = 0;
         private int? confirmations = 0;
@@ -60,21 +52,20 @@ namespace XelsDesktopWalletApp.Views.Pages
 
         public bool sidechainEnabled = false;
         public bool stakingEnabled = false;
-         
+
         private string percentSynced;
 
         // general info
         private WalletGeneralInfoModel walletGeneralInfoModel = new WalletGeneralInfoModel();
         private string processedText;
         private string blockChainStatus;
-        private string connectedNodesStatus;
+
         private double percentSyncedNumber = 0;
 
         // Staking  Info
         public bool isStarting = false;
         public bool isStopping = false;
 
-        private StakingInfoModel stakingInfo = new StakingInfoModel();
         public Money awaitingMaturity = 0;
 
         public DispatcherTimer dispatcherTimer = new DispatcherTimer();
@@ -88,7 +79,7 @@ namespace XelsDesktopWalletApp.Views.Pages
         public DashboardPage(string walletname)
         {
             InitializeComponent();
-             
+
             this.DataContext = this;
 
             GetGeneralWalletInfoAsync();
@@ -96,8 +87,8 @@ namespace XelsDesktopWalletApp.Views.Pages
             GetWalletBalanceAsync();
 
             GetHistoryAsync();
-            GetMaxBalanceAsync();
- 
+            // GetMaxBalanceAsync();
+
             if (URLConfiguration.Chain == "-sidechain")// (!this.sidechainEnabled)
             {
                 this.PowMiningButton.Visibility = Visibility.Hidden;
@@ -118,10 +109,12 @@ namespace XelsDesktopWalletApp.Views.Pages
                 this.StakingInfo.Content = "Staking";
             }
 
-            UpdateWalletAsync();
+            UpdateWallet();
         }
 
         #endregion
+
+        #region api call
 
         private async Task GetWalletBalanceAsync()
         {
@@ -135,12 +128,12 @@ namespace XelsDesktopWalletApp.Views.Pages
                 if (response.IsSuccessStatusCode)
                 {
                     this.walletBalanceArray = JsonConvert.DeserializeObject<WalletBalanceArray>(content);
-                    //double val = Convert.ToDouble(this.ConfirmedBalanceTxt.Text) + 1;
-                    //this.ConfirmedBalanceTxt.Text = val.ToString();
+
                     this.ConfirmedBalanceTxt.Text = $"{(this.walletBalanceArray.Balances[0].AmountConfirmed / 100000000).ToString("0.##############")} {GlobalPropertyModel.CoinUnit}";
+
                     this.UnconfirmedBalanceTxt.Text = $"{(this.walletBalanceArray.Balances[0].AmountUnconfirmed / 100000000).ToString("0.##############")} (unconfirmed)";
 
-                    //this.spendableBalance = (this.walletBalanceArray.Balances[0].SpendableAmount / 100000000);
+                    GlobalPropertyModel.SpendableBalance = (this.walletBalanceArray.Balances[0].SpendableAmount / 100000000);
 
                     if ((this.walletBalanceArray.Balances[0].AmountConfirmed + this.walletBalanceArray.Balances[0].AmountUnconfirmed) > 0)
                     {
@@ -148,12 +141,15 @@ namespace XelsDesktopWalletApp.Views.Pages
 
                         if (GlobalPropertyModel.HasBalance && URLConfiguration.Chain != "-sidechain")// (!this.sidechainEnabled)
                         {
+                            //GlobalPropertyModel.StakingStart = true;
+
                             _ = GetStakingInfoAsync(this.baseURL);
                         }
                     }
                     else
                     {
                         GlobalPropertyModel.HasBalance = false;
+                        //GlobalPropertyModel.StakingStart = false;
                         this.HybridMiningInfoBorder.Visibility = Visibility.Hidden;
                     }
                 }
@@ -198,18 +194,18 @@ namespace XelsDesktopWalletApp.Views.Pages
                             HistoryListForTimer.AddRange(h.TransactionsHistory);
                         }
                         observableList = new ObservableCollection<TransactionItemModel>(HistoryListForTimer);
-                         
-                        if(observableList.Count != 0)
+
+                        if (observableList.Count != 0)
                         {
                             this.HistoryListBinding.ItemsSource = observableList.Take(5);
-                            
+
                         }
                         else
                         {
                             this.NoDataGrid.Visibility = Visibility.Visible;
                             this.HistoryDataGrid.Visibility = Visibility.Hidden;
                         }
-                        
+
                     }
                     catch (Exception e)
                     {
@@ -230,47 +226,6 @@ namespace XelsDesktopWalletApp.Views.Pages
             }
         }
 
-        private void DetailsButton_Click(object sender, RoutedEventArgs e)
-        {
-            TransactionItemModel item = (TransactionItemModel)((sender as Button))?.DataContext;
-            this.DetailsPopup.IsOpen = true;
-
-            this.TypeTxt.Text = item.Type;
-            this.TotalAmountTxt.Text = item.Amount.ToString();
-            this.AmountSentTxt.Text = item.Amount.ToString();
-            this.FeeTxt.Text = item.Fee.ToString();
-            this.DateTxt.Text = item.Timestamp.ToString();
-            this.BlockTxt.Text = item.ConfirmedInBlock.ToString();
-
-            if (item.ConfirmedInBlock != 0 || item.ConfirmedInBlock != null)
-            {
-                this.confirmations = this.lastBlockSyncedHeight - item.ConfirmedInBlock + 1;
-            }
-            else
-            {
-                this.confirmations = 0;
-            }
-            this.ConfirmationsTxt.Text = this.confirmations.ToString();
-
-            this.TransactionIDTxt.Text = item.Id.ToString();
-        }
-
-        private void Copy_Click(object sender, RoutedEventArgs e)
-        {
-            Clipboard.SetText(this.TransactionIDTxt.Text);
-            // MessageBox.Show("Copied Successfully :- " + this.TransactionIDTxt.Text.ToString());
-        }
-
-        private void HidePopup_Click(object sender, RoutedEventArgs e)
-        {
-            this.DetailsPopup.IsOpen = false;
-        }
-
-        private void Ok_Click(object sender, RoutedEventArgs e)
-        {
-            this.DetailsPopup.IsOpen = false;
-        }
-
         private async Task GetGeneralWalletInfoAsync()
         {
             try
@@ -288,6 +243,7 @@ namespace XelsDesktopWalletApp.Views.Pages
                     // this.lastBlockSyncedHeight = this.walletGeneralInfoModel.LastBlockSyncedHeight; // for history data
 
                     this.processedText = $"Processed { this.walletGeneralInfoModel.LastBlockSyncedHeight ?? 0} out of { this.walletGeneralInfoModel.ChainTip} blocks.";
+
                     this.blockChainStatus = $"Synchronizing.  { this.processedText}";
 
                     this.ConnectionStatusTxt.Text = $"{ this.walletGeneralInfoModel.ConnectedNodes} connection";
@@ -304,14 +260,11 @@ namespace XelsDesktopWalletApp.Views.Pages
 
                         if (Math.Round(this.percentSyncedNumber) == 100 && this.walletGeneralInfoModel.LastBlockSyncedHeight != this.walletGeneralInfoModel.ChainTip)
                         {
-                            this.ParcentSyncedTxt.Text = "99";
+                            this.ParcentSyncedTxt.Text = this.ConnectionPercentTxt.Text = "99";
                         }
-
-                        this.percentSynced = $"{ Math.Round(this.percentSyncedNumber)} %";
-
-                        if (this.percentSynced == "100%")
+                        else
                         {
-                            this.blockChainStatus = $"Up to date.  { this.processedText}";
+                            this.ParcentSyncedTxt.Text = this.ConnectionPercentTxt.Text = "100";
                         }
                     }
 
@@ -366,7 +319,6 @@ namespace XelsDesktopWalletApp.Views.Pages
             // maximumBalance.AccountName = "account 0";
             maximumBalance.FeeType = "medium";
             maximumBalance.AllowUnconfirmed = true;
-
             try
             {
                 string postUrl = this.baseURL +
@@ -378,8 +330,7 @@ namespace XelsDesktopWalletApp.Views.Pages
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var balance = JsonConvert.DeserializeObject<WalletBalance>(content);
-
+                    WalletBalance balance = JsonConvert.DeserializeObject<WalletBalance>(content);
 
                     GlobalPropertyModel.SpendableBalance = (balance.MaxSpendableAmount / 100000000);
                 }
@@ -388,63 +339,84 @@ namespace XelsDesktopWalletApp.Views.Pages
                     MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
                 }
             }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        private async Task GetStakingInfoAsync(string path)
+        {
+            try
+            {
+                string getUrl = path + $"/staking/getstakinginfo";
+                var content = "";
+
+                HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
+
+                content = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    StakingInfoModel stakingInfoModel = new StakingInfoModel();
+
+                    stakingInfoModel = JsonConvert.DeserializeObject<StakingInfoModel>(content);
+
+                    this.HybridWeightTxt.Text = $"{stakingInfoModel.Weight}{" "} {GlobalPropertyModel.CoinUnit}";
+
+                    this.NetworkWeightTxt.Text = $"{stakingInfoModel.NetStakeWeight.ToString()} {" "} {GlobalPropertyModel.CoinUnit}"; //netStakingWeight
+
+                    var balance = ((this.walletBalanceArray.Balances[0].AmountConfirmed / 100000000) + (this.walletBalanceArray.Balances[0].AmountUnconfirmed / 100000000));
+
+                    this.CoinsAwaitingMaturityTxt.Text = $"{(balance - GlobalPropertyModel.SpendableBalance):0.##############}{" "}{GlobalPropertyModel.CoinUnit}";
+
+                    TimeSpan time = TimeSpan.FromSeconds(stakingInfoModel.ExpectedTime);
+
+                    if (time > new TimeSpan(00, 00, 01) && time < new TimeSpan(08, 00, 00))
+                    {
+                        this.ExpectedRewardTimmeTxt.Text = TimeSpan.FromSeconds(stakingInfoModel.ExpectedTime).ToString();
+                    }
+                    else
+                    {
+                        this.ExpectedRewardTimmeTxt.Text =    "Unknown";
+                    }
+
+                     //expectedTime                   
+
+                    if (GlobalPropertyModel.StakingStart && URLConfiguration.Chain != "-sidechain")
+                    {
+                        this.isStarting = false;
+                        this.MiningInfoBorder.Visibility = Visibility.Visible;
+                        this.t.Visibility = Visibility.Hidden;
+                        this.StakingInfo.Content = "Staking";
+                    }
+                    else
+                    {
+                        this.isStopping = false;
+                        this.StakingInfo.Content = "Not Staking";
+                        //this.StakingInfoImage.Source;
+                    }
+                }
+                else
+                {
+                    var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
+
+                    foreach (var error in errors.Errors)
+                    {
+                        MessageBox.Show(error.Message);
+
+                    }
+                }
+            }
             catch (Exception e)
             {
 
                 throw;
             }
-
         }
 
-        private async Task GetStakingInfoAsync(string path)
+        private async void UpdateWallet()
         {
-            string getUrl = path + $"/staking/getstakinginfo";
-            var content = "";
-
-            HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
-
-            if (response.IsSuccessStatusCode)
-            {
-                StakingInfoModel stakingInfoModel = new StakingInfoModel();
-                content = await response.Content.ReadAsStringAsync();
-
-                stakingInfoModel = JsonConvert.DeserializeObject<StakingInfoModel>(content);
-
-                this.HybridWeightTxt.Text = $"{this.stakingInfo.weight}{" "} {GlobalPropertyModel.CoinUnit}";
-
-                this.NetworkWeightTxt.Text = $"{stakingInfoModel.netStakeWeight.ToString()} {" "} {GlobalPropertyModel.CoinUnit}"; //netStakingWeight
-
-                var balance = ((this.walletBalanceArray.Balances[0].AmountConfirmed / 100000000) + (this.walletBalanceArray.Balances[0].AmountUnconfirmed / 100000000));
-
-                this.CoinsAwaitingMaturityTxt.Text = $"{(balance - GlobalPropertyModel.SpendableBalance).ToString("0.##############")} {" "} {GlobalPropertyModel.CoinUnit}"; //
-
-                this.ExpectedRewardTimmeTxt.Text = stakingInfoModel.expectedTime.ToString(); //expectedTime
-
-                if (stakingInfoModel.enabled && URLConfiguration.Chain != "-sidechain")
-                {
-                    this.isStarting = false;
-                    this.MiningInfoBorder.Visibility = Visibility.Visible;
-                    this.t.Visibility = Visibility.Hidden;
-                    this.StakingInfo.Content = "Staking";
-                }
-                else
-                {
-                    this.isStopping = false;
-                    this.StakingInfo.Content = "Not Staking";
-                    //this.StakingInfoImage.Source;
-                }
-            }
-            else
-            {
-                MessageBox.Show($"Error Code{response.StatusCode} : Message - {response.ReasonPhrase}");
-            }
-        }
-
-        private async void UpdateWalletAsync()
-        {
-            //this.createWallet.Initialize("SELS");
-            //this.createWallet.Initialize("BELS");
-
             try
             {
                 string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -460,7 +432,7 @@ namespace XelsDesktopWalletApp.Views.Pages
                     {
                         if (this.selswallet.Address != null)
                         {
-                            //this.sels = await this.createWallet.GetBalanceAsync(this.selswallet.Address, "SELS"); 
+                            this.sels = await this.createWallet.GetBalanceAsync(this.selswallet.Address, "SELS");
                             // found error
                         }
                     }
@@ -468,20 +440,64 @@ namespace XelsDesktopWalletApp.Views.Pages
                     {
                         if (this.belswallet.Address != null)
                         {
-                            //this.bels = await this.createWallet.GetBalanceAsync(this.belswallet.Address, "BELS");
+                            this.bels = await this.createWallet.GetBalanceAsync(this.belswallet.Address, "BELS");
                             // found error
                         }
                     }
                     // Populate coins
                     this.SelsCoinTxt.Text = this.sels + " SELS";
                     this.BelsCoinTxt.Text = this.bels + " BELS";
-
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 throw;
             }
+        }
+
+        #endregion
+
+
+        #region button events
+
+        private void DetailsButton_Click(object sender, RoutedEventArgs e)
+        {
+            TransactionItemModel item = (TransactionItemModel)((sender as Button))?.DataContext;
+            this.DetailsPopup.IsOpen = true;
+
+            this.TypeTxt.Text = item.Type;
+            this.TotalAmountTxt.Text = item.Amount.ToString();
+            this.AmountSentTxt.Text = item.Amount.ToString();
+            this.FeeTxt.Text = item.Fee.ToString();
+            this.DateTxt.Text = item.Timestamp.ToString();
+            this.BlockTxt.Text = item.ConfirmedInBlock.ToString();
+
+            if (item.ConfirmedInBlock != 0 || item.ConfirmedInBlock != null)
+            {
+                this.confirmations = this.lastBlockSyncedHeight - item.ConfirmedInBlock + 1;
+            }
+            else
+            {
+                this.confirmations = 0;
+            }
+            this.ConfirmationsTxt.Text = this.confirmations.ToString();
+
+            this.TransactionIDTxt.Text = item.Id.ToString();
+        }
+
+        private void Copy_Click(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(this.TransactionIDTxt.Text);
+        }
+
+        private void HidePopup_Click(object sender, RoutedEventArgs e)
+        {
+            this.DetailsPopup.IsOpen = false;
+        }
+
+        private void Ok_Click(object sender, RoutedEventArgs e)
+        {
+            this.DetailsPopup.IsOpen = false;
         }
 
         private void ReceiveButton_Click(object sender, RoutedEventArgs e)
@@ -621,9 +637,11 @@ namespace XelsDesktopWalletApp.Views.Pages
             this.NavigationService.Navigate(new HistoryPage(this.walletName));
         }
 
+        #endregion
+
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            //DispatcherTimer dispatcherTimer = new DispatcherTimer();
+            DispatcherTimer dispatcherTimer = new DispatcherTimer();
             URLConfiguration.Pagenavigation = false;
             this.dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
             this.dispatcherTimer.Interval = new TimeSpan(0, 0, 10);
@@ -644,8 +662,8 @@ namespace XelsDesktopWalletApp.Views.Pages
                 _ = GetGeneralWalletInfoAsync();
                 _ = GetWalletHistoryTimerAsync(this.baseURL);
                 _ = GetWalletBalanceAsync();
-                _ = GetMaxBalanceAsync();
-                UpdateWalletAsync();
+                // _ = GetMaxBalanceAsync();
+                UpdateWallet();
 
                 if (URLConfiguration.Chain == "-sidechain")// (!this.sidechainEnabled)
                 {

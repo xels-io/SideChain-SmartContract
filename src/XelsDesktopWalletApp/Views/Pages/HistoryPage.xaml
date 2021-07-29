@@ -4,60 +4,87 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:XelsDesktopWalletApp.Views.Pages"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="750"
+      mc:Ignorable="d"       
+      d:DesignHeight="750" d:DesignWidth="750"
       Title="HistoryPage" Loaded="Page_Loaded">
 
-    <Border  Background="White"  CornerRadius="8" Margin="10 0 0 10">
+    
 
-        <StackPanel Margin="10 20 5 5">
+    <Grid Margin="10 20 5 5" Background="WhiteSmoke">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height=".09*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Margin="5">
             <TextBlock Margin="20 0 0 0" FontSize="15" FontWeight="DemiBold" Padding="2" Background="WhiteSmoke">Transaction History</TextBlock>
-           
-                <Grid >
-                <ListView Margin="10,10,10,40" x:Name="HistoryListBinding" VerticalContentAlignment="Top"  
-          ScrollViewer.VerticalScrollBarVisibility="Visible" MaxHeight="500"   ScrollViewer.CanContentScroll="False">
-                        <ListView.View>
-                            <GridView >
-                                <GridViewColumn Width="150" 
-                                            DisplayMemberBinding="{Binding Path=Type}"  />
+        </Border>
+        
+        <Border Grid.Row="1"  CornerRadius="10" Background="#ffffff" BorderBrush="Black" BorderThickness="1" Margin="10 0 10 10">
+            <Border.Effect>
+                <DropShadowEffect  Direction="-75" ShadowDepth="2" Opacity="0.8" BlurRadius="25" Color="Black" />
+            </Border.Effect>
 
-                                <GridViewColumn  Width="300" 
-                                            DisplayMemberBinding="{Binding Path=AmountWithUnit}"  />
-                                <GridViewColumn  Width="250" 
-                                            DisplayMemberBinding="{Binding Path=Timestamp}"  />
-                            <GridViewColumn>
-                                <!--<GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Button Name="BtnYourButton" Content="Details" Click="DetailsButton_Click" Background="Green" Padding="5" Margin="10 0" />
-                                    </DataTemplate>
+            <Grid>
+                <DataGrid x:Name="HistoryListBinding" AutoGenerateColumns="False" IsReadOnly="True" 
+                          CanUserAddRows="False" RowStyle="{DynamicResource MaterialDesignDataGridRow}" 
+                          RowHeight="30" HorizontalAlignment="Center" CanUserSortColumns="False" 
+                          HeadersVisibility="None" ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
 
-                                </GridViewColumn.CellTemplate>-->
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Button Tag="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListViewItem}}}"  
-                                                Content="Details" Click="DetailsButton_Click"  Padding="5" Margin="10 0"
-                                                Background="ForestGreen" Height="30" FontSize="12" >
-                                            <Button.Resources>
-                                                <Style TargetType="{x:Type Border}">
-                                                    <Setter Property="CornerRadius" Value="5"/>
-                                                </Style>
-                                            </Button.Resources>
-                                        </Button>
-                                    </DataTemplate>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="150" 
+                                            Binding="{Binding Path=Type}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.VerticalAlignment" Value="Center"/>
+                                    <Setter Property="TextBlock.HorizontalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
 
-                                </GridViewColumn.CellTemplate>
+                        <DataGridTextColumn  Width="350" 
+                                            Binding="{Binding Path= AmountWithUnit}" >
+                            <DataGridTextColumn.CellStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.VerticalAlignment" Value="Center"/>
+                                    <Setter Property="TextBlock.HorizontalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Width="250" 
+                                            Binding="{Binding Path=Timestamp}" >
+                            <DataGridTextColumn.CellStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.VerticalAlignment" Value="Center"/>
+                                    <Setter Property="TextBlock.HorizontalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
 
-                            </GridViewColumn>
-                        </GridView>
-                        </ListView.View>
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                </ListView>
+                        <DataGridTemplateColumn>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button  HorizontalAlignment="Center" 
+                                                Content="Details" Click="DetailsButton_Click"  Background="ForestGreen" Height="auto" FontSize="12" Margin="-5" >
+                                        <Button.Resources>
+                                            <Style TargetType="{x:Type Border}">
+                                                <Setter Property="CornerRadius" Value="5"/>
 
-                <Popup Name="DetailsPopup" Placement="Center"  AllowsTransparency="False"  HorizontalAlignment="Center" VerticalAlignment="Top" >
+                                            </Style>
+                                        </Button.Resources>
+
+                                    </Button>
+                                </DataTemplate>
+
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn  >
+                    </DataGrid.Columns>
+
+                </DataGrid> 
+               
+                <Popup Name="DetailsPopup" Placement="Center"  AllowsTransparency="False"  
+                       HorizontalAlignment="Center" VerticalAlignment="Top" >
                     <Grid Width="500"  Height="400">
                         <Rectangle Width="500" Height="400" Fill="WhiteSmoke"  />
 
@@ -241,10 +268,6 @@
                 </Popup>
 
             </Grid>
-           
-            
-        </StackPanel>
-
-    </Border>
-    
+        </Border>
+    </Grid>
 </Page>
