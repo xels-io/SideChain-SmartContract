@@ -19,5 +19,7 @@ namespace XelsDesktopWalletApp.Models.SmartContractModels
 
         public static string selectAddressFromAddressBook { get; set; }
 
+        public static string ChainCheckMessage { get; set; }
+
     }
 }

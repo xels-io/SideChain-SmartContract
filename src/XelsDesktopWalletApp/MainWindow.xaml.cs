@@ -54,7 +54,17 @@ namespace XelsDesktopWalletApp
                 if (response.IsSuccessStatusCode)
                 {
                     content = await response.Content.ReadAsStringAsync();
-                  this.comboWallets.ItemsSource =  await WalletNamesforDropdown(content);
+                    this.comboWallets.ItemsSource = await WalletNamesforDropdown(content);
+                    GlobalPropertyModel.ChainCheckMessage = "";
+                    if (URLConfiguration.Chain == "-mainchain")
+                    {
+                        this.labChainCheck.Content = "Xels Main chain wallet / XLC Wallet";
+                        GlobalPropertyModel.ChainCheckMessage = "Xels Main chain wallet / XLC Wallet";
+                    } else if(URLConfiguration.Chain == "-sidechain")
+                    {
+                        this.labChainCheck.Content = "Xels Side chain wallet / Carbon Credit Wallet";
+                        GlobalPropertyModel.ChainCheckMessage = "Xels Side chain wallet / Carbon Credit Wallet";
+                    }
                 }
                 else
                 {

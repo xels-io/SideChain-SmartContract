@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis;
 
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
+using XelsDesktopWalletApp.Models.SmartContractModels;
 using XelsDesktopWalletApp.Views.Pages;
 using XelsDesktopWalletApp.Views.Pages.Modals;
 using XelsDesktopWalletApp.Views.ViewPage;
@@ -51,7 +52,7 @@ namespace XelsDesktopWalletApp.Views.layout
             InitializeComponent();
             this.DataContext = this;
             this.labWalletName.Content = this.walletName;
-
+            this.labCheckChainMessage.Content = GlobalPropertyModel.ChainCheckMessage;
             //GetGeneralInfoAsync();
             //LoadLoginAsync();
             //GetHistoryAsync();
