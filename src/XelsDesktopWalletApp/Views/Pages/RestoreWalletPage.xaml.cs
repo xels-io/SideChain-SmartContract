@@ -44,7 +44,7 @@ namespace XelsDesktopWalletApp.Views.Pages
                 MessageBox.Show("Password is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
-            if (string.IsNullOrWhiteSpace(this.passphrase.Text))
+            if (string.IsNullOrWhiteSpace(this.passphrase.Password))
             {
                 MessageBox.Show("Passphrase is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
@@ -73,7 +73,7 @@ namespace XelsDesktopWalletApp.Views.Pages
                 //recovery.creationDate = creationDate.SelectedDate.Value;
                 recovery.CreationDate = this.creationDate.Text;
                 recovery.Mnemonic = this.mnemonic.Text;
-                recovery.Passphrase = this.passphrase.Text;
+                recovery.Passphrase = this.passphrase.Password;
                 recovery.Password = this.password.Password;
 
                 HttpResponseMessage response = await URLConfiguration.Client.PostAsJsonAsync(postUrl, recovery);

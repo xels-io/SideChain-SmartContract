@@ -267,5 +267,7 @@ namespace XelsDesktopWalletApp.Views.Pages
             this.NewAddressPopup.IsOpen = false;
         }
         #endregion
+
+        
     }
 }

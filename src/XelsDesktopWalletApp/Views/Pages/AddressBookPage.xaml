@@ -35,14 +35,28 @@
             <Grid Margin="10,70,10,10" x:Name="ListData">
                 <DataGrid x:Name="AddressList" AutoGenerateColumns="False" HorizontalAlignment="Center" VerticalAlignment="Top" 
                               Width="750" FontSize="12" BorderThickness="0" 
-                              Background="White" HeadersVisibility="None" GridLinesVisibility="None" IsReadOnly="True"
+                              Background="White"  IsReadOnly="True"
                               ScrollViewer.CanContentScroll="True" 
                               ScrollViewer.VerticalScrollBarVisibility="Auto"
                               ScrollViewer.HorizontalScrollBarVisibility="Auto">
                     <DataGrid.Columns >
-                        <DataGridTextColumn Binding="{Binding Path=label}" IsReadOnly="True" Width="150" />
-                        <DataGridTextColumn Binding="{Binding Path=address}" IsReadOnly="True" Width="300" />
-                        <DataGridTemplateColumn Width="Auto">
+                            <DataGridTextColumn Header="LABEL" Binding="{Binding Path=label}" IsReadOnly="True" Width="150">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment"
+                                        Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="ADDRESS" Binding="{Binding Path=address}" IsReadOnly="True" Width="300" >
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment"
+                                        Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                            </DataGridTextColumn>
+                        <DataGridTemplateColumn Header="ACTIONS" Width="300">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock FontWeight="Bold"  FontFamily="Microsoft YaHei" Margin="1 0 0 0" VerticalAlignment="Top">
@@ -64,7 +78,13 @@
                                     </TextBlock>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
+                                <DataGridTemplateColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment"
+                                        Value="Center" />
+                                    </Style>
+                                </DataGridTemplateColumn.HeaderStyle>
+                            </DataGridTemplateColumn>
                     </DataGrid.Columns>
                     <DataGrid.CellStyle>
                         <Style TargetType="DataGridCell">

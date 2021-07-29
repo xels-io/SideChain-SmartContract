@@ -103,7 +103,7 @@
 
 
                     <TextBlock Grid.Row="0" Margin="0 5" Text="Passphrase (optional)" FontSize="13" FontWeight="DemiBold" Padding="1" />
-                    <TextBox Grid.Row="1" x:Name="passphrase" 
+                    <PasswordBox Grid.Row="1" x:Name="passphrase" 
                              Padding="5 "  Margin="0 5"
                            materialDesign:HintAssist.Hint="Enter an optional Passphrase."  materialDesign:HintAssist.IsFloating="False" BorderBrush="#FFAAAAAA" />
                 </Grid>
