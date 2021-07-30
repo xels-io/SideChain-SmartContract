@@ -27,6 +27,7 @@ namespace XelsDesktopWalletApp
         string baseURL = URLConfiguration.BaseURL;
         
         private WalletLoadRequest UserWallet;
+        private  static int enterCount = 0;
         List<WalletLoadRequest> walletList;
         NodeStatusModel NodeStatusModel;
 
@@ -134,6 +135,7 @@ namespace XelsDesktopWalletApp
 
         private async void DecryptButton_ClickAsync(object sender, RoutedEventArgs e)
         {
+            this.decryptButton.IsEnabled = false;
            await LoginFunctionAsync();
         }
 
@@ -196,9 +198,12 @@ namespace XelsDesktopWalletApp
         }
         private async void Grid_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            
+            if (e.Key == Key.Enter && enterCount == 0)
             {
-              await  LoginFunctionAsync();
+                enterCount = enterCount + 1;
+                this.decryptButton.IsEnabled = false;
+                await  LoginFunctionAsync();
             }
         }
     }
