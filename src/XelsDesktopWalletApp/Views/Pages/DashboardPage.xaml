@@ -640,7 +640,7 @@
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <Grid x:Name="NoDataGrid" Visibility="Hidden" Grid.Row="0">
-                                <Border Background="#ccaa74" CornerRadius="15" Height="20" >
+                                <Border Background="white" CornerRadius="15" >
                                     <TextBlock Text="Looks like you haven't made any transactions yet." HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" />
                                 </Border>
 

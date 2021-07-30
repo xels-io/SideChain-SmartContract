@@ -99,7 +99,7 @@ namespace XelsDesktopWalletApp.Views.layout
         private void btnHistory_Click(object sender, RoutedEventArgs e)
         {
             this.PageContent.Content = null;
-            this.PageContent.Content = new HistoryPage(this.walletName);
+            this.PageContent.Content = new HistoryPage();
         }
 
         private void btn_Exchange_Click(object sender, RoutedEventArgs e)

@@ -9,8 +9,10 @@ using System.Windows.Threading;
 
 using Newtonsoft.Json;
 
+using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
+using XelsDesktopWalletApp.Models.SmartContractModels;
 
 namespace XelsDesktopWalletApp.Views.Pages
 {
@@ -19,57 +21,29 @@ namespace XelsDesktopWalletApp.Views.Pages
     /// </summary>
     public partial class HistoryPage : Page
     {
+        private DataGridPagination _cview;
+        string baseURL = URLConfiguration.BaseURLMain;
+
+        private string walletName = GlobalPropertyModel.WalletName;
+       
+        // Hisotory detail data
+        private int? lastBlockSyncedHeight = 0;
+        private int? confirmations = 0;       
         public HistoryPage()
         {
             InitializeComponent();
-            DataContext = this;
-        }
+            this.DataContext = this;
 
-        #region Base
-        string baseURL = URLConfiguration.BaseURLMain;// "http://localhost:37221/api";
-        #endregion
-
-        #region Wallet Info
-
-        private readonly WalletInfo walletInfo = new WalletInfo();
-
-        private string walletName;
-        public string WalletName
-        {
-            get
-            {
-                return this.walletName;
-            }
-            set
-            {
-                this.walletName = value;
-            }
-        }
-        #endregion
-
-        private HistoryModelArray historyModelArray = new HistoryModelArray();
-        private List<TransactionInfo> transactions = new List<TransactionInfo>();
-
-        // Hisotory detail data
-        private int? lastBlockSyncedHeight = 0;
-        private int? confirmations = 0;
-
-        public HistoryPage(string walletname)
-        {
-            InitializeComponent();
-            //this.HistoryListBinding.Visibility = Visibility.Hidden;
-            // this.NoData.Visibility = Visibility.Visible;
-
-            this.walletName = walletname;
-            this.walletInfo.WalletName = this.walletName;
             _ = GetGeneralWalletInfoAsync();
-            // _ = GetWalletHistoryAsync(this.baseURL);
             _ = GetWalletHistoryTimerAsync(this.baseURL);
+           
         }
+
+        #region api call
 
         private async Task GetGeneralWalletInfoAsync()
         {
-            string getUrl = this.baseURL + $"/wallet/general-info?Name={this.walletInfo.WalletName}";
+            string getUrl = this.baseURL + $"/wallet/general-info?Name={this.walletName}";
             var content = "";
 
             HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
@@ -85,46 +59,14 @@ namespace XelsDesktopWalletApp.Views.Pages
             }
         }
 
-        private async Task GetWalletHistoryAsync(string path)
-        {
-            string getUrl = path + $"/wallet/history?WalletName={this.walletInfo.WalletName}&AccountName=account 0";
-            var content = "";
-
-            HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
-
-            content = await response.Content.ReadAsStringAsync();
-
-            if (response.IsSuccessStatusCode)
-            {
-
-                try
-                {
-                    var history = JsonConvert.DeserializeObject<HistoryModelArray>(content);
-
-                    foreach (var h in history.History)
-                    {
-                        this.HistoryListBinding.ItemsSource = h.TransactionsHistory;
-                    }
-                }
-                catch (Exception e)
-                {
-
-                    throw;
-                }
-
-            }
-            else
-            {
-                MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-            }
-        }
-
         private async Task GetWalletHistoryTimerAsync(string path)
         {
             var content = "";
             List<TransactionItemModel> HistoryListForTimer = new List<TransactionItemModel>();
+
             ObservableCollection<TransactionItemModel> observableList = new ObservableCollection<TransactionItemModel>();
-            string getUrl = path + $"/wallet/history?WalletName={this.walletInfo.WalletName}&AccountName=account 0";
+
+            string getUrl = path + $"/wallet/history?WalletName={this.walletName}&AccountName=account 0";
 
             HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
 
@@ -141,7 +83,19 @@ namespace XelsDesktopWalletApp.Views.Pages
                         HistoryListForTimer.AddRange(h.TransactionsHistory);
                     }
                     observableList = new ObservableCollection<TransactionItemModel>(HistoryListForTimer);
-                    this.HistoryListBinding.ItemsSource = observableList;
+                    //this.HistoryListBinding.ItemsSource = observableList;
+
+                    if (observableList.Count != 0)
+                    {
+                        this._cview = new DataGridPagination(observableList, 12);
+                        this.HistoryListBinding.ItemsSource = this._cview;
+                         PageCountWiseButton();
+                    }
+                    else
+                    {
+                        this.NoDataGrid.Visibility = Visibility.Visible;
+                        this.HistoryDataGrid.Visibility = Visibility.Hidden;
+                    }
                 }
                 catch (Exception e)
                 {
@@ -156,6 +110,9 @@ namespace XelsDesktopWalletApp.Views.Pages
             }
         }
 
+        #endregion
+
+        #region button events 
         private void DetailsButton_Click(object sender, RoutedEventArgs e)
         {
             TransactionItemModel item = (TransactionItemModel)((sender as Button))?.DataContext;
@@ -197,19 +154,62 @@ namespace XelsDesktopWalletApp.Views.Pages
             this.DetailsPopup.IsOpen = false;
         }
 
+        private void OnNextClicked(object sender, RoutedEventArgs e)
+        {           
+            this._cview.MoveToNextPage();
+        }
+
+        private void OnPreviousClicked(object sender, RoutedEventArgs e)
+        {
+            this._cview.MoveToPreviousPage();
+        }
+
+
+        #endregion
+
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            DispatcherTimer dispatcherTimer = new DispatcherTimer();
-            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 10);
-            dispatcherTimer.Start();
+            //DispatcherTimer dispatcherTimer = new DispatcherTimer();
+            //dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+            //dispatcherTimer.Interval = new TimeSpan(0, 0, 10);
+            //dispatcherTimer.Start();
         }
 
         private void dispatcherTimer_Tick(object sender, EventArgs e)
         {
             _ = GetWalletHistoryTimerAsync(this.baseURL);
         }
+         
+        private void PageCountWiseButton()
+        {
+            int pageCount = this._cview.PageCount;
+            List<Button> Buttons = new List<Button>();
+            for (int i = 0; i < pageCount; ++i)
+            {             
 
+                Button button = new Button()
+                {
+                    Content = string.Format($"{i}"),
+                    Tag = i
+                };
+                Buttons.Add(button);
+                //button.Click += new RoutedEventHandler(button_Click);
+              //  this.buttons.Children.Add(button);
+                this.buttons.ItemsSource = Buttons;
+
+                button.Click += new RoutedEventHandler(button_Click);
+            }
+        }
+
+         
+   
+
+        protected void button_Click(object sender, EventArgs e)
+        {
+            Button button = sender as Button;
+            // identify which button was clicked and perform necessary actions
+            MessageBox.Show("Clicked");
+        }
 
     }
 }

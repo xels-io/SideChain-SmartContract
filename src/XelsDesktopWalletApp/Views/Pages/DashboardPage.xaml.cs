@@ -634,7 +634,7 @@ namespace XelsDesktopWalletApp.Views.Pages
 
         private void GotoHistoryButton_Click(object sender, RoutedEventArgs e)
         {
-            this.NavigationService.Navigate(new HistoryPage(this.walletName));
+            this.NavigationService.Navigate(new HistoryPage());
         }
 
         #endregion
