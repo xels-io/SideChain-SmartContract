@@ -271,77 +271,84 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
             }
         }
 
+        private bool validationCheck()
+        {
+            
+            string amt = this.SendAmountText.Text.Trim();
+            if (amt != "")
+            {
+                var rex = Regex.IsMatch(amt, "[^0-9]+");
+                if (rex)
+                {
+                    MessageBox.Show("Data is not valid");
+                    this.SendAmountText.Focus();
+                    return false;
+                }
+            }
+            if (this.SendAmountText.Text.Trim() == string.Empty)
+            {
+                MessageBox.Show("Amount is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.SendAmountText.Focus();
+                return false;
+            }
+            if (this.SidechainDestinationAddressText.Text.ToString().Trim() == "")
+            {
+                MessageBox.Show("SideChain Address is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.SidechainDestinationAddressText.Focus();
+                return false;
+            }
+            if (this.MainchainFederationAddressText.Text.ToString().Trim() == "")
+            {
+                MessageBox.Show("MainChain Federation Address is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.MainchainFederationAddressText.Focus();
+                return false;
+            }
+            if (this.password.Password.ToString().Trim() == "")
+            {
+                MessageBox.Show("Password is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.password.Focus();
+                return false;
+            }
+            return true;
+        }
         private async void BuildTransactionSideChainAsync()
         {
-
-            double t = this.opReturnAmount / 100000000;
-            string postUrl = this.baseURL + $"/wallet/build-transaction";
-            var content = "";
-
-            this.TransactionBuilding.WalletName = this.WalletInfo.WalletName;
-            this.TransactionBuilding.AccountName = "account 0";
-            this.TransactionBuilding.Password = this.password.Password;
-            this.TransactionBuilding.Recipients = GetRecipient();
-            this.TransactionBuilding.FeeAmount = this.estimatedSidechainFee;
-            this.TransactionBuilding.AllowUnconfirmed = true;
-            this.TransactionBuilding.ShuffleOutputs = false;
-            this.TransactionBuilding.OpReturnData = this.SidechainDestinationAddressText.Text.Trim();
-            this.TransactionBuilding.OpReturnAmount = (t).ToString("0." + new string('#', 10));
-
-            HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(this.TransactionBuilding), Encoding.UTF8, "application/json"));
-
-            content = await response.Content.ReadAsStringAsync();
-
-            if (response.IsSuccessStatusCode)
+            if (validationCheck())
             {
-                
-                this.BuildTransaction = JsonConvert.DeserializeObject<BuildTransaction>(content);
+                double t = this.opReturnAmount / 100000000;
+                string postUrl = this.baseURL + $"/wallet/build-transaction";
+                var content = "";
 
-                this.estimatedSidechainFee = this.BuildTransaction.Fee;
-                this.TransactionSending.Hex = this.BuildTransaction.Hex;
+                this.TransactionBuilding.WalletName = this.WalletInfo.WalletName;
+                this.TransactionBuilding.AccountName = "account 0";
+                this.TransactionBuilding.Password = this.password.Password;
+                this.TransactionBuilding.Recipients = GetRecipient();
+                this.TransactionBuilding.FeeAmount = this.estimatedSidechainFee;
+                this.TransactionBuilding.AllowUnconfirmed = true;
+                this.TransactionBuilding.ShuffleOutputs = false;
+                this.TransactionBuilding.OpReturnData = this.SidechainDestinationAddressText.Text.Trim();
+                this.TransactionBuilding.OpReturnAmount = (t).ToString("0." + new string('#', 10));
 
-                if (this.isSending)
-                {
-                    _ = SendTransactionAsync(this.TransactionSending);
-                }
-            }
-            else
-            {
-                this.isSending = false; 
-                var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
+                HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(this.TransactionBuilding), Encoding.UTF8, "application/json"));
 
-                foreach (var error in errors.Errors)
-                {
-                    MessageBox.Show(error.Message);
-                }
-            }
-        }
-
-        private async Task SendTransactionAsync(TransactionSending tranSending)
-        {
-            if (isValid())
-            {
-                string postUrl = this.baseURL + $"/wallet/send-transaction";
-                
-                HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(tranSending), Encoding.UTF8, "application/json"));
-
-                var content = await response.Content.ReadAsStringAsync();
+                content = await response.Content.ReadAsStringAsync();
 
                 if (response.IsSuccessStatusCode)
                 {
 
-                    SendConfirmationSC sendConfirmationSc = new SendConfirmationSC();
-                    sendConfirmationSc.Transaction = this.TransactionBuilding;
-                    sendConfirmationSc.TransactionFee = this.estimatedSidechainFee;
-                    sendConfirmationSc.OpReturnAmount = this.opReturnAmount;
-                    sendConfirmationSc.cointype = this.cointype;
-                    sendConfirmationSc.FedarationAddress = this.TransactionBuilding.OpReturnData;
+                    this.BuildTransaction = JsonConvert.DeserializeObject<BuildTransaction>(content);
 
-                    this.NavigationService.Navigate(new SendConfirmationSideChain(sendConfirmationSc, this.walletName));
-                     
+                    this.estimatedSidechainFee = this.BuildTransaction.Fee;
+                    this.TransactionSending.Hex = this.BuildTransaction.Hex;
+
+                    if (this.isSending)
+                    {
+                        _ = SendTransactionAsync(this.TransactionSending);
+                    }
                 }
                 else
                 {
+                    this.isSending = false;
                     var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
 
                     foreach (var error in errors.Errors)
@@ -350,6 +357,51 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
                     }
                 }
             }
+            
+        }
+
+        private async Task SendTransactionAsync(TransactionSending tranSending)
+        {
+            try
+            {
+                if (isValid())
+                {
+                    string postUrl = this.baseURL + $"/wallet/send-transaction";
+
+                    HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(tranSending), Encoding.UTF8, "application/json"));
+
+                    var content = await response.Content.ReadAsStringAsync();
+
+                    if (response.IsSuccessStatusCode)
+                    {
+
+                        SendConfirmationSC sendConfirmationSc = new SendConfirmationSC();
+                        sendConfirmationSc.Transaction = this.TransactionBuilding;
+                        sendConfirmationSc.TransactionFee = this.estimatedSidechainFee;
+                        sendConfirmationSc.OpReturnAmount = this.opReturnAmount;
+                        sendConfirmationSc.cointype = this.cointype;
+                        sendConfirmationSc.FedarationAddress = this.TransactionBuilding.OpReturnData;
+
+                        this.NavigationService.Navigate(new SendConfirmationSideChain(sendConfirmationSc, this.walletName));
+
+                    }
+                    else
+                    {
+                        var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
+
+                        foreach (var error in errors.Errors)
+                        {
+                            MessageBox.Show(error.Message);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+
         }
 
         private void CheckSendAmount_OnChange(object sender, RoutedEventArgs e)

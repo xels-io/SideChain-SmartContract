@@ -75,12 +75,12 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
 
         private void SELS_Button_Click(object sender, RoutedEventArgs e)
         {
-            this.SendFrame.Content = new SelsPage(this.walletName);
+            this.SendFrame.Content = new SelsPage();
         }
 
         private void BELS_Button_Click(object sender, RoutedEventArgs e)
         {
-           this.SendFrame.Content = new BelsPage(this.walletName);
+           this.SendFrame.Content = new BelsPage();
         }
 
         private void UserControl_Initialized(object sender, System.EventArgs e)

@@ -239,105 +239,156 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
             }
 
         }
+        private bool validationCheck()
+        {
 
+            string amt = this.SendAmountText.Text.Trim();
+            if (amt != "")
+            {
+                var rex = Regex.IsMatch(amt, "[^0-9]+");
+                if (rex)
+                {
+                    MessageBox.Show("Data is not valid");
+                    this.SendAmountText.Focus();
+                    return false;
+                }
+            }
+            if (this.SendAmountText.Text.Trim() == string.Empty)
+            {
+                MessageBox.Show("Amount is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.SendAmountText.Focus();
+                return false;
+            }
+            if (this.DestinationAddressText.Text.ToString().Trim() == "")
+            {
+                MessageBox.Show(" Address is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.DestinationAddressText.Focus();
+                return false;
+            }
+           
+            if (this.password.Password.ToString().Trim() == "")
+            {
+                MessageBox.Show("Password is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.password.Focus();
+                return false;
+            }
+            return true;
+        }
         private async Task BuildTransactionAsync()
         {
             //Recipient[] recipients = GetRecipient();
-
-
-            string postUrl = this.baseURL + $"/wallet/build-transaction";
-            var content = "";
-
-            this.TransactionBuilding.WalletName = this.walletInfo.WalletName;
-            this.TransactionBuilding.AccountName = "account 0";
-            this.TransactionBuilding.Password = this.password.Password;
-            this.TransactionBuilding.Recipients = GetRecipient();
-            this.TransactionBuilding.FeeAmount = this.estimatedFee;
-            this.TransactionBuilding.AllowUnconfirmed = true;
-            this.TransactionBuilding.ShuffleOutputs = false;
-
-
-            HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(this.TransactionBuilding), Encoding.UTF8, "application/json"));
-
-            content = await response.Content.ReadAsStringAsync();
-            if (response.IsSuccessStatusCode)
-            { 
-                    this.BuildTransaction = JsonConvert.DeserializeObject<BuildTransaction>(content);
-
-                this.estimatedFee = this.BuildTransaction.Fee;
-                this.TransactionSending.Hex = this.BuildTransaction.Hex;
-
-                if (this.isSending)
-                {
-                    _ = SendTransactionAsync(this.TransactionSending);
-                }
-
-            }
-            else
+            try
             {
-                this.isSending = false;
-
-                try
+                if (validationCheck())
                 {
-                    var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
+                    string postUrl = this.baseURL + $"/wallet/build-transaction";
+                    var content = "";
 
-                    foreach (var error in errors.Errors)
+                    this.TransactionBuilding.WalletName = this.walletInfo.WalletName;
+                    this.TransactionBuilding.AccountName = "account 0";
+                    this.TransactionBuilding.Password = this.password.Password;
+                    this.TransactionBuilding.Recipients = GetRecipient();
+                    this.TransactionBuilding.FeeAmount = this.estimatedFee;
+                    this.TransactionBuilding.AllowUnconfirmed = true;
+                    this.TransactionBuilding.ShuffleOutputs = false;
+
+
+                    HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(this.TransactionBuilding), Encoding.UTF8, "application/json"));
+
+                    content = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
                     {
-                        MessageBox.Show(error.Message);
+                        this.BuildTransaction = JsonConvert.DeserializeObject<BuildTransaction>(content);
 
-                        //MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                        this.estimatedFee = this.BuildTransaction.Fee;
+                        this.TransactionSending.Hex = this.BuildTransaction.Hex;
+
+                        if (this.isSending)
+                        {
+                            _ = SendTransactionAsync(this.TransactionSending);
+                        }
+
+                    }
+                    else
+                    {
+                        this.isSending = false;
+
+                        try
+                        {
+                            var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
+
+                            foreach (var error in errors.Errors)
+                            {
+                                MessageBox.Show(error.Message);
+
+                                //MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+
+                            throw;
+                        }
+
+
                     }
                 }
-                catch (Exception e)
-                {
-
-                    throw;
-                }
-                
-                
             }
+            catch (Exception e)
+            {
 
+                throw;
+            }
         }
 
         private async Task SendTransactionAsync(TransactionSending tranSending)
         {
-            if (isValid())
+            try
             {
-                string postUrl = this.baseURL + $"/wallet/send-transaction";
-                 var content = "";
-
-                HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(tranSending), Encoding.UTF8, "application/json"));
-
-                 content = await response.Content.ReadAsStringAsync();
-
-                if (response.IsSuccessStatusCode)
-                {        
-                    SendConfirmation sendConfirmation = new SendConfirmation();
-
-                    sendConfirmation.Transaction = this.TransactionBuilding;
-                    sendConfirmation.TransactionFee = this.estimatedFee;
-                    sendConfirmation.Cointype = this.cointype;
-
-
-                    this.NavigationService.Navigate(new SendConfirmationMainChain(sendConfirmation, this.walletName));
-                    //SendConfirmationMainChain sendConf = new SendConfirmationMainChain(sendConfirmation, this.walletName);
-                    //sendConf.Show();
-                    // this.Close();
-
-                }
-                else
+                if (isValid())
                 {
-                    this.isSending = false;
-                    var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
+                    string postUrl = this.baseURL + $"/wallet/send-transaction";
+                    var content = "";
 
-                    foreach (var error in errors.Errors)
+                    HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(tranSending), Encoding.UTF8, "application/json"));
+
+                    content = await response.Content.ReadAsStringAsync();
+
+                    if (response.IsSuccessStatusCode)
                     {
-                        MessageBox.Show(error.Message);
+                        SendConfirmation sendConfirmation = new SendConfirmation();
 
-                        //MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                        sendConfirmation.Transaction = this.TransactionBuilding;
+                        sendConfirmation.TransactionFee = this.estimatedFee;
+                        sendConfirmation.Cointype = this.cointype;
+
+
+                        this.NavigationService.Navigate(new SendConfirmationMainChain(sendConfirmation, this.walletName));
+                        //SendConfirmationMainChain sendConf = new SendConfirmationMainChain(sendConfirmation, this.walletName);
+                        //sendConf.Show();
+                        // this.Close();
+
+                    }
+                    else
+                    {
+                        this.isSending = false;
+                        var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
+
+                        foreach (var error in errors.Errors)
+                        {
+                            MessageBox.Show(error.Message);
+
+                            //MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                        }
                     }
                 }
             }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+
 
         }
 
@@ -377,8 +428,5 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
                 this.DestinationAddressText.Focus();
             }
         }
-
-
-
     }
 }
