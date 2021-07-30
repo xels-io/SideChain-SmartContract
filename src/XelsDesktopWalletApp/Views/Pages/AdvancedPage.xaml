@@ -16,9 +16,9 @@
                     <ColumnDefinition ></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="200" Margin="0,0,0,0" Grid.Column="0">
-                    <Grid Height="359" Background="White" Margin="0,50,0,0">
+                    <Grid Height="400" Background="White" Margin="0,0,0,0">
 
-                        <Button Content="About" HorizontalAlignment="Center" Margin="0,79,0,0" VerticalAlignment="Top" Width="150"
+                        <Button Content="About" HorizontalAlignment="Center" Margin="0,30,0,0" VerticalAlignment="Top" Width="150"
                             Click="About_Click" FontFamily="Microsoft YaHei Light" Foreground="Green" Background="White" 
                                 BorderBrush="Green" FontSize="12" Height="27">
                             <Button.Resources>
@@ -27,7 +27,7 @@
                                 </Style>
                             </Button.Resources>
                         </Button>
-                        <Button Content="Extended Public Key" HorizontalAlignment="Center" Margin="0,128,0,0" VerticalAlignment="Top" Width="150"
+                        <Button Content="Extended Public Key" HorizontalAlignment="Center" Margin="0,80,0,0" VerticalAlignment="Top" Width="150"
                             Click="ExtendedPublicKey_Click" FontFamily="Microsoft YaHei Light" Foreground="Green" Background="White" 
                                 BorderBrush="Green" FontSize="12" Height="28">
                             <Button.Resources>
@@ -36,7 +36,7 @@
                                 </Style>
                             </Button.Resources>
                         </Button>
-                        <Button Content="Generate Addresses" HorizontalAlignment="Center" Margin="0,182,0,0" VerticalAlignment="Top" Width="150"
+                        <Button Content="Generate Addresses" HorizontalAlignment="Center" Margin="0,130,0,0" VerticalAlignment="Top" Width="150"
                             Click="GenerateAddresses_Click" FontFamily="Microsoft YaHei Light" Foreground="Green" Background="White" 
                                 BorderBrush="Green" FontSize="12" Height="27">
                             <Button.Resources>
@@ -45,7 +45,7 @@
                                 </Style>
                             </Button.Resources>
                         </Button>
-                        <Button Content="Rescan Wallet" HorizontalAlignment="Center" Margin="0,232,0,0" VerticalAlignment="Top" Width="150"
+                        <Button Content="Rescan Wallet" HorizontalAlignment="Center" Margin="0,180,0,0" VerticalAlignment="Top" Width="150"
                                 Click="Resync_Click" FontFamily="Microsoft YaHei Light" Foreground="Green" Background="White" 
                                 BorderBrush="Green" FontSize="12" Height="27">
                             <Button.Resources>
@@ -58,7 +58,7 @@
                 </StackPanel>
 
                 <StackPanel Name="AboutSP" Orientation="Vertical" Margin="0,0,10,10" Grid.Column="1">
-                    <Grid Name="AboutGrid" Height="450" Background="WhiteSmoke" Margin="0,50,20,0" HorizontalAlignment="Left">
+                    <Grid Name="AboutGrid" Height="460" Background="WhiteSmoke" Margin="0,20,5,0" HorizontalAlignment="Left">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="214"></ColumnDefinition>
                             <ColumnDefinition Width="450"></ColumnDefinition>
@@ -126,7 +126,7 @@
                     </Grid>
                 </StackPanel>
                 <StackPanel Name="ExtendedPublicKeySP" Orientation="Vertical" Margin="0,0,10,10" Grid.Column="1">
-                    <Grid Name="ExtendedPublicKeyGrid" Height="450" Background="WhiteSmoke" Margin="0,50,20,0" HorizontalAlignment="Left">
+                    <Grid Name="ExtendedPublicKeyGrid" Height="460" Background="WhiteSmoke" Margin="0,20,5,0" HorizontalAlignment="Left">
                         <StackPanel Orientation="Vertical" Margin="50,50,50,0" HorizontalAlignment="Left"  >
                             <Label Content="EXTENDED PUBLIC KEY" Height="89"  Foreground="DarkGray"
                                 FontFamily="Microsoft YaHei" FontSize="18" Padding="0" RenderTransformOrigin="0.502,0.463"  />
@@ -146,7 +146,7 @@
                 </StackPanel>
 
                 <StackPanel Name="GenerateAddressesSP" Orientation="Vertical" Margin="0,0,10,10" Grid.Column="1">
-                    <Grid Name="GenerateAddressesGrid" Height="450" Background="WhiteSmoke" Margin="0,50,20,0" HorizontalAlignment="Left">
+                    <Grid Name="GenerateAddressesGrid" Height="460" Background="WhiteSmoke" Margin="0,20,5,0" HorizontalAlignment="Left">
                         <StackPanel Orientation="Vertical" Margin="50,50,50,0" HorizontalAlignment="Left"  >
                             <Label Content="GENERATE ADDRESSES" Height="89"  Foreground="DarkGray"
                                 FontFamily="Microsoft YaHei" FontSize="18" Padding="0" RenderTransformOrigin="0.502,0.463"  />
@@ -208,7 +208,8 @@
                 </StackPanel>
 
                 <StackPanel Name="ResyncSP" Orientation="Vertical" Margin="0,0,10,10" Grid.Column="1">
-                    <Grid Name="ResyncGrid" Height="459" Background="WhiteSmoke" Margin="0,50,20,0" HorizontalAlignment="Left">
+
+                    <Grid Name="ResyncGrid" Height="460" Background="WhiteSmoke" Margin="0,20,5,0" HorizontalAlignment="Left">
                         <StackPanel Orientation="Vertical" Margin="50,50,50,0" HorizontalAlignment="Left"  >
                             <Label Content="RESCAN WALLET" Height="89"  Foreground="DarkGray"
                                 FontFamily="Microsoft YaHei" FontSize="18" Padding="0" RenderTransformOrigin="0.502,0.463"  />
