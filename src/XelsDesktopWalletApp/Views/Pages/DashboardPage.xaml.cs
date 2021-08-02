@@ -107,6 +107,7 @@ namespace XelsDesktopWalletApp.Views.Pages
                 this.MiningInfoBorder.Visibility = Visibility.Visible;
                 this.t.Visibility = Visibility.Hidden;
                 this.StakingInfo.Content = "Staking";
+                this.thumbsup.Visibility = Visibility.Visible;
             }
 
             UpdateWallet();
