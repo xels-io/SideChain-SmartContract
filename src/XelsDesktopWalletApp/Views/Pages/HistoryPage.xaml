@@ -304,21 +304,23 @@
                         </Label.Content>
                     </Label>
                    <Button Grid.Column="0" Content="Previous" Click="OnPreviousClicked" Margin="2"/>
-                    <Border Grid.Column="1">
-                        <ItemsControl x:Name="buttons" ItemsSource="{Binding Buttons}" HorizontalContentAlignment="Stretch">
-                            <ItemsControl.ItemsPanel>
+
+                    <Border Grid.Column="1" Margin="10 0" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"  ScrollViewer.PanningMode="HorizontalOnly" >                        
+                        <ItemsControl x:Name="buttons" ItemsSource="{Binding Buttons}" >
+                            <ItemsControl.ItemsPanel >
                                 <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal"/>
+                                    <StackPanel Orientation="Horizontal"  Width="400"  />
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Button Content="{Binding Path=Content}" Margin="2"/>
+                                    <Button   Content="{Binding Path=Content}" Margin="15"/>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
+                        
                     </Border>
-                    <Button Grid.Column="2" Content="Next" Click="OnNextClicked" Margin="2"/>
+                    <Button Grid.Column="2" Content="Next" Click="OnNextClicked" Margin="2"/>                     
                 </Grid>
             </Grid>
             

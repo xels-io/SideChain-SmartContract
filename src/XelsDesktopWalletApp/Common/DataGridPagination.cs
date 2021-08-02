@@ -101,5 +101,27 @@ namespace XelsDesktopWalletApp.Common
             }
             this.Refresh();
         }
+
+        public void MoveToNextPageNumber(int pageNumber)
+        {
+             
+            if (pageNumber <= this.PageCount && pageNumber> this._currentPage)
+            {
+                this.CurrentPage = pageNumber;
+            }
+            
+            this.Refresh();
+        }
+
+        public void MoveToPreviousPageNumber(int pageNumber)
+        {
+
+            if (pageNumber <= this.PageCount && pageNumber < this._currentPage)
+            {
+                this.CurrentPage = pageNumber;
+            }
+     
+            this.Refresh();
+        }
     }
 }

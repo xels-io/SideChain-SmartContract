@@ -184,20 +184,23 @@ namespace XelsDesktopWalletApp.Views.Pages
         {
             int pageCount = this._cview.PageCount;
             List<Button> Buttons = new List<Button>();
-            for (int i = 0; i < pageCount; ++i)
+            for (int i = 0; i < pageCount; i++)
             {             
-
-                Button button = new Button()
+               // if(i < 3)
                 {
-                    Content = string.Format($"{i}"),
-                    Tag = i
-                };
-                Buttons.Add(button);
-                //button.Click += new RoutedEventHandler(button_Click);
-              //  this.buttons.Children.Add(button);
-                this.buttons.ItemsSource = Buttons;
-
-                button.Click += new RoutedEventHandler(button_Click);
+                    Button button = new Button()
+                    {
+                        Content = string.Format($"{i + 1 }"),                        
+                        Tag = i
+                    };
+                    Buttons.Add(button);
+                    button.Click += new RoutedEventHandler(button_Click);
+                    //this.buttons.Children.Add(button);
+                    this.buttons.ItemsSource = Buttons;
+                    
+                    button.Click += new RoutedEventHandler(button_Click);
+                }
+              
             }
         }
 
@@ -207,8 +210,18 @@ namespace XelsDesktopWalletApp.Views.Pages
         protected void button_Click(object sender, EventArgs e)
         {
             Button button = sender as Button;
+            int i = Convert.ToInt32(button.Content);
             // identify which button was clicked and perform necessary actions
-            MessageBox.Show("Clicked");
+            //MessageBox.Show($"Clicked + { i }");
+            if(i > this._cview.CurrentPage)
+            {
+                this._cview.MoveToNextPageNumber(i);
+            }
+            if(i< this._cview.CurrentPage)
+            {
+                this._cview.MoveToPreviousPageNumber(i);
+            }
+            
         }
 
     }
