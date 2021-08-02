@@ -31,6 +31,7 @@
     <None Remove="Assets\Images\thumbsdown.png" />
     <None Remove="Assets\Images\thumbsup.png" />
     <None Remove="Views\home-xels-logo-01.png" />
+    <None Remove="Views\Pages\loading-3.gif" />
   </ItemGroup>
 
   <ItemGroup>
@@ -79,6 +80,7 @@
     <Resource Include="Assets\Images\thumbsup.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Views\Pages\loading-3.gif" />
   </ItemGroup>  
 
   <ItemGroup>
