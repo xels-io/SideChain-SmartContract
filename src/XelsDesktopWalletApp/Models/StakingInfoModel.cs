@@ -6,17 +6,17 @@ namespace XelsDesktopWalletApp.Models
 {
     public class StakingInfoModel 
     {
-        public bool enabled { get; set; }
-        public bool staking { get; set; }
-        public string errors { get; set; }
-        public long currentBlockSize { get; set; }
-        public long currentBlockTx { get; set; }
-        public long pooledTx { get; set; }
-        public double difficulty { get; set; }
-        public int searchInterval { get; set; }
-        public long weight { get; set; }
-        public long netStakeWeight { get; set; }
-        public long immature { get; set; }
-        public long expectedTime { get; set; }
+        public bool Enabled { get; set; }
+        public bool Staking { get; set; }
+        public string Errors { get; set; }
+        public long CurrentBlockSize { get; set; }
+        public long CurrentBlockTx { get; set; }
+        public long PooledTx { get; set; }
+        public double Difficulty { get; set; }
+        public int SearchInterval { get; set; }
+        public long Weight { get; set; }
+        public long NetStakeWeight { get; set; }
+        public long Immature { get; set; }
+        public long ExpectedTime { get; set; }
     }
 }

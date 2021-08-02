@@ -398,15 +398,15 @@ namespace XelsDesktopWalletApp.Views
 
                 stakingInfoModel = JsonConvert.DeserializeObject<StakingInfoModel>(content);
 
-                this.stakingInfo.enabled = stakingInfoModel.enabled; //stakingEnabled
-                this.stakingEnabled = this.stakingInfo.enabled;
-                this.stakingInfo.staking = stakingInfoModel.staking; //stakingActive
-                this.stakingInfo.weight = stakingInfoModel.weight; //stakingWeight
-                this.stakingInfo.netStakeWeight = stakingInfoModel.netStakeWeight; //netStakingWeight
+                this.stakingInfo.Enabled = stakingInfoModel.Enabled; //stakingEnabled
+                this.stakingEnabled = this.stakingInfo.Enabled;
+                this.stakingInfo.Staking = stakingInfoModel.Staking; //stakingActive
+                this.stakingInfo.Weight = stakingInfoModel.Weight; //stakingWeight
+                this.stakingInfo.NetStakeWeight = stakingInfoModel.NetStakeWeight; //netStakingWeight
                 this.awaitingMaturity = (this.unconfirmedBalance + this.confirmedBalance) - this.spendableBalance; //
-                this.stakingInfo.expectedTime = stakingInfoModel.expectedTime; //expectedTime
+                this.stakingInfo.ExpectedTime = stakingInfoModel.ExpectedTime; //expectedTime
 
-                if (this.stakingInfo.staking)
+                if (this.stakingInfo.Staking)
                 {
                     this.isStarting = false;
                 }
@@ -426,10 +426,10 @@ namespace XelsDesktopWalletApp.Views
                     this.ConnectionNotifyTxt.Text = "Ok";
                 }
 
-                this.HybridWeightTxt.Text = $"{this.stakingInfo.weight} XELS";
+                this.HybridWeightTxt.Text = $"{this.stakingInfo.Weight} XELS";
                 this.CoinsAwaitingMaturityTxt.Text = $"{this.awaitingMaturity} XELS";
-                this.NetworkWeightTxt.Text = $"{this.stakingInfo.netStakeWeight} XELS";
-                this.ExpectedRewardTimmeTxt.Text = this.stakingInfo.expectedTime.ToString();
+                this.NetworkWeightTxt.Text = $"{this.stakingInfo.NetStakeWeight} XELS";
+                this.ExpectedRewardTimmeTxt.Text = this.stakingInfo.ExpectedTime.ToString();
 
             }
             else
