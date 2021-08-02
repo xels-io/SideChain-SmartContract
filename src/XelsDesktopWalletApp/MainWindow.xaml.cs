@@ -40,8 +40,8 @@ namespace XelsDesktopWalletApp
             this.NodeStatusModel = new NodeStatusModel();
 
             this.DataContext = this;
-
-            LoadWalletList();
+            _=  GetNodeStatus();
+           // LoadWalletList();
         } 
 
         private async Task LoadWalletList()
@@ -92,9 +92,34 @@ namespace XelsDesktopWalletApp
                 {
                     content = await response.Content.ReadAsStringAsync();
                     this.NodeStatusModel = JsonConvert.DeserializeObject<NodeStatusModel>(content);
-
                     GlobalPropertyModel.CoinUnit = this.NodeStatusModel.CoinTicker;
-                    
+                    if (this.NodeStatusModel.FeaturesData.Count > 0)
+                    {
+                        if (this.NodeStatusModel.FeaturesData[0].Namespace == "Xels.Bitcoin.Base.BaseFeature" && this.NodeStatusModel.FeaturesData[0].State== "Initialized")
+                        {
+                            _ = LoadWalletList();
+                        }
+                        else
+                        {
+                            MessageBox.Show("loading Failed and Failed to start wallet!.");
+                            this.decryptButton.Visibility = Visibility.Collapsed;
+                            this.laNodeStatusCheck.Content = "loading Failed and Failed to start wallet!.";
+                            this.loginInfoGrid.Visibility = Visibility.Collapsed;
+                            this.loginInforactaangle.Visibility = Visibility.Collapsed;
+                            this.CreateOrReplaceBlock.Visibility = Visibility.Hidden;
+                        }
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("loading Failed And Failed to start wallet!.");
+                        this.decryptButton.Visibility = Visibility.Collapsed;
+                        this.laNodeStatusCheck.Content = "loading Failed and Failed to start wallet!.";
+                        this.loginInforactaangle.Visibility = Visibility.Collapsed;
+                        this.loginInfoGrid.Visibility = Visibility.Collapsed;
+                        this.CreateOrReplaceBlock.Visibility = Visibility.Hidden;
+                    }
+
                 }
                 else
                 {
