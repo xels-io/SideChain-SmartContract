@@ -39,8 +39,8 @@ namespace XelsDesktopWalletApp
             this.NodeStatusModel = new NodeStatusModel();
 
             this.DataContext = this;
-
-            LoadWalletList();
+            _=  GetNodeStatus();
+           // LoadWalletList();
         } 
 
         private async Task LoadWalletList()
@@ -82,6 +82,7 @@ namespace XelsDesktopWalletApp
         {
             try
             {
+                this.IsEnabled = false;
                 string getNodeStatusInterval = this.baseURL + $"/node/status";
                 var content = "";
 
@@ -91,18 +92,53 @@ namespace XelsDesktopWalletApp
                 {
                     content = await response.Content.ReadAsStringAsync();
                     this.NodeStatusModel = JsonConvert.DeserializeObject<NodeStatusModel>(content);
-
                     GlobalPropertyModel.CoinUnit = this.NodeStatusModel.CoinTicker;
-                    
+                    if (this.NodeStatusModel.FeaturesData.Count > 0)
+                    {
+                        if (this.NodeStatusModel.FeaturesData[0].Namespace == "Xels.Bitcoin.Base.BaseFeature" && this.NodeStatusModel.FeaturesData[0].State== "Initialized")
+                        {
+                            _ = LoadWalletList();
+                            this.IsEnabled = true;
+                        }
+                        else
+                        {
+                            MessageBox.Show("loading Failed and Failed to start wallet!.");
+                            this.decryptButton.Visibility = Visibility.Collapsed;
+                            this.laNodeStatusCheck.Content = "loading Failed and Failed to start wallet!.";
+                            this.loginInfoGrid.Visibility = Visibility.Collapsed;
+                            this.loginInforactaangle.Visibility = Visibility.Collapsed;
+                            this.CreateOrReplaceBlock.Visibility = Visibility.Hidden;
+                            this.IsEnabled = true;
+                        }
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("loading Failed And Failed to start wallet!.");
+                        this.decryptButton.Visibility = Visibility.Collapsed;
+                        this.laNodeStatusCheck.Content = "loading Failed and Failed to start wallet!.";
+                        this.loginInforactaangle.Visibility = Visibility.Collapsed;
+                        this.loginInfoGrid.Visibility = Visibility.Collapsed;
+                        this.CreateOrReplaceBlock.Visibility = Visibility.Hidden;
+                        this.IsEnabled = true;
+                    }
+
                 }
                 else
                 {
                     MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                    this.IsEnabled = true;
                 }
             }
             catch (Exception r)
             {
-                throw;
+                MessageBox.Show(r.Message.ToString());
+                this.decryptButton.Visibility = Visibility.Collapsed;
+                this.laNodeStatusCheck.Content = r.Message.ToString();
+                this.loginInfoGrid.Visibility = Visibility.Collapsed;
+                this.loginInforactaangle.Visibility = Visibility.Collapsed;
+                this.CreateOrReplaceBlock.Visibility = Visibility.Hidden;
+                this.IsEnabled = true;
             }
         }
 
@@ -134,6 +170,8 @@ namespace XelsDesktopWalletApp
 
         private async void DecryptButton_ClickAsync(object sender, RoutedEventArgs e)
         {
+            this.IsEnabled = false;
+            this.preLoader.Visibility = Visibility.Visible;
            await LoginFunctionAsync();
         }
 
@@ -163,7 +201,7 @@ namespace XelsDesktopWalletApp
                     {
                         await GetNodeStatus();
                         GlobalPropertyModel.WalletName = this.UserWallet.Name;
-
+                        this.preLoader.Visibility = Visibility.Collapsed;
                         MainLayout mainLayout = new MainLayout(this.UserWallet.Name);
                         mainLayout.Show();
                         this.Close();
@@ -196,9 +234,13 @@ namespace XelsDesktopWalletApp
         }
         private async void Grid_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            
+            if (e.Key == Key.Enter && GlobalPropertyModel.enterCount == 0)
             {
-              await  LoginFunctionAsync();
+                GlobalPropertyModel.enterCount = GlobalPropertyModel.enterCount + 1;
+                this.IsEnabled = false;
+                this.preLoader.Visibility = Visibility.Visible;
+                await  LoginFunctionAsync();
             }
         }
     }

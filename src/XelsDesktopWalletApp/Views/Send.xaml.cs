@@ -77,27 +77,16 @@ namespace XelsDesktopWalletApp.Views
         {
 
             this.SendFrame.Content = new XelsPage(this.walletName);
-
-            //Send send = new Send(this.walletName);
-            //send.Show();
-            //this.Close();
         }
 
         private void SELS_Button_Click(object sender, RoutedEventArgs e)
         {
-            this.SendFrame.Content = new SelsPage(this.walletName);
-            //SendSelsBels sendsb = new SendSelsBels(this.walletName);
-            //sendsb.Show();
-            //this.Close();
+            this.SendFrame.Content = new SelsPage();
         }
 
         private void BELS_Button_Click(object sender, RoutedEventArgs e)
         {
-            this.SendFrame.Content = new BelsPage(this.walletName);
-
-            //SendSelsBels sendsb = new SendSelsBels(this.walletName);
-            //sendsb.Show();
-            //this.Close();
+            this.SendFrame.Content = new BelsPage();
         }
 
         private void Window_Initialized(object sender, System.EventArgs e)

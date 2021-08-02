@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:XelsDesktopWalletApp.Views.Pages"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                xmlns:gif="http://wpfanimatedgif.codeplex.com"
       mc:Ignorable="d" 
       d:DesignHeight="700" d:DesignWidth="900"
       Title="Dashboard" Loaded="Page_Loaded">
@@ -193,11 +194,11 @@
 
             </Grid>
         </Popup>
-
+       
         <Border BorderThickness="1" CornerRadius="7" Background="White" BorderBrush="Gray"  >
            
             <StackPanel Background="White" Margin="5">
-
+                
                 <!--- upper grid -->
 
                 <StackPanel>
@@ -497,27 +498,32 @@
                                             </Grid.ColumnDefinitions>
 
                                             <Label Content="CONNECTION INFO" HorizontalAlignment="Center" FontSize="9" FontWeight="DemiBold" FontFamily="Microsoft YaHei"  VerticalAlignment="Top" RenderTransformOrigin="-0.599,0.121" Foreground="#FFB6AEAE"/>
+                                           
                                         </Grid>
                                     </Border>
 
                                     <Border Grid.Row="1" CornerRadius="8">
                                         <Grid Margin="5">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width=".8*"/>
-                                                <ColumnDefinition Width="1.2*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <TextBlock  Grid.Column="0" Name="ConnectionPercentTxt"
+                                            <TextBlock Grid.Column="0" Name="ConnectionPercentTxt" HorizontalAlignment="Center" VerticalAlignment="Top"
                                                     FontFamily="Microsoft YaHei" FontSize="10" Foreground="Green"   />
-                                            <TextBlock Grid.Column="1" Name="ConnectedCountTxt" FontSize="10" Foreground="Green" />
-                                            <Label x:Name="StakingInfo"  Grid.Column="2" Foreground="Green">
+                                            <TextBlock  Grid.Column="1" Name="ConnectedCountTxt" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="10" Foreground="Green" />
+                                            <Label  x:Name="StakingInfo"  Grid.Column="2" Foreground="Green" Grid.ColumnSpan="2" Margin="8,-6,32,6" HorizontalAlignment="Center" VerticalAlignment="Top">
                                                 <!--<Image x:Name="StakingInfoImage" Width="40" Height="40" /> ToolTip="{Binding StakingInfo}"-->
+                                                
                                             </Label>
-
+                                            <Image Grid.Column="3" x:Name="thumbDown" HorizontalAlignment="Center" VerticalAlignment="Center" Height="20" Width="25" Source="/Assets/Images/thumbsdown.png" Margin="112,-4,-40,4" />
+                                            <Image Grid.Column="3" Visibility="Collapsed" x:Name="thumbsup" HorizontalAlignment="Center" VerticalAlignment="Center" Height="20" Width="25" Source="/Assets/Images/thumbsup.png" Margin="112,-4,-40,4" />
                                         </Grid>
+                                        
                                     </Border>
-
+                                    
                                     <Border Grid.Row="2" CornerRadius="8">
                                         <Grid Margin="5">
                                             <Grid.ColumnDefinitions>

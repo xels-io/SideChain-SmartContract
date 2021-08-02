@@ -309,7 +309,7 @@
                         <ItemsControl x:Name="buttons" ItemsSource="{Binding Buttons}" >
                             <ItemsControl.ItemsPanel >
                                 <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal"  Width="400"  />
+                                    <StackPanel Orientation="Horizontal" />
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>

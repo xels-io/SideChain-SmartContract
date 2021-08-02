@@ -127,7 +127,7 @@
             </Grid>
 
             <StackPanel Grid.Row="1">
-                <Button x:Name="btnDashboard" Margin="10" Background="#FF41A43C" BorderBrush="#FF41A43C" Click="btnDashboard_Click" Height="31">
+                <Button x:Name="btnDashboard" Margin="10,-20,10,10" Background="#FF41A43C" BorderBrush="#FF41A43C" Click="btnDashboard_Click" Height="31">
                     <Grid Width="150">
                         <materialDesign:PackIcon Kind="ViewDashboard" VerticalAlignment="Center"/>
                         <TextBlock HorizontalAlignment="Center" Text="DASHBOARD" FontFamily="Champagne &amp; Limousines"/>
