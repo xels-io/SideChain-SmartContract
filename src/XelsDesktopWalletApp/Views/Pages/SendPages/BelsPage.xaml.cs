@@ -29,32 +29,12 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
         private CreateWallet createWallet = new CreateWallet();
         private TransactionWallet transactionWallet = new TransactionWallet();
 
-        private string walletName;
-        public string WalletName
-        {
-            get
-            {
-                return this.walletName;
-            }
-            set
-            {
-                this.walletName = value;
-            }
-        }
-
         public BelsPage()
         {
             InitializeComponent();
-        }
-
-        public BelsPage(string walletname)
-        {
-            InitializeComponent();
             this.DataContext = this;
-
-            this.walletName = walletname;
-            this.walletInfo.WalletName = this.walletName;
         }
+
         public bool isValid()
         {
             if (this.textToAddress.Text.ToString().Trim() == "")

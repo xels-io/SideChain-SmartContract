@@ -586,6 +586,8 @@ namespace XelsDesktopWalletApp.Views.Pages
                     GlobalPropertyModel.StakingStart = true;
 
                     this.StakingInfo.Content = "Staking";
+                    this.thumbDown.Visibility = Visibility.Collapsed;
+                    this.thumbsup.Visibility = Visibility.Visible;
                 }
                 else
                 {
@@ -609,6 +611,7 @@ namespace XelsDesktopWalletApp.Views.Pages
 
         private async void StopHybridMiningButton_Click(object sender, RoutedEventArgs e)
         {
+            //this.preLoader.Visibility = Visibility.Visible;
             string apiUrl = this.baseURL + $"/staking/stopstaking";
 
             HttpResponseMessage response = await URLConfiguration.Client.PostAsJsonAsync(apiUrl, true);
@@ -622,6 +625,9 @@ namespace XelsDesktopWalletApp.Views.Pages
                 this.t.Visibility = Visibility.Visible;
                 GlobalPropertyModel.StakingStart = false;
                 this.StakingInfo.Content = "Not Staking";
+                this.thumbDown.Visibility = Visibility.Visible;
+                this.thumbsup.Visibility = Visibility.Collapsed;
+               // this.preLoader.Visibility = Visibility.Collapsed;
             }
         }
 
