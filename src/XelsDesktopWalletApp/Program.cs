@@ -126,6 +126,7 @@ namespace XelsDesktopWalletApp
                 })
                 .UseSmartContractWallet()
                 .AddSQLiteWalletRepository()
+                //.AddPowPosMining(true)
                 .Build();
 
             return node;

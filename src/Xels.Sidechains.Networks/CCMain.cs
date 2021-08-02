@@ -105,7 +105,7 @@ namespace Xels.Sidechains.Networks
                 federationMemberMaxIdleTimeSeconds: 60 * 60 * 24 * 2 // 2 days
             )
             {
-                EnforceMinProtocolVersionAtBlockHeight = 1, // setting the value to zero makes the functionality inactive
+                EnforceMinProtocolVersionAtBlockHeight = 0, // setting the value to zero makes the functionality inactive
                 EnforcedMinProtocolVersion = ProtocolVersion.CC_VERSION, // minimum protocol version which will be enforced at block height defined in EnforceMinProtocolVersionAtBlockHeight
                 FederationMemberActivationTime = Utils.DateTimeToUnixTime(new DateTimeOffset(2021, 06, 14, 0, 0, 0, TimeSpan.Zero)),//1605862800, // Friday, November 20, 2020 9:00:00 AM
                 VotingManagerV2ActivationHeight = 1 // Tuesday, 12 January 2021 9:00:00 AM (Estimated)

@@ -187,10 +187,10 @@ namespace NBitcoin
         /// <param name="network">The network.</param>
         public virtual int GetStakeMinConfirmations(int height, Network network)
         {
-            if (network.NetworkType == NetworkType.Regtest)
+            //if (network.NetworkType == NetworkType.Regtest)
                 return 20;
 
-            return 500;
+            //return 500;
         }
     }
 }
