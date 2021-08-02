@@ -73,10 +73,10 @@ namespace XelsDesktopWalletApp.Common
 
                 if (returnedWallets != null)
                 {
-                    storedWallets = returnedWallets;                     
+                    storedWallets = returnedWallets;
                 }
 
-                foreach(var a in storedWallets.ToList())
+                foreach (var a in storedWallets.ToList())
                 {
                     int i = storedWallets.FindIndex(w => w.Coin == symbol && w.Walletname == walletname);
 
@@ -94,11 +94,11 @@ namespace XelsDesktopWalletApp.Common
                     else
                     {
                         storedWallets.Add(storedWallet);
-                    }                   
+                    }
 
                 }
 
-                
+
 
                 string JSONresult = JsonConvert.SerializeObject(storedWallets.ToArray(), Formatting.Indented);
 
@@ -169,6 +169,7 @@ namespace XelsDesktopWalletApp.Common
         public StoredWallet GetLocalWallet(string walletname, string symbol)
         {
             StoredWallet wallet = new StoredWallet();
+            List<StoredWallet> wallets = new List<StoredWallet>();
 
             string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
             string walletFile = Path.Combine(walletCurrentDirectory, @"..\..\..\File\Wallets.json");
@@ -177,9 +178,9 @@ namespace XelsDesktopWalletApp.Common
             using (StreamReader r = new StreamReader(path))
             {
                 string json = r.ReadToEnd();
-                List<StoredWallet> wallets = new List<StoredWallet>();
 
-                if (json != "")
+
+                if (json != "{ }" || json != "")
                 {
                     wallets = JsonConvert.DeserializeObject<List<StoredWallet>>(json);
                     wallet = wallets.Where(c => c.Walletname == walletname && c.Coin == symbol).FirstOrDefault();
@@ -243,6 +244,7 @@ namespace XelsDesktopWalletApp.Common
                 throw;
             }
         }
+
         public async Task<string> GetBalanceAsync(string address, string cointype)
         {
             try
@@ -253,11 +255,11 @@ namespace XelsDesktopWalletApp.Common
 
                 if (cointype == "SELS")
                 {
-                    contractAddress = URLConfiguration.SELSContractAddress;
+                    contractAddress = address;
                 }
                 else if (cointype == "BELS")
                 {
-                    contractAddress = URLConfiguration.BELSContractAddress;
+                    contractAddress = address;
                 }
                 else if (cointype == "TST")//test er jonno
                 {
