@@ -21,5 +21,6 @@ namespace XelsDesktopWalletApp.Models.SmartContractModels
 
         public static string ChainCheckMessage { get; set; }
 
+        public static int enterCount { get; set; }= 0;
     }
 }

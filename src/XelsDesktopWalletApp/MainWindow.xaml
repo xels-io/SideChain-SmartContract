@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+          xmlns:gif="http://wpfanimatedgif.codeplex.com"
         Title="Login" Height="500" Width="350" 
         ResizeMode="NoResize" 
         WindowStartupLocation="CenterScreen" 
@@ -147,7 +148,7 @@
                 <Button x:Name="ButtonClose" Click="ButtonClose_Click" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="30" Height="25" Margin="300,0,0,468" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White">
                     <materialDesign:PackIcon Kind="HighlightOff" Foreground="Red" VerticalAlignment="Center"/>
                 </Button>
-                <!--<TextBlock Text="CREATE OR RSTORE A WALLET" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="30" Foreground="Gray" Cursor="Hand"/>-->
+                
                 <TextBlock  Name="CreateOrReplaceBlock" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="30" Foreground="Gray" Cursor="Hand">
                 <Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="http://www.google.com"  TextDecorations="">
                     <Hyperlink.Style>
@@ -158,8 +159,9 @@
                 </Hyperlink.Style><Run Text="CREATE OR RESTORE A WALLET"/>
                 </Hyperlink>
                 </TextBlock>
+                <Image Name="preLoader" Visibility="Collapsed"  Width="50" Height="50" gif:ImageBehavior.AnimatedSource="/Assets/Images/loading-3.gif" />
                 <Image Source="/Assets/Images/icon.ico" Width="100" Height="100" VerticalAlignment="Top" Margin="30"/>
-                <Label x:Name="laNodeStatusCheck" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="Red" Margin="0,130,0,0" FontSize="14" Width="268"/>
+                <Label x:Name="laNodeStatusCheck" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="Red" Margin="0,350,0,0" FontSize="14" Width="268"/>
             </Grid>
         </Border>
 

@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using XelsDesktopWalletApp.Models.SmartContractModels;
 using XelsDesktopWalletApp.Views.layout;
 
 namespace XelsDesktopWalletApp.Views.Pages.Modals
@@ -48,6 +49,7 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
 
         private void logoutButton_Click(object sender, RoutedEventArgs e)
         {
+            GlobalPropertyModel.enterCount = 0;
             MainLayout parentWindow = (MainLayout)Window.GetWindow(this);
             parentWindow.Visibility = Visibility.Collapsed;
             MainWindow mw = new MainWindow();
