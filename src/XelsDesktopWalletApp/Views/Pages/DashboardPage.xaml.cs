@@ -92,6 +92,8 @@ namespace XelsDesktopWalletApp.Views.Pages
             if (URLConfiguration.Chain == "-sidechain")// (!this.sidechainEnabled)
             {
                 this.PowMiningButton.Visibility = Visibility.Hidden;
+                this.thumbDown.Visibility = Visibility.Collapsed;
+                this.thumbsup.Visibility = Visibility.Collapsed;
 
             }
 
@@ -223,7 +225,6 @@ namespace XelsDesktopWalletApp.Views.Pages
             catch (Exception)
             {
 
-                throw;
             }
         }
 
@@ -305,8 +306,6 @@ namespace XelsDesktopWalletApp.Views.Pages
             }
             catch (Exception)
             {
-
-                throw;
             }
 
         }
@@ -342,8 +341,6 @@ namespace XelsDesktopWalletApp.Views.Pages
             }
             catch (Exception)
             {
-
-                throw;
             }
         }
 

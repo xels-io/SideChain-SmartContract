@@ -115,10 +115,11 @@ namespace XelsDesktopWalletApp.Views.ViewPage
 
         private void useAddressBtn_Click(object sender, RoutedEventArgs e)
         {
+
             AddressModel objaddressModel = this.selectaddress.SelectedItem as AddressModel;
-            string selectedAddress = objaddressModel.Address.ToString();
-            if (selectedAddress != "")
+            if (objaddressModel != null)
             {
+                string selectedAddress = objaddressModel.Address.ToString();
                 GlobalPropertyModel.WalletName = this.walletName;
                 GlobalPropertyModel.Address = selectedAddress;
                 NavigationService navService = NavigationService.GetNavigationService(this);

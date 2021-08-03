@@ -18,21 +18,5 @@
     "Name": "custom2",
     "Decimals": "0",
     "Balance": "0"
-  },
-  {
-    "Ticker": "custom3",
-    "Address": "custom3",
-    "Name": "custom3",
-    "Decimals": "0",
-    "Balance": "0"
   }
-,
-{
-  "Ticker": "custom",
-  "Address": "custom",
-  "Name": "custom",
-  "Decimals": "0",
-  "Balance": "0",
-  "DropDownValue": null
-}
 ,

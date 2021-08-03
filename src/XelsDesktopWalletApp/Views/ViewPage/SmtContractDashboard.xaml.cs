@@ -127,7 +127,7 @@ namespace XelsDesktopWalletApp.Views.ViewPage
                     }
                     else
                     {
-                        MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                        string errormsg = "Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase;
 
                     }
                 }
@@ -147,8 +147,6 @@ namespace XelsDesktopWalletApp.Views.ViewPage
 
             return content;
         }
-
-
 
         private void Btn_AddressCopy_Click(object sender, RoutedEventArgs e)
         {

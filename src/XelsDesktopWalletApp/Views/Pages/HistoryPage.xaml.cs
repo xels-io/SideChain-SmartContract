@@ -23,6 +23,33 @@ namespace XelsDesktopWalletApp.Views.Pages
     {
         private DataGridPagination _cview;
         string baseURL = URLConfiguration.BaseURLMain;
+        public HistoryPage()
+        {
+            InitializeComponent();
+            DataContext = this;
+        }
+
+        #region Base
+        string baseURL = URLConfiguration.BaseURL;
+        #endregion
+
+        #region Wallet Info
+
+        private readonly WalletInfo walletInfo = new WalletInfo();
+
+        private string walletName;
+        public string WalletName
+        {
+            get
+            {
+                return this.walletName;
+            }
+            set
+            {
+                this.walletName = value;
+            }
+        }
+        #endregion
 
         private string walletName = GlobalPropertyModel.WalletName;
 
@@ -118,6 +145,7 @@ namespace XelsDesktopWalletApp.Views.Pages
 
                 throw;
             }
+            
         }
 
         #endregion
