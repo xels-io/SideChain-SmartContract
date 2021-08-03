@@ -112,14 +112,21 @@ namespace XelsDesktopWalletApp.Views.Pages
 
             this.walletName = GlobalPropertyModel.WalletName.ToString();
             this.walletInfo.WalletName = GlobalPropertyModel.WalletName.ToString();
-            this.mywallet = this.createWallet.GetLocalWalletDetails(GlobalPropertyModel.WalletName.ToString());
-            Task.Run(async () => await LoadCreateAsync());
-            Task.Run(async () => await UpdateExchangeListAsync());
-            this.updatesuccess = false;
+            try
+            {
+                this.mywallet = this.createWallet.GetLocalWalletDetails(GlobalPropertyModel.WalletName.ToString());
+                Task.Run(async () => await LoadCreateAsync());
+                Task.Run(async () => await UpdateExchangeListAsync());
+                this.updatesuccess = false;
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
            // URLConfiguration.Pagenavigation = true;
            
         }
-
 
         public bool isValid()
         {
@@ -235,7 +242,9 @@ namespace XelsDesktopWalletApp.Views.Pages
 
         public async Task UpdateExchangeListAsync()
         {
-                 List<ExchangeResponse> exchangedatalist = new List<ExchangeResponse>();
+            List<ExchangeResponse> exchangedatalist = new List<ExchangeResponse>();
+            try
+            {
                 this.exchangelist.Clear();
                 if (this.mywallet != null)
                 {
@@ -243,53 +252,53 @@ namespace XelsDesktopWalletApp.Views.Pages
                     {
                         try
                         {
-                       exchangedatalist = await GetOrdersAsync(this.mywallet.Wallethash);
-                        this.Dispatcher.Invoke(() =>
-                        {
-
-                            if (exchangedatalist != null && exchangedatalist.Count > 0)
+                            exchangedatalist = await GetOrdersAsync(this.mywallet.Wallethash);
+                            this.Dispatcher.Invoke(() =>
                             {
-                                this.ExchangesList.ItemsSource=null;
-                                this.NoData.Visibility = Visibility.Hidden;
-                                this.ListData.Visibility = Visibility.Visible;
-                                // Processed data
 
-                                foreach (ExchangeResponse data in exchangedatalist)
+                                if (exchangedatalist != null && exchangedatalist.Count > 0)
                                 {
-                                    
-                                    ExchangeData edata = new ExchangeData();
-                                    edata.excid = data.id;
-                                    edata.deposit_address_amount_symbol = $"{data.deposit_address} {data.deposit_amount} {data.deposit_symbol}";
-                                    edata.xels_address_amount = $"{data.xels_address} {data.xels_amount} XELS";
+                                    this.ExchangesList.ItemsSource = null;
+                                    this.NoData.Visibility = Visibility.Hidden;
+                                    this.ListData.Visibility = Visibility.Visible;
+                                    // Processed data
 
-                                    if (data.status == 0)
+                                    foreach (ExchangeResponse data in exchangedatalist)
                                     {
-                                        edata.showstatus = "Wating for deposit";
-                                        edata.IsDepositEnableBtn = true;
-                                    }
-                                    else if (data.status == 1)
-                                    {
-                                        edata.showstatus = "Pending Exchange";
-                                        edata.IsDepositEnableBtn = false;
-                                    }
-                                    else if (data.status == 2)
-                                    {
-                                        edata.showstatus = "Complete";
-                                        edata.IsDepositEnableBtn = false;
+
+                                        ExchangeData edata = new ExchangeData();
+                                        edata.excid = data.id;
+                                        edata.deposit_address_amount_symbol = $"{data.deposit_address} {data.deposit_amount} {data.deposit_symbol}";
+                                        edata.xels_address_amount = $"{data.xels_address} {data.xels_amount} XELS";
+
+                                        if (data.status == 0)
+                                        {
+                                            edata.showstatus = "Wating for deposit";
+                                            edata.IsDepositEnableBtn = true;
+                                        }
+                                        else if (data.status == 1)
+                                        {
+                                            edata.showstatus = "Pending Exchange";
+                                            edata.IsDepositEnableBtn = false;
+                                        }
+                                        else if (data.status == 2)
+                                        {
+                                            edata.showstatus = "Complete";
+                                            edata.IsDepositEnableBtn = false;
+                                        }
+
+                                        this.exchangelist.Add(edata);
                                     }
 
-                                    this.exchangelist.Add(edata);
+                                    this.ExchangesList.ItemsSource = this.exchangelist;
                                 }
-
-                                this.ExchangesList.ItemsSource = this.exchangelist;
-                            }
-                            else
-                            {
-                                this.ListData.Visibility = Visibility.Hidden;
-                                this.NoData.Visibility = Visibility.Visible;
-                            }
-                            this.updatesuccess = true;
-                        });
+                                else
+                                {
+                                    this.ListData.Visibility = Visibility.Hidden;
+                                    this.NoData.Visibility = Visibility.Visible;
+                                }
+                                this.updatesuccess = true;
+                            });
                         }
                         catch (Exception e)
                         {
@@ -298,11 +307,18 @@ namespace XelsDesktopWalletApp.Views.Pages
 
                     }
 
+                }
+                else
+                {
+                    MessageBox.Show("Wallet Data not Found.");
+                }
             }
-            else
+            catch (Exception e)
             {
-                MessageBox.Show("Wallet Data not Found.");
+
+                throw;
             }
+                
         }
 
         public async Task LoadCreateAsync()

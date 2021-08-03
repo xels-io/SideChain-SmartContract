@@ -288,24 +288,32 @@ namespace XelsDesktopWalletApp.Common
         public StoredWallet GetLocalWalletDetails(string walletname)
         {
             StoredWallet wallet = new StoredWallet();
-
-            string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            string walletFile = Path.Combine(walletCurrentDirectory, @"..\..\..\File\Wallets.json");
-            string path = Path.GetFullPath(walletFile);
-
-            using (StreamReader r = new StreamReader(path))
+            try
             {
-                string json = r.ReadToEnd();
-                List<StoredWallet> wallets = new List<StoredWallet>();
+                string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                string walletFile = Path.Combine(walletCurrentDirectory, @"..\..\..\File\Wallets.json");
+                string path = Path.GetFullPath(walletFile);
 
-                if (json != "")
+                using (StreamReader r = new StreamReader(path))
                 {
-                    wallets = JsonConvert.DeserializeObject<List<StoredWallet>>(json);
-                    wallet = wallets.Where(c => c.Walletname == walletname).FirstOrDefault();
-                }
+                    string json = r.ReadToEnd();
+                    List<StoredWallet> wallets = new List<StoredWallet>();
 
-                return wallet;
+                    if (json != "")
+                    {
+                        wallets = JsonConvert.DeserializeObject<List<StoredWallet>>(json);
+                        wallet = wallets.Where(c => c.Walletname == walletname).FirstOrDefault();
+                    }
+
+                    return wallet;
+                }
             }
+            catch (Exception e)
+            {
+
+                return null;
+            }
+            
         }
 
         public StoredWallet GetLocalWalletDetailsByWalletAndCoin(string walletname, string coin)
