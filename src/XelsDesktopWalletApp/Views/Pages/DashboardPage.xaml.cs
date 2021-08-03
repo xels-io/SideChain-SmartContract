@@ -528,8 +528,8 @@ namespace XelsDesktopWalletApp.Views.Pages
 
             try
             {
-                this.PreloaderPoup.IsOpen = true;
-                this.IsEnabled = false;
+                //this.PreloaderPoup.IsOpen = true;
+                //this.IsEnabled = false;
 
                 string apiUrl = this.baseURL + $"/mining/startmining"; ///mining/stopmining
 
@@ -542,16 +542,16 @@ namespace XelsDesktopWalletApp.Views.Pages
                     this.PowMiningButton.Visibility = Visibility.Hidden;
                     this.StopPowMiningButton.Visibility = Visibility.Visible;
                     GlobalPropertyModel.MiningStart = true;
-                    this.PreloaderPoup.IsOpen = false;
-                    this.IsEnabled = true;
+                   // this.PreloaderPoup.IsOpen = false;
+                  //  this.IsEnabled = true;
                 }
             }
             catch (Exception)
             {
 
                 throw;
-                this.PreloaderPoup.IsOpen = false;
-                this.IsEnabled = true;
+               // this.PreloaderPoup.IsOpen = false;
+               // this.IsEnabled = true;
             }
 
            
@@ -563,8 +563,8 @@ namespace XelsDesktopWalletApp.Views.Pages
 
             try
             {
-                this.PreloaderPoup.IsOpen = true;
-                this.IsEnabled = false;
+                //this.PreloaderPoup.IsOpen = true;
+               // this.IsEnabled = false;
                 HttpResponseMessage response = await URLConfiguration.Client.PostAsJsonAsync(apiUrl, true);
                 string content = await response.Content.ReadAsStringAsync();
 
@@ -573,14 +573,14 @@ namespace XelsDesktopWalletApp.Views.Pages
                     this.PowMiningButton.Visibility = Visibility.Visible;
                     this.StopPowMiningButton.Visibility = Visibility.Hidden;
                     GlobalPropertyModel.MiningStart = false;
-                    this.PreloaderPoup.IsOpen = false;
-                    this.IsEnabled = true;
+                    //this.PreloaderPoup.IsOpen = false;
+                    //this.IsEnabled = true;
                 }
             }
             catch (Exception)
             {
-                this.PreloaderPoup.IsOpen = false;
-                this.IsEnabled = true;
+                //this.PreloaderPoup.IsOpen = false;
+                //this.IsEnabled = true;
                 throw;
             }
 
@@ -592,8 +592,8 @@ namespace XelsDesktopWalletApp.Views.Pages
         {
             try
             {
-                this.PreloaderPoup.IsOpen = true;
-                this.IsEnabled = false;
+                //this.PreloaderPoup.IsOpen = true;
+                //this.IsEnabled = false;
 
                 if (!string.IsNullOrWhiteSpace(this.Password.Password))
                 {
@@ -622,8 +622,8 @@ namespace XelsDesktopWalletApp.Views.Pages
                         this.thumbDown.Visibility = Visibility.Collapsed;
                         this.thumbsup.Visibility = Visibility.Visible;
 
-                        this.PreloaderPoup.IsOpen = false;
-                        this.IsEnabled = true;
+                        //this.PreloaderPoup.IsOpen = false;
+                        //this.IsEnabled = true;
                     }
                     else
                     {
@@ -635,21 +635,21 @@ namespace XelsDesktopWalletApp.Views.Pages
 
                         }
                         this.Password.Password = "";
-                        this.PreloaderPoup.IsOpen = false;
-                        this.IsEnabled = true;
+                        //this.PreloaderPoup.IsOpen = false;
+                        //this.IsEnabled = true;
                     }
                 }
                 else
                 {
                     MessageBox.Show("Please, enter password to unlock");
-                    this.PreloaderPoup.IsOpen = false;
-                    this.IsEnabled = true;
+                    //this.PreloaderPoup.IsOpen = false;
+                    //this.IsEnabled = true;
                 }
             }
             catch (Exception)
             {
-                this.PreloaderPoup.IsOpen = false;
-                this.IsEnabled = true;
+                //this.PreloaderPoup.IsOpen = false;
+                //this.IsEnabled = true;
                 throw;
             }
                       

@@ -194,15 +194,17 @@
 
             </Grid>
         </Popup>
+
         <Popup Name="PreloaderPoup" Placement="Center"  AllowsTransparency="True"  HorizontalAlignment="Center" VerticalAlignment="Top" >
             <Grid Width="70"  Height="70">
                 <Image Name="preLoader" Width="70" Height="70" gif:ImageBehavior.AnimatedSource="/Assets/Images/loading-3.gif" Source="/Assets/Images/loading-3.gif" />
             </Grid>
         </Popup>
+
         <Border BorderThickness="1" CornerRadius="7" Background="White" BorderBrush="Gray"  >
            
             <StackPanel Background="White" Margin="5">
-                
+
                 <!--- upper grid -->
 
                 <StackPanel>
@@ -331,8 +333,8 @@
                                             </Grid.RowDefinitions>
                                             <PasswordBox Grid.Row="0" x:Name="Password" PasswordChanged="EnterPassword_OnChange"  />
 
-                                            <Button Grid.Row="1" x:Name="HybridMinginButton" Content="Unlock" HorizontalAlignment="Center"  Margin="5 5 0 0  " 
-                                Click="StartHybridMiningButton_Click" Foreground="green" Background="White" BorderBrush="green" >
+                                            <Button Grid.Row="1" x:Name="HybridMinginButton" Content="Unlock" HorizontalAlignment="Center" IsEnabled="False"  Margin="5 5 0 0  " 
+                                Click="StartHybridMiningButton_Click" Foreground="#FF9B9B9B" Background="White" BorderBrush="#FF9B9B9B" >
                                                 <Button.Resources>
                                                     <Style TargetType="{x:Type Border}">
                                                         <Setter  Property="CornerRadius" Value="2">
@@ -343,7 +345,7 @@
                                         </Grid>
 
                                         <Button Grid.Row="0" x:Name="StopHybridMinginButton"  HorizontalAlignment="Center"  Margin="5 0 " Content="Stop Hybrid Mining" Visibility="Hidden"
-                                Click="StopHybridMiningButton_Click" Foreground="Red" Background="White" BorderBrush="Red" />
+                                Click="StopHybridMiningButton_Click" Foreground="#FF9B9B9B" Background="White" BorderBrush="#FF9B9B9B" />
 
 
 
@@ -502,32 +504,28 @@
                                             </Grid.ColumnDefinitions>
 
                                             <Label Content="CONNECTION INFO" HorizontalAlignment="Center" FontSize="9" FontWeight="DemiBold" FontFamily="Microsoft YaHei"  VerticalAlignment="Top" RenderTransformOrigin="-0.599,0.121" Foreground="#FFB6AEAE"/>
-                                           
                                         </Grid>
                                     </Border>
 
                                     <Border Grid.Row="1" CornerRadius="8">
                                         <Grid Margin="5">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width=".8*"/>
+                                                <ColumnDefinition Width="1.2*"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <TextBlock Grid.Column="0" Name="ConnectionPercentTxt" HorizontalAlignment="Center" VerticalAlignment="Top"
+                                            <TextBlock  Grid.Column="0" Name="ConnectionPercentTxt"
                                                     FontFamily="Microsoft YaHei" FontSize="10" Foreground="Green"   />
-                                            <TextBlock  Grid.Column="1" Name="ConnectedCountTxt" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="10" Foreground="Green" />
-                                            <Label  x:Name="StakingInfo"  Grid.Column="2" Foreground="Green" Grid.ColumnSpan="2" Margin="8,-6,32,6" HorizontalAlignment="Center" VerticalAlignment="Top">
+                                            <TextBlock Grid.Column="1" Name="ConnectedCountTxt" FontSize="10" Foreground="Green" />
+                                            <Label x:Name="StakingInfo"  Grid.Column="2" Foreground="Green">
                                                 <!--<Image x:Name="StakingInfoImage" Width="40" Height="40" /> ToolTip="{Binding StakingInfo}"-->
-                                                
                                             </Label>
                                             <Image Grid.Column="3" x:Name="thumbDown" HorizontalAlignment="Center" VerticalAlignment="Center" Height="20" Width="25" Source="/Assets/Images/thumbsdown.png" Margin="112,-4,-40,4" />
                                             <Image Grid.Column="3" Visibility="Collapsed" x:Name="thumbsup" HorizontalAlignment="Center" VerticalAlignment="Center" Height="20" Width="25" Source="/Assets/Images/thumbsup.png" Margin="112,-4,-40,4" />
                                         </Grid>
-                                        
                                     </Border>
-                                    
+
                                     <Border Grid.Row="2" CornerRadius="8">
                                         <Grid Margin="5">
                                             <Grid.ColumnDefinitions>
@@ -591,7 +589,7 @@
                                             <Border Grid.Row="0" x:Name="startButton" CornerRadius="8">
 
                                                 <Button x:Name="PowMiningButton" Content="Start POW Mining" HorizontalAlignment="Center" 
-                                                    Click="StartPOWMiningButton_Click" Foreground="Green" Background="White" BorderBrush="Green"  FontWeight="DemiBold">
+                                Click="StartPOWMiningButton_Click" Foreground="#FF9B9B9B" Background="White" BorderBrush="#FF9B9B9B"  FontWeight="DemiBold">
                                                     <Button.Resources>
                                                         <Style TargetType="{x:Type Border}">
                                                             <Setter Property="CornerRadius" Value="2"/>
@@ -604,7 +602,7 @@
                                             <Border Grid.Row="0" x:Name="stopButton" CornerRadius="8">
 
                                                 <Button Visibility="Hidden" x:Name="StopPowMiningButton" Content="Stop POW Mining" HorizontalAlignment="Center" 
-                                                     Click="StopPOWMiningButton_Click" Foreground="Red" Background="White" BorderBrush="Red"  FontWeight="DemiBold">
+                                Click="StopPOWMiningButton_Click" Foreground="#FF9B9B9B" Background="White" BorderBrush="#FF9B9B9B"  FontWeight="DemiBold">
                                                     <Button.Resources>
                                                         <Style TargetType="{x:Type Border}">
                                                             <Setter Property="CornerRadius" Value="2"/>
@@ -655,47 +653,7 @@
                                     <TextBlock Text="Looks like you haven't made any transactions yet." HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" />
                                 </Border>
 
-                        <Border Margin="0"  Grid.Row="0" CornerRadius="8">
-                            <Grid>
-                                <ListView  x:Name="HistoryListBinding" VerticalContentAlignment="Top"  
-                                ScrollViewer.VerticalScrollBarVisibility="Visible" MaxHeight="180"   ScrollViewer.CanContentScroll="False">
-                                    <ListView.View>
-                                        <GridView >
-                                            <GridViewColumn Width="150" 
-                                            DisplayMemberBinding="{Binding Path=Type}"  />
-
-                                            <GridViewColumn  Width="350" 
-                                            DisplayMemberBinding="{Binding Path= AmountWithUnit}"  />
-                                            <GridViewColumn  Width="250" 
-                                            DisplayMemberBinding="{Binding Path=Timestamp}"  />
-
-                                            <GridViewColumn>
-                                                <GridViewColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <Button Tag="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListViewItem}}}"  
-                                                Content="Details" Click="DetailsButton_Click"  Padding="5" Margin="10 0"
-                                                Background="ForestGreen" Height="30" FontSize="12" >
-                                                            <Button.Resources>
-                                                                <Style TargetType="{x:Type Border}">
-                                                                    <Setter Property="CornerRadius" Value="5"/>
-                                                                </Style>
-                                                            </Button.Resources>
-                                                        </Button>
-                                                    </DataTemplate>
-
-                                                </GridViewColumn.CellTemplate>
-
-                                            </GridViewColumn>
-                                        </GridView>
-                                    </ListView.View>
-                                    <ListView.ItemContainerStyle>
-                                        <Style TargetType="ListViewItem">
-                                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                                            <Setter Property="Padding" Value="0"/>
-                                            <Setter Property="Margin" Value="0"/>
-                                            <Setter Property="BorderThickness" Value="0"/>
-                                        </Style>
-                                    </ListView.ItemContainerStyle>
+                            </Grid>
 
                             <Grid x:Name="HistoryDataGrid" Grid.Row="0">
                                 <Grid.RowDefinitions>
