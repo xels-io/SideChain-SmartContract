@@ -452,7 +452,7 @@ namespace XelsDesktopWalletApp.Views.Pages
             }
             catch (Exception e)
             {
-                throw;
+                //MessageBox.Show("");
             }
         }
 
