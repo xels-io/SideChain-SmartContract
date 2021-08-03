@@ -194,7 +194,11 @@
 
             </Grid>
         </Popup>
-       
+        <Popup Name="PreloaderPoup" Placement="Center"  AllowsTransparency="True"  HorizontalAlignment="Center" VerticalAlignment="Top" >
+            <Grid Width="70"  Height="70">
+                <Image Name="preLoader" Width="70" Height="70" gif:ImageBehavior.AnimatedSource="/Assets/Images/loading-3.gif" Source="/Assets/Images/loading-3.gif" />
+            </Grid>
+        </Popup>
         <Border BorderThickness="1" CornerRadius="7" Background="White" BorderBrush="Gray"  >
             
             <StackPanel Background="White" Margin="5">

@@ -547,18 +547,35 @@ namespace XelsDesktopWalletApp.Views.Pages
         private async void StartPOWMiningButton_Click(object sender, RoutedEventArgs e)
         {
 
-            string apiUrl = this.baseURL + $"/mining/startmining"; ///mining/stopmining
-
-            HttpResponseMessage response = await URLConfiguration.Client.PostAsJsonAsync(apiUrl, this.walletInfo);
-
-            string content = await response.Content.ReadAsStringAsync();
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                this.PowMiningButton.Visibility = Visibility.Hidden;
-                this.StopPowMiningButton.Visibility = Visibility.Visible;
-                GlobalPropertyModel.MiningStart = true;
+                this.PreloaderPoup.IsOpen = true;
+                this.IsEnabled = false;
+
+                string apiUrl = this.baseURL + $"/mining/startmining"; ///mining/stopmining
+
+                HttpResponseMessage response = await URLConfiguration.Client.PostAsJsonAsync(apiUrl, this.walletInfo);
+
+                string content = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    this.PowMiningButton.Visibility = Visibility.Hidden;
+                    this.StopPowMiningButton.Visibility = Visibility.Visible;
+                    GlobalPropertyModel.MiningStart = true;
+                    this.PreloaderPoup.IsOpen = false;
+                    this.IsEnabled = true;
+                }
             }
+            catch (Exception)
+            {
+
+                throw;
+                this.PreloaderPoup.IsOpen = false;
+                this.IsEnabled = true;
+            }
+
+           
         }
 
         private async void StopPOWMiningButton_Click(object sender, RoutedEventArgs e)
@@ -567,6 +584,8 @@ namespace XelsDesktopWalletApp.Views.Pages
 
             try
             {
+                this.PreloaderPoup.IsOpen = true;
+                this.IsEnabled = false;
                 HttpResponseMessage response = await URLConfiguration.Client.PostAsJsonAsync(apiUrl, true);
                 string content = await response.Content.ReadAsStringAsync();
 
@@ -575,11 +594,14 @@ namespace XelsDesktopWalletApp.Views.Pages
                     this.PowMiningButton.Visibility = Visibility.Visible;
                     this.StopPowMiningButton.Visibility = Visibility.Hidden;
                     GlobalPropertyModel.MiningStart = false;
+                    this.PreloaderPoup.IsOpen = false;
+                    this.IsEnabled = true;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-
+                this.PreloaderPoup.IsOpen = false;
+                this.IsEnabled = true;
                 throw;
             }
             
@@ -589,49 +611,69 @@ namespace XelsDesktopWalletApp.Views.Pages
 
         private async void StartHybridMiningButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(this.Password.Password)) {
-                WalletLoadRequest UserWallet = new WalletLoadRequest()
+            try
+            {
+                this.PreloaderPoup.IsOpen = true;
+                this.IsEnabled = false;
+
+                if (!string.IsNullOrWhiteSpace(this.Password.Password))
                 {
-                    Name = this.walletName,
-                    Password = this.Password.Password,
-                };
+                    WalletLoadRequest UserWallet = new WalletLoadRequest()
+                    {
+                        Name = this.walletName,
+                        Password = this.Password.Password,
+                    };
 
-                string apiUrl = this.baseURL + $"/staking/startstaking";
+                    string apiUrl = this.baseURL + $"/staking/startstaking";
 
-                HttpResponseMessage response = await URLConfiguration.Client.PostAsJsonAsync(apiUrl, UserWallet);
+                    HttpResponseMessage response = await URLConfiguration.Client.PostAsJsonAsync(apiUrl, UserWallet);
 
-                string content = await response.Content.ReadAsStringAsync();
+                    string content = await response.Content.ReadAsStringAsync();
 
-                if (response.IsSuccessStatusCode)
-                {
-                    this.UnlockGrid.Visibility = Visibility.Hidden;
-                    this.StopHybridMinginButton.Visibility = Visibility.Visible;
-                    this.Password.Password = "";
-                    this.MiningInfoBorder.Visibility = Visibility.Visible;
-                    this.t.Visibility = Visibility.Hidden;
-                    GlobalPropertyModel.StakingStart = true;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        this.UnlockGrid.Visibility = Visibility.Hidden;
+                        this.StopHybridMinginButton.Visibility = Visibility.Visible;
+                        this.Password.Password = "";
+                        this.MiningInfoBorder.Visibility = Visibility.Visible;
+                        this.t.Visibility = Visibility.Hidden;
+                        GlobalPropertyModel.StakingStart = true;
 
-                    this.StakingInfo.Content = "Staking";
-                    this.thumbDown.Visibility = Visibility.Collapsed;
-                    this.thumbsup.Visibility = Visibility.Visible;
+                        this.StakingInfo.Content = "Staking";
+                        this.thumbDown.Visibility = Visibility.Collapsed;
+                        this.thumbsup.Visibility = Visibility.Visible;
+
+                        this.PreloaderPoup.IsOpen = false;
+                        this.IsEnabled = true;
+                    }
+                    else
+                    {
+                        var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
+
+                        foreach (var error in errors.Errors)
+                        {
+                            MessageBox.Show(error.Message);
+
+                        }
+                        this.Password.Password = "";
+                        this.PreloaderPoup.IsOpen = false;
+                        this.IsEnabled = true;
+                    }
                 }
                 else
                 {
-                    var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
-
-                    foreach (var error in errors.Errors)
-                    {
-                        MessageBox.Show(error.Message);
-                        
-                    }
-                    this.Password.Password = "";
+                    MessageBox.Show("Please, enter password to unlock");
+                    this.PreloaderPoup.IsOpen = false;
+                    this.IsEnabled = true;
                 }
             }
-            else
+            catch (Exception)
             {
-                MessageBox.Show("Please, enter password to unlock");
-                
-            }           
+                this.PreloaderPoup.IsOpen = false;
+                this.IsEnabled = true;
+                throw;
+            }
+                      
 
         }
 
