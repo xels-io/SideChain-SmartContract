@@ -198,10 +198,10 @@
                     <materialDesign:PackIcon Kind="WindowMaximize" Foreground="Red" VerticalAlignment="Center" Width="20"/>
                 </Button>-->
                 <Button  x:Name="windowMin" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="30" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Click="windowMin_Click">
-                    <materialDesign:PackIcon Kind="WindowMinimize" Foreground="Red" VerticalAlignment="Center" Width="20"/>
+                    <materialDesign:PackIcon Kind="WindowMinimize" Foreground="White" VerticalAlignment="Center" Width="20"/>
                 </Button>
                 <Button x:Name="ButtonFechar" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="34" Height="26" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Click="ButtonFechar_Click">
-                    <materialDesign:PackIcon Kind="Close" Foreground="Red" VerticalAlignment="Center"/>
+                    <materialDesign:PackIcon Kind="CloseBold" Foreground="White" VerticalAlignment="Center"/>
                 </Button>
 
             </StackPanel>

@@ -26,7 +26,7 @@ namespace XelsDesktopWalletApp.Views.Pages
         }
 
         #region Base
-        string baseURL = URLConfiguration.BaseURLMain;// "http://localhost:37221/api";
+        string baseURL = URLConfiguration.BaseURL;
         #endregion
 
         #region Wallet Info
@@ -122,38 +122,40 @@ namespace XelsDesktopWalletApp.Views.Pages
         private async Task GetWalletHistoryTimerAsync(string path)
         {
             var content = "";
-            List<TransactionItemModel> HistoryListForTimer = new List<TransactionItemModel>();
-            ObservableCollection<TransactionItemModel> observableList = new ObservableCollection<TransactionItemModel>();
-            string getUrl = path + $"/wallet/history?WalletName={this.walletInfo.WalletName}&AccountName=account 0";
-
-            HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
-
-            content = await response.Content.ReadAsStringAsync();
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                try
-                {
-                    var history = JsonConvert.DeserializeObject<HistoryModelArray>(content);
+                List<TransactionItemModel> HistoryListForTimer = new List<TransactionItemModel>();
+                ObservableCollection<TransactionItemModel> observableList = new ObservableCollection<TransactionItemModel>();
+                string getUrl = path + $"/wallet/history?WalletName={this.walletInfo.WalletName}&AccountName=account 0";
 
-                    foreach (var h in history.History)
+                HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    try
                     {
-                        HistoryListForTimer.AddRange(h.TransactionsHistory);
+                        content = await response.Content.ReadAsStringAsync();
+                        var history = JsonConvert.DeserializeObject<HistoryModelArray>(content);
+
+                        foreach (var h in history.History)
+                        {
+                            HistoryListForTimer.AddRange(h.TransactionsHistory);
+                        }
+                        observableList = new ObservableCollection<TransactionItemModel>(HistoryListForTimer);
+                        this.HistoryListBinding.ItemsSource = observableList;
                     }
-                    observableList = new ObservableCollection<TransactionItemModel>(HistoryListForTimer);
-                    this.HistoryListBinding.ItemsSource = observableList;
-                }
-                catch (Exception e)
-                {
+                    catch (Exception)
+                    {
 
-                    throw;
-                }
+                    }
 
+                }
             }
-            else
+            catch (Exception)
             {
-                MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+
             }
+            
         }
 
         private void DetailsButton_Click(object sender, RoutedEventArgs e)

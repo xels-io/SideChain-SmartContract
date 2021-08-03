@@ -116,7 +116,9 @@ namespace XelsDesktopWalletApp.Views.Pages
             if (URLConfiguration.Chain == "-sidechain")// (!this.sidechainEnabled)
             {
                 this.PowMiningButton.Visibility = Visibility.Hidden;
-               
+                this.thumbDown.Visibility = Visibility.Collapsed;
+                this.thumbsup.Visibility = Visibility.Collapsed;
+
             }
 
             if(GlobalPropertyModel.MiningStart == true)
@@ -269,7 +271,6 @@ namespace XelsDesktopWalletApp.Views.Pages
             catch (Exception)
             {
 
-                throw;
             }
         }
 
@@ -394,8 +395,6 @@ namespace XelsDesktopWalletApp.Views.Pages
             }
             catch (Exception)
             {
-
-                throw;
             }
             
         }
@@ -433,8 +432,6 @@ namespace XelsDesktopWalletApp.Views.Pages
             }
             catch (Exception e)
             {
-
-                throw;
             }
 
         }
@@ -523,7 +520,6 @@ namespace XelsDesktopWalletApp.Views.Pages
             }
             catch (Exception)
             {
-                throw;
             }
         }
 
@@ -569,8 +565,6 @@ namespace XelsDesktopWalletApp.Views.Pages
             }
             catch (Exception)
             {
-
-                throw;
                 this.PreloaderPoup.IsOpen = false;
                 this.IsEnabled = true;
             }
@@ -602,7 +596,6 @@ namespace XelsDesktopWalletApp.Views.Pages
             {
                 this.PreloaderPoup.IsOpen = false;
                 this.IsEnabled = true;
-                throw;
             }
             
 
@@ -671,7 +664,6 @@ namespace XelsDesktopWalletApp.Views.Pages
             {
                 this.PreloaderPoup.IsOpen = false;
                 this.IsEnabled = true;
-                throw;
             }
                       
 
@@ -753,8 +745,6 @@ namespace XelsDesktopWalletApp.Views.Pages
                 }
                 catch (Exception a)
                 {
-                    string exMessage = a.Message.ToString();
-                    throw;
                 }
             //}
             //else
