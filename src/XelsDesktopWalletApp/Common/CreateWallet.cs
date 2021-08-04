@@ -64,93 +64,97 @@ namespace XelsDesktopWalletApp.Common
 
         public bool StoreLocally(Wallet wallet, string walletname, string symbol, string wallethash)
         {
-            if (walletname != null)
+            try
             {
-                List<StoredWallet> storedWallets = new List<StoredWallet>();
-
-                List<StoredWallet> returnedWallets = new List<StoredWallet>();
-                returnedWallets = RetrieveWallets();
-
-                if (returnedWallets != null)
+                if (walletname != null)
                 {
-                    storedWallets = returnedWallets;
-                }
+                    List<StoredWallet> storedWallets = new List<StoredWallet>();
 
-                foreach (var a in storedWallets.ToList())
-                {
-                    int i = storedWallets.FindIndex(w => w.Coin == symbol && w.Walletname == walletname);
+                    List<StoredWallet> returnedWallets = new List<StoredWallet>();
+                    returnedWallets = RetrieveWallets();
 
-                    StoredWallet storedWallet = new StoredWallet();
-                    storedWallet.Address = wallet.Address;
-                    storedWallet.PrivateKey = wallet.PrivateKey;
-                    storedWallet.Walletname = walletname;
-                    storedWallet.Coin = symbol;
-                    storedWallet.Wallethash = wallethash;
-
-                    if (i != -1)
+                    if (returnedWallets != null)
                     {
-                        storedWallets[i] = storedWallet;
-                    }
-                    else
-                    {
-                        storedWallets.Add(storedWallet);
+                        storedWallets = returnedWallets;
                     }
 
-                }
-
-
-
-                string JSONresult = JsonConvert.SerializeObject(storedWallets.ToArray(), Formatting.Indented);
-
-                string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-
-                string walletFile = Path.Combine(walletCurrentDirectory, @"..\..\..\File\Wallets.json");
-                string path = Path.GetFullPath(walletFile);
-                File.SetAttributes(path, FileAttributes.Hidden);
-
-
-                if (File.Exists(path))
-                {
-                    File.Delete(path);
-
-                    using (var sw = new StreamWriter(path, true))
+                    foreach (var a in storedWallets.ToList())
                     {
-                        sw.WriteLine(JSONresult.ToString());
-                        sw.Close();
+                        int i = storedWallets.FindIndex(w => w.Coin == symbol && w.Walletname == walletname);
+
+                        StoredWallet storedWallet = new StoredWallet();
+                        storedWallet.Address = wallet.Address;
+                        storedWallet.PrivateKey = wallet.PrivateKey;
+                        storedWallet.Walletname = walletname;
+                        storedWallet.Coin = symbol;
+                        storedWallet.Wallethash = wallethash;
+
+                        if (i != -1)
+                        {
+                            storedWallets[i] = storedWallet;
+                        }
+                        else
+                        {
+                            storedWallets.Add(storedWallet);
+                        }
                     }
-                }
-                else if (!File.Exists(path))
-                {
-                    using (var sw = new StreamWriter(path, true))
+
+                    string JSONresult = JsonConvert.SerializeObject(storedWallets.ToArray(), Formatting.Indented);
+
+                    string walletCurrentDirectory =Directory.GetCurrentDirectory(); // AppDomain.CurrentDomain.BaseDirectory;
+                    
+                    string path = walletCurrentDirectory + @"\File\Wallets.json";
+                   
+                    //string path = Path.GetFullPath(walletFile);
+                     
+                    File.SetAttributes(path, FileAttributes.Hidden);
+
+
+                    if (File.Exists(path))
                     {
-                        sw.WriteLine(JSONresult.ToString());
-                        sw.Close();
+                        File.Delete(path);
+
+                        using (var sw = new StreamWriter(path, true))
+                        {
+                            sw.WriteLine(JSONresult.ToString());
+                            sw.Close();
+                        }
                     }
+                    else if (!File.Exists(path))
+                    {
+                        using (var sw = new StreamWriter(path, true))
+                        {
+                            sw.WriteLine(JSONresult.ToString());
+                            sw.Close();
+                        }
+                    }
+                    return true;
                 }
-
-
-                return true;
+                else
+                {
+                    return false;
+                }
             }
-            else
+            catch (Exception e)
             {
-                return false;
+
+                MessageBox.Show(e.Message);
             }
+            return false;
         }
-
-
-
-
+         
         public List<StoredWallet> RetrieveWallets()
         {
             List<StoredWallet> wallets = new List<StoredWallet>();
 
             string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            string walletFile = Path.Combine(walletCurrentDirectory, @"..\..\..\File\Wallets.json");
-            string path = Path.GetFullPath(walletFile);
+            string walletFile = walletCurrentDirectory + @"\File\Wallets.json";
+            //string walletFile = Path.Combine(walletCurrentDirectory, @"..\..\..\File\Wallets.json");
+            //string path = Path.GetFullPath(walletFile);
 
-            if (File.Exists(path))
+            if (File.Exists(walletFile))
             {
-                using (StreamReader r = new StreamReader(path))
+                using (StreamReader r = new StreamReader(walletFile))
                 {
                     string json = r.ReadToEnd();
 
@@ -171,9 +175,11 @@ namespace XelsDesktopWalletApp.Common
             StoredWallet wallet = new StoredWallet();
             List<StoredWallet> wallets = new List<StoredWallet>();
 
-            string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            string walletFile = Path.Combine(walletCurrentDirectory, @"..\..\..\File\Wallets.json");
-            string path = Path.GetFullPath(walletFile);
+            string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory; //Directory.GetCurrentDirectory();// 
+            //string walletFile = Path.Combine(walletCurrentDirectory, @"..\..\..\File\Wallets.json");
+            //string path = Path.GetFullPath(walletFile);
+
+            string path = walletCurrentDirectory + @"\File\Wallets.json";
 
             using (StreamReader r = new StreamReader(path))
             {
@@ -290,9 +296,10 @@ namespace XelsDesktopWalletApp.Common
             StoredWallet wallet = new StoredWallet();
 
             string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            string walletFile = Path.Combine(walletCurrentDirectory, @"..\..\..\File\Wallets.json");
-            string path = Path.GetFullPath(walletFile);
+            //string walletFile = Path.Combine(walletCurrentDirectory, @"..\..\..\File\Wallets.json");
+            //string path = Path.GetFullPath(walletFile);
 
+            string path = walletCurrentDirectory + @"\File\Wallets.json";
             using (StreamReader r = new StreamReader(path))
             {
                 string json = r.ReadToEnd();
@@ -313,8 +320,10 @@ namespace XelsDesktopWalletApp.Common
             StoredWallet wallet = new StoredWallet();
 
             string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            string walletFile = Path.Combine(walletCurrentDirectory, @"..\..\..\File\Wallets.json");
-            string path = Path.GetFullPath(walletFile);
+            //string walletFile = Path.Combine(walletCurrentDirectory, @"..\..\..\File\Wallets.json");
+            //string path = Path.GetFullPath(walletFile);
+
+            string path = walletCurrentDirectory + @"\File\Wallets.json";
 
             using (StreamReader r = new StreamReader(path))
             {

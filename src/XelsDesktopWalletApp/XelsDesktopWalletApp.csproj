@@ -28,6 +28,8 @@
     <None Remove="Assets\Images\home-xels-logo-01.png" />
     <None Remove="Assets\Images\icon.ico" />
     <None Remove="Assets\Images\loading-3.gif" />
+    <None Remove="File\Wallets.json" />
+    <None Remove="Token\TokenFile.txt" />
     <None Remove="Views\home-xels-logo-01.png" />
   </ItemGroup>
 
@@ -41,6 +43,15 @@
       <Isolated>false</Isolated>
       <EmbedInteropTypes>true</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="File\Wallets.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Token\TokenFile.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -71,10 +82,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Images\loading-3.gif" />
-  </ItemGroup>  
-
-  <ItemGroup>
-    <Folder Include="File\" />
   </ItemGroup>
 
 </Project>
