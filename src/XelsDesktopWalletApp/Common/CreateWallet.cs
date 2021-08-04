@@ -101,12 +101,12 @@ namespace XelsDesktopWalletApp.Common
 
                     string JSONresult = JsonConvert.SerializeObject(storedWallets.ToArray(), Formatting.Indented);
 
-                    string walletCurrentDirectory =Directory.GetCurrentDirectory(); // AppDomain.CurrentDomain.BaseDirectory;
-                    
+                    string walletCurrentDirectory = Directory.GetCurrentDirectory(); // AppDomain.CurrentDomain.BaseDirectory;
+
                     string path = walletCurrentDirectory + @"\File\Wallets.json";
-                   
+
                     //string path = Path.GetFullPath(walletFile);
-                     
+
                     File.SetAttributes(path, FileAttributes.Hidden);
 
 
@@ -142,7 +142,7 @@ namespace XelsDesktopWalletApp.Common
             }
             return false;
         }
-         
+
         public List<StoredWallet> RetrieveWallets()
         {
             List<StoredWallet> wallets = new List<StoredWallet>();
@@ -302,30 +302,17 @@ namespace XelsDesktopWalletApp.Common
             string path = walletCurrentDirectory + @"\File\Wallets.json";
             using (StreamReader r = new StreamReader(path))
             {
-                string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                string walletFile = Path.Combine(walletCurrentDirectory, @"..\..\..\File\Wallets.json");
-                string path = Path.GetFullPath(walletFile);
+                string json = r.ReadToEnd();
+                List<StoredWallet> wallets = new List<StoredWallet>();
 
-                using (StreamReader r = new StreamReader(path))
+                if (json != "")
                 {
-                    string json = r.ReadToEnd();
-                    List<StoredWallet> wallets = new List<StoredWallet>();
-
-                    if (json != "")
-                    {
-                        wallets = JsonConvert.DeserializeObject<List<StoredWallet>>(json);
-                        wallet = wallets.Where(c => c.Walletname == walletname).FirstOrDefault();
-                    }
-
-                    return wallet;
+                    wallets = JsonConvert.DeserializeObject<List<StoredWallet>>(json);
+                    wallet = wallets.Where(c => c.Walletname == walletname).FirstOrDefault();
                 }
-            }
-            catch (Exception e)
-            {
 
-                return null;
+                return wallet;
             }
-            
         }
 
         public StoredWallet GetLocalWalletDetailsByWalletAndCoin(string walletname, string coin)
