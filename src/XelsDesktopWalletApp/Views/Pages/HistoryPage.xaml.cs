@@ -127,6 +127,7 @@ namespace XelsDesktopWalletApp.Views.Pages
         private void DetailsButton_Click(object sender, RoutedEventArgs e)
         {
             TransactionItemModel item = (TransactionItemModel)((sender as Button))?.DataContext;
+            this.IsEnabled = false;
             this.DetailsPopup.IsOpen = true;
 
             this.TypeTxt.Text = item.Type;
@@ -157,6 +158,7 @@ namespace XelsDesktopWalletApp.Views.Pages
 
         private void HidePopup_Click(object sender, RoutedEventArgs e)
         {
+            this.IsEnabled = true;
             this.DetailsPopup.IsOpen = false;
         }
 
