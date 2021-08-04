@@ -202,6 +202,7 @@ namespace XelsDesktopWalletApp
                         await GetNodeStatus();
                         GlobalPropertyModel.WalletName = this.UserWallet.Name;
                         this.preLoader.Visibility = Visibility.Collapsed;
+                        this.IsEnabled = true;
                         MainLayout mainLayout = new MainLayout(this.UserWallet.Name);
                         mainLayout.Show();
                         this.Close();
@@ -211,20 +212,28 @@ namespace XelsDesktopWalletApp
                         LoginError loginError = new LoginError();
                         loginError = JsonConvert.DeserializeObject<LoginError>(content);
                         MessageBox.Show($"{loginError.errors[0].message}");
+                        this.preLoader.Visibility = Visibility.Collapsed;
+                        this.IsEnabled = true;
                     }
                     else
                     {
                         MessageBox.Show($"Error Code{response.StatusCode} : Message - {response.ReasonPhrase}");
+                        this.preLoader.Visibility = Visibility.Collapsed;
+                        this.IsEnabled = true;
                     }
                 }
                 else
                 {
                     MessageBox.Show($"Enter Valid Information.");
+                    this.preLoader.Visibility = Visibility.Collapsed;
+                    this.IsEnabled = true;
                 }
                 return msg;
             }
             catch (Exception e)
             {
+                this.preLoader.Visibility = Visibility.Collapsed;
+                this.IsEnabled = true;
                 msg = e.Message.ToString();
                 return msg;
             }
