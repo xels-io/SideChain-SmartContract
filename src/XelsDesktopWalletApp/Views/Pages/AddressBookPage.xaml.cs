@@ -26,7 +26,7 @@ namespace XelsDesktopWalletApp.Views.Pages
     public partial class AddressBookPage : Page
     {
         #region Base
-        string baseURL = URLConfiguration.BaseURL; /*"http://localhost:37221/api"*/
+        string baseURL = URLConfiguration.BaseURL; 
         #endregion
         #region Local Info
         private string walletName;

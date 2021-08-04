@@ -26,7 +26,7 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
     /// </summary>
     public partial class AddToken : UserControl
     {
-
+       
         private List<TokenModel> tokens = new List<TokenModel>();
         ObservableCollection<TokenRetrieveModel> tokenlist = new ObservableCollection<TokenRetrieveModel>();
 
@@ -120,7 +120,7 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
             this.tokenDecimalTxt.Text = "0";
         }
 
-            public  void AddTokenList()
+        public  void AddTokenList()
         {
             string retMsg = "";
 
@@ -128,8 +128,9 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
             {
                 string CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
-                string tokenFilePath = System.IO.Path.Combine(CurrentDirectory, @"..\..\..\Token\TokenFile.txt");
-                string path = System.IO.Path.GetFullPath(tokenFilePath);
+                //string tokenFilePath = System.IO.Path.Combine(CurrentDirectory, @"..\..\..\Token\TokenFile.txt");
+                //string path = System.IO.Path.GetFullPath(tokenFilePath);
+                string path = CurrentDirectory + @"TokenFile.txt";
 
                 if (File.Exists(path))
                 {
@@ -156,13 +157,6 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
             }
 
         }
-
-        //private void Rectangle_MouseDown(object sender, MouseButtonEventArgs e)
-        //{
-        //    this.Visibility = Visibility.Collapsed;
-        //    TokenManagement tokenManagement = new TokenManagement(this.walletName, GLOBALS.Address);
-        //}
-
 
         private void token_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -220,81 +214,103 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
         public async Task<string> SaveTokenasync(TokenModel tokenModel)
         {
             string msg = "";
-
-            //string path = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName)
-            // + "\\TokenFile.json";
-            string CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-
-            string tokenFilePath = System.IO.Path.Combine(CurrentDirectory, @"..\..\..\Token\TokenFile.txt");
-            string path = System.IO.Path.GetFullPath(tokenFilePath);
-            string validcheck = addTokenValidation(tokenModel, path);
-            if (validcheck =="")
+            try
             {
-                string JSONresult = JsonConvert.SerializeObject(tokenModel, Formatting.Indented);
+                string CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
-                if (!File.Exists(path))
+                string path = CurrentDirectory + @"TokenFile.txt";
+                string validcheck = addTokenValidation(tokenModel, path);
+                if (validcheck == "")
                 {
-                    File.Create(path).Dispose();
-                }
+                    string JSONresult = JsonConvert.SerializeObject(tokenModel, Formatting.Indented);
 
-                using (var sw = new StreamWriter(path, true))
-                {
-                    sw.WriteLine(JSONresult.ToString());
-                    sw.WriteLine(",");
-                    sw.Close();
-                    msg = "SUCCESS";
+                    if (!File.Exists(path))
+                    {
+                        File.Create(path).Dispose();
+                        File.SetAttributes(path, FileAttributes.Hidden);//hidden file path
+                    }
+
+                    using (var sw = new StreamWriter(path, true))
+                    {
+                        sw.WriteLine(JSONresult.ToString());
+                        sw.WriteLine(",");
+                        sw.Close();
+                        msg = "SUCCESS";
+                    }
                 }
+                else
+                {
+                    msg = validcheck;
+                }
+                return msg;
             }
-            else
+            catch (Exception e)
             {
-                msg = validcheck;
+                msg = e.Message.ToString();
+                return msg;
             }
-            return msg;
+           
         }
 
         private void btn_AddTokenSubmit_Click(object sender, RoutedEventArgs e)
         {
             string msg = "";
-            TokenModel objtokenModel = this.token.SelectedItem as TokenModel;
-          
-            string selectedVlaue = objtokenModel.DropDownValue;
-            if (selectedVlaue== "custom")
+            try
             {
-                var objSaveToken = new TokenModel
+                TokenModel objtokenModel = this.token.SelectedItem as TokenModel;
+
+                string selectedVlaue = objtokenModel.DropDownValue;
+                if (selectedVlaue == "custom")
                 {
-                    Ticker = this.txtTokenSymbol.Text,
-                    Address = this.txtTokenContractAddress.Text,
-                    Name= this.tokenNametxt.Text,
-                    Decimals =this.tokenDecimalTxt.Text,
-                    Balance="0",
-                };
-
-                var result =  SaveTokenasync(objSaveToken);
-                msg = result.Result;
-                MessageBox.Show("Message - " + msg);
-                ResetPage();
-                AddTokenList();
-
-
+                    var objSaveToken = new TokenModel
+                    {
+                        Ticker = this.txtTokenSymbol.Text,
+                        Address = this.txtTokenContractAddress.Text,
+                        Name = this.tokenNametxt.Text,
+                        Decimals = this.tokenDecimalTxt.Text,
+                        Balance = "0",
+                    };
+                    var result = SaveTokenasync(objSaveToken);
+                    msg = result.Result;
+                    if (msg == "SUCCESS")
+                    {
+                        MessageBox.Show("Message - " + msg);
+                        ResetPage();
+                        AddTokenList();
+                    }
+                    else
+                    {
+                        MessageBox.Show(msg);
+                    }
+                }
+                else
+                {
+                    var objSaveToken = new TokenModel
+                    {
+                        Ticker = objtokenModel.Ticker,
+                        Address = objtokenModel.Address,
+                        Name = objtokenModel.Name,
+                        Decimals = objtokenModel.Decimals,
+                        Balance = "0",
+                    };
+                    var result = SaveTokenasync(objSaveToken);
+                    msg = result.Result;
+                    if (msg == "SUCCESS")
+                    {
+                        MessageBox.Show("Message - " + msg);
+                        ResetPage();
+                        AddTokenList();
+                    }
+                    else
+                    {
+                        MessageBox.Show(msg);
+                    }
+                }
             }
-            else
+            catch (Exception r)
             {
-                var objSaveToken = new TokenModel
-                {
-                    Ticker = objtokenModel.Ticker,
-                    Address = objtokenModel.Address,
-                    Name = objtokenModel.Name,
-                    Decimals = objtokenModel.Decimals,
-                    Balance = "0",
-                };
-                var result = SaveTokenasync(objSaveToken);
-                msg = result.Result;
-                MessageBox.Show("Message - " + msg);
-                ResetPage();
-                AddTokenList();
-
+                MessageBox.Show("Button Ex Message:: - " + r.InnerException.Message.ToString());
             }
-
         }
 
         private string addTokenValidation(TokenModel tokenModel,string path)
@@ -348,8 +364,9 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
         {
             string msg = "";
             string CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            string tokenFilePath = System.IO.Path.Combine(CurrentDirectory, @"..\..\..\Token\TokenFile.txt");
-            string path = System.IO.Path.GetFullPath(tokenFilePath);
+            string path = CurrentDirectory + @"TokenFile.txt";
+            //string tokenFilePath = System.IO.Path.Combine(CurrentDirectory, @"..\..\..\Token\TokenFile.txt");
+            //string path = System.IO.Path.GetFullPath(tokenFilePath);
 
             List<TokenRetrieveModel> tokenlist = new List<TokenRetrieveModel>();
 
@@ -379,7 +396,7 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
 
                     string FinalResult = JSONresult.TrimStart('[').TrimEnd(']').TrimStart().TrimEnd();
                     File.Create(path).Dispose();
-
+                    File.SetAttributes(path, FileAttributes.Hidden);//hidden file path;
                     using (var sw = new StreamWriter(path, true))
                     {
                         sw.WriteLine(FinalResult.ToString());
