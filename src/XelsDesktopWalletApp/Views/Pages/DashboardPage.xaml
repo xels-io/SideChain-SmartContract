@@ -331,10 +331,10 @@
                                                 <RowDefinition  Height="*"/>
                                                 <RowDefinition  Height="*"/>
                                             </Grid.RowDefinitions>
-                                            <PasswordBox Grid.Row="0" x:Name="Password" PasswordChanged="EnterPassword_OnChange"  />
+                                            <PasswordBox Grid.Row="0" x:Name="Password" materialDesign:HintAssist.Hint="Enter a wallet password."   materialDesign:HintAssist.IsFloating="False" PasswordChanged="EnterPassword_OnChange" />
 
                                             <Button Grid.Row="1" x:Name="HybridMinginButton" Content="Unlock" HorizontalAlignment="Center" IsEnabled="False"  Margin="5 5 0 0  " 
-                                Click="StartHybridMiningButton_Click" Foreground="#FF9B9B9B" Background="White" BorderBrush="#FF9B9B9B" >
+                                Click="StartHybridMiningButton_Click" Foreground="Green" Background="White" BorderBrush="Green" >
                                                 <Button.Resources>
                                                     <Style TargetType="{x:Type Border}">
                                                         <Setter  Property="CornerRadius" Value="2">
@@ -345,7 +345,7 @@
                                         </Grid>
 
                                         <Button Grid.Row="0" x:Name="StopHybridMinginButton"  HorizontalAlignment="Center"  Margin="5 0 " Content="Stop Hybrid Mining" Visibility="Hidden"
-                                Click="StopHybridMiningButton_Click" Foreground="#FF9B9B9B" Background="White" BorderBrush="#FF9B9B9B" />
+                                Click="StopHybridMiningButton_Click" Foreground="Green" Background="White" BorderBrush="red" />
 
 
 
@@ -589,7 +589,7 @@
                                             <Border Grid.Row="0" x:Name="startButton" CornerRadius="8">
 
                                                 <Button x:Name="PowMiningButton" Content="Start POW Mining" HorizontalAlignment="Center" 
-                                Click="StartPOWMiningButton_Click" Foreground="#FF9B9B9B" Background="White" BorderBrush="#FF9B9B9B"  FontWeight="DemiBold">
+                                Click="StartPOWMiningButton_Click" Foreground="Green" Background="White" BorderBrush="green"  FontWeight="DemiBold">
                                                     <Button.Resources>
                                                         <Style TargetType="{x:Type Border}">
                                                             <Setter Property="CornerRadius" Value="2"/>
@@ -602,7 +602,7 @@
                                             <Border Grid.Row="0" x:Name="stopButton" CornerRadius="8">
 
                                                 <Button Visibility="Hidden" x:Name="StopPowMiningButton" Content="Stop POW Mining" HorizontalAlignment="Center" 
-                                Click="StopPOWMiningButton_Click" Foreground="#FF9B9B9B" Background="White" BorderBrush="#FF9B9B9B"  FontWeight="DemiBold">
+                                Click="StopPOWMiningButton_Click" Foreground="green" Background="White" BorderBrush="Red"  FontWeight="DemiBold">
                                                     <Button.Resources>
                                                         <Style TargetType="{x:Type Border}">
                                                             <Setter Property="CornerRadius" Value="2"/>
