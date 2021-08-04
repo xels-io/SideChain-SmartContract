@@ -7,9 +7,7 @@
       mc:Ignorable="d"       
       d:DesignHeight="750" d:DesignWidth="750"
       Title="HistoryPage" Loaded="Page_Loaded">
-
     
-
     <Grid Margin="10 20 5 5" Background="WhiteSmoke">
 
         <Grid.RowDefinitions>
@@ -20,7 +18,7 @@
         <Border Grid.Row="0" Margin="5">
             <TextBlock Margin="20 0 0 0" FontSize="15" FontWeight="DemiBold" Padding="2" Background="WhiteSmoke">Transaction History</TextBlock>
         </Border>
-        
+
         <Border Grid.Row="1"  CornerRadius="5" Background="#ffffff" BorderBrush="Black" BorderThickness="1" Margin="10 0 10 10">
             <Border.Effect>
                 <DropShadowEffect  Direction="-75" ShadowDepth="2" Opacity="0.8" BlurRadius="25" Color="Black" />
@@ -52,14 +50,16 @@
                         </Grid.RowDefinitions>
 
                         <Border Margin="0"  Grid.Row="0">
-                            <DataGrid x:Name="HistoryListBinding" AutoGenerateColumns="False" IsReadOnly="True" 
+                            <DataGrid x:Name="HistoryListBinding" ItemsSource="{Binding observableList}" AutoGenerateColumns="False" IsReadOnly="True" CanUserReorderColumns="False"
+                                      CanUserResizeColumns="False"
                           CanUserAddRows="False" RowStyle="{DynamicResource MaterialDesignDataGridRow}" 
                           RowHeight="30" HorizontalAlignment="Center" CanUserSortColumns="False" 
-                          HeadersVisibility="None" ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
+                          HeadersVisibility="None" ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                            SelectionMode="Extended"  >
 
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Width="150" 
-                                            Binding="{Binding Path=Type}">
+                                            Binding="{Binding Path=Type}" >
                                         <DataGridTextColumn.CellStyle>
                                             <Style>
                                                 <Setter Property="TextBlock.VerticalAlignment" Value="Center"/>
@@ -239,7 +239,7 @@
                                         <TextBlock Grid.Column="1" x:Name="ConfirmationsTxt"  Text="Confirmations"
                                      TextWrapping="Wrap"  Padding="4" 
                                      FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="ForestGreen" />
- 
+
                                     </Grid>
 
                                 </Border>
@@ -282,7 +282,7 @@
                                         </Button.Resources>
                                     </Button>
                                 </Border>
-                            </Grid> 
+                            </Grid>
                         </Grid>
                     </Popup>
 
@@ -290,7 +290,7 @@
 
 
 
-                <Grid  HorizontalAlignment="Center" Grid.Row="1">
+                <Grid x:Name="Pagination" HorizontalAlignment="Center" Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
@@ -303,9 +303,9 @@
                             </Binding>
                         </Label.Content>
                     </Label>
-                   <Button Grid.Column="0" Content="Previous" Click="OnPreviousClicked" Margin="2"/>
+                    <Button Grid.Column="0" Content="Previous" Click="OnPreviousClicked" Margin="2"/>
 
-                    <Border Grid.Column="1" Margin="10 0" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"  ScrollViewer.PanningMode="HorizontalOnly" >                        
+                    <Border Grid.Column="1" Margin="10 0" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"  ScrollViewer.PanningMode="HorizontalOnly" >
                         <ItemsControl x:Name="buttons" ItemsSource="{Binding Buttons}" >
                             <ItemsControl.ItemsPanel >
                                 <ItemsPanelTemplate>
@@ -318,13 +318,13 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                        
+
                     </Border>
-                    <Button Grid.Column="2" Content="Next" Click="OnNextClicked" Margin="2"/>                     
+                    <Button Grid.Column="2" Content="Next" Click="OnNextClicked" Margin="2"/>
                 </Grid>
             </Grid>
-            
-            
+
+
         </Border>
     </Grid>
 </Page>

@@ -76,7 +76,7 @@ namespace XelsDesktopWalletApp.Views
         private void XELS_Button_Click(object sender, RoutedEventArgs e)
         {
 
-            this.SendFrame.Content = new XelsPage(this.walletName);
+            this.SendFrame.Content = new XelsPage();
         }
 
         private void SELS_Button_Click(object sender, RoutedEventArgs e)
@@ -91,7 +91,7 @@ namespace XelsDesktopWalletApp.Views
 
         private void Window_Initialized(object sender, System.EventArgs e)
         {
-            this.SendFrame.Content = new XelsPage(this.walletName);
+            this.SendFrame.Content = new XelsPage();
         }
     }
 }

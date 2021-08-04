@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
+using XelsDesktopWalletApp.Models.SmartContractModels;
 
 namespace XelsDesktopWalletApp.Views.Pages.SendPages
 {
@@ -18,67 +19,29 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
     /// Interaction logic for XelsPage.xaml
     /// </summary>
     public partial class XelsPage : Page
-    {
-        private readonly string baseURL = URLConfiguration.BaseURL;// "http://localhost:37221/api";
-        private readonly WalletInfo walletInfo = new WalletInfo();
-
-
-        private TransactionSending transactionSending = new TransactionSending();
-        private TransactionBuilding transactionBuilding = new TransactionBuilding();
-
-        private WalletBalanceArray balances = new WalletBalanceArray();
-        private BuildTransaction buildTransaction = new BuildTransaction();
-
-        private decimal totalBalance;
-        private string cointype;
-        private decimal spendableBalance;
-
-        private decimal estimatedFee = 0;
-        private bool isSending = false;
-
-        private decimal opReturnAmount = 1;
-
-        private string walletName;
-        public string WalletName
-        {
-            get
-            {
-                return this.walletName;
-            }
-            set
-            {
-                this.walletName = value;
-            }
-        }
-
+    { 
+        private string walletName = GlobalPropertyModel.WalletName;
 
         public XelsPage()
-        {
+        { 
             InitializeComponent();
-        }
-
-        public XelsPage(string walletname)
-        {
-            this.walletName = walletname;
-            this.walletInfo.WalletName = this.walletName;
-            InitializeComponent();
-            this.DataContext = this;           
+            this.DataContext = this;
         }
 
 
         private void Mainchain_Button_Click(object sender, RoutedEventArgs e)
         {
-            this.xelsPageContent.Content = new MainchainPage(this.walletName);
+            this.xelsPageContent.Content = new MainchainPage();
         }
 
         private void Sidechain_Button_Click(object sender, RoutedEventArgs e)
         {
-            this.xelsPageContent.Content = new SidechainPage(this.walletName);
+            this.xelsPageContent.Content = new SidechainPage();
         }
 
         private void Window_Initialized(object sender, System.EventArgs e)
         {
-            this.xelsPageContent.Content = new MainchainPage(this.walletName);
+            this.xelsPageContent.Content = new MainchainPage();
         }
 
     }

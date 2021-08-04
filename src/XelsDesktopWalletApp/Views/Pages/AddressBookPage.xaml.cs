@@ -166,7 +166,7 @@ namespace XelsDesktopWalletApp.Views.Pages
             string CellValue = ((TextBlock)RowAndColumn.Content).Text;
 
             GlobalPropertyModel.selectAddressFromAddressBook = CellValue;
-            this.AddressBookContent.Children.Add(new SendUserControl(GlobalPropertyModel.WalletName));
+            this.AddressBookContent.Children.Add(new SendUserControl());
         }
 
         #region Delete Address

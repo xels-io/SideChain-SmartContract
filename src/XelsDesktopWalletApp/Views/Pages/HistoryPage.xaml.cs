@@ -99,10 +99,12 @@ namespace XelsDesktopWalletApp.Views.Pages
                         {
                             this.NoDataGrid.Visibility = Visibility.Visible;
                             this.HistoryDataGrid.Visibility = Visibility.Hidden;
+                            this.Pagination.Visibility = Visibility.Hidden;
                         }
                     }
-                    catch (Exception e)
+                     catch (Exception e)
                     {
+
 
                         //throw;
                     }
@@ -110,15 +112,21 @@ namespace XelsDesktopWalletApp.Views.Pages
                 }
                 else
                 {
-                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                    var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
+
+                    foreach (var error in errors.Errors)
+                    {
+                        MessageBox.Show(error.Message);
+
+                    }
                 }
             }
             catch (Exception)
             {
 
-                throw;
+                //throw;
             }
-            
+
         }
 
         #endregion
@@ -172,6 +180,7 @@ namespace XelsDesktopWalletApp.Views.Pages
 
         private void OnPreviousClicked(object sender, RoutedEventArgs e)
         {
+            this._cview.Refresh();
             this._cview.MoveToPreviousPage();
         }
 
@@ -180,10 +189,10 @@ namespace XelsDesktopWalletApp.Views.Pages
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            DispatcherTimer dispatcherTimer = new DispatcherTimer();
-            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 10);
-            dispatcherTimer.Start();
+            //DispatcherTimer dispatcherTimer = new DispatcherTimer();
+            //dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+            //dispatcherTimer.Interval = new TimeSpan(0, 0, 10);
+            //dispatcherTimer.Start();
         }
 
         private void dispatcherTimer_Tick(object sender, EventArgs e)
@@ -205,7 +214,7 @@ namespace XelsDesktopWalletApp.Views.Pages
                         Tag = i
                     };
                     Buttons.Add(button);
-                   // button.Click += new RoutedEventHandler(button_Click);
+                    // button.Click += new RoutedEventHandler(button_Click);
                     //this.buttons.Children.Add(button);
                     this.buttons.ItemsSource = Buttons;
 
@@ -230,10 +239,11 @@ namespace XelsDesktopWalletApp.Views.Pages
             }
             if (i < this._cview.CurrentPage)
             {
+                this._cview.Refresh();
                 this._cview.MoveToPreviousPageNumber(i);
             }
 
         }
-
+         
     }
 }

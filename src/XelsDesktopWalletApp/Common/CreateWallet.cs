@@ -300,6 +300,7 @@ namespace XelsDesktopWalletApp.Common
             //string path = Path.GetFullPath(walletFile);
 
             string path = walletCurrentDirectory + @"\File\Wallets.json";
+
             using (StreamReader r = new StreamReader(path))
             {
                 string json = r.ReadToEnd();

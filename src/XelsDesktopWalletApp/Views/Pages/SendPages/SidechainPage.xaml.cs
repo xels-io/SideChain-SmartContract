@@ -22,8 +22,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
     public partial class SidechainPage : Page
     {
         private readonly string baseURL = URLConfiguration.BaseURL; // "http://localhost:37221/api";
-
-        private readonly WalletInfo WalletInfo = new WalletInfo();
+         
         private TransactionSending TransactionSending = new TransactionSending();
         private TransactionBuildingSidechain TransactionBuilding = new TransactionBuildingSidechain();
 
@@ -36,50 +35,20 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
         private bool isSending = false;
         private double opReturnAmount = 1;
 
-        private string walletName;
-
-        public string WalletName
-        {
-            get
-            {
-                return this.walletName;
-            }
-            set
-            {
-                this.walletName = value;
-            }
-        }
+        private string walletName = GlobalPropertyModel.WalletName;
+         
 
         public SidechainPage()
         {
             InitializeComponent();
-        }
-
-        public SidechainPage(string walletname)
-        {
-            InitializeComponent();
             this.DataContext = this;
-
-            this.walletName = walletname;
-            this.WalletInfo.WalletName = this.walletName;
+ 
             LoadCreateAsync();
+            this.coin.Text = GlobalPropertyModel.CoinUnit;
         }
 
         public bool isAddrAmtValid()
         {
-            //if (this.MainchainFederationAddressText.Text == string.Empty)
-            //{
-            //    MessageBox.Show("An address is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-            //    this.MainchainFederationAddressText.Focus();
-            //    return false;
-            //}
-
-            //if (this.MainchainFederationAddressText.Text.Length < 26)
-            //{
-            //    MessageBox.Show("An address is at least 26 characters long.");
-            //    this.MainchainFederationAddressText.Focus();
-            //    return false;
-            //}
 
             if (this.SidechainDestinationAddressText.Text == string.Empty)
             {
@@ -132,26 +101,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
             this.Visibility = Visibility.Collapsed;
             // this.Close();
         }
-
-
-        //private void TxtAmount_LostFocus(object sender, RoutedEventArgs e)
-        //{
-        //    if (this.SidechainDestinationAddressText.Text != "" && this.SendAmountText.Text != "")
-        //    {
-        //        EstimateFeeSideChainAsync();
-        //        this.SendAmountText.Focus();
-        //    }
-        //}
-
-        //private void TxtAddress_LostFocus(object sender, RoutedEventArgs e)
-        //{
-        //    if (this.SidechainDestinationAddressText.Text != "" && this.SendAmountText.Text != "")
-        //    {
-        //        EstimateFeeSideChainAsync();
-        //        this.SidechainDestinationAddressText.Focus();
-        //    }
-        //}
-
+         
         private void sendButton_Click(object sender, RoutedEventArgs e)
         {
             this.isSending = true;
@@ -160,7 +110,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
 
         private async Task GetWalletBalanceAsync(string path)
         {
-            string getUrl = path + $"/wallet/balance?WalletName={this.WalletInfo.WalletName}&AccountName=account 0";
+            string getUrl = path + $"/wallet/balance?WalletName={this.walletName}&AccountName=account 0";
             var content = "";
 
             HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
@@ -174,7 +124,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
                 foreach (var balance in balances.Balances)
                 {
                     this.WalletBalance = balance;
-                    this.AvailableBalanceText.Content = $"{(balance.AmountConfirmed / 100000000).ToString()} {GlobalPropertyModel.CoinUnit}"  ;                    
+                    this.AvailableBalanceText.Content = $"{(balance.AmountConfirmed / 100000000).ToString("0.##############")} {GlobalPropertyModel.CoinUnit}"  ;                    
                 }
 
             }
@@ -189,32 +139,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
 
             }
         }
-
-        private async Task GetMaxBalanceAsync()
-        {
-
-            string postUrl = this.baseURL + $"/wallet/send-transaction";
-            var content = "";
-
-            MaximumBalance maximumBalance = new MaximumBalance();
-            maximumBalance.WalletName = this.WalletInfo.WalletName;
-            maximumBalance.AccountName = "account 0";
-            maximumBalance.FeeType = "medium";
-            maximumBalance.AllowUnconfirmed = true;
-
-            HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(maximumBalance), Encoding.UTF8, "application/json"));
-            content = await response.Content.ReadAsStringAsync();
-            if (response.IsSuccessStatusCode)
-            {
-                this.estimatedSidechainFee = Convert.ToDouble(content) / 100000000;
-            }
-            else
-            {
-                MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-            }
-
-        }
-
+ 
         private List<RecipientSidechain> GetRecipient()
         {
 
@@ -242,7 +167,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
                 var content = "";
 
                 FeeEstimationSideChain feeEstimation = new FeeEstimationSideChain();
-                feeEstimation.WalletName = this.WalletInfo.WalletName;
+                feeEstimation.WalletName = this.walletName;
                 feeEstimation.AccountName = "account 0";
                 feeEstimation.Recipients = GetRecipient();               
                 feeEstimation.FeeType = this.TransactionFeeTypeLabel.Content.ToString();
@@ -319,7 +244,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
                 string postUrl = this.baseURL + $"/wallet/build-transaction";
                 var content = "";
 
-                this.TransactionBuilding.WalletName = this.WalletInfo.WalletName;
+                this.TransactionBuilding.WalletName = this.walletName;
                 this.TransactionBuilding.AccountName = "account 0";
                 this.TransactionBuilding.Password = this.password.Password;
                 this.TransactionBuilding.Recipients = GetRecipient();
@@ -435,11 +360,12 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
             {
                 EstimateFeeSideChainAsync();
                 this.SidechainDestinationAddressText.Focus();
-            }            
+            }
 
+            this.SendAmountText.Text = "";
+            this.SidechainDestinationAddressText.Text = "";
             this.SendAmountText.Focus();
         }
-
 
         private void CalculateTransactionFee_OnChange(object sender, RoutedEventArgs e)
         {

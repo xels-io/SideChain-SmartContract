@@ -163,7 +163,7 @@ namespace XelsDesktopWalletApp.Views.Pages
             }
             catch (Exception r)
             {
-                throw;
+                //throw;
             }
 
         }
@@ -213,13 +213,19 @@ namespace XelsDesktopWalletApp.Views.Pages
                     catch (Exception e)
                     {
 
-                        throw;
+                        //throw;
                     }
 
                 }
                 else
                 {
-                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                    var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
+
+                    foreach (var error in errors.Errors)
+                    {
+                        MessageBox.Show(error.Message);
+
+                    }
                 }
             }
             catch (Exception)
@@ -301,7 +307,13 @@ namespace XelsDesktopWalletApp.Views.Pages
                 }
                 else
                 {
-                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                    var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
+
+                    foreach (var error in errors.Errors)
+                    {
+                        MessageBox.Show(error.Message);
+
+                    }
                 }
             }
             catch (Exception)
@@ -366,7 +378,7 @@ namespace XelsDesktopWalletApp.Views.Pages
 
                     var balance = ((this.walletBalanceArray.Balances[0].AmountConfirmed / 100000000) + (this.walletBalanceArray.Balances[0].AmountUnconfirmed / 100000000));
 
-                    this.CoinsAwaitingMaturityTxt.Text = $"{(balance - GlobalPropertyModel.SpendableBalance):0.##############}{" "}{GlobalPropertyModel.CoinUnit}";
+                    this.CoinsAwaitingMaturityTxt.Text = $"{balance - GlobalPropertyModel.SpendableBalance:0.##############}{" "}{GlobalPropertyModel.CoinUnit}";
 
                     TimeSpan time = TimeSpan.FromSeconds(stakingInfoModel.ExpectedTime);
 
@@ -376,10 +388,10 @@ namespace XelsDesktopWalletApp.Views.Pages
                     }
                     else
                     {
-                        this.ExpectedRewardTimmeTxt.Text =    "Unknown";
+                        this.ExpectedRewardTimmeTxt.Text = "Unknown";
                     }
 
-                     //expectedTime                   
+                    //expectedTime                   
 
                     if (GlobalPropertyModel.StakingStart && URLConfiguration.Chain != "-sidechain")
                     {
@@ -409,7 +421,7 @@ namespace XelsDesktopWalletApp.Views.Pages
             catch (Exception e)
             {
 
-                throw;
+                //throw;
             }
         }
 
@@ -509,7 +521,7 @@ namespace XelsDesktopWalletApp.Views.Pages
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
             GlobalPropertyModel.selectAddressFromAddressBook = ""; //addressbook a send click address assagin empty.
-             this.Dashboard.Children.Add(new SendUserControl(this.walletName));
+            this.Dashboard.Children.Add(new SendUserControl());
 
         }
 
@@ -539,19 +551,19 @@ namespace XelsDesktopWalletApp.Views.Pages
                     this.PowMiningButton.Visibility = Visibility.Hidden;
                     this.StopPowMiningButton.Visibility = Visibility.Visible;
                     GlobalPropertyModel.MiningStart = true;
-                   // this.PreloaderPoup.IsOpen = false;
-                  //  this.IsEnabled = true;
+                    // this.PreloaderPoup.IsOpen = false;
+                    //  this.IsEnabled = true;
                 }
             }
             catch (Exception)
             {
 
-                throw;
-               // this.PreloaderPoup.IsOpen = false;
-               // this.IsEnabled = true;
+                //throw;
+                // this.PreloaderPoup.IsOpen = false;
+                // this.IsEnabled = true;
             }
 
-           
+
         }
 
         private async void StopPOWMiningButton_Click(object sender, RoutedEventArgs e)
@@ -561,7 +573,7 @@ namespace XelsDesktopWalletApp.Views.Pages
             try
             {
                 //this.PreloaderPoup.IsOpen = true;
-               // this.IsEnabled = false;
+                // this.IsEnabled = false;
                 HttpResponseMessage response = await URLConfiguration.Client.PostAsJsonAsync(apiUrl, true);
                 string content = await response.Content.ReadAsStringAsync();
 
@@ -578,7 +590,7 @@ namespace XelsDesktopWalletApp.Views.Pages
             {
                 //this.PreloaderPoup.IsOpen = false;
                 //this.IsEnabled = true;
-                throw;
+                //throw;
             }
 
 
@@ -647,9 +659,9 @@ namespace XelsDesktopWalletApp.Views.Pages
             {
                 //this.PreloaderPoup.IsOpen = false;
                 //this.IsEnabled = true;
-                throw;
+                //throw;
             }
-                      
+
 
         }
 
@@ -671,7 +683,7 @@ namespace XelsDesktopWalletApp.Views.Pages
                 this.StakingInfo.Content = "Not Staking";
                 this.thumbDown.Visibility = Visibility.Visible;
                 this.thumbsup.Visibility = Visibility.Collapsed;
-               // this.preLoader.Visibility = Visibility.Collapsed;
+                // this.preLoader.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -731,7 +743,7 @@ namespace XelsDesktopWalletApp.Views.Pages
             catch (Exception a)
             {
                 string exMessage = a.Message.ToString();
-                throw;
+                //throw;
             }
             //}
             //else
