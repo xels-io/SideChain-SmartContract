@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 using Newtonsoft.Json;
@@ -241,6 +242,7 @@ namespace XelsDesktopWalletApp.Views.Pages
                     this.buttons.ItemsSource = Buttons;
 
                     button.Click += new RoutedEventHandler(button_Click);
+                    button.Background = new SolidColorBrush(Colors.Green);
                 }
 
             }
