@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ using System.Windows.Shapes;
 using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
+using XelsDesktopWalletApp.Models.SmartContractModels;
 
 namespace XelsDesktopWalletApp.Views.Pages.ReceivePages
 {
@@ -24,42 +26,22 @@ namespace XelsDesktopWalletApp.Views.Pages.ReceivePages
     /// </summary>
     public partial class BelsPage : Page
     {
-       
+        private CreateWallet createWallet = new CreateWallet();
         string baseURL = URLConfiguration.BaseURL;  //"http://localhost:37221/api";
 
         private readonly WalletInfo walletInfo = new WalletInfo();
         QRCodeConverter QRCode = new QRCodeConverter();
 
-        private string walletName;
-
-        public string WalletName
-        {
-            get
-            {
-                return this.walletName;
-            }
-            set
-            {
-                this.walletName = value;
-            }
-        }
+        private string walletName = GlobalPropertyModel.WalletName;
 
         public BelsPage()
         {
             InitializeComponent();
-           
-        }
-
-        public BelsPage(string walletname)
-        {
-            InitializeComponent();
             this.DataContext = this;
-
-            this.walletName = walletname;
-            this.walletInfo.WalletName = this.walletName;
           
-            LoadCreate();
+            //LoadCreate();
             GenerateQRCode();
+            this.BelsAddress();
         }
 
         public async void LoadCreate()
@@ -78,7 +60,7 @@ namespace XelsDesktopWalletApp.Views.Pages.ReceivePages
 
         private void GenerateQRCode()
         {
-            this.image.Source = QRCode.GenerateQRCode(this.textBoxTextToQr.Text);
+            this.image.Source = this.QRCode.GenerateQRCode(this.textBoxTextToQr.Text);
         }
 
         private void CopyAddressButton_Click(object sender, RoutedEventArgs e)
@@ -89,7 +71,7 @@ namespace XelsDesktopWalletApp.Views.Pages.ReceivePages
          
         private async Task<string> GetAPIAsync(string path)
         {
-            string getUrl = path + $"/wallet/unusedaddress?WalletName={this.walletInfo.WalletName}&AccountName=account 0";
+            string getUrl = path + $"/wallet/unusedaddress?WalletName={this.walletName}&AccountName=account 0";
             var content = "";
 
             HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
@@ -106,6 +88,26 @@ namespace XelsDesktopWalletApp.Views.Pages.ReceivePages
 
             return content;
 
+        }
+
+        private void BelsAddress()
+        {
+            try
+            {
+                string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                string path = walletCurrentDirectory + @"\File\Wallets.json";
+
+                if (File.Exists(path))
+                { 
+                    StoredWallet belswallet = this.createWallet.GetLocalWallet(this.walletName, "BELS");
+
+                    this.textBoxTextToQr.Text = belswallet.Address;
+                }
+            }
+            catch (Exception e)
+            {
+                //MessageBox.Show("");
+            }
         }
 
     }

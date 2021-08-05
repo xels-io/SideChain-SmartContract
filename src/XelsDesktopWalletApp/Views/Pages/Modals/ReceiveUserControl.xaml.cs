@@ -13,6 +13,7 @@ using System.Windows.Shapes;
 
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
+using XelsDesktopWalletApp.Models.SmartContractModels;
 using XelsDesktopWalletApp.Views.Pages.ReceivePages;
 
 namespace XelsDesktopWalletApp.Views.Pages.Modals
@@ -21,36 +22,10 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
     /// Interaction logic for ReceiveUserControl.xaml
     /// </summary>
     public partial class ReceiveUserControl : UserControl
-    {
-     
-        string baseURL = URLConfiguration.BaseURL; //  "http://localhost:37221/api";
-
-        private readonly WalletInfo walletInfo = new WalletInfo();
-
-        private string walletName;
-
-        public string WalletName
-        {
-            get
-            {
-                return this.walletName;
-            }
-            set
-            {
-                this.walletName = value;
-            }
-        }
+    {    
 
         public ReceiveUserControl()
         {
-            InitializeComponent();
-
-        }
-
-        public ReceiveUserControl(string walletname)
-        {
-            this.walletName = walletname;
-            this.walletInfo.WalletName = this.walletName;
             InitializeComponent();
             this.DataContext = this;
         }
@@ -62,13 +37,13 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
 
         private void XelsButton_Click(object sender, RoutedEventArgs e)
         {
-            this.ReceiveContent.Content = new XelsPage(this.walletName);
+            this.ReceiveContent.Content = new XelsPage();
             this.XelsButton.Focus();
         }
 
         private void selsButton_Click(object sender, RoutedEventArgs e)
         {
-            this.ReceiveContent.Content = new SelsPage(this.walletName);
+            this.ReceiveContent.Content = new SelsPage();
         }
 
         private void Rectangle_MouseDown(object sender, RoutedEventArgs e)
@@ -78,18 +53,18 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
 
         private void BelsButton_Click(object sender, RoutedEventArgs e)
         {
-            this.ReceiveContent.Content = new BelsPage(this.walletName);
+            this.ReceiveContent.Content = new BelsPage();
         }
 
         private void UserControl_Initialized(object sender, EventArgs e)
         {
-            this.ReceiveContent.Content = new XelsPage(this.walletName);
+            this.ReceiveContent.Content = new XelsPage();
                 this.XelsButton.Focus();
         }
 
         private void XelsButton_Initialized(object sender, EventArgs e)
         {
-            this.ReceiveContent.Content = new XelsPage(this.walletName);
+            this.ReceiveContent.Content = new XelsPage();
             this.XelsButton.Focus();
         }
 

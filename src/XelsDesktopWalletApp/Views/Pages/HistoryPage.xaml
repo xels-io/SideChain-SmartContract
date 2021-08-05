@@ -55,11 +55,11 @@
                           CanUserAddRows="False" RowStyle="{DynamicResource MaterialDesignDataGridRow}" 
                           RowHeight="30" HorizontalAlignment="Center" CanUserSortColumns="False" 
                           HeadersVisibility="None" ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                            SelectionMode="Extended"  >
+                            SelectionMode="Extended" EnableColumnVirtualization="False" EnableRowVirtualization="False" >
 
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Width="150" 
-                                            Binding="{Binding Path=Type}" >
+                                            Binding="{Binding Path=TransactionType}" >
                                         <DataGridTextColumn.CellStyle>
                                             <Style>
                                                 <Setter Property="TextBlock.VerticalAlignment" Value="Center"/>

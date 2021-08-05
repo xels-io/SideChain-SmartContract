@@ -673,7 +673,7 @@
 
                                             <DataGrid.Columns>
                                                 <DataGridTextColumn Width="150" 
-                                            Binding="{Binding Path=Type}">
+                                            Binding="{Binding Path=TransactionType}">
                                                     <DataGridTextColumn.CellStyle>
                                                         <Style>
                                                             <Setter Property="TextBlock.VerticalAlignment" Value="Center"/>

@@ -32,7 +32,7 @@
                       BorderBrush="Green" BorderThickness="1" Padding="5" Margin=" 5 0"  IsReadOnly="True" />
 
                     <Button Grid.Column="1" Content="Copy" Click="SingleAddress_Copy_Button_Click"
-                            RenderTransformOrigin="2.423,0.568"      Margin=" 5 0"                        
+                            RenderTransformOrigin="2.423,0.568"      Margin="15 05"                        
                         BorderThickness="1" BorderBrush="Green" Background="White" Foreground="Green"  >
                         <Button.Resources>
                             <Style TargetType="{x:Type Border}">

@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
+using XelsDesktopWalletApp.Models.SmartContractModels;
 
 namespace XelsDesktopWalletApp.Views.Pages.Modals
 {
@@ -15,7 +16,7 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
     {
         string baseURL = URLConfiguration.BaseURL;
         private readonly WalletInfo walletInfo = new WalletInfo();
-        private string walletName;
+        private string walletName = GlobalPropertyModel.WalletName;
         private Wallet wallet = new Wallet();
         private Wallet sWallet = new Wallet();
         private Wallet bWallet = new Wallet();
@@ -24,18 +25,7 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
         private string[] walletHashArray;
         private string walletHash;
         private bool isCheckBoxChecked = false;
-
-        public string WalletName
-        {
-            get
-            {
-                return this.walletName;
-            }
-            set
-            {
-                this.walletName = value;
-            }
-        }
+ 
         public ImportSelsBelsUserControl()
         {
             InitializeComponent();
@@ -44,10 +34,7 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
         public ImportSelsBelsUserControl(string walletname)
         {
             InitializeComponent();
-            this.DataContext = this;
-
-            this.walletName = walletname;
-            this.walletInfo.WalletName = this.walletName;
+            this.DataContext = this;             
 
             if (!(bool)this.CheckboxPkey.IsChecked)
             {

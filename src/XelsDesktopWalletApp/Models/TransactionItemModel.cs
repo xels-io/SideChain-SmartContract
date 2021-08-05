@@ -10,40 +10,12 @@ using XelsDesktopWalletApp.Models.SmartContractModels;
 namespace XelsDesktopWalletApp.Models
 {
     public class TransactionItemModel
-    {
-
-        private string _type;
+    { 
         private string _timeStamp;
         private double _amount;
-        private string _amountWithUnit;
 
-        public string Type
-        {
-            get
-            {
-                if (_type == "mined")
-                {
-                    return _type = "POW REWARD";
-                }
-                else if(_type == "staked")
-                {
-                    return _type = "HYBRID REWARD";
-                }
-                else if(_type == "send")
-                {
-                    return _type = "SENT";
-                }
-                else
-                {
-                    return _type = "RECEIVED";
-                }
-            }
-            set
-            {
-                _type = value;
-
-            }
-        }
+        public string Type { get; set; }
+        public string TransactionType { get; set; }
         public string ToAddress { get; set; }
         public double Amount {
 
@@ -73,22 +45,7 @@ namespace XelsDesktopWalletApp.Models
 
         public int? ConfirmedInBlock { get; set; }
         public int? BlockIndex { get; set; }
-        public decimal Fee { get; set; }
-
-        // List<TransactionItemModel> TransactionsHistory { get; set; }
-
-        private string ConvertToDate(string d)
-        {
-            int date = Convert.ToInt32(d);
-
-            int day = date % 100;
-            int month = (date / 100) % 100;
-            int year = date / 10000;
-
-            var result = Convert.ToString(new DateTime(year, month, day));
-            return result;
-        }
-
+        public decimal Fee { get; set; }         
 
         public List<PaymentDetailModel> Payments { get; set; } // new added for detail 
         public long TxOutputTime { get; set; } // new added for detail 

@@ -23,6 +23,7 @@ using QRCoder;
 using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
+using XelsDesktopWalletApp.Models.SmartContractModels;
 
 namespace XelsDesktopWalletApp.Views.Pages.ReceivePages
 {
@@ -40,39 +41,18 @@ namespace XelsDesktopWalletApp.Views.Pages.ReceivePages
 
         QRCodeConverter QRCode = new QRCodeConverter();
 
-        private string walletName;
-
-        public string WalletName
-        {
-            get
-            {
-                return this.walletName;
-            }
-            set
-            {
-                this.walletName = value;
-            }
-        }
+        private string walletName = GlobalPropertyModel.WalletName;
 
         public XelsPage()
-        {
-            InitializeComponent();
-            DataContext = this;
-
-        }
-
-        public XelsPage(string walletname)
         {
             InitializeComponent();
             this.ReceiveWalletStatus = new ReceiveWalletStatus();
             this.ReceiveWalletStatus.UsedAddresses = new List<ReceiveWalletStatus>();
             this.ReceiveWalletStatus.UnusedAddresses = new List<ReceiveWalletStatus>();
             this.ReceiveWalletStatus.ChangedAddresses = new List<ReceiveWalletStatus>();
-            this.walletName = walletname;
-
+              
             DataContext = this;
-
-            this.walletInfo.WalletName = this.walletName;
+             
             LoadCreate();
             GenerateQRCode();
         }
@@ -92,7 +72,7 @@ namespace XelsDesktopWalletApp.Views.Pages.ReceivePages
 
         private async Task<string> GetUnusedReceivedAddrAPIAsync()
         {
-            string getUrl = this.baseURL + $"/wallet/unusedaddress?WalletName={this.walletInfo.WalletName}&AccountName=account 0";
+            string getUrl = this.baseURL + $"/wallet/unusedaddress?WalletName={this.walletName}&AccountName=account 0";
             var content = "";
 
             HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
@@ -113,7 +93,7 @@ namespace XelsDesktopWalletApp.Views.Pages.ReceivePages
         private async Task GetAllAddresses()
         {
 
-            string getUrl = this.baseURL + $"/wallet/addresses?WalletName={this.walletInfo.WalletName}&AccountName=account 0";
+            string getUrl = this.baseURL + $"/wallet/addresses?WalletName={this.walletName}&AccountName=account 0";
             var content = "";
 
             HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);

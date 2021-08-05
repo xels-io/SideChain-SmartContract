@@ -63,7 +63,7 @@ namespace XelsDesktopWalletApp.Views
 
         private void XelsButton_Click(object sender, RoutedEventArgs e)
         {
-            this.ReceiveContent.Content = new XelsPage(this.walletName);
+            this.ReceiveContent.Content = new XelsPage();
             this.XelsButton.Focus();
             //Receive r = new Receive(this.walletName);
             //r.Show();
@@ -72,7 +72,7 @@ namespace XelsDesktopWalletApp.Views
 
         private void selsButton_Click(object sender, RoutedEventArgs e)
         {
-            this.ReceiveContent.Content = new SelsPage(this.walletName);   
+            this.ReceiveContent.Content = new SelsPage();   
             //ReceiveSelsBels rsb = new ReceiveSelsBels(this.walletName);
             //rsb.Show();
             //this.Close();
@@ -80,7 +80,7 @@ namespace XelsDesktopWalletApp.Views
 
         private void BelsButton_Click(object sender, RoutedEventArgs e)
         {
-            this.ReceiveContent.Content = new BelsPage(this.walletName);
+            this.ReceiveContent.Content = new BelsPage();
 
             //ReceiveSelsBels rsb = new ReceiveSelsBels(this.walletName);
             //rsb.Show();

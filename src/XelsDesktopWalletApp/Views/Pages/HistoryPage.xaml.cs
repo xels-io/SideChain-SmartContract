@@ -86,6 +86,27 @@ namespace XelsDesktopWalletApp.Views.Pages
                         {
                             HistoryListForTimer.AddRange(h.TransactionsHistory);
                         }
+
+                        foreach (var hh in HistoryListForTimer)
+                        {
+                            if (hh.Type == "mined")
+                            {
+                                hh.TransactionType = "POW REWARD";
+                            }
+                            if (hh.Type == "staked")
+                            {
+                                hh.TransactionType = "HYBRID REWARD";
+                            }
+                            if (hh.Type == "send")
+                            {
+                                hh.TransactionType = "SENT";
+                            }
+                            if (hh.Type == "received")
+                            {
+                                hh.TransactionType = "RECEIVED";
+                            }
+                        }
+
                         observableList = new ObservableCollection<TransactionItemModel>(HistoryListForTimer);
                         //this.HistoryListBinding.ItemsSource = observableList;
 
@@ -102,7 +123,7 @@ namespace XelsDesktopWalletApp.Views.Pages
                             this.Pagination.Visibility = Visibility.Hidden;
                         }
                     }
-                     catch (Exception e)
+                    catch (Exception e)
                     {
 
 
@@ -184,7 +205,6 @@ namespace XelsDesktopWalletApp.Views.Pages
             this._cview.MoveToPreviousPage();
         }
 
-
         #endregion
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -244,6 +264,6 @@ namespace XelsDesktopWalletApp.Views.Pages
             }
 
         }
-         
+
     }
 }
