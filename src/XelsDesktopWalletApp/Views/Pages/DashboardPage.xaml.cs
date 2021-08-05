@@ -494,7 +494,7 @@ namespace XelsDesktopWalletApp.Views.Pages
         {
             TransactionItemModel item = (TransactionItemModel)((sender as Button))?.DataContext;
             this.DetailsPopup.IsOpen = true;
-
+            this.IsEnabled = false;
             this.TypeTxt.Text = item.Type;
             this.TotalAmountTxt.Text = item.Amount.ToString();
             this.AmountSentTxt.Text = item.Amount.ToString();
@@ -518,11 +518,14 @@ namespace XelsDesktopWalletApp.Views.Pages
         private void Copy_Click(object sender, RoutedEventArgs e)
         {
             Clipboard.SetText(this.TransactionIDTxt.Text);
+            //MessageBox.Show("Address Copied Successfully :- " + this.TransactionIDTxt.Text.ToString());
         }
 
         private void HidePopup_Click(object sender, RoutedEventArgs e)
         {
+            this.IsEnabled = true;
             this.DetailsPopup.IsOpen = false;
+
         }
 
         private void Ok_Click(object sender, RoutedEventArgs e)

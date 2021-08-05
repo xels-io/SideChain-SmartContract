@@ -110,168 +110,180 @@
                         </Border>
                     </Grid>
 
-                    <Popup Name="DetailsPopup" Placement="Center"  AllowsTransparency="False"  
-                       HorizontalAlignment="Center" VerticalAlignment="Top" >
-                        <Grid Width="500"  Height="400">
-                            <Rectangle Width="500" Height="400" Fill="WhiteSmoke"  />
+                    <Popup Name="DetailsPopup" Placement="Center"  AllowsTransparency="False" HorizontalAlignment="Center" VerticalAlignment="Top" >
+                        <Border Background="WhiteSmoke" BorderBrush="Green" BorderThickness="2" CornerRadius="10" >
+                            <Grid Width="500"  Height="400">
+                                <Rectangle Width="500" Height="400" Fill="WhiteSmoke"  />
 
-                            <Grid Margin="20 20">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
+                                <Grid Margin="20 20">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
 
-                                <Border Grid.Row="0">
-                                    <Label Content="Transaction Details"
-                               FontFamily="Microsoft YaHei"/>
-                                </Border>
+                                    <Border Grid.Row="0">
+                                        <Grid>
+                                            <Label Content="Transaction Details" FontSize="15" FontWeight="Bold"   FontFamily="Microsoft YaHei"/>
+                                            <Button Click="HidePopup_Click" Background="WhiteSmoke" Foreground="Red" BorderBrush="Red" VerticalAlignment="Top" HorizontalAlignment="Right" Content="X" >
 
-                                <Border Grid.Row="1">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width=".5*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Label Grid.Column="0" Content="Type:"   Foreground="#FF615858"    FontSize="14" />
+                                                <Button.Resources>
+                                                    <Style TargetType="{x:Type Border}">
+                                                        <Setter Property="CornerRadius" Value="50"/>
+                                                    </Style>
+                                                </Button.Resources>
+                                            </Button>
+                                        </Grid>
+                                        
+                                    </Border>
 
-                                        <TextBlock Grid.Column="1" x:Name="TypeTxt" 
+                                    <Border Grid.Row="1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width=".5*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Content="Type:"   Foreground="#FF615858"    FontSize="14" />
+
+                                            <TextBlock Grid.Column="1" x:Name="TypeTxt" 
                                      TextWrapping="Wrap"   
                                       FontSize="14" Foreground="ForestGreen" 
                                      />
 
-                                    </Grid>
+                                        </Grid>
 
-                                </Border>
+                                    </Border>
 
-                                <Border Grid.Row="2">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width=".5*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Label Grid.Column="0" Content="Total Amount:" Foreground="#FF615858" FontSize="14" Padding="4"/>
+                                    <Border Grid.Row="2">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width=".5*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Content="Total Amount:" Foreground="#FF615858" FontSize="14" Padding="4"/>
 
-                                        <TextBlock Grid.Column="1" x:Name="TotalAmountTxt" Text="TotalAmount" TextWrapping="Wrap"  Padding="4"  FontSize="14" Foreground="#FF615858" />
+                                            <TextBlock Grid.Column="1" x:Name="TotalAmountTxt" Text="TotalAmount" TextWrapping="Wrap"  Padding="4"  FontSize="14" Foreground="#FF615858" />
 
 
 
-                                    </Grid>
+                                        </Grid>
 
-                                </Border>
+                                    </Border>
 
-                                <Border Grid.Row="3">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width=".5*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Label Grid.Column="0" Content="Amount Sent:" Foreground="#FF615858"  FontSize="14" Padding="4"/>
+                                    <Border Grid.Row="3">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width=".5*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Content="Amount Sent:" Foreground="#FF615858"  FontSize="14" Padding="4"/>
 
-                                        <TextBlock Grid.Column="1" x:Name="AmountSentTxt"  Text="AmountSent" TextWrapping="Wrap" Padding="4" FontSize="14" Foreground="#FF615858" />
+                                            <TextBlock Grid.Column="1" x:Name="AmountSentTxt"  Text="AmountSent" TextWrapping="Wrap" Padding="4" FontSize="14" Foreground="#FF615858" />
 
-                                    </Grid>
+                                        </Grid>
 
-                                </Border>
+                                    </Border>
 
-                                <Border Grid.Row="4">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width=".5*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
+                                    <Border Grid.Row="4">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width=".5*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
 
-                                        <Label Grid.Column="0" Content="Fee:" Foreground="#FF615858"  FontSize="14" Padding="4"/>
+                                            <Label Grid.Column="0" Content="Fee:" Foreground="#FF615858"  FontSize="14" Padding="4"/>
 
-                                        <TextBlock Grid.Column="1" x:Name="FeeTxt"  Text="Fee" TextWrapping="Wrap" Padding="4"  FontSize="14" Foreground="#FF615858" />
+                                            <TextBlock Grid.Column="1" x:Name="FeeTxt"  Text="Fee" TextWrapping="Wrap" Padding="4"  FontSize="14" Foreground="#FF615858" />
 
-                                    </Grid>
+                                        </Grid>
 
-                                </Border>
+                                    </Border>
 
-                                <Border Grid.Row="5">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width=".5*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Label Grid.Column="0" Content="Date:" Foreground="#FF615858" FontSize="14" Padding="4"/>
+                                    <Border Grid.Row="5">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width=".5*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Content="Date:" Foreground="#FF615858" FontSize="14" Padding="4"/>
 
-                                        <TextBlock Grid.Column="1" x:Name="DateTxt"  Text="Date" TextWrapping="Wrap" Padding="4" FontSize="14" Foreground="#FF615858" 
+                                            <TextBlock Grid.Column="1" x:Name="DateTxt"  Text="Date" TextWrapping="Wrap" Padding="4" FontSize="14" Foreground="#FF615858" 
                                   />
 
-                                    </Grid>
+                                        </Grid>
 
-                                </Border>
+                                    </Border>
 
 
-                                <Border Grid.Row="6">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width=".5*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
+                                    <Border Grid.Row="6">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width=".5*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
 
-                                        <Label Grid.Column="0" Content="Block:" Foreground="#FF615858" FontSize="14" Padding="4"/>
+                                            <Label Grid.Column="0" Content="Block:" Foreground="#FF615858" FontSize="14" Padding="4"/>
 
-                                        <TextBlock Grid.Column="1" x:Name="BlockTxt"  Text="Block" TextWrapping="Wrap" Padding="4" FontSize="14" Foreground="#FF615858" />
+                                            <TextBlock Grid.Column="1" x:Name="BlockTxt"  Text="Block" TextWrapping="Wrap" Padding="4" FontSize="14" Foreground="#FF615858" />
 
-                                    </Grid>
+                                        </Grid>
 
-                                </Border>
+                                    </Border>
 
-                                <Border Grid.Row="7">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width=".5*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
+                                    <Border Grid.Row="7">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width=".5*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
 
-                                        <Label Grid.Column="0" Content="Confirmations:" Foreground="#FF615858" FontSize="14" Padding="4"/>
+                                            <Label Grid.Column="0" Content="Confirmations:" Foreground="#FF615858" FontSize="14" Padding="4"/>
 
-                                        <TextBlock Grid.Column="1" x:Name="ConfirmationsTxt"  Text="Confirmations"
+                                            <TextBlock Grid.Column="1" x:Name="ConfirmationsTxt"  Text="Confirmations"
                                      TextWrapping="Wrap"  Padding="4" 
                                      FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="ForestGreen" />
 
                                     </Grid>
 
-                                </Border>
+                                        </Grid>
 
-                                <Border Grid.Row="8">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width=".6*"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width=".4*"/>
-                                        </Grid.ColumnDefinitions>
+                                    </Border>
+
+                                    <Border Grid.Row="8">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width=".6*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width=".4*"/>
+                                            </Grid.ColumnDefinitions>
 
 
-                                        <Label Grid.Column="0" Content="Transaction ID:" Foreground="#FF615858" FontSize="14" Padding="4"/>
+                                            <Label Grid.Column="0" Content="Transaction ID:" Foreground="#FF615858" FontSize="14" Padding="4"/>
 
-                                        <TextBlock Grid.Column="1" x:Name="TransactionIDTxt"  Text="TransactionID" TextWrapping="Wrap"   Foreground="ForestGreen"  />
+                                            <TextBlock Grid.Column="1" x:Name="TransactionIDTxt"  Text="TransactionID" TextWrapping="Wrap"   Foreground="ForestGreen"  />
 
-                                        <TextBlock Grid.Column="2" x:Name="TransactionIDCopy" >
+                                            <TextBlock Grid.Column="2" x:Name="TransactionIDCopy" >
                                     <Button  x:Name="CopyButton" Click="Copy_Click" 
-                                Background="White" BorderThickness="1,1,1,1" Foreground="Gray" 
-                                Content="Copy" BorderBrush="Gray" Margin="8 0 0 0 " >
+                                Background="White" BorderThickness="1,1,1,1" Foreground="Green" 
+                                Content="Copy" BorderBrush="Green" Margin="8 0 0 0 " >
                                     <Button.Resources>
                                         <Style TargetType="{x:Type Border}">
                                             <Setter Property="CornerRadius" Value="5"/>
                                         </Style>
                                     </Button.Resources>
                                 </Button>
-                                        </TextBlock>
+                                            </TextBlock>
 
-                                    </Grid>
+                                        </Grid>
 
-                                </Border>
+                                    </Border>
 
                                 <Border Grid.Row="9">
                                     <Button Click="HidePopup_Click" Background="Black" Foreground="White" Content="X" >
