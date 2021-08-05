@@ -175,19 +175,21 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,0">
                 <Label x:Name="labCheckChainMessage"  Width="617" FontSize="14" Margin="0,0,200,0" Foreground="AliceBlue"/>
                 <Label x:Name="labWalletName" Content="wallatename" Margin="10,0,15,0" Width="100" FontSize="14" Foreground="AliceBlue"/>
-                
-                <materialDesign:PopupBox PlacementMode="BottomAndAlignLeftEdges" StaysOpen="False" Width="30">
+              
+                <materialDesign:PopupBox PlacementMode="BottomAndAlignCentres" StaysOpen="False" Width="30">
                     <materialDesign:PopupBox.ToggleContent>
                         <materialDesign:PackIcon Kind="Settings" Foreground="White" />
                     </materialDesign:PopupBox.ToggleContent>
-                    <StackPanel Width="150">
-                        <Button Content="Address Book" Click="AddressBookButton_Click" />
-                        <Button Content="Advance" Click="AdvancedButton_Click" />
+
+                    <StackPanel Width="160">
+                        <Button Content="ADDRESS BOOK" FontWeight="Bold" Click="AddressBookButton_Click" />
                         <Separator/>
-                        <Button Content="Logout" Click="LogOut_Button"/>
+                        <Button Content="ADVANCE" FontWeight="Bold" Click="AdvancedButton_Click" />
+                        <Separator/>
+                        <Button  Content="LOGOUT" FontWeight="Bold"  Click="LogOut_Button"/>
                     </StackPanel>
                 </materialDesign:PopupBox>
-
+           
                 <!--<Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White">
                     <materialDesign:PackIcon Kind="Bell"/>
                 </Button>
