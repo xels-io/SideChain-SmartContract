@@ -7,7 +7,7 @@
       mc:Ignorable="d"       
       d:DesignHeight="750" d:DesignWidth="750"
       Title="HistoryPage" Loaded="Page_Loaded">
-    
+
     <Grid Margin="10 20 5 5" Background="WhiteSmoke">
 
         <Grid.RowDefinitions>
@@ -141,7 +141,7 @@
                                                 </Button.Resources>
                                             </Button>
                                         </Grid>
-                                        
+
                                     </Border>
 
                                     <Border Grid.Row="1">
@@ -250,8 +250,6 @@
                                      TextWrapping="Wrap"  Padding="4" 
                                      FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="ForestGreen" />
 
-                                    </Grid>
-
                                         </Grid>
 
                                     </Border>
@@ -285,21 +283,21 @@
 
                                     </Border>
 
-                                <Border Grid.Row="9">
-                                    <Button Click="HidePopup_Click" Background="Black" Foreground="White" Content="X" >
-                                        <Button.Resources>
-                                            <Style TargetType="{x:Type Border}">
-                                                <Setter Property="CornerRadius" Value="50"/>
-                                            </Style>
-                                        </Button.Resources>
-                                    </Button>
-                                </Border>
+                                    <Border Grid.Row="9">
+                                        <Button Click="HidePopup_Click" Background="Black" Foreground="White" Content="X" >
+                                            <Button.Resources>
+                                                <Style TargetType="{x:Type Border}">
+                                                    <Setter Property="CornerRadius" Value="50"/>
+                                                </Style>
+                                            </Button.Resources>
+                                        </Button>
+                                    </Border>
+                                </Grid>
                             </Grid>
-                        </Grid>
+                        </Border>
                     </Popup>
 
                 </Grid>
-
 
 
                 <Grid x:Name="Pagination" HorizontalAlignment="Center" Grid.Row="1">
