@@ -462,15 +462,17 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <Button Grid.Column="0" x:Name="receiveButton" Click="ReceiveButton_Click"  Content="RECEIVE"  Padding="2" FontWeight="Bold" Background="Green" FontFamily="Microsoft YaHei Light" BorderThickness="0,0,0,0" Foreground="White">
-                                            <Button.Resources>
-                                                <Style TargetType="Border">
-                                                    <Setter Property="CornerRadius" Value="5"/>
-                                                </Style>
-                                            </Button.Resources>
+                                        <Button Grid.Column="0" x:Name="receiveButton" Click="ReceiveButton_Click"  Padding="2" FontWeight="Bold" Background="Green" FontFamily="Microsoft YaHei Light" BorderThickness="0,0,0,0" Foreground="White">
+                                            <Grid Width="150">
+                                                <materialDesign:PackIcon Kind="InboxArrowDown" VerticalAlignment="Center" Height="20" Width="25"/>
+                                                <TextBlock HorizontalAlignment="Center" Text="RECEIVE" FontFamily="Champagne &amp; Limousines"/>
+                                            </Grid>
                                         </Button>
-
-                                        <Button Grid.Column="1" x:Name="sendButton" Click="SendButton_Click"  Content="SEND" Padding="2" Background="Green" FontFamily="Microsoft YaHei Light" BorderThickness="0,0,0,0" Foreground="White" FontWeight="Bold" Margin="10,0,0,0"  >
+                                        <Button Grid.Column="1" x:Name="sendButton" Click="SendButton_Click"  Padding="2" Background="Green" FontFamily="Microsoft YaHei Light" BorderThickness="0,0,0,0" Foreground="White" FontWeight="Bold" Margin="10,0,0,0"  >
+                                            <Grid Width="150">
+                                                <materialDesign:PackIcon Kind="Send" VerticalAlignment="Center" Height="20" Width="25"/>
+                                                <TextBlock HorizontalAlignment="Center" Text="SEND" FontFamily="Champagne &amp; Limousines"/>
+                                            </Grid>
                                             <Button.Resources>
                                                 <Style TargetType="Border">
                                                     <Setter Property="CornerRadius" Value="5"/>
@@ -523,10 +525,14 @@
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <TextBlock Grid.Column="0" Name="ConnectionPercentTxt"
-                                                    FontFamily="Microsoft YaHei" FontSize="10" Foreground="Green"   />
-                                            <TextBlock  Grid.Column="1" Name="ConnectedCountTxt" FontSize="10" Foreground="Green" Grid.ColumnSpan="2" Margin="4,0,162,0" />
-                                            <Label  x:Name="StakingInfo"  Grid.Column="2" Foreground="Green" Margin="34,-4,62,4">
+                                            <TextBlock Text="syncing" Grid.Column="0" Name="ConnectionPercentTxt"
+                                                    FontFamily="Microsoft YaHei" FontSize="10" Foreground="Green">
+                                                 <materialDesign:PackIcon Kind="Autorenew" Height="10" Width="10" HorizontalAlignment="Center"/>
+                                            </TextBlock>
+                                            <TextBlock Text="...0"  Grid.Column="1" Name="ConnectedCountTxt" FontSize="10" Foreground="Green" Grid.ColumnSpan="2" Margin="8,0,145,0" >
+                                                 <materialDesign:PackIcon Kind="People" Height="10" Width="10"/>
+                                            </TextBlock>
+                                            <Label  Content="Not stacking" x:Name="StakingInfo"  Grid.Column="2" Foreground="Green" Margin="34,-4,62,4">
                                                 <!--<Image x:Name="StakingInfoImage" Width="40" Height="40" /> ToolTip="{Binding StakingInfo}"-->
                                             </Label>
                                             <Image Grid.Column="2"  x:Name="thumbDown" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Width="24" Source="/Assets/Images/thumbsdown.png" Margin="134,0,0,0" />
