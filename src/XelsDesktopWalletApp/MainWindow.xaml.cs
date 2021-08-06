@@ -252,5 +252,18 @@ namespace XelsDesktopWalletApp
                 await  LoginFunctionAsync();
             }
         }
+
+        private void comboWallets_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            string value = (string)this.comboWallets.SelectedValue;
+            if (value != "" || value != null)
+            {
+                this.password.Focus();
+            }
+            else
+            {
+                MessageBox.Show("Select Wallet Name.");
+            }
+        }
     }
 }

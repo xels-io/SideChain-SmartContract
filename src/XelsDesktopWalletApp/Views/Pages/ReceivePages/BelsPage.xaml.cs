@@ -65,8 +65,16 @@ namespace XelsDesktopWalletApp.Views.Pages.ReceivePages
 
         private void CopyAddressButton_Click(object sender, RoutedEventArgs e)
         {
-            Clipboard.SetText(this.textBoxTextToQr.Text);
-            MessageBox.Show("Address Copied Successfully :- " + this.textBoxTextToQr.Text.ToString());
+            string addressString = this.textBoxTextToQr.Text.ToString();
+            if (addressString !="")
+            {
+                Clipboard.SetText(addressString);
+                MessageBox.Show("Address Copied Successfully :- " + addressString);
+            }
+            else
+            {
+                MessageBox.Show("Data Not Found!.");
+            }
         }
          
         private async Task<string> GetAPIAsync(string path)
@@ -100,8 +108,17 @@ namespace XelsDesktopWalletApp.Views.Pages.ReceivePages
                 if (File.Exists(path))
                 { 
                     StoredWallet belswallet = this.createWallet.GetLocalWallet(this.walletName, "BELS");
-
-                    this.textBoxTextToQr.Text = belswallet.Address;
+                    if (belswallet != null)
+                    {
+                        this.textBoxTextToQr.Text = belswallet.Address;
+                    }
+                    else
+                    {
+                        this.gridRow2.Visibility = Visibility.Visible;
+                        this.gridRow1.Visibility = Visibility.Collapsed;
+                        this.gridRow0.Visibility = Visibility.Collapsed;
+                    }
+  
                 }
             }
             catch (Exception e)

@@ -492,6 +492,7 @@ namespace XelsDesktopWalletApp.Views.Pages
 
         private void DetailsButton_Click(object sender, RoutedEventArgs e)
         {
+            this.CopyMessage.Visibility = Visibility.Collapsed;
             TransactionItemModel item = (TransactionItemModel)((sender as Button))?.DataContext;
             this.DetailsPopup.IsOpen = true;
             this.IsEnabled = false;
@@ -518,7 +519,8 @@ namespace XelsDesktopWalletApp.Views.Pages
         private void Copy_Click(object sender, RoutedEventArgs e)
         {
             Clipboard.SetText(this.TransactionIDTxt.Text);
-            //MessageBox.Show("Address Copied Successfully :- " + this.TransactionIDTxt.Text.ToString());
+            this.CopyMessage.Visibility = Visibility.Visible;
+           // MessageBox.Show("The Transaction ID has been copied to your clipboard");
         }
 
         private void HidePopup_Click(object sender, RoutedEventArgs e)

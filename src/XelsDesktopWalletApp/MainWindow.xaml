@@ -129,7 +129,7 @@
 
                     <StackPanel VerticalAlignment="Center" Margin="15">
 
-                        <ComboBox x:Name="comboWallets" ItemsSource="{Binding  Path=walletList, Mode=TwoWay}"
+                        <ComboBox x:Name="comboWallets" SelectionChanged="comboWallets_SelectionChanged" ItemsSource="{Binding  Path=walletList, Mode=TwoWay}"
                            DisplayMemberPath="Name" SelectedValuePath="Name"
                           Margin="0,10" materialDesign:HintAssist.Hint="WALLET NAME" 
                           Style="{StaticResource MaterialDesignFloatingHintComboBox}"
