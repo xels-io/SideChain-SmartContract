@@ -129,28 +129,28 @@
             <StackPanel Grid.Row="1">
                 <Button x:Name="btnDashboard" Margin="10,-20,10,10" Background="#FF41A43C" BorderBrush="#FF41A43C" Click="btnDashboard_Click" Height="31">
                     <Grid Width="150">
-                        <materialDesign:PackIcon Kind="ViewDashboard" VerticalAlignment="Center"/>
+                        <materialDesign:PackIcon Kind="ViewDashboard" VerticalAlignment="Center" Width="25" Height="20"/>
                         <TextBlock HorizontalAlignment="Center" Text="DASHBOARD" FontFamily="Champagne &amp; Limousines"/>
                     </Grid>
                 </Button>
 
                 <Button Margin="10" Background="#FF41A43C" BorderBrush="#FF41A43C" Click="btnHistory_Click">
                     <Grid Width="150">
-                        <materialDesign:PackIcon Kind="History" VerticalAlignment="Center"/>
+                        <materialDesign:PackIcon Kind="History" VerticalAlignment="Center"  Width="25" Height="20" />
                         <TextBlock HorizontalAlignment="Center" Text="HISTORY" FontFamily="Champagne &amp; Limousines"/>
                     </Grid>
                 </Button>
 
                 <Button x:Name="btn_Exchange" Click="btn_Exchange_Click" Margin="10" Background="#FF41A43C" BorderBrush="#FF41A43C">
                     <Grid Width="150">
-                        <materialDesign:PackIcon Kind="FindReplace" VerticalAlignment="Center"/>
+                        <materialDesign:PackIcon Kind="FindReplace" VerticalAlignment="Center"  Width="25" Height="20"/>
                         <TextBlock HorizontalAlignment="Right" Text="EXCHANGE" FontFamily="Champagne &amp; Limousines" Margin="0,0,39,0"/>
                     </Grid>
                 </Button>
 
                 <Button Name="btn_SmartContract" Margin="10" Click="btn_SmartContract_Click" Background="#FF41A43C" BorderBrush="#FF41A43C">
                     <Grid Width="150">
-                        <materialDesign:PackIcon Kind="Laptop" VerticalAlignment="Center" />
+                        <materialDesign:PackIcon Kind="Laptop" VerticalAlignment="Center"  Width="20" Height="20" Margin="-1,0,0,0" />
                         <TextBlock HorizontalAlignment="Left" Text="SMART CONTRACT" FontFamily="Champagne &amp; Limousines" Height="17" VerticalAlignment="Center" Margin="21,0,0,0" Width="129"/>
                     </Grid>
                 </Button>
@@ -175,7 +175,7 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,0">
                 <Label x:Name="labCheckChainMessage"  Width="617" FontSize="14" Margin="0,0,200,0" Foreground="AliceBlue"/>
                 <Label x:Name="labWalletName" Content="wallatename" Margin="10,0,15,0" Width="100" FontSize="14" Foreground="AliceBlue"/>
-              
+
                 <materialDesign:PopupBox PlacementMode="BottomAndAlignCentres" StaysOpen="False" Width="30">
                     <materialDesign:PopupBox.ToggleContent>
                         <materialDesign:PackIcon Kind="Settings" Foreground="White" />
@@ -189,7 +189,7 @@
                         <Button  Content="LOGOUT" FontWeight="Bold"  Click="LogOut_Button"/>
                     </StackPanel>
                 </materialDesign:PopupBox>
-           
+
                 <!--<Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White">
                     <materialDesign:PackIcon Kind="Bell"/>
                 </Button>
