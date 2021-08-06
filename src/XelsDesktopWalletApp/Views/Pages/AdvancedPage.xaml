@@ -64,24 +64,24 @@
                             <ColumnDefinition Width="450"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <StackPanel Orientation="Vertical" Margin="40,40,0,66"  Grid.Column="0" Grid.ColumnSpan="2" >
-                            <Label Content="ABOUT" Height="34"  Foreground="LightGray"
+                            <Label Content="ABOUT" Height="34"  Foreground="Black"
                                 FontFamily="Microsoft YaHei" FontSize="18" Padding="0"/>
 
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="0,80,0,66"  Grid.Column="0" >
-                            <Label Content="Client name:" Height="30" Width="178" Foreground="#FF615858"  HorizontalAlignment="Right"
+                            <Label Content="Client name:" Height="30" Width="178" Foreground="Black"  HorizontalAlignment="Right"
                                 FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
-                            <Label Content="Wallet version:" Height="30" Width="178" Foreground="#FF615858"  HorizontalAlignment="Right"
+                            <Label Content="Wallet version:" Height="30" Width="178" Foreground="Black"  HorizontalAlignment="Right"
                                 FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
-                            <Label Content="Fullnode version:" Height="30" Width="178" Foreground="#FF615858"  HorizontalAlignment="Right"
+                            <Label Content="Fullnode version:" Height="30" Width="178" Foreground="Black"  HorizontalAlignment="Right"
                                 FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
-                            <Label Content="Current network:" Height="30" Width="178" Foreground="#FF615858" HorizontalAlignment="Right"
+                            <Label Content="Current network:" Height="30" Width="178" Foreground="Black" HorizontalAlignment="Right"
                                 FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
-                            <Label Content="Protocol version:" Height="30" Width="178" Foreground="#FF615858" HorizontalAlignment="Right"
+                            <Label Content="Protocol version:" Height="30" Width="178" Foreground="Black" HorizontalAlignment="Right"
                                 FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
-                            <Label Content="Current block height:" Height="30" Width="178" Foreground="#FF615858" HorizontalAlignment="Right"
+                            <Label Content="Current block height:" Height="30" Width="178" Foreground="Black" HorizontalAlignment="Right"
                                 FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
-                            <Label Content="Wallet data directory:" Height="30" Width="178" Foreground="#FF615858" HorizontalAlignment="Right"
+                            <Label Content="Wallet data directory:" Height="30" Width="178" Foreground="Black" HorizontalAlignment="Right"
                                 FontFamily="Microsoft YaHei Light" FontSize="14" Padding="4"/>
 
                         </StackPanel>
@@ -93,30 +93,30 @@
                             </TextBlock>
                             <TextBlock x:Name="WalletversionTxt" Text="4.0.0"
                                      TextWrapping="Wrap"  Padding="4" 
-                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="#FF615858" 
+                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="Black" 
                                      TextAlignment="Left" Height="30">
                             </TextBlock>
                             <TextBlock x:Name="FullnodeversionTxt"  Text="1.0.8.6"
                                      TextWrapping="Wrap"  Padding="4" 
-                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="#FF615858" 
+                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="Black" 
                                      TextAlignment="Left" Height="30">
                             </TextBlock>
                             <TextBlock x:Name="CurrentnetworkTxt"  Text="XlcMain"
                                      TextWrapping="Wrap"  Padding="4" 
-                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="#FF615858" 
+                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="Black" 
                                      TextAlignment="Left" Height="30">
                             </TextBlock>
                             <TextBlock x:Name="ProtocolversionTxt"  Text="70012"
                                      TextWrapping="Wrap" Padding="4" 
-                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="#FF615858" 
+                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="Black" 
                                      TextAlignment="Left" Height="30">
                             </TextBlock>
                             <TextBlock x:Name="CurrentblockheightTxt"  Text="1039"
                                      TextWrapping="Wrap"  Padding="4" 
-                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="#FF615858" 
+                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="Black" 
                                      TextAlignment="Left" Height="30">
                             </TextBlock>
-                            <TextBlock x:Name="WalletdatadirectoryTxt"  Text="C:\Users\TOWSIF\AppData"
+                            <TextBlock x:Name="WalletdatadirectoryTxt"
                                      TextWrapping="Wrap"  Padding="4"
                                      FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="ForestGreen" 
                                      TextAlignment="Left" Height="30">
@@ -128,7 +128,7 @@
                 <StackPanel Name="ExtendedPublicKeySP" Orientation="Vertical" Margin="0,0,10,10" Grid.Column="1">
                     <Grid Name="ExtendedPublicKeyGrid" Height="460" Background="WhiteSmoke" Margin="0,20,5,0" HorizontalAlignment="Left">
                         <StackPanel Orientation="Vertical" Margin="50,50,50,0" HorizontalAlignment="Left"  >
-                            <Label Content="EXTENDED PUBLIC KEY" Height="89"  Foreground="DarkGray"
+                            <Label Content="EXTENDED PUBLIC KEY" Height="89"  Foreground="Black"
                                 FontFamily="Microsoft YaHei" FontSize="18" Padding="0" RenderTransformOrigin="0.502,0.463"  />
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="50,106,50,0"  HorizontalAlignment="Right"  >
@@ -139,7 +139,7 @@
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="50,174,50,0"  HorizontalAlignment="Center"  >
                             <TextBlock  x:Name="ExtPubKeyTxt" TextWrapping="Wrap" FontFamily="Microsoft YaHei Light" 
-                                        FontSize="14"  Foreground="Gray" HorizontalAlignment="Center"
+                                        FontSize="14"  Foreground="Black" HorizontalAlignment="Center"
                                         Text="Something went wrong while getting your Extended Public Key." Height="60" />
                         </StackPanel>
                     </Grid>
@@ -148,17 +148,17 @@
                 <StackPanel Name="GenerateAddressesSP" Orientation="Vertical" Margin="0,0,10,10" Grid.Column="1">
                     <Grid Name="GenerateAddressesGrid" Height="460" Background="WhiteSmoke" Margin="0,20,5,0" HorizontalAlignment="Left">
                         <StackPanel Orientation="Vertical" Margin="50,50,50,0" HorizontalAlignment="Left"  >
-                            <Label Content="GENERATE ADDRESSES" Height="89"  Foreground="DarkGray"
+                            <Label Content="GENERATE ADDRESSES" Height="89"  Foreground="Black"
                                 FontFamily="Microsoft YaHei" FontSize="18" Padding="0" RenderTransformOrigin="0.502,0.463"  />
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="50,124,50,0"  HorizontalAlignment="Left"  >
-                            <Label Content="Amount of generated addresses:" Height="30"  Foreground="#FF615858"
+                            <Label Content="Amount of generated addresses:" Height="30"  Foreground="Black"
                                 FontFamily="Microsoft YaHei" FontSize="14" Padding="0" RenderTransformOrigin="0.502,0.463"  />
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="0,157,0,0"  HorizontalAlignment="Center" >
                             <TextBox x:Name="AmountofGenerateAddressesTxt" TextWrapping="Wrap" Padding="4" BorderThickness="1" BorderBrush="LightGray"
                                      AutomationProperties.HelpText="Enter Amount." TextBlock.FontFamily="Microsoft YaHei Light" 
-                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="#FF615858" 
+                                     FontFamily="Microsoft YaHei Light" FontSize="14" Foreground="Black" 
                                      TextAlignment="Left" Height="31" Width="530" />
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="50,200,50,0"  HorizontalAlignment="Center"  >
@@ -211,7 +211,7 @@
 
                     <Grid Name="ResyncGrid" Height="460" Background="WhiteSmoke" Margin="0,20,5,0" HorizontalAlignment="Left">
                         <StackPanel Orientation="Vertical" Margin="50,50,50,0" HorizontalAlignment="Left"  >
-                            <Label Content="RESCAN WALLET" Height="89"  Foreground="DarkGray"
+                            <Label Content="RESCAN WALLET" Height="89"  Foreground="Black"
                                 FontFamily="Microsoft YaHei" FontSize="18" Padding="0" RenderTransformOrigin="0.502,0.463"  />
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="50,110,50,272"  HorizontalAlignment="Left" Background="LightGreen" >
@@ -225,14 +225,14 @@
                             </Label>
 
                         </StackPanel>
-                        <StackPanel Orientation="Vertical" Margin="100,190,50,0"  HorizontalAlignment="Left"  >
-                            <Label Content="Rescan from:" Height="30"  Foreground="Gray"
+                        <StackPanel Orientation="Vertical" Margin="50,190,50,0"  HorizontalAlignment="Left"  >
+                            <Label Content="Rescan from:" Height="30"  Foreground="Black"
                                 FontFamily="Microsoft YaHei" FontSize="14" Padding="0" RenderTransformOrigin="0.502,0.463"  />
                         </StackPanel>
-                        <StackPanel Orientation="Vertical" Margin="100,230,50,0"  HorizontalAlignment="Left" Width="190"  >
+                        <StackPanel Orientation="Vertical" Margin="50,230,50,0"  HorizontalAlignment="Left" Width="190"  >
                             <DatePicker x:Name="RescanFromDate"
                                         DisplayDate="2019-01-01" Padding="5 " FontSize="14" Foreground="#FF615858" 
-                                        Height="31" BorderThickness="1" BorderBrush="LightGray" >
+                                        Height="31" BorderThickness="1" BorderBrush="black" >
                             </DatePicker>
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="50,280,50,0"  HorizontalAlignment="Center"  >

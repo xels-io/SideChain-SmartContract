@@ -283,15 +283,6 @@
 
                                     </Border>
 
-                                    <Border Grid.Row="9">
-                                        <Button Click="HidePopup_Click" Background="Black" Foreground="White" Content="X" >
-                                            <Button.Resources>
-                                                <Style TargetType="{x:Type Border}">
-                                                    <Setter Property="CornerRadius" Value="50"/>
-                                                </Style>
-                                            </Button.Resources>
-                                        </Button>
-                                    </Border>
                                 </Grid>
                             </Grid>
                         </Border>
@@ -313,7 +304,7 @@
                             </Binding>
                         </Label.Content>
                     </Label>
-                    <Button Grid.Column="0" Content="Previous" Click="OnPreviousClicked" Margin="2"/>
+                    <Button Grid.Column="0" Content="Previous" Background="Green" Click="OnPreviousClicked" Margin="2"/>
 
                     <Border Grid.Column="1" Margin="10 0" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"  ScrollViewer.PanningMode="HorizontalOnly" >
                         <ScrollViewer HorizontalScrollBarVisibility="Auto">
@@ -332,7 +323,7 @@
 
                         </ScrollViewer>
                     </Border>
-                    <Button Grid.Column="2" Content="Next" Click="OnNextClicked" Margin="2"/>
+                    <Button Grid.Column="2" Content="Next" Background="Green" Click="OnNextClicked" Margin="2"/>
                 </Grid>
             </Grid>
 
