@@ -49,13 +49,17 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
-                        <Border Margin="0"  Grid.Row="0">
-                            <DataGrid x:Name="HistoryListBinding" ItemsSource="{Binding observableList}" AutoGenerateColumns="False" IsReadOnly="True" CanUserReorderColumns="False"
+                        <Border Margin="0 20"  Grid.Row="0">
+                            <DataGrid x:Name="HistoryListBinding" ItemsSource="{Binding 
+                                observableList}" AutoGenerateColumns="False" IsReadOnly="True" 
+                                      CanUserReorderColumns="False"
                                       CanUserResizeColumns="False"
-                          CanUserAddRows="False" RowStyle="{DynamicResource MaterialDesignDataGridRow}" 
-                          RowHeight="30" HorizontalAlignment="Center" CanUserSortColumns="False" 
-                          HeadersVisibility="None" ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                            SelectionMode="Extended" EnableColumnVirtualization="False" EnableRowVirtualization="False" >
+                          CanUserAddRows="False" RowStyle="{DynamicResource MaterialDesignDataGridRow}"
+                           RowHeight="30" HorizontalAlignment="Center" CanUserSortColumns="False" 
+                           HeadersVisibility="None"  
+                           ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                            SelectionMode="Extended" EnableColumnVirtualization="False" 
+                            EnableRowVirtualization="False" >
 
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Width="150" 
@@ -291,10 +295,10 @@
                 </Grid>
 
 
-                <Grid x:Name="Pagination" HorizontalAlignment="Center" Grid.Row="1">
+                <Grid x:Name="Pagination" HorizontalAlignment="Center" Grid.Row="1" Margin=" 0 -25 0 0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="4*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Label>
@@ -306,21 +310,21 @@
                     </Label>
                     <Button Grid.Column="0" Content="Previous" Background="Green" Click="OnPreviousClicked" Margin="2"/>
 
-                    <Border Grid.Column="1" Margin="10 0" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"  ScrollViewer.PanningMode="HorizontalOnly" >
-                        <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                    <Border Grid.Column="1" Margin="10 0" 
+                            >
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto"  HorizontalAlignment="Center" VerticalScrollBarVisibility="Disabled" Margin="0 15 0 0">
                             <ItemsControl x:Name="buttons" ItemsSource="{Binding Buttons}" >
                                 <ItemsControl.ItemsPanel >
                                     <ItemsPanelTemplate>
-                                        <StackPanel Orientation="Horizontal"    />
+                                        <StackPanel Orientation="Horizontal" Background="White"   />
                                     </ItemsPanelTemplate>
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Button   Content="{Binding Path=Content}" Margin="15"/>
+                                        <Button   Content="{Binding Path=Content}" Height="20" Width="20" Margin="5"/>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
-
                         </ScrollViewer>
                     </Border>
                     <Button Grid.Column="2" Content="Next" Background="Green" Click="OnNextClicked" Margin="2"/>
