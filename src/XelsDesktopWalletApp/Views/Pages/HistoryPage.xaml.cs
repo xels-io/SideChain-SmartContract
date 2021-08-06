@@ -226,7 +226,7 @@ namespace XelsDesktopWalletApp.Views.Pages
         {
             int pageCount = this._cview.PageCount;
             List<Button> Buttons = new List<Button>();
-            for (int i = 0; i < pageCount; i++)
+            for (int i = 0; i < 50; i++)
             {
                 // if(i < 3)
                 {

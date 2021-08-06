@@ -316,19 +316,21 @@
                     <Button Grid.Column="0" Content="Previous" Click="OnPreviousClicked" Margin="2"/>
 
                     <Border Grid.Column="1" Margin="10 0" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"  ScrollViewer.PanningMode="HorizontalOnly" >
-                        <ItemsControl x:Name="buttons" ItemsSource="{Binding Buttons}" >
-                            <ItemsControl.ItemsPanel >
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal" />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Button   Content="{Binding Path=Content}" Margin="15"/>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                            <ItemsControl x:Name="buttons" ItemsSource="{Binding Buttons}" >
+                                <ItemsControl.ItemsPanel >
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"    />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Button   Content="{Binding Path=Content}" Margin="15"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
 
+                        </ScrollViewer>
                     </Border>
                     <Button Grid.Column="2" Content="Next" Click="OnNextClicked" Margin="2"/>
                 </Grid>
