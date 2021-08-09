@@ -115,54 +115,68 @@ namespace XelsDesktopWalletApp.Views.ViewPage
 
         private void useAddressBtn_Click(object sender, RoutedEventArgs e)
         {
-
-            AddressModel objaddressModel = this.selectaddress.SelectedItem as AddressModel;
-            if (objaddressModel != null)
+            try
             {
-                string selectedAddress = objaddressModel.Address.ToString();
-                GlobalPropertyModel.WalletName = this.walletName;
-                GlobalPropertyModel.Address = selectedAddress;
-                NavigationService navService = NavigationService.GetNavigationService(this);
-                SmtContractDashboard page2Obj = new SmtContractDashboard(selectedAddress); //Create object of Page2
-                navService.Navigate(page2Obj);
-                // this.imgCircle.Visibility = Visibility.Visible; //Make loader visible
-                //  this.useAddressBtn.IsEnabled = false;
+                AddressModel objaddressModel = this.selectaddress.SelectedItem as AddressModel;
+                if (objaddressModel != null)
+                {
+                    string selectedAddress = objaddressModel.Address.ToString();
+                    GlobalPropertyModel.WalletName = this.walletName;
+                    GlobalPropertyModel.Address = selectedAddress;
+                    NavigationService navService = NavigationService.GetNavigationService(this);
+                    SmtContractDashboard page2Obj = new SmtContractDashboard(selectedAddress); //Create object of Page2
+                    navService.Navigate(page2Obj);
+                    // this.imgCircle.Visibility = Visibility.Visible; //Make loader visible
+                    //  this.useAddressBtn.IsEnabled = false;
+                }
+                else
+                {
+                    MessageBox.Show("Select Address", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                    this.selectaddress.Focus();
+                    //this.imgCircle.Visibility = Visibility.Collapsed; //Make loader visible
+                    this.useAddressBtn.IsEnabled = true;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Select Address", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                this.selectaddress.Focus();
-                //this.imgCircle.Visibility = Visibility.Collapsed; //Make loader visible
-                this.useAddressBtn.IsEnabled = true;
-            }
 
+                MessageBox.Show(ex.Message.ToString(), "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private async Task<string> GetAccountAddressesAsync(string walletName = "")
         {
-
-            string getUrl = this.baseURL + $"/SmartContractWallet/account-addresses?walletName={walletName}";
             var content = "";
-
-            HttpResponseMessage response = await client.GetAsync(getUrl);
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var jsonString = await response.Content.ReadAsStringAsync();
-                IEnumerable<string> address = JsonConvert.DeserializeObject<IEnumerable<string>>(jsonString);
-                foreach (var add in address)
+                string getUrl = this.baseURL + $"/SmartContractWallet/account-addresses?walletName={walletName}";
+
+
+                HttpResponseMessage response = await client.GetAsync(getUrl);
+
+                if (response.IsSuccessStatusCode)
                 {
-                    AddressModel addressModel = new AddressModel();
-                    addressModel.Address = add;
-                    this.addressList.Add(addressModel);
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    IEnumerable<string> address = JsonConvert.DeserializeObject<IEnumerable<string>>(jsonString);
+                    foreach (var add in address)
+                    {
+                        AddressModel addressModel = new AddressModel();
+                        addressModel.Address = add;
+                        this.addressList.Add(addressModel);
+                    }
+
+                }
+                else
+                {
+                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
                 }
 
+                return content;
             }
-            else
+            catch (Exception ep)
             {
-                MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                MessageBox.Show(ep.Message.ToString(), "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
             return content;
         }
 

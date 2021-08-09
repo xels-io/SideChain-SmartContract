@@ -44,7 +44,7 @@
                                     </Button.Resources>
                                 </Button>
                             </Grid>
-                            
+
                         </Border>
 
                         <Border Grid.Row="1">
@@ -529,10 +529,10 @@
                                                     FontFamily="Microsoft YaHei" FontSize="10" Foreground="Green">
                                                  <materialDesign:PackIcon Kind="Autorenew" Height="10" Width="10" HorizontalAlignment="Center"/>
                                             </TextBlock>
-                                            <TextBlock Text="...0"  Grid.Column="1" Name="ConnectedCountTxt" FontSize="10" Foreground="Green" Grid.ColumnSpan="2" Margin="8,0,145,0" >
+                                            <TextBlock Text="...0"  Grid.Column="2" Name="ConnectedCountTxt" FontSize="10" Foreground="Green" Margin="28,0,133,0" >
                                                  <materialDesign:PackIcon Kind="People" Height="10" Width="10"/>
                                             </TextBlock>
-                                            <Label  Content="Not stacking" x:Name="StakingInfo"  Grid.Column="2" Foreground="Green" Margin="34,-4,62,4">
+                                            <Label  Content="Not stacking" x:Name="StakingInfo"  Grid.Column="2" Foreground="Green" Margin="61,-4,58,4">
                                                 <!--<Image x:Name="StakingInfoImage" Width="40" Height="40" /> ToolTip="{Binding StakingInfo}"-->
                                             </Label>
                                             <Image Grid.Column="2"  x:Name="thumbDown" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Width="24" Source="/Assets/Images/thumbsdown.png" Margin="134,0,0,0" />

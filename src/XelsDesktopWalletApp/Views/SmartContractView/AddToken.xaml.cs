@@ -352,12 +352,20 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
         
         private void btn_Delete_Token_Click(object sender, RoutedEventArgs e)
         {
-            DataGrid dataGrid = this.DataGrid1;
-            DataGridRow Row = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromIndex(dataGrid.SelectedIndex);
-            DataGridCell RowAndColumn = (DataGridCell)dataGrid.Columns[3].GetCellContent(Row).Parent;
-            string CellValue = ((TextBlock)RowAndColumn.Content).Text;
-            DeleteToken(CellValue);
-            AddTokenList();
+            try
+            {
+                DataGrid dataGrid = this.DataGrid1;
+                DataGridRow Row = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromIndex(dataGrid.SelectedIndex);
+                DataGridCell RowAndColumn = (DataGridCell)dataGrid.Columns[3].GetCellContent(Row).Parent;
+                string CellValue = ((TextBlock)RowAndColumn.Content).Text;
+                DeleteToken(CellValue);
+                AddTokenList();
+            }
+            catch (Exception er)
+            {
+                string msg = er.Message.ToString();
+            }
+           
         }
 
         public string DeleteToken(string address)
@@ -369,48 +377,56 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
             //string path = System.IO.Path.GetFullPath(tokenFilePath);
 
             List<TokenRetrieveModel> tokenlist = new List<TokenRetrieveModel>();
-
-            if (File.Exists(path))
+            try
             {
-                using (StreamReader r = new StreamReader(path))
+                if (File.Exists(path))
                 {
-                    string json = r.ReadToEnd();
-                    string concateData = '[' + json + ']';
-                    tokenlist = JsonConvert.DeserializeObject<List<TokenRetrieveModel>>(concateData);
-
-                    foreach (var item in tokenlist)
+                    using (StreamReader r = new StreamReader(path))
                     {
-                        if (item.Address == address)
+                        string json = r.ReadToEnd();
+                        string concateData = '[' + json + ']';
+                        tokenlist = JsonConvert.DeserializeObject<List<TokenRetrieveModel>>(concateData);
+
+                        foreach (var item in tokenlist)
                         {
-                            tokenlist.Remove(item);
-                            break;
+                            if (item.Address == address)
+                            {
+                                tokenlist.Remove(item);
+                                break;
+                            }
                         }
+
                     }
 
-                }
-
-                File.Delete(path);
-                if (tokenlist.Count > 0)
-                {
-                    string JSONresult = JsonConvert.SerializeObject(tokenlist, Formatting.Indented);
-
-                    string FinalResult = JSONresult.TrimStart('[').TrimEnd(']').TrimStart().TrimEnd();
-                    File.Create(path).Dispose();
-                    File.SetAttributes(path, FileAttributes.Hidden);//hidden file path;
-                    using (var sw = new StreamWriter(path, true))
+                    File.Delete(path);
+                    if (tokenlist.Count > 0)
                     {
-                        sw.WriteLine(FinalResult.ToString());
-                        sw.WriteLine(",");
-                        sw.Flush();
-                        sw.Close();
+                        string JSONresult = JsonConvert.SerializeObject(tokenlist, Formatting.Indented);
+
+                        string FinalResult = JSONresult.TrimStart('[').TrimEnd(']').TrimStart().TrimEnd();
+                        File.Create(path).Dispose();
+                        File.SetAttributes(path, FileAttributes.Hidden);//hidden file path;
+                        using (var sw = new StreamWriter(path, true))
+                        {
+                            sw.WriteLine(FinalResult.ToString());
+                            sw.WriteLine(",");
+                            sw.Flush();
+                            sw.Close();
+
+                        }
+
 
                     }
 
-
                 }
-
+                return msg;
             }
-            return msg;
+            catch (Exception et)
+            {
+                msg = et.Message.ToString();
+                return msg;
+            }
+            
         }
 
     }

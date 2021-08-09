@@ -183,6 +183,7 @@ namespace XelsDesktopWalletApp.Views.Pages
         private void Copy_Click(object sender, RoutedEventArgs e)
         {
             Clipboard.SetText(this.TransactionIDTxt.Text);
+            this.CopyMessage.Visibility = Visibility.Visible;
             //System.Windows.MessageBox.Show("Copied Successfully :- " + this.TransactionIDTxt.Text.ToString());
         }
 

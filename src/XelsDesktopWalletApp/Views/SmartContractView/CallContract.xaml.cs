@@ -208,19 +208,27 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
         private async void CallContractSubmitAsync(CallContractModel callContractModel)
         {
             string postUrl = this.baseURL + "/SmartContractWallet/call";
-
-            HttpResponseMessage response = await client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(callContractModel), Encoding.UTF8, "application/json"));
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                MessageBox.Show("Successfully Call Contract with  " + callContractModel.contractAddress);
+                HttpResponseMessage response = await client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(callContractModel), Encoding.UTF8, "application/json"));
 
-                this.Visibility = Visibility.Collapsed;
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Successfully Call Contract with  " + callContractModel.contractAddress);
+
+                    this.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                }
             }
-            else
+            catch (Exception er)
             {
-                MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+
+                MessageBox.Show(er.Message.ToString());
             }
+            
         }
 
 

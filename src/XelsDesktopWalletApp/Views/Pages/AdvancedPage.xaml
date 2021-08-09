@@ -141,6 +141,16 @@
                             <TextBlock  x:Name="ExtPubKeyTxt" TextWrapping="Wrap" FontFamily="Microsoft YaHei Light" 
                                         FontSize="14"  Foreground="Black" HorizontalAlignment="Center"
                                         Text="Something went wrong while getting your Extended Public Key." Height="60" />
+                            <Border  x:Name="CopyMessage" Visibility="Collapsed"  BorderBrush="White" BorderThickness="2" Background="Green" CornerRadius="7" Height="40">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Column="0"  Text="Address has been copied to your clipboard" TextWrapping="Wrap"   Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" />
+                                </Grid>
+
+                            </Border>
                         </StackPanel>
                     </Grid>
                 </StackPanel>
@@ -186,6 +196,7 @@
                                                                 HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="10" />
                                                     </InlineUIContainer>
                                                 </TextBlock>
+                                                
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>

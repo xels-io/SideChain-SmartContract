@@ -224,19 +224,26 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
         private async void CreateContractSubmitAsync(CreateContractModel createContractModel)
         {
             string postUrl = this.baseURL + "/SmartContractWallet/create";
-
-            HttpResponseMessage response = await client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(createContractModel), Encoding.UTF8, "application/json"));
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                MessageBox.Show("Successfully Create Contract ");
+                HttpResponseMessage response = await client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(createContractModel), Encoding.UTF8, "application/json"));
 
-                this.Visibility = Visibility.Collapsed;
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Successfully Create Contract ");
+
+                    this.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                }
             }
-            else
+            catch (Exception er)
             {
-                MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                MessageBox.Show(er.Message.ToString());
             }
+           
         }
         //private void btn_Create_Cancel_Click(object sender, RoutedEventArgs e)
         //{
