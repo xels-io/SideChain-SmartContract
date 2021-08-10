@@ -16,13 +16,6 @@ namespace XelsDesktopWalletApp.Views
 
         WalletCreation _walletcreate = new WalletCreation();
 
-        //private string _mnemonic;
-        //public string _Mnemonic
-        //{
-        //    get { return _mnemonic; }
-        //    set { _mnemonic = value; }
-        //}
-
         #endregion
 
         public CreateShowMnemonic()
@@ -34,21 +27,29 @@ namespace XelsDesktopWalletApp.Views
         public CreateShowMnemonic(WalletCreation model)
         {
             InitializeComponent();
-            string words = model.Mnemonic.Replace("\"", "");
-            string[] mn = words.Split(' ');
-            string[] mnv = new string[12];
-            string[] mnCopy = new string[12];
-
-            for (int i =0; i< mn.Length; i++)
+            try
             {
-                mnv[i] = $"{ i + 1 }.{" "}{ mn[i] }{" "}";
-                mnCopy[i] = mn[i];
+                string words = model.Mnemonic.Replace("\"", "");
+                string[] mn = words.Split(' ');
+                string[] mnv = new string[12];
+                string[] mnCopy = new string[12];
+
+                for (int i = 0; i < mn.Length; i++)
+                {
+                    mnv[i] = $"{ i + 1 }.{" "}{ mn[i] }{" "}";
+                    mnCopy[i] = mn[i];
+                }
+
+                this.textBoxTextToMnemonic.Text = String.Join(" ", mnv);
+                this.copyMnemonicText = String.Join(" ", mnCopy);
+
+                InitializeWalletCreationModel(model);
             }
-
-             this.textBoxTextToMnemonic.Text = String.Join(" ", mnv); 
-            this.copyMnemonicText = String.Join(" ", mnCopy);
-
-            InitializeWalletCreationModel(model);
+            catch (Exception c)
+            {
+                MessageBox.Show(c.Message.ToString());
+            }
+           
         }
 
         private void InitializeWalletCreationModel(WalletCreation CreateWallet)
@@ -62,6 +63,7 @@ namespace XelsDesktopWalletApp.Views
         private void copyClipboardButton_Click(object sender, RoutedEventArgs e)
         {
             Clipboard.SetText(this.copyMnemonicText);
+            MessageBox.Show("Copied successfully.");
         }
 
         private void continueButton_Click(object sender, RoutedEventArgs e)
