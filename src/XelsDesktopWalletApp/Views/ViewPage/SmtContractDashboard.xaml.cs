@@ -151,8 +151,12 @@ namespace XelsDesktopWalletApp.Views.ViewPage
         private void Btn_AddressCopy_Click(object sender, RoutedEventArgs e)
         {
             string activeAddress = this.lab_ActiveAddress.Text.ToString();
-            Clipboard.SetText(activeAddress);
-            MessageBox.Show(activeAddress + "  COPIED");
+            if (activeAddress != null)
+            {
+                Clipboard.SetText(activeAddress);
+                MessageBox.Show(activeAddress + "  COPIED");
+            }
+
         }
 
         private void CallContract_Click(object sender, RoutedEventArgs e)

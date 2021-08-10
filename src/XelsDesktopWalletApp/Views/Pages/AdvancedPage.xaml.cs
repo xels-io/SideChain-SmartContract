@@ -19,7 +19,7 @@ namespace XelsDesktopWalletApp.Views.Pages
     public partial class AdvancedPage : Page
     {
         #region Base
-        private string baseURL = URLConfiguration.BaseURLMain;// "http://localhost:37221/api";
+        private string baseURL = URLConfiguration.BaseURLMain;
         private string version = Applicationversion.Version;
         #endregion
         #region Local Info
@@ -68,6 +68,7 @@ namespace XelsDesktopWalletApp.Views.Pages
             GetExtPublicKey();
             //Rescan 
             GetGeneralInfo();
+            this.CopyMessage.Visibility = Visibility.Collapsed;
         }
         #endregion
 
@@ -206,6 +207,7 @@ namespace XelsDesktopWalletApp.Views.Pages
         private void CopyToClipboard_Click(object sender, RoutedEventArgs e)
         {
             Clipboard.SetText(this.ExtPubKeyTxt.Text);
+            this.CopyMessage.Visibility = Visibility.Visible;
         }
 
         #endregion
@@ -261,12 +263,21 @@ namespace XelsDesktopWalletApp.Views.Pages
 
         private void CopyButton_Click(object sender, RoutedEventArgs e)
         {
-            DataGrid dataGrid = this.AddressList;
-            DataGridRow Row = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromIndex(dataGrid.SelectedIndex);
-            DataGridCell RowAndColumn = (DataGridCell)dataGrid.Columns[0].GetCellContent(Row).Parent;
-            string CellValue = ((TextBlock)RowAndColumn.Content).Text;
+            try
+            {
+                DataGrid dataGrid = this.AddressList;
+                DataGridRow Row = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromIndex(dataGrid.SelectedIndex);
+                DataGridCell RowAndColumn = (DataGridCell)dataGrid.Columns[0].GetCellContent(Row).Parent;
+                string CellValue = ((TextBlock)RowAndColumn.Content).Text;
 
-            Clipboard.SetText(CellValue);
+                Clipboard.SetText(CellValue);
+            }
+            catch (Exception c)
+            {
+                MessageBox.Show(c.Message.ToString());
+            }
+           
+
         }
         #endregion
 

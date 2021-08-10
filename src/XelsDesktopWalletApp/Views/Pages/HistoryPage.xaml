@@ -286,7 +286,16 @@
                                         </Grid>
 
                                     </Border>
+                                    <Border  x:Name="CopyMessage" Visibility="Collapsed" Grid.Row="9" BorderBrush="White" BorderThickness="2" Background="Green" CornerRadius="7">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
 
+                                            <TextBlock Grid.Column="0"  Text="The Transaction ID has been copied to your clipboard" TextWrapping="Wrap"   Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" />
+                                        </Grid>
+
+                                    </Border>
                                 </Grid>
                             </Grid>
                         </Border>
