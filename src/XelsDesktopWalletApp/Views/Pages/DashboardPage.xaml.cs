@@ -26,7 +26,7 @@ namespace XelsDesktopWalletApp.Views.Pages
     /// </summary>
     public partial class DashboardPage : Page
     {
-        private string baseURL = URLConfiguration.BaseURL;// "http://localhost:37221/api";
+        private string baseURL = URLConfiguration.BaseURL;
 
         private WalletBalanceArray walletBalanceArray = new WalletBalanceArray();
 
@@ -110,6 +110,7 @@ namespace XelsDesktopWalletApp.Views.Pages
                 this.t.Visibility = Visibility.Hidden;
                 this.StakingInfo.Content = "Staking";
                 this.thumbsup.Visibility = Visibility.Visible;
+                this.thumbDown.Visibility = Visibility.Collapsed;
             }
 
             UpdateWallet();
@@ -626,8 +627,8 @@ namespace XelsDesktopWalletApp.Views.Pages
         {
             try
             {
-                //this.PreloaderPoup.IsOpen = true;
-                //this.IsEnabled = false;
+                this.PreloaderPoup.IsOpen = true;
+                this.IsEnabled = false;
 
                 if (!string.IsNullOrWhiteSpace(this.Password.Password))
                 {
@@ -656,11 +657,14 @@ namespace XelsDesktopWalletApp.Views.Pages
                         this.thumbDown.Visibility = Visibility.Collapsed;
                         this.thumbsup.Visibility = Visibility.Visible;
 
-                        //this.PreloaderPoup.IsOpen = false;
-                        //this.IsEnabled = true;
+                        this.PreloaderPoup.IsOpen = false;
+                        this.IsEnabled = true;
                     }
                     else
                     {
+                        this.PreloaderPoup.IsOpen = false;
+                        this.IsEnabled = true;
+
                         var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
 
                         foreach (var error in errors.Errors)
@@ -669,21 +673,19 @@ namespace XelsDesktopWalletApp.Views.Pages
 
                         }
                         this.Password.Password = "";
-                        //this.PreloaderPoup.IsOpen = false;
-                        //this.IsEnabled = true;
                     }
                 }
                 else
                 {
+                    this.PreloaderPoup.IsOpen = false;
+                    this.IsEnabled = true;
                     MessageBox.Show("Please, enter password to unlock");
-                    //this.PreloaderPoup.IsOpen = false;
-                    //this.IsEnabled = true;
                 }
             }
             catch (Exception)
             {
-                //this.PreloaderPoup.IsOpen = false;
-                //this.IsEnabled = true;
+                this.PreloaderPoup.IsOpen = false;
+                this.IsEnabled = true;
                 //throw;
             }
 

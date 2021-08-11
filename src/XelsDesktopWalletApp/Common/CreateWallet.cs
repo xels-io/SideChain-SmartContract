@@ -53,13 +53,20 @@ namespace XelsDesktopWalletApp.Common
 
         public Wallet WalletCreationFromPk(string pKey)
         {
-            Wallet wallet = new Wallet();
-            var account = new Account(pKey);
+            try
+            {
+                Wallet wallet = new Wallet();
+                var account = new Account(pKey);
 
-            wallet.PrivateKey = pKey;
-            wallet.Address = account.Address;
+                wallet.PrivateKey = pKey;
+                wallet.Address = account.Address;
 
-            return wallet;
+                return wallet;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
         public bool StoreLocally(Wallet wallet, string walletname, string symbol, string wallethash)

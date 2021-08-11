@@ -154,23 +154,21 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
 
         private async void EstimateFeeSideChainAsync()
         {
+            var content = "";
             if (isAddrAmtValid())
             {
-                this.TransactionFeeTypeLabel.Content = "medium";
-
-
+                //this.TransactionFeeTypeLabel.Content = "medium";
+                string feeType = "medium";
                 string postUrl = this.baseURL + $"/wallet/estimate-txfee"; 
                 
                 // problem while send for sidechain, sidechain destination address is returned invalid from api
                 // found dissimilarity with angular app, declare on model fedartion address as recipent list, but send destination address as recipient list, 
 
-                var content = "";
-
                 FeeEstimationSideChain feeEstimation = new FeeEstimationSideChain();
                 feeEstimation.WalletName = this.walletName;
                 feeEstimation.AccountName = "account 0";
-                feeEstimation.Recipients = GetRecipient();               
-                feeEstimation.FeeType = this.TransactionFeeTypeLabel.Content.ToString();
+                feeEstimation.Recipients = GetRecipient();
+                feeEstimation.FeeType = feeType;
                 feeEstimation.AllowUnconfirmed = true;                 
 
                 HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(feeEstimation), Encoding.UTF8, "application/json"));
@@ -179,19 +177,19 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
 
                 if (response.IsSuccessStatusCode)
                 {
-                   
                     this.estimatedSidechainFee = Convert.ToDouble(content) / 100000000;
                     this.TransactionFeeText.Text = this.estimatedSidechainFee.ToString();
                     this.WarningLabelSidechain.Visibility = Visibility.Hidden;
                 }
                 else
                 {
-                    var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
-
-                    foreach (var error in errors.Errors)
-                    {
-                        MessageBox.Show(error.Message);
-                    }
+                    MessageBox.Show("Invalid Address.");
+                    //var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
+                    //foreach (var error in errors.Errors)
+                    //{
+                    //    MessageBox.Show(error.Message);
+                    //    break;
+                    //}
                 }
             }
         }
@@ -279,6 +277,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
                     foreach (var error in errors.Errors)
                     {
                         MessageBox.Show(error.Message);
+                        break;
                     }
                 }
             }
@@ -317,6 +316,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
                         foreach (var error in errors.Errors)
                         {
                             MessageBox.Show(error.Message);
+                            break;
                         }
                     }
                 }
@@ -331,40 +331,42 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
 
         private void CheckSendAmount_OnChange(object sender, RoutedEventArgs e)
         {
-            string sendingAmount = this.SendAmountText.Text ;
+            string sendingAmount = this.SendAmountText.Text.Trim();
+            //if (this.SendAmountText.Text == string.Empty)
+            //{
+            //    MessageBox.Show("An amount is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
 
-            if (this.SendAmountText.Text == string.Empty)
-            {
-                MessageBox.Show("An amount is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-
-            }
-
-            if (Convert.ToDouble(sendingAmount) < 0.00001)
-            {
-                MessageBox.Show("The amount has to be more or equal to 1.");
-
-            }
-
-            if (Convert.ToDouble(sendingAmount) > ((this.WalletBalance.AmountConfirmed - this.estimatedSidechainFee) / 100000000))
-            {
-                MessageBox.Show("The total transaction amount exceeds your spendable balance.");
-
-            }
-
-            if (!Regex.IsMatch(this.SendAmountText.Text, @"^([0-9]+)?(\.[0-9]{0,8})?$"))
+            //}
+            if (!Regex.IsMatch(this.SendAmountText.Text.Trim(), @"^([0-9]+)?(\.[0-9]{0,8})?$") || this.SendAmountText.Text.Trim() == string.Empty)
             {
                 MessageBox.Show("Enter a valid transaction amount. Only positive numbers and no more than 8 doubles are allowed.");
-
             }
-            if (this.SidechainDestinationAddressText.Text != "" && this.SendAmountText.Text != "")
+            else
             {
-                EstimateFeeSideChainAsync();
-                this.SidechainDestinationAddressText.Focus();
-            }
+               
+                if (Convert.ToDouble(sendingAmount) < 0.00001)
+                {
+                    MessageBox.Show("The amount has to be more or equal to 1.");
 
-            this.SendAmountText.Text = "";
-            this.SidechainDestinationAddressText.Text = "";
-            this.SendAmountText.Focus();
+                }
+
+                if (Convert.ToDouble(sendingAmount) > ((this.WalletBalance.AmountConfirmed - this.estimatedSidechainFee) / 100000000))
+                {
+                    MessageBox.Show("The total transaction amount exceeds your spendable balance.");
+
+                }
+
+               
+                if (this.SidechainDestinationAddressText.Text != "" && this.SendAmountText.Text != "")
+                {
+                    EstimateFeeSideChainAsync();
+                    this.SidechainDestinationAddressText.Focus();
+                }
+
+                //this.SendAmountText.Text = "";
+                this.SidechainDestinationAddressText.Text = "";
+                this.SendAmountText.Focus();
+            }
         }
 
         private void CalculateTransactionFee_OnChange(object sender, RoutedEventArgs e)
