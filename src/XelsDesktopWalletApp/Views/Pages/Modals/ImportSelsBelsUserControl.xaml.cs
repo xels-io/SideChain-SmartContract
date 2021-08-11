@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -101,7 +103,7 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
             {
                 if (isValid())
                 {
-
+                    //_ = VerifyMnemonicsAsync();
                     this.walletHash = MnemonicToHash(this.MnemonicTxt.Text);
 
                     if (this.SELSPrivateKeyTxt.IsEnabled == true && this.BELSPrivateKeyTxt.IsEnabled == true)
@@ -169,18 +171,20 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
             this.Visibility = Visibility.Collapsed;
         }
 
-        //private async Task VerifyMnemonicsAsync()
-        //{
-        //    string postUrl = this.baseURL + "/Wallet/recover";
+        private async Task VerifyMnemonicsAsync()
+        {
+            string postUrl = this.baseURL + "/Wallet/recover";
 
-        //    WalletRecovery recovery = new WalletRecovery();
-        //    recovery.Name = this.walletName;             
-        //    recovery.Mnemonic = this.MnemonicTxt.Text; 
-        //    recovery.Password = this.Password.Password;
+            WalletRecovery recovery = new WalletRecovery();
+            recovery.Name = this.walletName;
+            recovery.Mnemonic = this.MnemonicTxt.Text;
+            recovery.Password = "12345";
+            recovery.Passphrase = "1";
+            recovery.CreationDate = "0";
 
-        //    HttpResponseMessage response = await URLConfiguration.Client.PostAsJsonAsync(postUrl, recovery);
+            HttpResponseMessage response  = await URLConfiguration.Client.PostAsJsonAsync(postUrl, recovery);
 
-        //    var content = await response.Content.ReadAsStringAsync();
-        //}
+            var content = await response.Content.ReadAsStringAsync();
+        }
     }
 }
