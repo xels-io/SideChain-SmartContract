@@ -21,6 +21,7 @@
             <TextBlock Grid.Row="0" TextAlignment="Center" FontSize="15" Text="ADD TOKEN" FontWeight="Bold" FontFamily="Bahnschrift" HorizontalAlignment="Center" Margin="0,0,0,305"/>
             <Separator BorderThickness="1" BorderBrush="Silver" Margin="20,20,20,451" />
             <Grid Margin="5,0,0,5">
+                
                 <Grid Margin="5,30,5,115">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="265"/>
@@ -101,7 +102,11 @@
                 </Grid>
 
                 <StackPanel Orientation="Vertical" Grid.Row="1" Margin="0,235,0,0" Width="Auto">
-                    <DataGrid Name="DataGrid1"  Width="756" Height="240" ItemsSource="{Binding}" 
+                    <Border BorderBrush="Black" BorderThickness="1" CornerRadius="10" Background="White">
+                        <Border.Effect>
+                            <DropShadowEffect  Direction="-75" ShadowDepth="2" Opacity="0.8" BlurRadius="25" Color="Black" />
+                        </Border.Effect>
+                        <DataGrid Name="DataGrid1" Background="White" Width="756" Height="240"  ItemsSource="{Binding}" 
                               HorizontalAlignment="Center" AutoGenerateColumns="False" 
                               CanUserAddRows="False"
                               ScrollViewer.CanContentScroll="True" 
@@ -123,7 +128,7 @@
                         </DataGrid.Columns>
                      
                     </DataGrid>
-
+                    </Border>
                 </StackPanel>
             </Grid>
         </Grid>
