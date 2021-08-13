@@ -166,12 +166,12 @@ namespace XelsDesktopWalletApp.Views.Pages.ReceivePages
 
         }
 
-        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
-        {
-            ReceiveShowall rsa = new ReceiveShowall(this.walletName);
-            rsa.Show();
+        //private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        //{
+        //    ReceiveShowall rsa = new ReceiveShowall(this.walletName);
+        //    rsa.Show();
 
-        }
+        //}
 
         private void BackSingleAddressButton_Click(object sender, RoutedEventArgs e)
         {

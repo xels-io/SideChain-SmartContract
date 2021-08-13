@@ -20,7 +20,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
 
     public partial class MainchainPage : Page
     {
-        private readonly string baseURL = URLConfiguration.BaseURL;// "http://localhost:37221/api";
+        private readonly string baseURL = URLConfiguration.BaseURL;
         
         private TransactionSending TransactionSending = new TransactionSending();
         private TransactionBuilding TransactionBuilding = new TransactionBuilding();
@@ -165,8 +165,8 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
         {
             if (IsAddressAndAmountValid())
             {
-                this.TransactionFeeTypeLabel.Content = "medium";               
-              
+                //this.TransactionFeeTypeLabel.Content = "medium";               
+                string feeType = "medium";
                 string postUrl = this.baseURL + $"/wallet/estimate-txfee";
                 var content = "";
 
@@ -174,7 +174,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
                 feeEstimation.WalletName = this.walletName;
                 feeEstimation.AccountName = "account 0";
                 feeEstimation.Recipients = GetRecipient();
-                feeEstimation.FeeType = this.TransactionFeeTypeLabel.Content.ToString();
+                feeEstimation.FeeType = feeType;
                 feeEstimation.AllowUnconfirmed = true;
 
                 HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(feeEstimation), Encoding.UTF8, "application/json"));
@@ -188,7 +188,9 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
                 }
                 else
                 {
+
                     MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                    this.DestinationAddressText.Text = "";
                 }
             }
 
@@ -274,7 +276,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
                             foreach (var error in errors.Errors)
                             {
                                 MessageBox.Show(error.Message);
-
+                                break;
                                 //MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
                             }
                         }
@@ -331,7 +333,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
                         foreach (var error in errors.Errors)
                         {
                             MessageBox.Show(error.Message);
-
+                            break;
                             //MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
                         }
                     }
@@ -349,24 +351,25 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
 
         private void CheckSendAmount_OnChange(object sender, RoutedEventArgs e)
         {
-            string sendingAmount = this.SendAmountText.Text ;
+            string sendingAmount = this.SendAmountText.Text.Trim();
 
             if (!string.IsNullOrWhiteSpace(sendingAmount))
             {
-                if (Convert.ToDouble(sendingAmount) > ((this.WalletBalance.MaxSpendableAmount - this.WalletBalance.Fee) / 100000000))
-                {
-                    MessageBox.Show("The total transaction amount exceeds your spendable balance.");
-                }
-
                 if (!Regex.IsMatch(this.SendAmountText.Text, @"^([0-9]+)?(\.[0-9]{0,8})?$"))
                 {
                     MessageBox.Show("Enter a valid transaction amount. Only positive numbers and no more than 8 decimals are allowed.");
                 }
-
-                if (this.DestinationAddressText.Text != "" && this.SendAmountText.Text != "")
+                else
                 {
-                    EstimateFeeAsync();
-                    this.DestinationAddressText.Focus();
+                    if (Convert.ToDouble(sendingAmount) > ((this.WalletBalance.MaxSpendableAmount - this.WalletBalance.Fee) / 100000000))
+                    {
+                        MessageBox.Show("The total transaction amount exceeds your spendable balance.");
+                    }
+                    if (this.DestinationAddressText.Text != "" && this.SendAmountText.Text != "")
+                    {
+                        EstimateFeeAsync();
+                        this.DestinationAddressText.Focus();
+                    }
                 }
             }
 

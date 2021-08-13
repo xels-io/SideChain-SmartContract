@@ -19,7 +19,7 @@ namespace XelsDesktopWalletApp.Views.Pages
             InitializeComponent();
         }
 
-        string baseURL = URLConfiguration.BaseURL;  // "http://localhost:37221/api/wallet";
+        string baseURL = URLConfiguration.BaseURL;
                 
 
         public bool isValid()
@@ -63,46 +63,54 @@ namespace XelsDesktopWalletApp.Views.Pages
 
         private async void RestoreButton_Click(object sender, RoutedEventArgs e)
         {
-            this.IsEnabled = false;
-            if (isValid())
+            try
             {
-                string postUrl = this.baseURL + "/Wallet/recover";
-
-                WalletRecovery recovery = new WalletRecovery();
-                recovery.Name = this.name.Text;
-                //recovery.creationDate = creationDate.SelectedDate.Value;
-                recovery.CreationDate = this.creationDate.Text;
-                recovery.Mnemonic = this.mnemonic.Text;
-                recovery.Passphrase = this.passphrase.Password;
-                recovery.Password = this.password.Password;
-
-                HttpResponseMessage response = await URLConfiguration.Client.PostAsJsonAsync(postUrl, recovery);
-
-                var content = await response.Content.ReadAsStringAsync();
-
-                if (response.IsSuccessStatusCode)
+                this.IsEnabled = false;
+                if (isValid())
                 {
-                    MessageBox.Show($"Successfully saved data with Name:{ recovery.Name}");
-                    CreateOrRestore parentWindow = (CreateOrRestore)Window.GetWindow(this);
-                    parentWindow.Visibility = Visibility.Collapsed;
-                    MainWindow mw = new MainWindow();
-                    mw.Show();
+                    string postUrl = this.baseURL + "/Wallet/recover";
+
+                    WalletRecovery recovery = new WalletRecovery();
+                    recovery.Name = this.name.Text;
+                    //recovery.creationDate = creationDate.SelectedDate.Value;
+                    recovery.CreationDate = this.creationDate.Text;
+                    recovery.Mnemonic = this.mnemonic.Text;
+                    recovery.Passphrase = this.passphrase.Password;
+                    recovery.Password = this.password.Password;
+
+                    HttpResponseMessage response = await URLConfiguration.Client.PostAsJsonAsync(postUrl, recovery);
+
+                    var content = await response.Content.ReadAsStringAsync();
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        MessageBox.Show($"Successfully saved data with Name:{ recovery.Name}");
+                        CreateOrRestore parentWindow = (CreateOrRestore)Window.GetWindow(this);
+                        parentWindow.Visibility = Visibility.Collapsed;
+                        MainWindow mw = new MainWindow();
+                        mw.Show();
+                    }
+                    else
+                    {
+                        var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
+
+                        foreach (var error in errors.Errors)
+                        {
+                            MessageBox.Show(error.Message);
+                        }
+
+                    }
                 }
                 else
                 {
-                    var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
-
-                    foreach(var error in errors.Errors)
-                    {
-                        MessageBox.Show(error.Message);
-                    }
-                    
+                    this.IsEnabled = true;
                 }
             }
-            else
+            catch (System.Exception es)
             {
-                this.IsEnabled = true;
+                MessageBox.Show(es.ToString());
             }
+           
         }
     }
 }

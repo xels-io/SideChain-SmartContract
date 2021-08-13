@@ -10,7 +10,7 @@
 
     <Grid>
         <Rectangle Fill="WhiteSmoke" Opacity=".5" MouseDown="Rectangle_MouseDown" />
-        <Border CornerRadius="10"  Background="White" Height="550" Width="700">
+        <Border CornerRadius="10" BorderThickness="2" BorderBrush="Green"  Background="White" Height="550" Width="700">
             <Grid Margin="5,5,5,5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"  />

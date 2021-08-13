@@ -21,7 +21,7 @@ namespace XelsDesktopWalletApp.Views.Pages
             LoadMnemonics();
         }
 
-        string baseURL = URLConfiguration.BaseURL; //"http://localhost:37221/api/wallet";
+        string baseURL = URLConfiguration.BaseURL;
         string _mnemonic;
         bool canProceedPass = false;
 
@@ -119,47 +119,64 @@ namespace XelsDesktopWalletApp.Views.Pages
 
         private async Task<string> GetMnemonics(string path)
         {
-            string getUrl = path + "/wallet/mnemonic?language=English&wordCount=12";
             var content = "";
             string mnemonic = "";
+            try
+            {
+                string getUrl = path + "/wallet/mnemonic?language=English&wordCount=12";
 
-            HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
-            content = await response.Content.ReadAsStringAsync();
-            if (response.IsSuccessStatusCode)
-            {
-                mnemonic = content.Replace("\"", "");
+                HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
+                content = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    mnemonic = content.Replace("\"", "");
+                }
+                else
+                {
+                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                }
+                return mnemonic;
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                MessageBox.Show(ex.Message.ToString());
             }
+
             return mnemonic;
         }
 
         private void CreateButton_Click(object sender, RoutedEventArgs e)
         {
             this.IsEnabled = false;
-            if (IsValid())
+            try
             {
-                CheckPassInput();
-
-                if (this.canProceedPass == true)
+                if (IsValid())
                 {
+                    CheckPassInput();
 
-                    WalletCreation creation = new WalletCreation();
-                    creation.Name = this.name.Text;
-                    creation.Password = this.password.Password;
-                    creation.Passphrase = this.passphrase.Text;
-                    creation.Mnemonic = this._mnemonic;
+                    if (this.canProceedPass == true)
+                    {
 
-                    CreateOrRestore parentWindow = (CreateOrRestore)Window.GetWindow(this);
-                    parentWindow.Content = new CreateShowMnemonic(creation);
+                        WalletCreation creation = new WalletCreation();
+                        creation.Name = this.name.Text;
+                        creation.Password = this.password.Password;
+                        creation.Passphrase = this.passphrase.Password;
+                        creation.Mnemonic = this._mnemonic;
+
+                        CreateOrRestore parentWindow = (CreateOrRestore)Window.GetWindow(this);
+                        parentWindow.Content = new CreateShowMnemonic(creation);
+                    }
+                }
+                else
+                {
+                    this.IsEnabled = true;
                 }
             }
-            else
+            catch (Exception es)
             {
-                this.IsEnabled = true;
+                MessageBox.Show(es.Message.ToString());
             }
+            
         }
     }
 }

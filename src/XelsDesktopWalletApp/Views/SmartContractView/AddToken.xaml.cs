@@ -258,54 +258,61 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
             try
             {
                 TokenModel objtokenModel = this.token.SelectedItem as TokenModel;
-
-                string selectedVlaue = objtokenModel.DropDownValue;
-                if (selectedVlaue == "custom")
+                if (objtokenModel != null)
                 {
-                    var objSaveToken = new TokenModel
+                    string selectedVlaue = objtokenModel.DropDownValue;
+                    if (selectedVlaue == "custom")
                     {
-                        Ticker = this.txtTokenSymbol.Text,
-                        Address = this.txtTokenContractAddress.Text,
-                        Name = this.tokenNametxt.Text,
-                        Decimals = this.tokenDecimalTxt.Text,
-                        Balance = "0",
-                    };
-                    var result = SaveTokenasync(objSaveToken);
-                    msg = result.Result;
-                    if (msg == "SUCCESS")
-                    {
-                        MessageBox.Show("Message - " + msg);
-                        ResetPage();
-                        AddTokenList();
+                        var objSaveToken = new TokenModel
+                        {
+                            Ticker = this.txtTokenSymbol.Text,
+                            Address = this.txtTokenContractAddress.Text,
+                            Name = this.tokenNametxt.Text,
+                            Decimals = this.tokenDecimalTxt.Text,
+                            Balance = "0",
+                        };
+                        var result = SaveTokenasync(objSaveToken);
+                        msg = result.Result;
+                        if (msg == "SUCCESS")
+                        {
+                            MessageBox.Show("Message - " + msg);
+                            ResetPage();
+                            AddTokenList();
+                        }
+                        else
+                        {
+                            MessageBox.Show(msg);
+                        }
                     }
                     else
                     {
-                        MessageBox.Show(msg);
+                        var objSaveToken = new TokenModel
+                        {
+                            Ticker = objtokenModel.Ticker,
+                            Address = objtokenModel.Address,
+                            Name = objtokenModel.Name,
+                            Decimals = objtokenModel.Decimals,
+                            Balance = "0",
+                        };
+                        var result = SaveTokenasync(objSaveToken);
+                        msg = result.Result;
+                        if (msg == "SUCCESS")
+                        {
+                            MessageBox.Show("Message - " + msg);
+                            ResetPage();
+                            AddTokenList();
+                        }
+                        else
+                        {
+                            MessageBox.Show(msg);
+                        }
                     }
                 }
                 else
                 {
-                    var objSaveToken = new TokenModel
-                    {
-                        Ticker = objtokenModel.Ticker,
-                        Address = objtokenModel.Address,
-                        Name = objtokenModel.Name,
-                        Decimals = objtokenModel.Decimals,
-                        Balance = "0",
-                    };
-                    var result = SaveTokenasync(objSaveToken);
-                    msg = result.Result;
-                    if (msg == "SUCCESS")
-                    {
-                        MessageBox.Show("Message - " + msg);
-                        ResetPage();
-                        AddTokenList();
-                    }
-                    else
-                    {
-                        MessageBox.Show(msg);
-                    }
+                    MessageBox.Show("Select Options", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
+               
             }
             catch (Exception r)
             {

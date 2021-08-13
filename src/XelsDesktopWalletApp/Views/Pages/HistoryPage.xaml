@@ -319,9 +319,9 @@
                     </Label>
                     <Button Grid.Column="0" Content="Previous" Background="Green" Click="OnPreviousClicked" Margin="2"/>
 
-                    <Border Grid.Column="1" Margin="10 0" 
+                    <Border Grid.Column="1" Margin="10 0 " 
                             >
-                        <ScrollViewer HorizontalScrollBarVisibility="Auto"  HorizontalAlignment="Center" VerticalScrollBarVisibility="Disabled" Margin="0 15 0 0">
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto"  HorizontalAlignment="Center" VerticalScrollBarVisibility="Disabled" Margin="0 0 0 0">
                             <ItemsControl x:Name="buttons" ItemsSource="{Binding Buttons}" >
                                 <ItemsControl.ItemsPanel >
                                     <ItemsPanelTemplate>

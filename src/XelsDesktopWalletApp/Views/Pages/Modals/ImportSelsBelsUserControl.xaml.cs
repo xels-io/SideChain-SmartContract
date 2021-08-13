@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -97,38 +99,49 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
 
         private void TransactionIDCopyButton_Click(object sender, RoutedEventArgs e)
         {
-            //VerifyMnemonicsAsync();
-            if (isValid())
+            try
             {
-
-                this.walletHash = MnemonicToHash(this.MnemonicTxt.Text);
-
-                if (this.SELSPrivateKeyTxt.IsEnabled == true && this.BELSPrivateKeyTxt.IsEnabled == true)
+                if (isValid())
                 {
-                    if (isValidPKey())
+                    //_ = VerifyMnemonicsAsync();
+                    this.walletHash = MnemonicToHash(this.MnemonicTxt.Text);
+
+                    if (this.SELSPrivateKeyTxt.IsEnabled == true && this.BELSPrivateKeyTxt.IsEnabled == true)
                     {
-                        this.sWallet = this.createWallet.WalletCreationFromPk(this.SELSPrivateKeyTxt.Text);
-                        this.sWallet.PrivateKey = Encryption.EncryptPrivateKey(this.sWallet.PrivateKey);
+                        if (isValidPKey())
+                        {
+                            this.sWallet = this.createWallet.WalletCreationFromPk(this.SELSPrivateKeyTxt.Text);
+                            this.bWallet = this.createWallet.WalletCreationFromPk(this.BELSPrivateKeyTxt.Text);
+                            if (this.sWallet != null && this.bWallet != null)
+                            {
+                                this.sWallet.PrivateKey = Encryption.EncryptPrivateKey(this.sWallet.PrivateKey);
+                                this.bWallet.PrivateKey = Encryption.EncryptPrivateKey(this.bWallet.PrivateKey);
 
-                        this.bWallet = this.createWallet.WalletCreationFromPk(this.BELSPrivateKeyTxt.Text);
-                        this.bWallet.PrivateKey = Encryption.EncryptPrivateKey(this.bWallet.PrivateKey);
-
-                        this.createWallet.StoreLocally(this.sWallet, this.walletName, "SELS", this.walletHash);
-                        this.createWallet.StoreLocally(this.bWallet, this.walletName, "BELS", this.walletHash);
+                                this.createWallet.StoreLocally(this.sWallet, this.walletName, "SELS", this.walletHash);
+                                this.createWallet.StoreLocally(this.bWallet, this.walletName, "BELS", this.walletHash);
+                                MessageBox.Show("Import Done!");
+                            }
+                        }
                     }
-                }
-                else
-                {
-                    this.wallet = this.createWallet.WalletCreation(this.MnemonicTxt.Text);
-                    this.wallet.PrivateKey = Encryption.EncryptPrivateKey(this.wallet.PrivateKey);
+                    else
+                    {
+                        this.wallet = this.createWallet.WalletCreation(this.MnemonicTxt.Text);
+                        this.wallet.PrivateKey = Encryption.EncryptPrivateKey(this.wallet.PrivateKey);
 
-                    this.createWallet.StoreLocally(this.wallet, this.walletName, "SELS", this.walletHash);
-                    this.createWallet.StoreLocally(this.wallet, this.walletName, "BELS", this.walletHash);
+                        this.createWallet.StoreLocally(this.wallet, this.walletName, "SELS", this.walletHash);
+                        this.createWallet.StoreLocally(this.wallet, this.walletName, "BELS", this.walletHash);
+                        MessageBox.Show("Import Done!");
+                    }
+                  
+                    this.Visibility = Visibility.Collapsed;
                 }
-                MessageBox.Show("Import Done!");
-
-                this.Visibility = Visibility.Collapsed;
-            }            
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show(ex.Message.ToString());
+                string errorMessage = ex.Message.ToString();
+            }
+ 
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
@@ -157,19 +170,23 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
         {
             this.Visibility = Visibility.Collapsed;
         }
-
+        
+        //No need
         //private async Task VerifyMnemonicsAsync()
         //{
         //    string postUrl = this.baseURL + "/Wallet/recover";
 
         //    WalletRecovery recovery = new WalletRecovery();
-        //    recovery.Name = this.walletName;             
-        //    recovery.Mnemonic = this.MnemonicTxt.Text; 
-        //    recovery.Password = this.Password.Password;
+        //    recovery.Name = this.walletName;
+        //    recovery.Mnemonic = this.MnemonicTxt.Text;
+        //    recovery.Password = "12345";
+        //    recovery.Passphrase = "1";
+        //    recovery.CreationDate = "0";
 
-        //    HttpResponseMessage response = await URLConfiguration.Client.PostAsJsonAsync(postUrl, recovery);
+        //    HttpResponseMessage response  = await URLConfiguration.Client.PostAsJsonAsync(postUrl, recovery);
 
         //    var content = await response.Content.ReadAsStringAsync();
         //}
+        //End
     }
 }

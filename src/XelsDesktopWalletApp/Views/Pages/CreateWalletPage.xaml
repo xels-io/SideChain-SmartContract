@@ -63,7 +63,7 @@
                 </Grid.RowDefinitions>
 
                 <Label Grid.Row="0" Margin="5 0" Content="Passphrase (optional)" FontSize="13" FontWeight="DemiBold" />
-                <TextBox Grid.Row="1" Name="passphrase" Padding="5" materialDesign:HintAssist.Hint="Enter an optional Passphrase."  materialDesign:HintAssist.IsFloating="False" />
+                <PasswordBox Grid.Row="1" Name="passphrase" Padding="5" materialDesign:HintAssist.Hint="Enter an optional Passphrase."  materialDesign:HintAssist.IsFloating="False" />
 
             </Grid>
         </Border>

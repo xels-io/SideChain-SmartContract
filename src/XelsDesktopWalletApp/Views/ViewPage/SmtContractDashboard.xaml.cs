@@ -68,7 +68,7 @@ namespace XelsDesktopWalletApp.Views.ViewPage
                 {
                     MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
                     this.lab_addBalance.Text = "000000000000";
-                    GLOBALS.AddressBalance = "000000000000";
+                    //GLOBALS.AddressBalance = "000000000000";
                     GlobalPropertyModel.AddressBalance = "000000000000";
                 }
             }

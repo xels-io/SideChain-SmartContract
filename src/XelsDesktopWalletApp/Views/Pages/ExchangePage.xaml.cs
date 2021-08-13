@@ -504,6 +504,7 @@ namespace XelsDesktopWalletApp.Views.Pages
                 else
                 {
                     MessageBox.Show("Data is not valid");
+                    this.AmountTxt.Text = "";
                 }
             }
            
