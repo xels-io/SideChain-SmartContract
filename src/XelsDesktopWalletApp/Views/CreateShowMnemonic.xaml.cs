@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Views.Pages;
 
@@ -74,10 +75,10 @@ namespace XelsDesktopWalletApp.Views
                 CreateOrRestore parentWindow = (CreateOrRestore)Window.GetWindow(this);
                 parentWindow.Content = new CreateConfirmMnemonic(this._walletcreate);
             }
-            catch (Exception)
+            catch (Exception ee)
             {
                 this.IsEnabled = true;
-                throw;
+                GlobalExceptionHandler.SendErrorToText(ee);
             }
 
             this.IsEnabled = true;

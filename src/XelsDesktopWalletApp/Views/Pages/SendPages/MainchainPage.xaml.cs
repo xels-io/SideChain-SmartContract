@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 
 using Newtonsoft.Json;
-
+using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 using XelsDesktopWalletApp.Models.SmartContractModels;
@@ -117,36 +117,37 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
         private async Task GetMaxBalanceAsync()
         {            
             var content = "";
-
-            MaximumBalance maximumBalance = new MaximumBalance();
-            maximumBalance.WalletName = this.walletName;
-           // maximumBalance.AccountName = "account 0";
-            maximumBalance.FeeType = "medium";
-            maximumBalance.AllowUnconfirmed = true;
-
-            string postUrl = this.baseURL + 
-                $"/wallet/maxbalance?WalletName={maximumBalance.WalletName}&FeeType={maximumBalance.FeeType}&AllowUnconfirmed={maximumBalance.AllowUnconfirmed} &AccountName=account 0" ;
-            //&accountName={maximumBalance.AccountName}
-            HttpResponseMessage response = await URLConfiguration.Client.GetAsync(postUrl);
-
-            content = await response.Content.ReadAsStringAsync();
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var balance = JsonConvert.DeserializeObject<WalletBalance>(content);
+                MaximumBalance maximumBalance = new MaximumBalance();
+                maximumBalance.WalletName = this.walletName;
+                // maximumBalance.AccountName = "account 0";
+                maximumBalance.FeeType = "medium";
+                maximumBalance.AllowUnconfirmed = true;
 
-                //foreach (var balance in balances.Balances)
+                string postUrl = this.baseURL +
+                    $"/wallet/maxbalance?WalletName={maximumBalance.WalletName}&FeeType={maximumBalance.FeeType}&AllowUnconfirmed={maximumBalance.AllowUnconfirmed} &AccountName=account 0";
+                //&accountName={maximumBalance.AccountName}
+                HttpResponseMessage response = await URLConfiguration.Client.GetAsync(postUrl);
+
+                content = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
                 {
-                    this.WalletBalance = balance;
-                    
-                    this.textAvailableCoin.Content = $"{(balance.MaxSpendableAmount / 100000000).ToString("0.##############")} {GlobalPropertyModel.CoinUnit}";
+                    var balance = JsonConvert.DeserializeObject<WalletBalance>(content);
 
+                    //foreach (var balance in balances.Balances)
+                    //{
+                        this.WalletBalance = balance;
+
+                        this.textAvailableCoin.Content = $"{(balance.MaxSpendableAmount / 100000000).ToString("0.##############")} {GlobalPropertyModel.CoinUnit}";
+
+                    //}
                 }
             }
-            else
+            catch (Exception f)
             {
-                MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                GlobalExceptionHandler.SendErrorToText(f);
             }
-
         }
 
         private List<Recipient> GetRecipient()
@@ -163,37 +164,44 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
 
         private async void EstimateFeeAsync()
         {
-            if (IsAddressAndAmountValid())
+
+            try
             {
-                //this.TransactionFeeTypeLabel.Content = "medium";               
-                string feeType = "medium";
-                string postUrl = this.baseURL + $"/wallet/estimate-txfee";
-                var content = "";
-
-                FeeEstimation feeEstimation = new FeeEstimation();
-                feeEstimation.WalletName = this.walletName;
-                feeEstimation.AccountName = "account 0";
-                feeEstimation.Recipients = GetRecipient();
-                feeEstimation.FeeType = feeType;
-                feeEstimation.AllowUnconfirmed = true;
-
-                HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(feeEstimation), Encoding.UTF8, "application/json"));
-
-                content = await response.Content.ReadAsStringAsync();
-                if (response.IsSuccessStatusCode)
+                if (IsAddressAndAmountValid())
                 {
-                    this.estimatedFee = (Convert.ToDouble(content) / 100000000);
-                    this.TransactionFeeText.Text = (Convert.ToDouble(content) /100000000).ToString();
-                    this.TransactionWarningLabel.Visibility = Visibility.Hidden;
-                }
-                else
-                {
+                    //this.TransactionFeeTypeLabel.Content = "medium";               
+                    string feeType = "medium";
+                    string postUrl = this.baseURL + $"/wallet/estimate-txfee";
+                    var content = "";
 
-                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-                    this.DestinationAddressText.Text = "";
+                    FeeEstimation feeEstimation = new FeeEstimation();
+                    feeEstimation.WalletName = this.walletName;
+                    feeEstimation.AccountName = "account 0";
+                    feeEstimation.Recipients = GetRecipient();
+                    feeEstimation.FeeType = feeType;
+                    feeEstimation.AllowUnconfirmed = true;
+
+                    HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(feeEstimation), Encoding.UTF8, "application/json"));
+
+                    content = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        this.estimatedFee = (Convert.ToDouble(content) / 100000000);
+                        this.TransactionFeeText.Text = (Convert.ToDouble(content) / 100000000).ToString();
+                        this.TransactionWarningLabel.Visibility = Visibility.Hidden;
+                    }
+                    else
+                    {
+
+                        MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                        this.DestinationAddressText.Text = "";
+                    }
                 }
             }
-
+            catch (Exception c)
+            {
+                GlobalExceptionHandler.SendErrorToText(c);
+            }
         }
         private bool validationCheck()
         {
@@ -282,18 +290,14 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
                         }
                         catch (Exception e)
                         {
-
-                            throw;
+                            GlobalExceptionHandler.SendErrorToText(e);
                         }
-
-
                     }
                 }
             }
             catch (Exception e)
             {
-
-                throw;
+                GlobalExceptionHandler.SendErrorToText(e);
             }
         }
 
@@ -341,8 +345,7 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
             }
             catch (Exception e)
             {
-
-                throw;
+                GlobalExceptionHandler.SendErrorToText(e);
             }
 
 

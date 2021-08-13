@@ -30,6 +30,7 @@ using Xels.Features.SQLiteWalletRepository;
 using Xels.Sidechains.Networks;
 
 using XelsDesktopWalletApp;
+using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models.CommonModels;
 
 namespace XelsDesktopWalletApp
@@ -88,6 +89,7 @@ namespace XelsDesktopWalletApp
             }
             catch (Exception ex)
             {
+                GlobalExceptionHandler.SendErrorToText(ex);
                 Console.WriteLine("There was a problem initializing the node. Details: '{0}'", ex.Message);
             }
         }

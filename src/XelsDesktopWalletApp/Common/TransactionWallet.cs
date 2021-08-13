@@ -76,6 +76,7 @@ namespace XelsDesktopWalletApp.Common
 
             catch (Exception e)
             {
+                GlobalExceptionHandler.SendErrorToText(e);
                 retMesage = e.Message.ToString();
                 var retVal = new Tuple<TransactionReceipt, string>(null, retMesage);
                 return retVal;

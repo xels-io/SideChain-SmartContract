@@ -44,28 +44,31 @@ namespace XelsDesktopWalletApp.Views.Pages
 
         private async Task GetGeneralWalletInfoAsync()
         {
-            string getUrl = this.baseURL + $"/wallet/general-info?Name={this.walletName}";
-            var content = "";
+            try
+            {
+                string getUrl = this.baseURL + $"/wallet/general-info?Name={this.walletName}";
+                var content = "";
 
-            HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
-            content = await response.Content.ReadAsStringAsync();
-            if (response.IsSuccessStatusCode)
-            {
-                var wallet = JsonConvert.DeserializeObject<WalletGeneralInfoModel>(content);
-                this.lastBlockSyncedHeight = wallet.LastBlockSyncedHeight; // for history detail data
+                HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
+                content = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    var wallet = JsonConvert.DeserializeObject<WalletGeneralInfoModel>(content);
+                    this.lastBlockSyncedHeight = wallet.LastBlockSyncedHeight; // for history detail data
+                }
             }
-            else
+            catch (Exception ee)
             {
-                MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+
+                GlobalExceptionHandler.SendErrorToText(ee);
             }
+           
         }
 
         private async Task GetWalletHistoryTimerAsync(string path)
         {
             try
             {
-
-
                 var content = "";
                 List<TransactionItemModel> HistoryListForTimer = new List<TransactionItemModel>();
 
@@ -126,27 +129,15 @@ namespace XelsDesktopWalletApp.Views.Pages
                     }
                     catch (Exception e)
                     {
-
-
-                        //throw;
+                        GlobalExceptionHandler.SendErrorToText(e);
                     }
 
                 }
-                else
-                {
-                    var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
-
-                    foreach (var error in errors.Errors)
-                    {
-                        MessageBox.Show(error.Message);
-
-                    }
-                }
+                
             }
-            catch (Exception)
+            catch (Exception ss)
             {
-
-                //throw;
+                GlobalExceptionHandler.SendErrorToText(ss);
             }
 
         }
@@ -184,7 +175,7 @@ namespace XelsDesktopWalletApp.Views.Pages
         {
             Clipboard.SetText(this.TransactionIDTxt.Text);
             this.CopyMessage.Visibility = Visibility.Visible;
-            //System.Windows.MessageBox.Show("Copied Successfully :- " + this.TransactionIDTxt.Text.ToString());
+            
         }
 
         private void HidePopup_Click(object sender, RoutedEventArgs e)

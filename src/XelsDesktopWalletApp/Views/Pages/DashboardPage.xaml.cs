@@ -82,11 +82,11 @@ namespace XelsDesktopWalletApp.Views.Pages
 
             this.DataContext = this;
 
-            GetGeneralWalletInfoAsync();
+            _ = GetGeneralWalletInfoAsync();
 
-            GetWalletBalanceAsync();
+            _ = GetWalletBalanceAsync();
 
-            GetHistoryAsync();
+            _ = GetHistoryAsync();
             // GetMaxBalanceAsync();
 
             if (URLConfiguration.Chain == "-sidechain")// (!this.sidechainEnabled)
@@ -112,7 +112,7 @@ namespace XelsDesktopWalletApp.Views.Pages
                 this.thumbsup.Visibility = Visibility.Visible;
                 this.thumbDown.Visibility = Visibility.Collapsed;
             }
-
+            string ddd= Directory.GetCurrentDirectory();
             UpdateWallet();
         }
 
@@ -157,14 +157,11 @@ namespace XelsDesktopWalletApp.Views.Pages
                         this.HybridMiningInfoBorder.Visibility = Visibility.Hidden;
                     }
                 }
-                else
-                {
-                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-                }
+                
             }
             catch (Exception r)
             {
-                //throw;
+                GlobalExceptionHandler.SendErrorToText(r);
             }
 
         }
@@ -234,24 +231,15 @@ namespace XelsDesktopWalletApp.Views.Pages
                     catch (Exception e)
                     {
 
-                        //throw;
+                        GlobalExceptionHandler.SendErrorToText(e);
                     }
 
                 }
-                else
-                {
-                    var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
-
-                    foreach (var error in errors.Errors)
-                    {
-                        MessageBox.Show(error.Message);
-
-                    }
-                }
+               
             }
-            catch (Exception)
+            catch (Exception gg)
             {
-
+                GlobalExceptionHandler.SendErrorToText(gg);
             }
         }
 
@@ -307,38 +295,17 @@ namespace XelsDesktopWalletApp.Views.Pages
                     if (!GlobalPropertyModel.StakingStart && !this.sidechainEnabled)
                     {
                         this.StakingInfo.Content = "Not Staking";
-                        //try
-                        //{
-                        //    this.StakingInfoImage.Source = new BitmapImage(new Uri("/Assets/Images/thumbsdown.png", UriKind.Relative));
-
-                        //    var uriSource = new Uri("/Assets/Images/thumbsdown.png");
-                        //    this.StakingInfoImage.Source = new BitmapImage(uriSource);
-                        //}
-                        //catch (Exception e)
-                        //{
-
-                        //    throw;
-                        //}
-
                     }
                     else if (this.stakingEnabled && !this.sidechainEnabled)
                     {
                         this.StakingInfo.Content = "Staking";
                     }
                 }
-                else
-                {
-                    var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
-
-                    foreach (var error in errors.Errors)
-                    {
-                        MessageBox.Show(error.Message);
-
-                    }
-                }
+               
             }
-            catch (Exception)
+            catch (Exception q)
             {
+                GlobalExceptionHandler.SendErrorToText(q);
             }
 
         }
@@ -367,13 +334,11 @@ namespace XelsDesktopWalletApp.Views.Pages
 
                     GlobalPropertyModel.SpendableBalance = (balance.MaxSpendableAmount / 100000000);
                 }
-                else
-                {
-                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-                }
+               
             }
-            catch (Exception)
+            catch (Exception x)
             {
+                GlobalExceptionHandler.SendErrorToText(x);
             }
         }
 
@@ -428,21 +393,11 @@ namespace XelsDesktopWalletApp.Views.Pages
                         //this.StakingInfoImage.Source;
                     }
                 }
-                else
-                {
-                    var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
-
-                    foreach (var error in errors.Errors)
-                    {
-                        MessageBox.Show(error.Message);
-
-                    }
-                }
+                
             }
             catch (Exception e)
             {
-
-                //throw;
+                GlobalExceptionHandler.SendErrorToText(e);
             }
         }
 
@@ -482,7 +437,7 @@ namespace XelsDesktopWalletApp.Views.Pages
             }
             catch (Exception e)
             {
-                //MessageBox.Show("");
+                GlobalExceptionHandler.SendErrorToText(e);
             }
         }
 
@@ -521,7 +476,6 @@ namespace XelsDesktopWalletApp.Views.Pages
         {
             Clipboard.SetText(this.TransactionIDTxt.Text);
             this.CopyMessage.Visibility = Visibility.Visible;
-           // MessageBox.Show("The Transaction ID has been copied to your clipboard");
         }
 
         private void HidePopup_Click(object sender, RoutedEventArgs e)
@@ -539,10 +493,6 @@ namespace XelsDesktopWalletApp.Views.Pages
         private void ReceiveButton_Click(object sender, RoutedEventArgs e)
         {
             this.Dashboard.Children.Add(new ReceiveUserControl());
-
-            //Receive receive = new Receive(this.walletName);
-            //receive.ShowDialog();
-
         }
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
@@ -554,8 +504,6 @@ namespace XelsDesktopWalletApp.Views.Pages
         private void ImportAddrButton_Click(object sender, RoutedEventArgs e)
         {
             this.Dashboard.Children.Add(new ImportSelsBelsUserControl(this.walletName));
-            //EthImport eImp = new EthImport(this.walletName);
-            //eImp.Show();
         }
 
         private async void StartPOWMiningButton_Click(object sender, RoutedEventArgs e)
@@ -581,10 +529,10 @@ namespace XelsDesktopWalletApp.Views.Pages
                     //  this.IsEnabled = true;
                 }
             }
-            catch (Exception)
+            catch (Exception dd)
             {
 
-                //throw;
+                GlobalExceptionHandler.SendErrorToText(dd);
                 // this.PreloaderPoup.IsOpen = false;
                 // this.IsEnabled = true;
             }
@@ -612,11 +560,11 @@ namespace XelsDesktopWalletApp.Views.Pages
                     //this.IsEnabled = true;
                 }
             }
-            catch (Exception)
+            catch (Exception tt)
             {
                 //this.PreloaderPoup.IsOpen = false;
                 //this.IsEnabled = true;
-                //throw;
+                GlobalExceptionHandler.SendErrorToText(tt);
             }
 
 
@@ -682,11 +630,11 @@ namespace XelsDesktopWalletApp.Views.Pages
                     MessageBox.Show("Please, enter password to unlock");
                 }
             }
-            catch (Exception)
+            catch (Exception ss)
             {
                 this.PreloaderPoup.IsOpen = false;
                 this.IsEnabled = true;
-                //throw;
+                GlobalExceptionHandler.SendErrorToText(ss);
             }
 
 
@@ -727,16 +675,10 @@ namespace XelsDesktopWalletApp.Views.Pages
             URLConfiguration.Pagenavigation = false;
             this.dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
             this.dispatcherTimer.Interval = new TimeSpan(0, 0, 10);
-            //if (!URLConfiguration.Pagenavigation)
-            // {
             this.dispatcherTimer.Start();
-            //}
-
         }
         private void dispatcherTimer_Tick(object sender, EventArgs e)
         {
-            //if (!URLConfiguration.Pagenavigation)
-            //{
             try
             {
                 this.DataContext = this;
@@ -769,16 +711,8 @@ namespace XelsDesktopWalletApp.Views.Pages
             }
             catch (Exception a)
             {
-                string exMessage = a.Message.ToString();
-                //throw;
+                GlobalExceptionHandler.SendErrorToText(a);
             }
-            //}
-            //else
-            //{
-            //    this.dispatcherTimer.Stop();
-            //}
-
-
         }
 
         private void EnterPassword_OnChange(object sender, EventArgs e)

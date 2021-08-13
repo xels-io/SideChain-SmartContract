@@ -123,7 +123,7 @@ namespace XelsDesktopWalletApp.Views.Pages.ReceivePages
             }
             catch (Exception e)
             {
-                //MessageBox.Show("");
+                GlobalExceptionHandler.SendErrorToText(e);
             }
         }
 

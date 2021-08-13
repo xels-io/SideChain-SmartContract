@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-
+using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 
@@ -131,15 +131,11 @@ namespace XelsDesktopWalletApp.Views.Pages
                 {
                     mnemonic = content.Replace("\"", "");
                 }
-                else
-                {
-                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-                }
                 return mnemonic;
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message.ToString());
+                GlobalExceptionHandler.SendErrorToText(ex);
             }
 
             return mnemonic;
@@ -174,7 +170,7 @@ namespace XelsDesktopWalletApp.Views.Pages
             }
             catch (Exception es)
             {
-                MessageBox.Show(es.Message.ToString());
+                GlobalExceptionHandler.SendErrorToText(es);
             }
             
         }

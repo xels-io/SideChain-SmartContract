@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 using System.Globalization;
+using XelsDesktopWalletApp.Common;
 
 namespace XelsDesktopWalletApp.Views.SmartContractView
 {
@@ -218,14 +219,11 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
 
                     this.Visibility = Visibility.Collapsed;
                 }
-                else
-                {
-                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-                }
+               
             }
             catch (Exception er)
             {
-
+                GlobalExceptionHandler.SendErrorToText(er);
                 MessageBox.Show(er.Message.ToString());
             }
             
