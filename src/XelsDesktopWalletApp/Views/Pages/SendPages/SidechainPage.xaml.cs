@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 
 using Newtonsoft.Json;
-
+using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 using XelsDesktopWalletApp.Models.SmartContractModels;
@@ -110,34 +110,32 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
 
         private async Task GetWalletBalanceAsync(string path)
         {
-            string getUrl = path + $"/wallet/balance?WalletName={this.walletName}&AccountName=account 0";
-            var content = "";
-
-            HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
-
-            content = await response.Content.ReadAsStringAsync();
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var balances = JsonConvert.DeserializeObject<WalletBalanceArray>(content);
+                string getUrl = path + $"/wallet/balance?WalletName={this.walletName}&AccountName=account 0";
+                var content = "";
 
-                foreach (var balance in balances.Balances)
+                HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
+
+                content = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
                 {
-                    this.WalletBalance = balance;
-                    this.AvailableBalanceText.Content = $"{(balance.AmountConfirmed / 100000000).ToString("0.##############")} {GlobalPropertyModel.CoinUnit}"  ;                    
-                }
+                    var balances = JsonConvert.DeserializeObject<WalletBalanceArray>(content);
 
+                    foreach (var balance in balances.Balances)
+                    {
+                        this.WalletBalance = balance;
+                        this.AvailableBalanceText.Content = $"{(balance.AmountConfirmed / 100000000).ToString("0.##############")} {GlobalPropertyModel.CoinUnit}";
+                    }
+
+                }
             }
-            else
+            catch (Exception ess)
             {
-                var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
 
-                foreach (var error in errors.Errors)
-                {
-                    MessageBox.Show(error.Message);
-                }
-
-            }
+                GlobalExceptionHandler.SendErrorToText(ess);
+            }   
         }
  
         private List<RecipientSidechain> GetRecipient()
@@ -155,43 +153,45 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
         private async void EstimateFeeSideChainAsync()
         {
             var content = "";
-            if (isAddrAmtValid())
+            try
             {
-                //this.TransactionFeeTypeLabel.Content = "medium";
-                string feeType = "medium";
-                string postUrl = this.baseURL + $"/wallet/estimate-txfee"; 
-                
-                // problem while send for sidechain, sidechain destination address is returned invalid from api
-                // found dissimilarity with angular app, declare on model fedartion address as recipent list, but send destination address as recipient list, 
-
-                FeeEstimationSideChain feeEstimation = new FeeEstimationSideChain();
-                feeEstimation.WalletName = this.walletName;
-                feeEstimation.AccountName = "account 0";
-                feeEstimation.Recipients = GetRecipient();
-                feeEstimation.FeeType = feeType;
-                feeEstimation.AllowUnconfirmed = true;                 
-
-                HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(feeEstimation), Encoding.UTF8, "application/json"));
-
-                content = await response.Content.ReadAsStringAsync();
-
-                if (response.IsSuccessStatusCode)
+                if (isAddrAmtValid())
                 {
-                    this.estimatedSidechainFee = Convert.ToDouble(content) / 100000000;
-                    this.TransactionFeeText.Text = this.estimatedSidechainFee.ToString();
-                    this.WarningLabelSidechain.Visibility = Visibility.Hidden;
-                }
-                else
-                {
-                    MessageBox.Show("Invalid Address.");
-                    //var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
-                    //foreach (var error in errors.Errors)
-                    //{
-                    //    MessageBox.Show(error.Message);
-                    //    break;
-                    //}
+                    //this.TransactionFeeTypeLabel.Content = "medium";
+                    string feeType = "medium";
+                    string postUrl = this.baseURL + $"/wallet/estimate-txfee";
+
+                    // problem while send for sidechain, sidechain destination address is returned invalid from api
+                    // found dissimilarity with angular app, declare on model fedartion address as recipent list, but send destination address as recipient list, 
+
+                    FeeEstimationSideChain feeEstimation = new FeeEstimationSideChain();
+                    feeEstimation.WalletName = this.walletName;
+                    feeEstimation.AccountName = "account 0";
+                    feeEstimation.Recipients = GetRecipient();
+                    feeEstimation.FeeType = feeType;
+                    feeEstimation.AllowUnconfirmed = true;
+
+                    HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(feeEstimation), Encoding.UTF8, "application/json"));
+
+                    content = await response.Content.ReadAsStringAsync();
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        this.estimatedSidechainFee = Convert.ToDouble(content) / 100000000;
+                        this.TransactionFeeText.Text = this.estimatedSidechainFee.ToString();
+                        this.WarningLabelSidechain.Visibility = Visibility.Hidden;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Invalid Address.");
+                    }
                 }
             }
+            catch (Exception ed)
+            {
+                GlobalExceptionHandler.SendErrorToText(ed);
+            }
+
         }
 
         private bool validationCheck()
@@ -236,51 +236,59 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
         }
         private async void BuildTransactionSideChainAsync()
         {
-            if (validationCheck())
+            try
             {
-                double t = this.opReturnAmount / 100000000;
-                string postUrl = this.baseURL + $"/wallet/build-transaction";
-                var content = "";
-
-                this.TransactionBuilding.WalletName = this.walletName;
-                this.TransactionBuilding.AccountName = "account 0";
-                this.TransactionBuilding.Password = this.password.Password;
-                this.TransactionBuilding.Recipients = GetRecipient();
-                this.TransactionBuilding.FeeAmount = this.estimatedSidechainFee;
-                this.TransactionBuilding.AllowUnconfirmed = true;
-                this.TransactionBuilding.ShuffleOutputs = false;
-                this.TransactionBuilding.OpReturnData = this.SidechainDestinationAddressText.Text.Trim();
-                this.TransactionBuilding.OpReturnAmount = (t).ToString("0." + new string('#', 10));
-
-                HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(this.TransactionBuilding), Encoding.UTF8, "application/json"));
-
-                content = await response.Content.ReadAsStringAsync();
-
-                if (response.IsSuccessStatusCode)
+                if (validationCheck())
                 {
+                    double t = this.opReturnAmount / 100000000;
+                    string postUrl = this.baseURL + $"/wallet/build-transaction";
+                    var content = "";
 
-                    this.BuildTransaction = JsonConvert.DeserializeObject<BuildTransaction>(content);
+                    this.TransactionBuilding.WalletName = this.walletName;
+                    this.TransactionBuilding.AccountName = "account 0";
+                    this.TransactionBuilding.Password = this.password.Password;
+                    this.TransactionBuilding.Recipients = GetRecipient();
+                    this.TransactionBuilding.FeeAmount = this.estimatedSidechainFee;
+                    this.TransactionBuilding.AllowUnconfirmed = true;
+                    this.TransactionBuilding.ShuffleOutputs = false;
+                    this.TransactionBuilding.OpReturnData = this.SidechainDestinationAddressText.Text.Trim();
+                    this.TransactionBuilding.OpReturnAmount = (t).ToString("0." + new string('#', 10));
 
-                    this.estimatedSidechainFee = this.BuildTransaction.Fee;
-                    this.TransactionSending.Hex = this.BuildTransaction.Hex;
+                    HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(this.TransactionBuilding), Encoding.UTF8, "application/json"));
 
-                    if (this.isSending)
+                    content = await response.Content.ReadAsStringAsync();
+
+                    if (response.IsSuccessStatusCode)
                     {
-                        _ = SendTransactionAsync(this.TransactionSending);
+
+                        this.BuildTransaction = JsonConvert.DeserializeObject<BuildTransaction>(content);
+
+                        this.estimatedSidechainFee = this.BuildTransaction.Fee;
+                        this.TransactionSending.Hex = this.BuildTransaction.Hex;
+
+                        if (this.isSending)
+                        {
+                            _ = SendTransactionAsync(this.TransactionSending);
+                        }
                     }
-                }
-                else
-                {
-                    this.isSending = false;
-                    var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
-
-                    foreach (var error in errors.Errors)
+                    else
                     {
-                        MessageBox.Show(error.Message);
-                        break;
+                        this.isSending = false;
+                        var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
+
+                        foreach (var error in errors.Errors)
+                        {
+                            MessageBox.Show(error.Message);
+                            break;
+                        }
                     }
                 }
             }
+            catch (Exception d)
+            {
+                GlobalExceptionHandler.SendErrorToText(d);
+            }
+
             
         }
 
@@ -309,22 +317,11 @@ namespace XelsDesktopWalletApp.Views.Pages.SendPages
                         this.NavigationService.Navigate(new SendConfirmationSideChain(sendConfirmationSc, this.walletName));
 
                     }
-                    else
-                    {
-                        var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
-
-                        foreach (var error in errors.Errors)
-                        {
-                            MessageBox.Show(error.Message);
-                            break;
-                        }
-                    }
                 }
             }
             catch (Exception e)
             {
-
-                throw;
+                GlobalExceptionHandler.SendErrorToText(e);
             }
 
         }

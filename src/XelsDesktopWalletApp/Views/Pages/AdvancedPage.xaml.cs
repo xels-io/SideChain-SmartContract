@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using Newtonsoft.Json;
 using Xels.Bitcoin.Controllers.Models;
+using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 
@@ -158,14 +159,10 @@ namespace XelsDesktopWalletApp.Views.Pages
                     this.CurrentblockheightTxt.Text = this.statusModel.BlockStoreHeight.ToString();
                     this.WalletdatadirectoryTxt.Text = this.statusModel.DataDirectoryPath;
                 }
-                else
-                {
-                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-                }
             }
             catch (Exception r)
             {
-                throw;
+                GlobalExceptionHandler.SendErrorToText(r);
             }
         }
 
@@ -192,14 +189,11 @@ namespace XelsDesktopWalletApp.Views.Pages
                     content = await response.Content.ReadAsStringAsync();
                     this.ExtPubKeyTxt.Text = JsonConvert.DeserializeObject<string>(content);
                 }
-                else
-                {
-                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-                }
+                
             }
             catch (Exception r)
             {
-                throw;
+                GlobalExceptionHandler.SendErrorToText(r);
             }
         }
 
@@ -250,14 +244,10 @@ namespace XelsDesktopWalletApp.Views.Pages
                     }
                     this.AddressList.ItemsSource = addressList;
                 }
-                else
-                {
-                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-                }
             }
             catch (Exception r)
             {
-                throw;
+                GlobalExceptionHandler.SendErrorToText(r);
             }
         }
 
@@ -274,6 +264,7 @@ namespace XelsDesktopWalletApp.Views.Pages
             }
             catch (Exception c)
             {
+                GlobalExceptionHandler.SendErrorToText(c);
                 MessageBox.Show(c.Message.ToString());
             }
            
@@ -312,14 +303,10 @@ namespace XelsDesktopWalletApp.Views.Pages
                         Synced.IsSynced = true;
                     }
                 }
-                else
-                {
-                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-                }
             }
             catch (Exception e)
             {
-                throw;
+                GlobalExceptionHandler.SendErrorToText(e);
             }
         }
 
@@ -328,7 +315,7 @@ namespace XelsDesktopWalletApp.Views.Pages
             string fromdate = this.RescanFromDate.SelectedDate.ToString();
             if (isValidRW())
             {
-                RemoveTransactionsAsync(this.baseURL, fromdate);
+                _ = RemoveTransactionsAsync(this.baseURL, fromdate);
             }
         }
 
@@ -347,14 +334,11 @@ namespace XelsDesktopWalletApp.Views.Pages
 
                     MessageBox.Show("Your wallet is now resyncing. The time remaining depends on the size and creation time of your wallet. The wallet dashboard shows your progress.");
                 }
-                else
-                {
-                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-                }
+               
             }
             catch (Exception e)
             {
-                throw;
+                GlobalExceptionHandler.SendErrorToText(e);
             }
         }
         #endregion

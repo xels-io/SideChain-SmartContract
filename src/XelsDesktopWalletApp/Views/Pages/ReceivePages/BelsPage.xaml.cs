@@ -79,22 +79,32 @@ namespace XelsDesktopWalletApp.Views.Pages.ReceivePages
          
         private async Task<string> GetAPIAsync(string path)
         {
-            string getUrl = path + $"/wallet/unusedaddress?WalletName={this.walletName}&AccountName=account 0";
             var content = "";
-
-            HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
-
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                content = await response.Content.ReadAsStringAsync();
-            }
-            else
-            {
-                MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-            }
+                string getUrl = path + $"/wallet/unusedaddress?WalletName={this.walletName}&AccountName=account 0";
 
-            return content;
+
+                HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
+
+
+                if (response.IsSuccessStatusCode)
+                {
+                    content = await response.Content.ReadAsStringAsync();
+                }
+                else
+                {
+                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                }
+
+                return content;
+            }
+            catch (Exception e)
+            {
+                GlobalExceptionHandler.SendErrorToText(e);
+                return content;
+            }
+            
 
         }
 
@@ -123,7 +133,7 @@ namespace XelsDesktopWalletApp.Views.Pages.ReceivePages
             }
             catch (Exception e)
             {
-                //MessageBox.Show("");
+                GlobalExceptionHandler.SendErrorToText(e);
             }
         }
 

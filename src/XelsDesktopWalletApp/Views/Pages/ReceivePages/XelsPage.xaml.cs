@@ -127,14 +127,10 @@ namespace XelsDesktopWalletApp.Views.Pages.ReceivePages
                 }
                 catch (Exception e)
                 {
-
-                    throw;
+                    GlobalExceptionHandler.SendErrorToText(e);
                 }
             }
-            else
-            {
-                MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-            }
+            
         }
 
         private  void ShowAllAddressButton_Click(object sender, RoutedEventArgs e)

@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Newtonsoft.Json;
+using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 using XelsDesktopWalletApp.Models.SmartContractModels;
@@ -108,7 +109,7 @@ namespace XelsDesktopWalletApp.Views.ViewPage
             catch (Exception e)
             {
 
-                throw;
+                GlobalExceptionHandler.SendErrorToText(e);
             }
 
         }
@@ -139,8 +140,7 @@ namespace XelsDesktopWalletApp.Views.ViewPage
             }
             catch (Exception ex)
             {
-
-                MessageBox.Show(ex.Message.ToString(), "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                GlobalExceptionHandler.SendErrorToText(ex);
             }
         }
 
@@ -166,16 +166,11 @@ namespace XelsDesktopWalletApp.Views.ViewPage
                     }
 
                 }
-                else
-                {
-                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-                }
-
                 return content;
             }
             catch (Exception ep)
             {
-                MessageBox.Show(ep.Message.ToString(), "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                GlobalExceptionHandler.SendErrorToText(ep);
             }
             return content;
         }

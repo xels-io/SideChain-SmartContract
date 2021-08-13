@@ -138,8 +138,7 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
             }
             catch (Exception ex)
             {
-                //MessageBox.Show(ex.Message.ToString());
-                string errorMessage = ex.Message.ToString();
+                GlobalExceptionHandler.SendErrorToText(ex);
             }
  
         }
@@ -171,22 +170,5 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
             this.Visibility = Visibility.Collapsed;
         }
         
-        //No need
-        //private async Task VerifyMnemonicsAsync()
-        //{
-        //    string postUrl = this.baseURL + "/Wallet/recover";
-
-        //    WalletRecovery recovery = new WalletRecovery();
-        //    recovery.Name = this.walletName;
-        //    recovery.Mnemonic = this.MnemonicTxt.Text;
-        //    recovery.Password = "12345";
-        //    recovery.Passphrase = "1";
-        //    recovery.CreationDate = "0";
-
-        //    HttpResponseMessage response  = await URLConfiguration.Client.PostAsJsonAsync(postUrl, recovery);
-
-        //    var content = await response.Content.ReadAsStringAsync();
-        //}
-        //End
     }
 }

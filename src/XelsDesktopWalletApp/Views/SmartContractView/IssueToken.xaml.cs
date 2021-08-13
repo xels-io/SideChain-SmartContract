@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Newtonsoft.Json;
+using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 using XelsDesktopWalletApp.Models.SmartContractModels;
@@ -152,13 +153,11 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
 
                     this.Visibility = Visibility.Collapsed;
                 }
-                else
-                {
-                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-                }
+                
             }
             catch (Exception e)
             {
+                GlobalExceptionHandler.SendErrorToText(e);
                 return retMsg;
             }
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Newtonsoft.Json;
-
+using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 
@@ -160,21 +160,12 @@ namespace XelsDesktopWalletApp.Views
                         MainWindow mw = new MainWindow();
                         mw.Show();
                     }
-                    else
-                    {
-                        var errors = JsonConvert.DeserializeObject<ErrorModel>(content);
-
-                        foreach (var error in errors.Errors)
-                        {
-                            MessageBox.Show(error.Message);
-                        }
-                    }
                 }
             }
-            catch (Exception)
+            catch (Exception ee)
             {
                 this.IsEnabled = true;
-                throw;
+                GlobalExceptionHandler.SendErrorToText(ee);
             }
             this.IsEnabled = true;
         }

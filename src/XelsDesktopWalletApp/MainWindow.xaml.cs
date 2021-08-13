@@ -8,7 +8,7 @@ using System.Windows.Input;
 using System.Windows.Navigation;
 
 using Newtonsoft.Json;
-
+using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 using XelsDesktopWalletApp.Models.SmartContractModels;
@@ -66,14 +66,10 @@ namespace XelsDesktopWalletApp
                         GlobalPropertyModel.ChainCheckMessage = "Xels Side chain wallet / Carbon Credit Wallet";
                     }
                 }
-                else
-                {
-                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-                }
             }
             catch (Exception e)
             {
-                MessageBox.Show($"Message-{e.Message}");
+                GlobalExceptionHandler.SendErrorToText(e);
             }
         }
 
@@ -139,6 +135,7 @@ namespace XelsDesktopWalletApp
                 this.loginInforactaangle.Visibility = Visibility.Collapsed;
                 this.CreateOrReplaceBlock.Visibility = Visibility.Hidden;
                 this.IsEnabled = true;
+                GlobalExceptionHandler.SendErrorToText(r);
             }
         }
 
@@ -235,6 +232,7 @@ namespace XelsDesktopWalletApp
                 this.preLoader.Visibility = Visibility.Collapsed;
                 this.IsEnabled = true;
                 msg = e.Message.ToString();
+                GlobalExceptionHandler.SendErrorToText(e);
                 return msg;
             }
 

@@ -121,11 +121,8 @@ namespace XelsDesktopWalletApp.Views.Pages
             }
             catch (Exception e)
             {
-
-                throw;
+                GlobalExceptionHandler.SendErrorToText(e);
             }
-           // URLConfiguration.Pagenavigation = true;
-           
         }
 
         public bool isValid()
@@ -175,18 +172,14 @@ namespace XelsDesktopWalletApp.Views.Pages
                 {
                     exchangedata = JsonConvert.DeserializeObject<List<ExchangeResponse>>(content);
                 }
-                else
-                {
-                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-                }
-
                 return exchangedata;
 
             }
             catch (Exception e)
             {
-                throw;
+                GlobalExceptionHandler.SendErrorToText(e);
             }
+            return null;
         }
         //this is for new oreder submit button function
         public async Task<Tuple<TransactionReceipt, string>> NewOrderAsync(ExchangeOrder order)
@@ -225,6 +218,7 @@ namespace XelsDesktopWalletApp.Views.Pages
                  }
             catch (Exception e)
             {
+                    GlobalExceptionHandler.SendErrorToText(e);
                     returnMessage = new Tuple<TransactionReceipt, string>(null, e.Message.ToString());
                     return returnMessage;
             }
@@ -302,7 +296,7 @@ namespace XelsDesktopWalletApp.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            MessageBox.Show(e.Message.ToString());
+                            GlobalExceptionHandler.SendErrorToText(e);
                         }
 
                     }
@@ -315,8 +309,7 @@ namespace XelsDesktopWalletApp.Views.Pages
             }
             catch (Exception e)
             {
-
-                throw;
+                GlobalExceptionHandler.SendErrorToText(e);
             }
                 
         }
@@ -331,20 +324,28 @@ namespace XelsDesktopWalletApp.Views.Pages
       
         private async Task<string> GetUnusedReceiveAddressesAsync(string path)
         {
-            string getUrl = path + $"/wallet/unusedaddress?WalletName={this.walletInfo.WalletName}&AccountName=account 0";
             var content = "";
-
-            HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                content = await response.Content.ReadAsStringAsync();
+                string getUrl = path + $"/wallet/unusedaddress?WalletName={this.walletInfo.WalletName}&AccountName=account 0";
+
+
+                HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    content = await response.Content.ReadAsStringAsync();
+                }
+                
+                return content;
             }
-            else
+            catch (Exception ee)
             {
-                MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+
+                GlobalExceptionHandler.SendErrorToText(ee);
+                return content;
             }
-            return content;
+           
         }
 
         public async Task<Tuple<TransactionReceipt, string>>  DepositAsync(string symbol, double amount, ExchangeResponse exchangeResponse)
@@ -373,6 +374,7 @@ namespace XelsDesktopWalletApp.Views.Pages
             }
             catch (Exception e)
             {
+                GlobalExceptionHandler.SendErrorToText(e);
                 deporesult = new Tuple<TransactionReceipt, string>(null, e.Message.ToString());
                 return deporesult;
             }
@@ -404,16 +406,13 @@ namespace XelsDesktopWalletApp.Views.Pages
                     }
 
                 }
-                else
-                {
-                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-                }
-
+                
                 return deporesult;
 
             }
             catch (Exception e)
             {
+                GlobalExceptionHandler.SendErrorToText(e);
                 deporesult = new Tuple<TransactionReceipt, string>(null, e.Message.ToString());
                 return deporesult;
             }
@@ -422,92 +421,114 @@ namespace XelsDesktopWalletApp.Views.Pages
 
         private async void DepositButton_Click(object sender, RoutedEventArgs e)
         {
-
-            DataGrid dataGrid = this.ExchangesList;
-            DataGridRow Row = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromIndex(dataGrid.SelectedIndex);
-            ExchangeData item = (ExchangeData) Row.DataContext;
-            if (item != null)
+            try
             {
-                this.IsEnabled = false;
-                var result = await GetOrderAsync(item.excid);
-                if (result.Item1 != null && result.Item2.ToString() == "SUCCESS")
+                DataGrid dataGrid = this.ExchangesList;
+                DataGridRow Row = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromIndex(dataGrid.SelectedIndex);
+                ExchangeData item = (ExchangeData)Row.DataContext;
+                if (item != null)
                 {
-                    MessageBox.Show("Token has been sent Successfully.");
-                   await UpdateExchangeListAsync();
-                    this.IsEnabled = true;
+                    this.IsEnabled = false;
+                    var result = await GetOrderAsync(item.excid);
+                    if (result.Item1 != null && result.Item2.ToString() == "SUCCESS")
+                    {
+                        MessageBox.Show("Token has been sent Successfully.");
+                        await UpdateExchangeListAsync();
+                        this.IsEnabled = true;
+                    }
+                    else
+                    {
+                        MessageBox.Show(result.Item2.ToString());
+                        await UpdateExchangeListAsync();
+                        this.IsEnabled = true;
+                    }
+
                 }
                 else
                 {
-                    MessageBox.Show(result.Item2.ToString());
-                    await UpdateExchangeListAsync();
-                    this.IsEnabled = true;
+                    MessageBox.Show("Value Must be required!.");
                 }
-
             }
-            else
+            catch (Exception df)
             {
-                MessageBox.Show("Value Must be required!.");
+
+                GlobalExceptionHandler.SendErrorToText(df);
             }
+           
 
         }
 
 
         private async void ExchangeOrderSubmitButton_Click(object sender, RoutedEventArgs e)
         {
-            
-            if (isValid())
+            try
             {
+                if (isValid())
+                {
 
-                if (this.mywallet == null || this.mywallet.PrivateKey == null)
-                {
-                    MessageBox.Show($"Your ethereum address is not imported properly. Please import your address again");
-                }
-                else
-                {
-                    this.exchangeSubmit.IsEnabled = false;
-                    ExchangeOrder exchangeOrder = new ExchangeOrder();
-                    exchangeOrder.xels_address = this.addr;
-                    exchangeOrder.deposit_amount = Convert.ToDouble(this.AmountTxt.Text);
-                    exchangeOrder.deposit_symbol = this.SelectedCoin.Name;
-                    exchangeOrder.user_code = this.mywallet.Wallethash;
-                    var result= await NewOrderAsync(exchangeOrder);
-                    if (result.Item1 != null && result.Item2.ToString() == "SUCCESS")
+                    if (this.mywallet == null || this.mywallet.PrivateKey == null)
                     {
-                        MessageBox.Show("Token has been sent Successfully.");
-                        await UpdateExchangeListAsync();
-                        this.exchangeSubmit.IsEnabled = true;
+                        MessageBox.Show($"Your ethereum address is not imported properly. Please import your address again");
                     }
                     else
                     {
-                        MessageBox.Show(result.Item2.ToString());
-                        await UpdateExchangeListAsync();
-                        this.exchangeSubmit.IsEnabled = true;
-                    }
+                        this.exchangeSubmit.IsEnabled = false;
+                        ExchangeOrder exchangeOrder = new ExchangeOrder();
+                        exchangeOrder.xels_address = this.addr;
+                        exchangeOrder.deposit_amount = Convert.ToDouble(this.AmountTxt.Text);
+                        exchangeOrder.deposit_symbol = this.SelectedCoin.Name;
+                        exchangeOrder.user_code = this.mywallet.Wallethash;
+                        var result = await NewOrderAsync(exchangeOrder);
+                        if (result.Item1 != null && result.Item2.ToString() == "SUCCESS")
+                        {
+                            MessageBox.Show("Token has been sent Successfully.");
+                            await UpdateExchangeListAsync();
+                            this.exchangeSubmit.IsEnabled = true;
+                        }
+                        else
+                        {
+                            MessageBox.Show(result.Item2.ToString());
+                            await UpdateExchangeListAsync();
+                            this.exchangeSubmit.IsEnabled = true;
+                        }
 
+                    }
                 }
             }
+            catch (Exception es)
+            {
+
+                GlobalExceptionHandler.SendErrorToText(es);
+            }
+
         }
 
         private void AmountTxt_KeyUp(object sender, KeyEventArgs e)
         {
-            this.MessageTxt.Text = "";
-            string amt = this.AmountTxt.Text;
-            if (amt != "")
+            try
             {
-                e.Handled = Regex.IsMatch(amt, "[^0-9]+");
-                if (!e.Handled)
+                this.MessageTxt.Text = "";
+                string amt = this.AmountTxt.Text;
+                if (amt != "")
                 {
-                    double val = Convert.ToDouble(amt);
-                    string res = string.Format("{0:0.00}", val * 0.1);
-                    this.MessageTxt.Text = "You will get " + res + " XELS";
-                }
-                else
-                {
-                    MessageBox.Show("Data is not valid");
-                    this.AmountTxt.Text = "";
+                    e.Handled = Regex.IsMatch(amt, "[^0-9]+");
+                    if (!e.Handled)
+                    {
+                        double val = Convert.ToDouble(amt);
+                        string res = string.Format("{0:0.00}", val * 0.1);
+                        this.MessageTxt.Text = "You will get " + res + " XELS";
+                    }
+                    else
+                    {
+                        MessageBox.Show("Data is not valid");
+                        this.AmountTxt.Text = "";
+                    }
                 }
             }
-           
+            catch (Exception er)
+            {
+                GlobalExceptionHandler.SendErrorToText(er);
+            }
         }
     }
 }

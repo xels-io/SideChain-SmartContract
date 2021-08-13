@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 
 using Newtonsoft.Json;
-
+using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 
@@ -108,7 +108,7 @@ namespace XelsDesktopWalletApp.Views.Pages
             }
             catch (System.Exception es)
             {
-                MessageBox.Show(es.ToString());
+                GlobalExceptionHandler.SendErrorToText(es);
             }
            
         }

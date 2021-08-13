@@ -10,7 +10,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
+using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 using XelsDesktopWalletApp.Models.SmartContractModels;
@@ -117,35 +117,37 @@ namespace XelsDesktopWalletApp.Views.Pages
         {
             string getUrl = path + "/AddressBook";
             var content = "";
-
-            HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
-            content = await response.Content.ReadAsStringAsync();
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                try
-                {
-                    this.addressLabelArray = JsonConvert.DeserializeObject<AddressLabelArray>(content);
+                HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
+                content = await response.Content.ReadAsStringAsync();
 
-                    this.addresses.Clear();
-                    foreach (var addr in this.addressLabelArray.Addresses)
+                if (response.IsSuccessStatusCode)
+                {
+                    try
                     {
-                        AddressLabel addressLabel = new AddressLabel();
-                        addressLabel.label = addr.label;
-                        addressLabel.address = addr.address;
-                        this.addresses.Add(addressLabel);
+                        this.addressLabelArray = JsonConvert.DeserializeObject<AddressLabelArray>(content);
+
+                        this.addresses.Clear();
+                        foreach (var addr in this.addressLabelArray.Addresses)
+                        {
+                            AddressLabel addressLabel = new AddressLabel();
+                            addressLabel.label = addr.label;
+                            addressLabel.address = addr.address;
+                            this.addresses.Add(addressLabel);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        GlobalExceptionHandler.SendErrorToText(ex);
                     }
                 }
-                catch (Exception ex)
-                {
-                    throw;
-                }
             }
-            else
+            catch (Exception ee)
             {
-                MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                GlobalExceptionHandler.SendErrorToText(ee);
             }
-
+           
         }
         #endregion
 
@@ -177,7 +179,7 @@ namespace XelsDesktopWalletApp.Views.Pages
             DataGridCell RowAndColumn = (DataGridCell)dataGrid.Columns[0].GetCellContent(Row).Parent;
             string item = ((TextBlock)RowAndColumn.Content).Text;
 
-            DeleteAddressAsync(item);
+            _ = DeleteAddressAsync(item);
         }
 
         private async Task DeleteAddressAsync(string label)
@@ -196,14 +198,10 @@ namespace XelsDesktopWalletApp.Views.Pages
                     AddressBookPage page2Obj = new AddressBookPage(this.walletName);
                     navService.Navigate(page2Obj);
                 }
-                else
-                {
-                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-                }
             }
             catch (Exception e)
             {
-                throw;
+                GlobalExceptionHandler.SendErrorToText(e);
             }
         }
         #endregion
@@ -219,7 +217,7 @@ namespace XelsDesktopWalletApp.Views.Pages
             AddressLabel address = new AddressLabel();
             address.label = this.LabelTxt.Text;
             address.address = this.AddressTxt.Text;
-            AddNewAddress(address);
+            _ = AddNewAddress(address);
         }
 
         public async Task AddNewAddress(AddressLabel newaddress)
@@ -241,11 +239,6 @@ namespace XelsDesktopWalletApp.Views.Pages
                         AddressBookPage page2Obj = new AddressBookPage(this.walletName);
                         navService.Navigate(page2Obj);
                     }
-                    else
-                    {
-                        this.NewAddressPopup.IsOpen = false;
-                        MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-                    }
                 }
                 else
                 {
@@ -254,7 +247,7 @@ namespace XelsDesktopWalletApp.Views.Pages
             }
             catch (Exception e)
             {
-                throw;
+                GlobalExceptionHandler.SendErrorToText(e);
             }
         }
 

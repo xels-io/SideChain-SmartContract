@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Newtonsoft.Json;
+using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 using XelsDesktopWalletApp.Models.SmartContractModels;
@@ -246,8 +247,10 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
             }
             catch (Exception e)
             {
+                GlobalExceptionHandler.SendErrorToText(e);
                 msg = e.Message.ToString();
                 return msg;
+
             }
            
         }
@@ -316,7 +319,7 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
             }
             catch (Exception r)
             {
-                MessageBox.Show("Button Ex Message:: - " + r.InnerException.Message.ToString());
+                GlobalExceptionHandler.SendErrorToText(r);
             }
         }
 
@@ -349,6 +352,7 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
             }
             catch (Exception e)
             {
+                GlobalExceptionHandler.SendErrorToText(e);
                 retMsg = e.Message.ToString();
                 return retMsg;
             }
@@ -370,7 +374,7 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
             }
             catch (Exception er)
             {
-                string msg = er.Message.ToString();
+                GlobalExceptionHandler.SendErrorToText(er);
             }
            
         }
@@ -430,6 +434,7 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
             }
             catch (Exception et)
             {
+                GlobalExceptionHandler.SendErrorToText(et);
                 msg = et.Message.ToString();
                 return msg;
             }

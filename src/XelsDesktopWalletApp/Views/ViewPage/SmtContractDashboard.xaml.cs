@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Newtonsoft.Json;
+using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models.CommonModels;
 using XelsDesktopWalletApp.Models.SmartContractModels;
 using XelsDesktopWalletApp.Views.SmartContractView;
@@ -75,7 +76,7 @@ namespace XelsDesktopWalletApp.Views.ViewPage
             catch (Exception e)
             {
 
-                throw;
+                GlobalExceptionHandler.SendErrorToText(e);
             }
 
 
@@ -134,13 +135,13 @@ namespace XelsDesktopWalletApp.Views.ViewPage
                 catch (Exception e)
                 {
 
-                    throw;
+                    GlobalExceptionHandler.SendErrorToText(e);
                 }
             }
             catch (Exception e)
             {
 
-                throw;
+                GlobalExceptionHandler.SendErrorToText(e);
             }
 
 

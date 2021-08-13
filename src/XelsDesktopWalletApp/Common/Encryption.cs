@@ -10,26 +10,35 @@ namespace XelsDesktopWalletApp.Common
     {
         public static string EncryptPrivateKey(string key)
         {
-            string EncryptionKey = "MAKV2SPBNI99212";
-            byte[] clearBytes = Encoding.Unicode.GetBytes(key);
-            using (Aes encryptor = Aes.Create())
+            try
             {
-                Rfc2898DeriveBytes pdb = new
-                    Rfc2898DeriveBytes(EncryptionKey, new byte[]
-                    { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
-                encryptor.Key = pdb.GetBytes(32);
-                encryptor.IV = pdb.GetBytes(16);
-                using (MemoryStream ms = new MemoryStream())
+                string EncryptionKey = "MAKV2SPBNI99212";
+                byte[] clearBytes = Encoding.Unicode.GetBytes(key);
+                using (Aes encryptor = Aes.Create())
                 {
-                    using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateEncryptor(), CryptoStreamMode.Write))
+                    Rfc2898DeriveBytes pdb = new
+                        Rfc2898DeriveBytes(EncryptionKey, new byte[]
+                        { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
+                    encryptor.Key = pdb.GetBytes(32);
+                    encryptor.IV = pdb.GetBytes(16);
+                    using (MemoryStream ms = new MemoryStream())
                     {
-                        cs.Write(clearBytes, 0, clearBytes.Length);
-                        cs.Close();
+                        using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateEncryptor(), CryptoStreamMode.Write))
+                        {
+                            cs.Write(clearBytes, 0, clearBytes.Length);
+                            cs.Close();
+                        }
+                        key = Convert.ToBase64String(ms.ToArray());
                     }
-                    key = Convert.ToBase64String(ms.ToArray());
                 }
+                return key;
             }
-            return key;
+            catch (Exception e)
+            {
+                GlobalExceptionHandler.SendErrorToText(e);
+                return null;
+            }
+            
         }
 
         public static string DecryptPrivateKey(string key)
@@ -57,12 +66,11 @@ namespace XelsDesktopWalletApp.Common
                     }
                 }
                 return key;
-
             }
             catch (Exception e)
             {
-
-                throw;
+                GlobalExceptionHandler.SendErrorToText(e);
+                return null;
             }
            
         }
