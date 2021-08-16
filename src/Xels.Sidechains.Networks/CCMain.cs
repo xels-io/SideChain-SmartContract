@@ -139,9 +139,9 @@ namespace Xels.Sidechains.Networks
                 coinbaseMaturity: 1,
                 premineHeight: 1,
                 premineReward: Money.Coins(100_000_000),
-                proofOfWorkReward: Money.Coins(0),
+                proofOfWorkReward: Money.Coins(50),
                 powTargetTimespan: TimeSpan.FromDays(14), // two weeks
-                targetSpacing: TimeSpan.FromSeconds(16),
+                targetSpacing: TimeSpan.FromSeconds(150),
                 powAllowMinDifficultyBlocks: false,
                 posNoRetargeting: false,
                 powNoRetargeting: true,
@@ -151,7 +151,7 @@ namespace Xels.Sidechains.Networks
                 lastPowBlock: 2,
                 proofOfStakeLimit: null,
                 proofOfStakeLimitV2: null,
-                proofOfStakeReward: Money.Zero
+                proofOfStakeReward: Money.Coins(50)
             );
 
             // Same as current smart contracts test networks to keep tests working
