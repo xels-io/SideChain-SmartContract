@@ -30,7 +30,6 @@
     <None Remove="Assets\Images\loading-3.gif" />
     <None Remove="Assets\Images\thumbsdown.png" />
     <None Remove="Assets\Images\thumbsup.png" />
-    <None Remove="File\Wallets.json" />
     <None Remove="Token\TokenFile.txt" />
     <None Remove="Views\home-xels-logo-01.png" />
     <None Remove="Views\Pages\loading-3.gif" />
@@ -49,9 +48,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="File\Wallets.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Token\TokenFile.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -92,10 +88,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Views\Pages\loading-3.gif" />
-  </ItemGroup>  
-
-  <ItemGroup>
-    <Folder Include="File\" />
   </ItemGroup>
 
 </Project>

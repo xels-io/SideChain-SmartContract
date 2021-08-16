@@ -124,14 +124,25 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
         public  void AddTokenList()
         {
             string retMsg = "";
+            string AppDataPath;
 
             try
             {
-                string CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                if (URLConfiguration.Chain == "-mainchain")
+                {
+                    AppDataPath = URLConfiguration.MainChainSavePath;
+                }
+                else
+                {
+                    AppDataPath = URLConfiguration.SideChainSavePath;
+                }
+                AppDataPath = Environment.ExpandEnvironmentVariables(AppDataPath);
+
+                //string CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
                 //string tokenFilePath = System.IO.Path.Combine(CurrentDirectory, @"..\..\..\Token\TokenFile.txt");
                 //string path = System.IO.Path.GetFullPath(tokenFilePath);
-                string path = CurrentDirectory + @"TokenFile.txt";
+                string path = AppDataPath + @"TokenFile.txt";
 
                 if (File.Exists(path))
                 {
@@ -215,11 +226,22 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
         public async Task<string> SaveTokenasync(TokenModel tokenModel)
         {
             string msg = "";
+            string AppDataPath;
             try
             {
-                string CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                if (URLConfiguration.Chain == "-mainchain")
+                {
+                    AppDataPath = URLConfiguration.MainChainSavePath;
+                }
+                else
+                {
+                    AppDataPath = URLConfiguration.SideChainSavePath;
+                }
+                AppDataPath = Environment.ExpandEnvironmentVariables(AppDataPath);
 
-                string path = CurrentDirectory + @"TokenFile.txt";
+               // string CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;// Old Code For Basedirectory  Save.
+
+                string path = AppDataPath + @"TokenFile.txt";
                 string validcheck = addTokenValidation(tokenModel, path);
                 if (validcheck == "")
                 {
@@ -228,7 +250,7 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
                     if (!File.Exists(path))
                     {
                         File.Create(path).Dispose();
-                        File.SetAttributes(path, FileAttributes.Hidden);//hidden file path
+                       // File.SetAttributes(path, FileAttributes.Hidden);//hidden file path
                     }
 
                     using (var sw = new StreamWriter(path, true))
@@ -382,10 +404,20 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
         public string DeleteToken(string address)
         {
             string msg = "";
-            string CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            string path = CurrentDirectory + @"TokenFile.txt";
-            //string tokenFilePath = System.IO.Path.Combine(CurrentDirectory, @"..\..\..\Token\TokenFile.txt");
-            //string path = System.IO.Path.GetFullPath(tokenFilePath);
+            string AppDataPath;
+            if (URLConfiguration.Chain == "-mainchain")
+            {
+                AppDataPath = URLConfiguration.MainChainSavePath;
+            }
+            else
+            {
+                AppDataPath = URLConfiguration.SideChainSavePath;
+            }
+            AppDataPath = Environment.ExpandEnvironmentVariables(AppDataPath);
+
+            //string CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string path = AppDataPath + @"TokenFile.txt";
+
 
             List<TokenRetrieveModel> tokenlist = new List<TokenRetrieveModel>();
             try
@@ -423,12 +455,8 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
                             sw.WriteLine(",");
                             sw.Flush();
                             sw.Close();
-
                         }
-
-
                     }
-
                 }
                 return msg;
             }

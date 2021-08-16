@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using XelsDesktopWalletApp.Models.CommonModels;
 
 namespace XelsDesktopWalletApp.Common
 {
@@ -17,21 +18,31 @@ namespace XelsDesktopWalletApp.Common
             Errormsg = ex.Message.ToString();
             extype = ex.GetType().ToString();
             ErrorLocation = ex.StackTrace.ToString();
+            string AppDataPath;
             try
             {
-                string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                string filepath = walletCurrentDirectory + @"\Exceptions\";
-               
-                if (!Directory.Exists(filepath))
+                // string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                if (URLConfiguration.Chain == "-mainchain")
                 {
-                    Directory.CreateDirectory(filepath);
+                    AppDataPath = @"%AppData%\XelsNode\xlc\XlcMain\";
                 }
-                filepath = filepath + "Exception" + DateTime.Today.ToString("dd-MM-yy") + ".txt";   //Text File Name
-                if (!File.Exists(filepath))
+                else
                 {
-                    File.Create(filepath).Dispose();
+                    AppDataPath = @"%AppData%\XelsNode\CC\CCMain\";
                 }
-                using (StreamWriter sw = File.AppendText(filepath))
+                //string filepath = AppDataPath + @"\Exceptions\";
+
+                if (!Directory.Exists(AppDataPath))
+                {
+                    Directory.CreateDirectory(AppDataPath);
+                }
+                AppDataPath = Environment.ExpandEnvironmentVariables(AppDataPath);
+                AppDataPath = AppDataPath + "Exception" + DateTime.Today.ToString("dd-MM-yy") + ".txt";   //Text File Name
+                if (!File.Exists(AppDataPath))
+                {
+                    File.Create(AppDataPath).Dispose();
+                }
+                using (StreamWriter sw = File.AppendText(AppDataPath))
                 {
                     string error = "Log Written Date:" + " " + DateTime.Now.ToString() + line + "Error Line No :" + " " + ErrorlineNo + line + "Error Message:" + " " + Errormsg + line + "Exception Type:" + " " + extype + line + "Error Location :" + " " + ErrorLocation + line;
                     sw.WriteLine("-----------Exception Details on " + " " + DateTime.Now.ToString() + "-----------------");

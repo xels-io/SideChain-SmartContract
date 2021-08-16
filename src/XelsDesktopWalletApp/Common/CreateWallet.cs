@@ -81,50 +81,74 @@ namespace XelsDesktopWalletApp.Common
 
         public bool StoreLocally(Wallet wallet, string walletname, string symbol, string wallethash)
         {
+            string JSONresult="";
             try
             {
+                string AppDataPath;
                 if (walletname != null)
                 {
                     List<StoredWallet> storedWallets = new List<StoredWallet>();
-
                     List<StoredWallet> returnedWallets = new List<StoredWallet>();
+
                     returnedWallets = RetrieveWallets();
 
-                    if (returnedWallets != null)
+                    if (returnedWallets != null && returnedWallets.Count > 0)
                     {
                         storedWallets = returnedWallets;
                     }
-
-                    foreach (var a in storedWallets.ToList())
+                    else
                     {
-                        int i = storedWallets.FindIndex(w => w.Coin == symbol && w.Walletname == walletname);
-
                         StoredWallet storedWallet = new StoredWallet();
                         storedWallet.Address = wallet.Address;
                         storedWallet.PrivateKey = wallet.PrivateKey;
                         storedWallet.Walletname = walletname;
                         storedWallet.Coin = symbol;
                         storedWallet.Wallethash = wallethash;
+                        storedWallets.Add(storedWallet);
+                    }
+                    if (storedWallets.Count > 0)
+                    {
+                        foreach (var a in storedWallets.ToList())
+                        {
+                            int i = storedWallets.FindIndex(w => w.Coin == symbol && w.Walletname == walletname);
 
-                        if (i != -1)
-                        {
-                            storedWallets[i] = storedWallet;
+                            StoredWallet storedWallet = new StoredWallet();
+                            storedWallet.Address = wallet.Address;
+                            storedWallet.PrivateKey = wallet.PrivateKey;
+                            storedWallet.Walletname = walletname;
+                            storedWallet.Coin = symbol;
+                            storedWallet.Wallethash = wallethash;
+
+                            if (i != -1)
+                            {
+                                storedWallets[i] = storedWallet;
+                            }
+                            else
+                            {
+                                storedWallets.Add(storedWallet);
+                            }
                         }
-                        else
-                        {
-                            storedWallets.Add(storedWallet);
-                        }
+
+                        JSONresult = JsonConvert.SerializeObject(storedWallets.ToArray(), Formatting.Indented);
                     }
 
-                    string JSONresult = JsonConvert.SerializeObject(storedWallets.ToArray(), Formatting.Indented);
 
-                    string walletCurrentDirectory = Directory.GetCurrentDirectory(); // AppDomain.CurrentDomain.BaseDirectory;
+                    //string walletCurrentDirectory = Directory.GetCurrentDirectory(); // AppDomain.CurrentDomain.BaseDirectory;
 
-                    string path = walletCurrentDirectory + @"\File\Wallets.json";
+                    if (URLConfiguration.Chain == "-mainchain")
+                    {
+                        AppDataPath = URLConfiguration.MainChainSavePath;
+                    }
+                    else
+                    {
+                        AppDataPath = URLConfiguration.SideChainSavePath;
+                    }
+                    AppDataPath = Environment.ExpandEnvironmentVariables(AppDataPath);
+                    string path = AppDataPath + @"\WalletAddress.json";
 
                     //string path = Path.GetFullPath(walletFile);
 
-                    File.SetAttributes(path, FileAttributes.Hidden);
+                    //File.SetAttributes(path, FileAttributes.Hidden);
 
 
                     if (File.Exists(path))
@@ -155,7 +179,6 @@ namespace XelsDesktopWalletApp.Common
             catch (Exception e)
             {
                 GlobalExceptionHandler.SendErrorToText(e);
-                MessageBox.Show(e.Message);
             }
             return false;
         }
@@ -164,10 +187,21 @@ namespace XelsDesktopWalletApp.Common
         {
             try
             {
+                string AppDataPath;
                 List<StoredWallet> wallets = new List<StoredWallet>();
 
-                string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                string walletFile = walletCurrentDirectory + @"\File\Wallets.json";
+                //string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
+                if (URLConfiguration.Chain == "-mainchain")
+                {
+                    AppDataPath = URLConfiguration.MainChainSavePath;
+                }
+                else
+                {
+                    AppDataPath = URLConfiguration.SideChainSavePath;
+                }
+                AppDataPath = Environment.ExpandEnvironmentVariables(AppDataPath);
+                string walletFile = AppDataPath + @"\WalletAddress.json";
                 //string walletFile = Path.Combine(walletCurrentDirectory, @"..\..\..\File\Wallets.json");
                 //string path = Path.GetFullPath(walletFile);
 
@@ -197,13 +231,23 @@ namespace XelsDesktopWalletApp.Common
         {
             StoredWallet wallet = new StoredWallet();
             List<StoredWallet> wallets = new List<StoredWallet>();
+            string AppDataPath;
             try
             {
-                string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory; //Directory.GetCurrentDirectory();// 
-                                                                                       //string walletFile = Path.Combine(walletCurrentDirectory, @"..\..\..\File\Wallets.json");
-                                                                                       //string path = Path.GetFullPath(walletFile);
+                if (URLConfiguration.Chain == "-mainchain")
+                {
+                    AppDataPath = URLConfiguration.MainChainSavePath;
+                }
+                else
+                {
+                    AppDataPath = URLConfiguration.SideChainSavePath;
+                }
+                AppDataPath = Environment.ExpandEnvironmentVariables(AppDataPath);
+                //string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory; //Directory.GetCurrentDirectory();// 
+                //string walletFile = Path.Combine(walletCurrentDirectory, @"..\..\..\File\Wallets.json");
+                //string path = Path.GetFullPath(walletFile);
 
-                string path = walletCurrentDirectory + @"\File\Wallets.json";
+                string path = AppDataPath + @"\WalletAddress.json";
 
                 using (StreamReader r = new StreamReader(path))
                 {
@@ -328,13 +372,20 @@ namespace XelsDesktopWalletApp.Common
         public StoredWallet GetLocalWalletDetails(string walletname)
         {
             StoredWallet wallet = new StoredWallet();
+            string AppDataPath;
             try
             {
-                string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                //string walletFile = Path.Combine(walletCurrentDirectory, @"..\..\..\File\Wallets.json");
-                //string path = Path.GetFullPath(walletFile);
-
-                string path = walletCurrentDirectory + @"\File\Wallets.json";
+                //string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                if (URLConfiguration.Chain == "-mainchain")
+                {
+                    AppDataPath = URLConfiguration.MainChainSavePath;
+                }
+                else
+                {
+                    AppDataPath = URLConfiguration.SideChainSavePath;
+                }
+                AppDataPath = Environment.ExpandEnvironmentVariables(AppDataPath);
+                string path = AppDataPath + @"\WalletAddress.json";
 
                 using (StreamReader r = new StreamReader(path))
                 {
@@ -361,13 +412,21 @@ namespace XelsDesktopWalletApp.Common
         public StoredWallet GetLocalWalletDetailsByWalletAndCoin(string walletname, string coin)
         {
             StoredWallet wallet = new StoredWallet();
+            string AppDataPath;
             try
             {
-                string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                //string walletFile = Path.Combine(walletCurrentDirectory, @"..\..\..\File\Wallets.json");
-                //string path = Path.GetFullPath(walletFile);
+                //string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
-                string path = walletCurrentDirectory + @"\File\Wallets.json";
+                if (URLConfiguration.Chain == "-mainchain")
+                {
+                    AppDataPath = URLConfiguration.MainChainSavePath;
+                }
+                else
+                {
+                    AppDataPath = URLConfiguration.SideChainSavePath;
+                }
+                AppDataPath = Environment.ExpandEnvironmentVariables(AppDataPath);
+                string path = AppDataPath + @"\WalletAddress.json";
 
                 using (StreamReader r = new StreamReader(path))
                 {

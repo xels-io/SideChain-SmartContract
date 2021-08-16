@@ -405,8 +405,21 @@ namespace XelsDesktopWalletApp.Views.Pages
         {
             try
             {
-                string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                string walletFile = Path.Combine(walletCurrentDirectory, @"..\..\..\File\Wallets.json");
+                string AppDataPath;
+                //string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                //string walletFile = Path.Combine(walletCurrentDirectory, @"..\..\..\File\Wallets.json");
+                if (URLConfiguration.Chain == "-mainchain")
+                {
+                    AppDataPath = URLConfiguration.MainChainSavePath;
+                }
+                else
+                {
+                    AppDataPath = URLConfiguration.SideChainSavePath;
+                }
+                AppDataPath = Environment.ExpandEnvironmentVariables(AppDataPath);
+
+                string walletFile = AppDataPath + @"\WalletAddress.json";
+
                 string path = Path.GetFullPath(walletFile);
 
                 if (File.Exists(path))

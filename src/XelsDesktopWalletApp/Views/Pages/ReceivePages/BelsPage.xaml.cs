@@ -112,10 +112,19 @@ namespace XelsDesktopWalletApp.Views.Pages.ReceivePages
         {
             try
             {
-                string walletCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                string path = walletCurrentDirectory + @"\File\Wallets.json";
+                string AppDataPath;
+                if (URLConfiguration.Chain == "-mainchain")
+                {
+                    AppDataPath = URLConfiguration.MainChainSavePath;
+                }
+                else
+                {
+                    AppDataPath = URLConfiguration.SideChainSavePath;
+                }
+                AppDataPath = Environment.ExpandEnvironmentVariables(AppDataPath);
+                string walletFile = AppDataPath + @"\WalletAddress.json";
 
-                if (File.Exists(path))
+                if (File.Exists(walletFile))
                 { 
                     StoredWallet belswallet = this.createWallet.GetLocalWallet(this.walletName, "BELS");
                     if (belswallet != null)
@@ -128,7 +137,13 @@ namespace XelsDesktopWalletApp.Views.Pages.ReceivePages
                         this.gridRow1.Visibility = Visibility.Collapsed;
                         this.gridRow0.Visibility = Visibility.Collapsed;
                     }
-  
+
+                }
+                else
+                {
+                    this.gridRow2.Visibility = Visibility.Visible;
+                    this.gridRow1.Visibility = Visibility.Collapsed;
+                    this.gridRow0.Visibility = Visibility.Collapsed;
                 }
             }
             catch (Exception e)
