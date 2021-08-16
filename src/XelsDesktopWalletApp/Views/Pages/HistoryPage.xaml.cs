@@ -109,6 +109,17 @@ namespace XelsDesktopWalletApp.Views.Pages
                             {
                                 hh.TransactionType = "RECEIVED";
                             }
+
+                            //confirmed check
+                            if (hh.ConfirmedInBlock != null && hh.ConfirmedInBlock > 0)
+                            {
+                                hh.TransactionIcon = "/Assets/Images/greenCircle.png";
+                            }
+                            else
+                            {
+                                hh.TransactionIcon = "/Assets/Images/redCircle.png";
+                            }
+                            //End
                         }
 
                         observableList = new ObservableCollection<TransactionItemModel>(HistoryListForTimer);

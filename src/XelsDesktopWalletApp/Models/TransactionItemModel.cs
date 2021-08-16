@@ -16,6 +16,7 @@ namespace XelsDesktopWalletApp.Models
 
         public string Type { get; set; }
         public string TransactionType { get; set; }
+        public string TransactionIcon { get; set; }
         public string ToAddress { get; set; }
         public double Amount {
 

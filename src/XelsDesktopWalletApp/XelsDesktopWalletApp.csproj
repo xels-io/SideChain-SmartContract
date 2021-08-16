@@ -25,9 +25,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Images\greenCircle.png" />
     <None Remove="Assets\Images\home-xels-logo-01.png" />
     <None Remove="Assets\Images\icon.ico" />
     <None Remove="Assets\Images\loading-3.gif" />
+    <None Remove="Assets\Images\redCircle.png" />
     <None Remove="Assets\Images\thumbsdown.png" />
     <None Remove="Assets\Images\thumbsup.png" />
     <None Remove="Token\TokenFile.txt" />
@@ -76,11 +78,17 @@
   </ItemGroup>  
 
   <ItemGroup>
+    <Resource Include="Assets\Images\greenCircle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\Images\home-xels-logo-01.png" />
     <Resource Include="Assets\Images\icon.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Images\loading-3.gif" />
+    <Resource Include="Assets\Images\redCircle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\Images\thumbsdown.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>

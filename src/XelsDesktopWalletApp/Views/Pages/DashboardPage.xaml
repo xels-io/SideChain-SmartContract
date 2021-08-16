@@ -256,7 +256,7 @@
 
 
 
-                                <Border x:Name="MiningInfoBorder" Grid.Row="1" Visibility="Hidden" CornerRadius="8">
+                                <Border x:Name="MiningInfoBorder" Grid.Row="1"  Visibility="Hidden"  CornerRadius="8">
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height=".2*" />
@@ -270,12 +270,12 @@
                                         <Border Grid.Row="0">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
+                                                    <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
 
-                                                <Label Grid.Column="0" Content="Hybrid weight:"/>
-                                                <TextBlock Grid.Column="1"  x:Name="HybridWeightTxt" />
+                                                <Label Grid.Column="0" Content="Hybrid weight:" />
+                                                <TextBlock Grid.Column="1"  x:Name="HybridWeightTxt" VerticalAlignment="Center" />
 
                                             </Grid>
                                         </Border>
@@ -289,7 +289,7 @@
                                                 </Grid.ColumnDefinitions>
 
                                                 <TextBlock Grid.Column="0" TextWrapping="Wrap" Text="Coins awaiting maturity:"/>
-                                                <TextBlock Grid.Column="1" x:Name="CoinsAwaitingMaturityTxt"/>
+                                                <TextBlock Grid.Column="1"  x:Name="CoinsAwaitingMaturityTxt"/>
 
                                             </Grid>
                                         </Border>
@@ -311,12 +311,12 @@
                                         <Border Grid.Row="3">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
+                                                    <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
 
                                                 <TextBlock Grid.Column="0" TextWrapping="Wrap" Text="Expected reward time :" />
-                                                <TextBlock Grid.Column="1" x:Name="ExpectedRewardTimmeTxt" />
+                                                <TextBlock Grid.Column="1" x:Name="ExpectedRewardTimmeTxt"/>
 
                                             </Grid>
                                         </Border>
@@ -524,35 +524,37 @@
                                                 <ColumnDefinition Width="Auto"/>
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
-                                            <materialDesign:PackIcon Kind="Autorenew" Height="10" Width="10" Margin="2,3,0,0" Foreground="Green"/>
+                                            <materialDesign:PackIcon Kind="Autorenew" Height="13" Width="13" Margin="2,3,0,0" Foreground="Orange"/>
                                             <TextBlock Text="syncing" Grid.Column="0" Name="ConnectionPercentTxt"
-                                                    FontFamily="Microsoft YaHei" FontSize="10" Foreground="Green" Grid.ColumnSpan="3" Margin="15,0,184,0">
+                                                    FontFamily="Microsoft YaHei" FontSize="12" Foreground="Orange" Grid.ColumnSpan="3" Margin="15,0,184,0">
 
                                             </TextBlock>
-                                            <materialDesign:PackIcon Kind="People" Grid.Column="1" Height="10" Width="10" Margin="20,2,0,0" Foreground="Green"/>
-                                            <TextBlock Text="0"  Grid.Column="1" Name="ConnectedCountTxt" FontSize="10" Foreground="Green" Margin="40,0,10,0" ></TextBlock>
-                                            <Label x:Name="StakingInfo" Content="Not Stacking"  FontSize="10" Grid.Column="1" Foreground="Green" Margin="50,-4,0,0"></Label>
-                                            <Image Grid.Column="2"  x:Name="thumbDown" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Width="24" Source="/Assets/Images/thumbsdown.png" Margin="-40,0,0,0" />
-                                            <Image Grid.Column="2" Visibility="Collapsed"  x:Name="thumbsup" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Width="24" Source="/Assets/Images/thumbsup.png" Margin="-20,0,0,0" />
+                                            <materialDesign:PackIcon Kind="People" Grid.Column="1" Height="13" Width="13" Margin="20,2,0,0" Foreground="Green"/>
+                                            <TextBlock Text="0"  Grid.Column="1" Name="ConnectedCountTxt" FontSize="12" Foreground="Green" Margin="40,0,10,0" ></TextBlock>
+                                            <Label x:Name="StakingInfo" Content="Not Stacking"  FontSize="12" Grid.Column="1" Foreground="Green" Margin="50,-4,0,0"></Label>
+                                            <!--<Image Grid.Column="2"  x:Name="thumbDown" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Width="24" Source="/Assets/Images/thumbsdown.png" Margin="-40,0,0,0" />-->
+                                            <materialDesign:PackIcon Kind="DislikeOutline" Grid.Column="2"  x:Name="thumbDown" Height="15" Width="30" Margin="-40,0,0,0" Foreground="Red" VerticalAlignment="Center"/>
+                                            <materialDesign:PackIcon Kind="LikeOutline" Visibility="Collapsed" Grid.Column="2"  x:Name="thumbsup" Height="15" Width="30" Margin="-20,0,0,0" Foreground="Green" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                            <!--<Image Grid.Column="2" Visibility="Collapsed"  x:Name="thumbsup" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Width="24" Source="/Assets/Images/thumbsup.png" Margin="-20,0,0,0" />-->
                                         </Grid>
                                     </Border>
 
                                     <Border Grid.Row="2" CornerRadius="8">
                                         <Grid Margin="5">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="1.5*"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
 
                                             <TextBlock Grid.Column="0" TextWrapping="Wrap" Text="Connection Status:" Padding="0" Margin="0"/>
-                                            <TextBlock Grid.Column="1" x:Name="ConnectionStatusTxt" TextWrapping="Wrap" Width="72"/>
+                                            <TextBlock Grid.Column="1" Foreground="Green" x:Name="ConnectionStatusTxt" TextWrapping="Wrap" Width="72"/>
                                         </Grid>
                                     </Border>
 
                                     <Border Grid.Row="3" CornerRadius="8">
                                         <Grid Margin="5">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="1.5*"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
 
@@ -564,12 +566,12 @@
                                     <Border Grid.Row="4" CornerRadius="8">
                                         <Grid Margin="5">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="1.5*"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
 
                                             <Label Grid.Column="0" Content="Chain Tip:" Padding="0" Margin="0"/>
-                                            <TextBlock Grid.Column="1" x:Name="ChainTipTxt" />
+                                            <TextBlock Grid.Column="1"  x:Name="ChainTipTxt" />
 
                                         </Grid>
                                     </Border>
@@ -577,12 +579,12 @@
                                     <Border Grid.Row="5" CornerRadius="8">
                                         <Grid Margin="5">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="1.5*"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
 
                                             <Label Grid.Column="0" Content="Parcent Synced:"  Padding="0" Margin="0"/>
-                                            <TextBlock Grid.Column="1" x:Name="ParcentSyncedTxt" Foreground="Green"/>
+                                            <TextBlock Grid.Column="1"  x:Name="ParcentSyncedTxt" Foreground="Green"/>
                                         </Grid>
 
 
@@ -683,8 +685,16 @@
                                         <DataGrid x:Name="HistoryListBinding" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" RowStyle="{DynamicResource MaterialDesignDataGridRow}" RowHeight="30" HorizontalAlignment="Center" CanUserSortColumns="False" HeadersVisibility="None" >
 
                                             <DataGrid.Columns>
-                                                <DataGridTextColumn Width="150" 
-                                            Binding="{Binding Path=TransactionType}">
+                                                <DataGridTemplateColumn Width="50">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <Image Source="{Binding Path= TransactionIcon}" />
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                
+                                                <DataGridTextColumn Width="100" 
+                                               Binding="{Binding Path=TransactionType}">
                                                     <DataGridTextColumn.CellStyle>
                                                         <Style>
                                                             <Setter Property="TextBlock.VerticalAlignment" Value="Center"/>
@@ -716,7 +726,7 @@
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
                                                             <Button  HorizontalAlignment="Center" 
-                                                Content="Details" Click="DetailsButton_Click"  Background="ForestGreen" Height="auto" FontSize="12" Margin="-5" >
+                                                                Content="Details" Click="DetailsButton_Click"  Background="ForestGreen" Height="auto" FontSize="12" Margin="-5" >
                                                                 <Button.Resources>
                                                                     <Style TargetType="{x:Type Border}">
                                                                         <Setter Property="CornerRadius" Value="5"/>

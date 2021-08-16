@@ -62,7 +62,14 @@
                             EnableRowVirtualization="False" >
 
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Width="150" 
+                                    <DataGridTemplateColumn Width="50" >
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Image Source="{Binding Path= TransactionIcon}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn Width="100" 
                                             Binding="{Binding Path=TransactionType}" >
                                         <DataGridTextColumn.CellStyle>
                                             <Style>

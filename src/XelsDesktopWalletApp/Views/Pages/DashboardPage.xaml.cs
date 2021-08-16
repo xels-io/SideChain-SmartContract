@@ -112,7 +112,6 @@ namespace XelsDesktopWalletApp.Views.Pages
                 this.thumbsup.Visibility = Visibility.Visible;
                 this.thumbDown.Visibility = Visibility.Collapsed;
             }
-            string ddd= Directory.GetCurrentDirectory();
             UpdateWallet();
         }
 
@@ -204,6 +203,7 @@ namespace XelsDesktopWalletApp.Views.Pages
                             if (hh.Type == "staked")
                             {
                                 hh.TransactionType = "HYBRID REWARD";
+ 
                             }
                             if (hh.Type == "send")
                             {
@@ -213,6 +213,16 @@ namespace XelsDesktopWalletApp.Views.Pages
                             {
                                 hh.TransactionType = "RECEIVED";
                             }
+                            //confirmed check
+                            if (hh.ConfirmedInBlock != null && hh.ConfirmedInBlock > 0)
+                            {
+                                hh.TransactionIcon = "/Assets/Images/greenCircle.png";
+                            }
+                            else
+                            {
+                                hh.TransactionIcon = "/Assets/Images/redCircle.png";
+                            }
+                            //End
                         }
                         observableList = new ObservableCollection<TransactionItemModel>(HistoryListForTimer);
 
@@ -257,7 +267,7 @@ namespace XelsDesktopWalletApp.Views.Pages
 
                     this.walletGeneralInfoModel = JsonConvert.DeserializeObject<WalletGeneralInfoModel>(content);
 
-                    // this.lastBlockSyncedHeight = this.walletGeneralInfoModel.LastBlockSyncedHeight; // for history data
+                     this.lastBlockSyncedHeight = this.walletGeneralInfoModel.LastBlockSyncedHeight; // for history data
 
                     this.processedText = $"Processed { this.walletGeneralInfoModel.LastBlockSyncedHeight ?? 0} out of { this.walletGeneralInfoModel.ChainTip} blocks.";
 
@@ -277,11 +287,11 @@ namespace XelsDesktopWalletApp.Views.Pages
 
                         if (Math.Round(this.percentSyncedNumber) == 100 && this.walletGeneralInfoModel.LastBlockSyncedHeight != this.walletGeneralInfoModel.ChainTip)
                         {
-                            this.ParcentSyncedTxt.Text = this.ConnectionPercentTxt.Text = "99";
+                            this.ParcentSyncedTxt.Text = this.ConnectionPercentTxt.Text = "99 %";
                         }
                         else
                         {
-                            this.ParcentSyncedTxt.Text = this.ConnectionPercentTxt.Text = "100";
+                            this.ParcentSyncedTxt.Text = this.ConnectionPercentTxt.Text = "100 %";
                         }
                     }
 
@@ -474,6 +484,7 @@ namespace XelsDesktopWalletApp.Views.Pages
 
             if (item.ConfirmedInBlock != 0 || item.ConfirmedInBlock != null)
             {
+                //this.confirmations = this.lastBlockSyncedHeight - item.ConfirmedInBlock + 1;
                 this.confirmations = this.lastBlockSyncedHeight - item.ConfirmedInBlock + 1;
             }
             else
