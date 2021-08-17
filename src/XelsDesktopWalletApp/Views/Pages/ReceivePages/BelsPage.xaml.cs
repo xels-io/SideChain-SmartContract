@@ -122,7 +122,7 @@ namespace XelsDesktopWalletApp.Views.Pages.ReceivePages
                     AppDataPath = URLConfiguration.SideChainSavePath;
                 }
                 AppDataPath = Environment.ExpandEnvironmentVariables(AppDataPath);
-                string walletFile = AppDataPath + @"\WalletAddress.json";
+                string walletFile = AppDataPath + @"\SelsBelsAddress.json";
 
                 if (File.Exists(walletFile))
                 { 

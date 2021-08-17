@@ -428,7 +428,7 @@ namespace XelsDesktopWalletApp.Views.Pages
                 }
                 AppDataPath = Environment.ExpandEnvironmentVariables(AppDataPath);
 
-                string walletFile = AppDataPath + @"\WalletAddress.json";
+                string walletFile = AppDataPath + @"\SelsBelsAddress.json";
 
                 string path = Path.GetFullPath(walletFile);
 

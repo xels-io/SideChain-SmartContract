@@ -144,7 +144,7 @@ namespace XelsDesktopWalletApp.Common
                         AppDataPath = URLConfiguration.SideChainSavePath;
                     }
                     AppDataPath = Environment.ExpandEnvironmentVariables(AppDataPath);
-                    string path = AppDataPath + @"\WalletAddress.json";
+                    string path = AppDataPath + @"\SelsBelsAddress.json";
 
                     //string path = Path.GetFullPath(walletFile);
 
@@ -201,7 +201,7 @@ namespace XelsDesktopWalletApp.Common
                     AppDataPath = URLConfiguration.SideChainSavePath;
                 }
                 AppDataPath = Environment.ExpandEnvironmentVariables(AppDataPath);
-                string walletFile = AppDataPath + @"\WalletAddress.json";
+                string walletFile = AppDataPath + @"\SelsBelsAddress.json";
                 //string walletFile = Path.Combine(walletCurrentDirectory, @"..\..\..\File\Wallets.json");
                 //string path = Path.GetFullPath(walletFile);
 
@@ -247,7 +247,7 @@ namespace XelsDesktopWalletApp.Common
                 //string walletFile = Path.Combine(walletCurrentDirectory, @"..\..\..\File\Wallets.json");
                 //string path = Path.GetFullPath(walletFile);
 
-                string path = AppDataPath + @"\WalletAddress.json";
+                string path = AppDataPath + @"\SelsBelsAddress.json";
 
                 using (StreamReader r = new StreamReader(path))
                 {
@@ -385,7 +385,7 @@ namespace XelsDesktopWalletApp.Common
                     AppDataPath = URLConfiguration.SideChainSavePath;
                 }
                 AppDataPath = Environment.ExpandEnvironmentVariables(AppDataPath);
-                string path = AppDataPath + @"\WalletAddress.json";
+                string path = AppDataPath + @"\SelsBelsAddress.json";
 
                 using (StreamReader r = new StreamReader(path))
                 {
@@ -426,7 +426,7 @@ namespace XelsDesktopWalletApp.Common
                     AppDataPath = URLConfiguration.SideChainSavePath;
                 }
                 AppDataPath = Environment.ExpandEnvironmentVariables(AppDataPath);
-                string path = AppDataPath + @"\WalletAddress.json";
+                string path = AppDataPath + @"\SelsBelsAddress.json";
 
                 using (StreamReader r = new StreamReader(path))
                 {
