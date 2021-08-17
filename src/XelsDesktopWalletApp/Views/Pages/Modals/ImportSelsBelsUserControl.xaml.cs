@@ -101,9 +101,9 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
         {
             try
             {
+                this.IsEnabled = false;
                 if (isValid())
                 {
-                    //_ = VerifyMnemonicsAsync();
                     this.walletHash = MnemonicToHash(this.MnemonicTxt.Text);
 
                     if (this.SELSPrivateKeyTxt.IsEnabled == true && this.BELSPrivateKeyTxt.IsEnabled == true)
@@ -134,11 +134,13 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
                     }
                   
                     this.Visibility = Visibility.Collapsed;
+                    this.IsEnabled = false;
                 }
             }
             catch (Exception ex)
             {
                 GlobalExceptionHandler.SendErrorToText(ex);
+                this.IsEnabled = false;
             }
  
         }

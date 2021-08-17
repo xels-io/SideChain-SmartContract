@@ -142,7 +142,7 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
 
                 //string tokenFilePath = System.IO.Path.Combine(CurrentDirectory, @"..\..\..\Token\TokenFile.txt");
                 //string path = System.IO.Path.GetFullPath(tokenFilePath);
-                string path = AppDataPath + @"TokenFile.txt";
+                string path = AppDataPath + @"\TokenFile.txt";
 
                 if (File.Exists(path))
                 {
@@ -241,7 +241,7 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
 
                // string CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;// Old Code For Basedirectory  Save.
 
-                string path = AppDataPath + @"TokenFile.txt";
+                string path = AppDataPath + @"\TokenFile.txt";
                 string validcheck = addTokenValidation(tokenModel, path);
                 if (validcheck == "")
                 {
@@ -416,7 +416,7 @@ namespace XelsDesktopWalletApp.Views.SmartContractView
             AppDataPath = Environment.ExpandEnvironmentVariables(AppDataPath);
 
             //string CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            string path = AppDataPath + @"TokenFile.txt";
+            string path = AppDataPath + @"\TokenFile.txt";
 
 
             List<TokenRetrieveModel> tokenlist = new List<TokenRetrieveModel>();
