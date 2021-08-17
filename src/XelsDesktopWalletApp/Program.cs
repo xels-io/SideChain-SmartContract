@@ -210,20 +210,26 @@ namespace XelsDesktopWalletApp
         {
 
             string[] argumentList = { "-sidechain" };
-
+            
             string destinationPath = Directory.GetCurrentDirectory();
+
             //Console.WriteLine(distinationPath);
             //Console.ReadLine();
             foreach (var arg in argumentList)
             {
+
                 object shDesktop = (object)"Desktop";
                 WshShell shell = new WshShell();
-                string shortcutAddress = (string)shell.SpecialFolders.Item(ref shDesktop) + @"\xels-app" + arg + ".lnk";
-                IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutAddress);
 
-                shortcut.Arguments = arg;
-                shortcut.TargetPath = destinationPath + @"\XelsDesktopWalletApp.exe";
-                shortcut.Save();
+                string shortcutAddress = (string)shell.SpecialFolders.Item(ref shDesktop) + @"\xels-app" + arg + ".lnk";
+                if (!System.IO.File.Exists(shortcutAddress))
+                {
+                    IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutAddress);
+
+                    shortcut.Arguments = arg;
+                    shortcut.TargetPath = destinationPath + @"\XelsDesktopWalletApp.exe";
+                    shortcut.Save();
+                }                
             }
         }
     }
