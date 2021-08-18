@@ -250,13 +250,13 @@
                                     </Grid>
                                 </Border>
 
-                                <Border CornerRadius="8" x:Name="t" Grid.Row="1" Background="WhiteSmoke" >
+                                <Border CornerRadius="8"   x:Name="t" Grid.Row="1" Background="WhiteSmoke" >
                                     <TextBlock TextWrapping="Wrap" TextAlignment="Center" Padding="5" Margin="0 30" FontWeight="DemiBold"> Unlock your wallet to start hybrid mining</TextBlock>
                                 </Border>
 
 
 
-                                <Border x:Name="MiningInfoBorder" Grid.Row="1"  Visibility="Hidden"  CornerRadius="8">
+                                <Border x:Name="MiningInfoBorder" Visibility="Hidden" Grid.Row="1"   CornerRadius="8">
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height=".2*" />
@@ -275,7 +275,7 @@
                                                 </Grid.ColumnDefinitions>
 
                                                 <Label Grid.Column="0" Content="Hybrid weight:" />
-                                                <TextBlock Grid.Column="1"  x:Name="HybridWeightTxt" VerticalAlignment="Center" />
+                                                <TextBlock FontSize="10"  x:Name="HybridWeightTxt" VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="102,-7,0,0" />
 
                                             </Grid>
                                         </Border>
@@ -289,7 +289,7 @@
                                                 </Grid.ColumnDefinitions>
 
                                                 <TextBlock Grid.Column="0" TextWrapping="Wrap" Text="Coins awaiting maturity:"/>
-                                                <TextBlock Grid.Column="1"  x:Name="CoinsAwaitingMaturityTxt"/>
+                                                <TextBlock Grid.Column="1" FontSize="10"  x:Name="CoinsAwaitingMaturityTxt"/>
 
                                             </Grid>
                                         </Border>
@@ -303,7 +303,7 @@
                                                 </Grid.ColumnDefinitions>
 
                                                 <TextBlock TextWrapping="Wrap" Grid.Column="0" Text="Network weight:"/>
-                                                <TextBlock Grid.Column="1" x:Name="NetworkWeightTxt" />
+                                                <TextBlock Grid.Column="1" FontSize="10" x:Name="NetworkWeightTxt" />
 
                                             </Grid>
                                         </Border>
@@ -316,7 +316,7 @@
                                                 </Grid.ColumnDefinitions>
 
                                                 <TextBlock Grid.Column="0" TextWrapping="Wrap" Text="Expected reward time :" />
-                                                <TextBlock Grid.Column="1" x:Name="ExpectedRewardTimmeTxt"/>
+                                                <TextBlock Grid.Column="1" FontSize="10" x:Name="ExpectedRewardTimmeTxt"/>
 
                                             </Grid>
                                         </Border>
@@ -547,7 +547,7 @@
                                             </Grid.ColumnDefinitions>
 
                                             <TextBlock Grid.Column="0" TextWrapping="Wrap" Text="Connection Status:" Padding="0" Margin="0"/>
-                                            <TextBlock Grid.Column="1" Foreground="Green" x:Name="ConnectionStatusTxt" TextWrapping="Wrap" Width="72"/>
+                                            <TextBlock Grid.Column="1" FontSize="9" Foreground="Green" x:Name="ConnectionStatusTxt" TextWrapping="Wrap" Width="72"/>
                                         </Grid>
                                     </Border>
 
@@ -569,8 +569,7 @@
                                                 <ColumnDefinition Width="1.5*"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-
-                                            <Label Grid.Column="0" Content="Chain Tip:" Padding="0" Margin="0"/>
+                                            <TextBlock Grid.Column="0" TextWrapping="Wrap" Text="Chain Tip:" Padding="0" Margin="0"/>
                                             <TextBlock Grid.Column="1"  x:Name="ChainTipTxt" />
 
                                         </Grid>
@@ -583,7 +582,7 @@
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <Label Grid.Column="0" Content="Parcent Synced:"  Padding="0" Margin="0"/>
+                                            <TextBlock Grid.Column="0" TextWrapping="Wrap" Text="Parcent Synced:"  Padding="0" Margin="0"/>
                                             <TextBlock Grid.Column="1"  x:Name="ParcentSyncedTxt" Foreground="Green"/>
                                         </Grid>
 
@@ -692,7 +691,7 @@
                                                         </DataTemplate>
                                                     </DataGridTemplateColumn.CellTemplate>
                                                 </DataGridTemplateColumn>
-                                                
+
                                                 <DataGridTextColumn Width="100" 
                                                Binding="{Binding Path=TransactionType}">
                                                     <DataGridTextColumn.CellStyle>

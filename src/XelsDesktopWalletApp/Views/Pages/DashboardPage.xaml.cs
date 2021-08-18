@@ -145,7 +145,7 @@ namespace XelsDesktopWalletApp.Views.Pages
                         if (GlobalPropertyModel.HasBalance && URLConfiguration.Chain != "-sidechain")// (!this.sidechainEnabled)
                         {
                             //GlobalPropertyModel.StakingStart = true;
-
+                           
                             _ = GetStakingInfoAsync(this.baseURL);
                         }
                     }
@@ -368,7 +368,7 @@ namespace XelsDesktopWalletApp.Views.Pages
 
                     stakingInfoModel = JsonConvert.DeserializeObject<StakingInfoModel>(content);
 
-                    this.HybridWeightTxt.Text = $"{stakingInfoModel.Weight}{" "} {GlobalPropertyModel.CoinUnit}";
+                    this.HybridWeightTxt.Text = $"{stakingInfoModel.Weight/100000000}{" "} {GlobalPropertyModel.CoinUnit}";
 
                     this.NetworkWeightTxt.Text = $"{stakingInfoModel.NetStakeWeight.ToString()} {" "} {GlobalPropertyModel.CoinUnit}"; //netStakingWeight
 
@@ -708,8 +708,9 @@ namespace XelsDesktopWalletApp.Views.Pages
                 this.DataContext = this;
                 this.walletInfo.WalletName = this.walletName;
                 _ = GetGeneralWalletInfoAsync();
-                _ = GetWalletHistoryTimerAsync(this.baseURL);
                 _ = GetWalletBalanceAsync();
+                _ = GetHistoryAsync();
+
                 // _ = GetMaxBalanceAsync();
                 UpdateWallet();
 
@@ -717,6 +718,13 @@ namespace XelsDesktopWalletApp.Views.Pages
                 {
                     this.PowMiningButton.Visibility = Visibility.Hidden;
 
+                }
+
+                if (GlobalPropertyModel.HasBalance)//balance check
+                {
+                    this.HybridMiningInfoBorder.Visibility = Visibility.Visible;
+                    this.NoDataGrid.Visibility = Visibility.Hidden;
+                    this.HistoryDataGrid.Visibility = Visibility.Visible;
                 }
 
                 if (GlobalPropertyModel.MiningStart == true)
