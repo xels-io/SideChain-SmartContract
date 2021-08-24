@@ -41,7 +41,7 @@ namespace Xels.Sidechains.Networks
             this.RootFolderName = CCNetwork.NetworkRootFolderName;
             this.DefaultConfigFilename = CCNetwork.NetworkDefaultConfigFilename;
             this.MaxTimeOffsetSeconds = 25 * 60;
-            this.DefaultBanTimeSeconds = 1920; // 240 (MaxReorg) * 16 (TargetSpacing) / 2 = 32 Minutes
+            this.DefaultBanTimeSeconds = 192; // 240 (MaxReorg) * 16 (TargetSpacing) / 2 = 32 Minutes
 
             this.CCRewardDummyAddress = "CPqxvnzfXngDi75xBJKqi4e6YrFsinrJka";
 
@@ -133,15 +133,15 @@ namespace Xels.Sidechains.Networks
                 bip9Deployments: bip9Deployments,
                 bip34Hash: null,  //new uint256("0x000000000000024b89b42a942fe0d9fea3bb44ab7bd1b19115dd6a759c0808b8"),
                 minerConfirmationWindow: 2016, // nPowTargetTimespan / nPowTargetSpacing
-                maxReorgLength: 240, // Heuristic. Roughly 2 * mining members
+                maxReorgLength: 24, // Heuristic. Roughly 2 * mining members
                 defaultAssumeValid: null,  //new uint256("0x0000005a39d58d384efabc1a9c79cd6e8c63894c77d4219526481cb49582ff29"), // 1400000
                 maxMoney: Money.Coins(100_000_000),
                 coinbaseMaturity: 1,
-                premineHeight: 1,
+                premineHeight: 2,
                 premineReward: Money.Coins(100_000_000),
-                proofOfWorkReward: Money.Coins(50),
+                proofOfWorkReward: Money.Coins(0),
                 powTargetTimespan: TimeSpan.FromDays(14), // two weeks
-                targetSpacing: TimeSpan.FromSeconds(150),
+                targetSpacing: TimeSpan.FromSeconds(16),
                 powAllowMinDifficultyBlocks: false,
                 posNoRetargeting: false,
                 powNoRetargeting: true,
@@ -151,7 +151,7 @@ namespace Xels.Sidechains.Networks
                 lastPowBlock: 2,
                 proofOfStakeLimit: null,
                 proofOfStakeLimitV2: null,
-                proofOfStakeReward: Money.Coins(50)
+                proofOfStakeReward: Money.Coins(0)
             );
 
             // Same as current smart contracts test networks to keep tests working
