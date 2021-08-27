@@ -41,7 +41,7 @@ namespace Xels.Sidechains.Networks
             this.RootFolderName = CCNetwork.NetworkRootFolderName;
             this.DefaultConfigFilename = CCNetwork.NetworkDefaultConfigFilename;
             this.MaxTimeOffsetSeconds = 25 * 60;
-            this.DefaultBanTimeSeconds = 192; // 240 (MaxReorg) * 16 (TargetSpacing) / 2 = 32 Minutes
+            this.DefaultBanTimeSeconds = 1920; // 240 (MaxReorg) * 16 (TargetSpacing) / 2 = 32 Minutes
 
             this.CCRewardDummyAddress = "CPqxvnzfXngDi75xBJKqi4e6YrFsinrJka";
 
@@ -67,9 +67,9 @@ namespace Xels.Sidechains.Networks
                 new CollateralFederationMember(new PubKey("033762e3baa6628ba1e523e0d3a4b0112f3704467aba0f0fd5788ddf308cd23a43"), true, Money.Zero,"XPddcvptCSW1XQeGJzmNruXYDmt2Yo649s"),
                 new CollateralFederationMember(new PubKey("02b7b1b8802a5155dbf7ba0fdfca028e995c77da179972a8cf1e99d93462f91d01"), true, Money.Zero,"XG2752izyfuui6Cys7rqATx3JS5zNgL3wQ"),
                 new CollateralFederationMember(new PubKey("02e2a8ee8197604a86131b54e18273f9ccb43f58b9de8c4a611cf27c5e715aea2e"), true, Money.Zero,"XHeUcZtFp9TLiK3nGbi7QcCN2PAjPxUSHX"),
-                new CollateralFederationMember(new PubKey("03e54650fb2242613ce0b508df0650c3d7cbcb4b82c748c7b69157927c47b19642"), true, Money.Zero,"CcwX6LmbL1ZUxgbdVz1pDe25SmmNtLnnTr"),
-                new CollateralFederationMember(new PubKey("0394788094df4ddde7eb3eacdd61245eef3d03b103f566406aa43cb18c36a1e64b"), true, Money.Zero,"CHwG8nrqs3yDhNwBnzcdtSpuFNWHfUkhoG"),
-                new CollateralFederationMember(new PubKey("02fd05bd7398e3e36d93c31a91b603418f9e4e1b251490b790eabb9cc302927be8"), true, Money.Zero,"CWvxWKHyzBzEEpcX2J1CCXZGzQKps2ux9j"),
+                new CollateralFederationMember(new PubKey("03e54650fb2242613ce0b508df0650c3d7cbcb4b82c748c7b69157927c47b19642"), true, 10,"CcwX6LmbL1ZUxgbdVz1pDe25SmmNtLnnTr"),
+                new CollateralFederationMember(new PubKey("0394788094df4ddde7eb3eacdd61245eef3d03b103f566406aa43cb18c36a1e64b"), true, 10,"CHwG8nrqs3yDhNwBnzcdtSpuFNWHfUkhoG"),
+                new CollateralFederationMember(new PubKey("02fd05bd7398e3e36d93c31a91b603418f9e4e1b251490b790eabb9cc302927be8"), true, 10,"CWvxWKHyzBzEEpcX2J1CCXZGzQKps2ux9j"),
                 new CollateralFederationMember(new PubKey("03caac79a12ffd58595d5eb1a3cda5cd5cce5fd82b595181d6bbf70514e48fcbff"), false, Money.Zero,"XGytWoLG4mcoMNXN387D3RJtUvsXwo1aNX"),//"XVGhRi1wSk4idA9NCZ9eXtrrLWti1iSPRP"),
             };
 
@@ -133,7 +133,7 @@ namespace Xels.Sidechains.Networks
                 bip9Deployments: bip9Deployments,
                 bip34Hash: null,  //new uint256("0x000000000000024b89b42a942fe0d9fea3bb44ab7bd1b19115dd6a759c0808b8"),
                 minerConfirmationWindow: 2016, // nPowTargetTimespan / nPowTargetSpacing
-                maxReorgLength: 24, // Heuristic. Roughly 2 * mining members
+                maxReorgLength: 240, // Heuristic. Roughly 2 * mining members
                 defaultAssumeValid: null,  //new uint256("0x0000005a39d58d384efabc1a9c79cd6e8c63894c77d4219526481cb49582ff29"), // 1400000
                 maxMoney: Money.Coins(100_000_000),
                 coinbaseMaturity: 1,
