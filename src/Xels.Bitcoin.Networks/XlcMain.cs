@@ -34,7 +34,7 @@ namespace Xels.Bitcoin.Networks
             this.CoinTicker = "XLC";
             this.DefaultBanTimeSeconds = 11250; // 500 (MaxReorg) * 45 (TargetSpacing) / 2 = 3 hours, 7 minutes and 30 seconds
 
-            this.CCRewardDummyAddress = "CPqxvnzfXngDi75xBJKqi4e6YrFsinrJka"; // CC main address
+            this.CCRewardDummyAddress = "CcwX6LmbL1ZUxgbdVz1pDe25SmmNtLnnTr"; // CC main address
             this.RewardClaimerBatchActivationHeight = 100; // Tuesday, 12 January 2021 9:00:00 AM (Estimated)
             this.RewardClaimerBlockInterval = 100;
 
