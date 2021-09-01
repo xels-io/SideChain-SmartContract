@@ -26,6 +26,7 @@ using Xels.Bitcoin.Networks;
 using Xels.Bitcoin.Utilities;
 using Xels.Features.Collateral;
 using Xels.Features.Collateral.CounterChain;
+using Xels.Features.FederatedPeg;
 using Xels.Features.SQLiteWalletRepository;
 using Xels.Sidechains.Networks;
 
@@ -112,7 +113,7 @@ namespace XelsDesktopWalletApp
                 .UseBlockStore(dbType)
                 .AddPoAFeature()
                 .UsePoAConsensus(dbType)
-                .AddPoACollateralMiningCapability<SmartContractPoABlockDefinition>()
+                .AddPoACollateralMiningCapability<FederatedPegBlockDefinition>()
                 .CheckCollateralCommitment()
                 .AddDynamicMemberhip()
                 .SetCounterChainNetwork(XlcNetwork.MainChainNetworks[nodeSettings.Network.NetworkType]())
