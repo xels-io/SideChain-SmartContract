@@ -8,6 +8,7 @@ using IWshRuntimeLibrary;
 
 using NBitcoin;
 using NBitcoin.Protocol;
+
 using Xels.Bitcoin;
 using Xels.Bitcoin.Builder;
 using Xels.Bitcoin.Configuration;
@@ -48,7 +49,7 @@ namespace Xels.CCPegD
 
         private static void Main(string[] args)
         {
-            //args = new string[] { "-sidechain" };
+           //args = new string[] { "-sidechain" };           
             RunFederationGatewayAsync(args).Wait();
             CreateShortCut();
         }
