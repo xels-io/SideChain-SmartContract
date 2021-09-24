@@ -1,6 +1,6 @@
 ﻿using System;
 using Xels.Bitcoin.Configuration;
-using Xels.Features.FederatedPeg.Conversion;
+using Xels.Bitcoin.Features.Wallet;
 
 namespace Xels.Bitcoin.Features.Interop
 {
@@ -10,7 +10,6 @@ namespace Xels.Bitcoin.Features.Interop
 
         public BNBInteropSettings BNBSettings { get; set; }
 
-        
         public InteropSettings(NodeSettings nodeSettings)
         {
             this.ETHSettings = new ETHInteropSettings(nodeSettings);
@@ -22,13 +21,13 @@ namespace Xels.Bitcoin.Features.Interop
             switch (chain)
             {
                 case DestinationChain.ETH:
-                {
-                    return this.ETHSettings;
-                }
+                    {
+                        return this.ETHSettings;
+                    }
                 case DestinationChain.BNB:
-                {
-                    return this.BNBSettings;
-                }
+                    {
+                        return this.BNBSettings;
+                    }
             }
 
             throw new NotImplementedException("Provided chain type not supported: " + chain);
@@ -56,7 +55,7 @@ namespace Xels.Bitcoin.Features.Interop
 
         /// <summary>Passphrase for the ethereum account.</summary>
         public string Passphrase { get; set; }
-        
+
         /// <summary>The gas limit for Ethereum interoperability transactions.</summary>
         public int GasLimit { get; set; }
 
@@ -66,11 +65,11 @@ namespace Xels.Bitcoin.Features.Interop
         #region unused
 
         /// <summary>This is intended for future functionality and should therefore not be provided/set yet.</summary>
-        public string InteropContractCCAddress { get; set; }
-        
+        public string InteropContractCcAddress { get; set; }
+
         /// <summary>This is intended for future functionality and should therefore not be provided/set yet.</summary>
         public string InteropContractAddress { get; set; }
-        
+
         #endregion
 
         public ETHInteropSettings(NodeSettings nodeSettings)
@@ -84,7 +83,7 @@ namespace Xels.Bitcoin.Features.Interop
             string wrappedXlcContractAddressKey = this.GetSettingsPrefix() + "wrappedxlccontractaddress";
             string multisigWalletContractAddressKey = this.GetSettingsPrefix() + "multisigwalletcontractaddress";
 
-            this.InteropContractCCAddress = nodeSettings.ConfigReader.GetOrDefault(this.GetSettingsPrefix() + "interopcontractCCaddress", "");
+            this.InteropContractCcAddress = nodeSettings.ConfigReader.GetOrDefault(this.GetSettingsPrefix() + "interopcontractccaddress", "");
             this.InteropContractAddress = nodeSettings.ConfigReader.GetOrDefault(this.GetSettingsPrefix() + "interopcontractaddress", "");
 
             this.MultisigWalletAddress = nodeSettings.ConfigReader.GetOrDefault(multisigWalletContractAddressKey, "");
@@ -105,7 +104,7 @@ namespace Xels.Bitcoin.Features.Interop
             if (string.IsNullOrWhiteSpace(this.ClientUrl))
                 throw new Exception($"Cannot initialize interoperability feature without -{clientUrlKey} specified.");
         }
-        
+
         protected virtual string GetSettingsPrefix()
         {
             return "eth_";

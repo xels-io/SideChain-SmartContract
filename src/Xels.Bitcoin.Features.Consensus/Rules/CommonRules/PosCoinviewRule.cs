@@ -181,6 +181,9 @@ namespace Xels.Bitcoin.Features.Consensus.Rules.CommonRules
         /// <inheritdoc />
         public override Money GetProofOfWorkReward(int height)
         {
+            if (this.IsPremine(height))
+                return this.consensus.PremineReward;
+
             return this.GetCalculatedRewardFromHeight(height);
         }
 
@@ -191,9 +194,10 @@ namespace Xels.Bitcoin.Features.Consensus.Rules.CommonRules
         /// <returns>Miner's coin stake reward.</returns>
         public Money GetProofOfStakeReward(int height)
         {
+            if (this.IsPremine(height))
+                return this.consensus.PremineReward;
+
             return this.GetCalculatedRewardFromHeight(height);
         }
-
-        
     }
 }

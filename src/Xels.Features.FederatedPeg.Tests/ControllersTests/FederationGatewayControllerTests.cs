@@ -60,7 +60,7 @@ namespace Xels.Features.FederatedPeg.Tests.ControllersTests
 
         public FederationGatewayControllerTests()
         {
-            this.network = CCNetwork.NetworksSelector.Regtest();
+            this.network = CcNetwork.NetworksSelector.Regtest();
 
             this.crossChainTransferStore = Substitute.For<ICrossChainTransferStore>();
             this.loggerFactory = Substitute.For<ILoggerFactory>();
@@ -229,7 +229,7 @@ namespace Xels.Features.FederatedPeg.Tests.ControllersTests
 
             var model = ((JsonResult)result).Value as FederationGatewayInfoModel;
             model.IsMainChain.Should().BeFalse();
-            model.FederationMiningPubKeys.Should().Equal(this.federationManager.GetFederationMembers().Select(keys => keys.ToString()));
+            model.FederationMiningPubKeys.Should().Equal(((PoAConsensusOptions)CcNetwork.NetworksSelector.Regtest().Consensus.Options).GenesisFederationMembers.Select(keys => keys.ToString()));
             model.MultiSigRedeemScript.Should().Be(redeemScript);
             string.Join(",", model.FederationNodeIpEndPoints).Should().Be(federationIps);
             model.IsActive.Should().BeTrue();
@@ -257,23 +257,25 @@ namespace Xels.Features.FederatedPeg.Tests.ControllersTests
         {
             var dbreezeSerializer = new DBreezeSerializer(this.network.Consensus.ConsensusFactory);
             var asyncProvider = new AsyncProvider(this.loggerFactory, this.signals);
+            var finalizedBlockRepo = new FinalizedBlockInfoRepository(new LevelDbKeyValueRepository(nodeSettings.DataFolder, dbreezeSerializer), asyncProvider);
+            finalizedBlockRepo.LoadFinalizedBlockInfoAsync(this.network).GetAwaiter().GetResult();
 
             var chainIndexerMock = new Mock<ChainIndexer>();
             var header = new BlockHeader();
             chainIndexerMock.Setup(x => x.Tip).Returns(new ChainedHeader(header, header.GetHash(), 0));
 
-            var votingManager = new VotingManager(this.federationManager, this.loggerFactory, new Mock<IPollResultExecutor>().Object, new Mock<INodeStats>().Object, nodeSettings.DataFolder, dbreezeSerializer, this.signals, this.network);
-            var federationHistory = new FederationHistory(this.federationManager, this.network, votingManager);
+            var votingManager = new VotingManager(this.federationManager, new Mock<IPollResultExecutor>().Object, new Mock<INodeStats>().Object, nodeSettings.DataFolder, dbreezeSerializer, this.signals, finalizedBlockRepo, this.network);
+            var federationHistory = new FederationHistory(this.federationManager, votingManager);
             votingManager.Initialize(federationHistory);
 
             return votingManager;
         }
 
-        public class TestNetwork : CCRegTest
+        public class TestNetwork : CcRegTest
         {
             public TestNetwork(Federation federation) : base()
             {
-                this.Name = "TestCCRegTest";
+                this.Name = "TestCcRegTest";
                 this.Federations = new Federations();
                 this.Federations.RegisterFederation(federation);
             }

@@ -19,13 +19,13 @@ namespace Xels.Bitcoin.Features.SignalR
             BroadcastFrequencySeconds = 5
         };
 
-        public static void ConfigureSignalRForCC(SignalROptions options)
+        public static void ConfigureSignalRForCc(SignalROptions options)
         {
             options.EventsToHandle = EventsToHandle;
 
             options.ClientEventBroadcasters = new[]
             {
-                (Broadcaster: typeof(CCWalletInfoBroadcaster), ClientEventBroadcasterSettings: Settings)
+                (Broadcaster: typeof(CcWalletInfoBroadcaster), ClientEventBroadcasterSettings: Settings)
             };
         }
 

@@ -20,11 +20,11 @@ namespace Xels.Sidechains.Networks
     /// <summary>
     /// <see cref="PoANetwork"/>.
     /// </summary>
-    public class CCMain : PoANetwork
+    public class CcMain : PoANetwork
     {
-        public CCMain()
+        public CcMain()
         {
-            this.Name = "CCMain";
+            this.Name = "CcMain";
             this.NetworkType = NetworkType.Mainnet;
             this.CoinTicker = "XCC";
             this.Magic = 0x522357AC;
@@ -38,12 +38,12 @@ namespace Xels.Sidechains.Networks
             this.MinTxFee = 10000;
             this.FallbackFee = 10000;
             this.MinRelayTxFee = 10000;
-            this.RootFolderName = CCNetwork.NetworkRootFolderName;
-            this.DefaultConfigFilename = CCNetwork.NetworkDefaultConfigFilename;
+            this.RootFolderName = CcNetwork.NetworkRootFolderName;
+            this.DefaultConfigFilename = CcNetwork.NetworkDefaultConfigFilename;
             this.MaxTimeOffsetSeconds = 25 * 60;
             this.DefaultBanTimeSeconds = 1920; // 240 (MaxReorg) * 16 (TargetSpacing) / 2 = 32 Minutes
 
-            this.CCRewardDummyAddress = "CcwX6LmbL1ZUxgbdVz1pDe25SmmNtLnnTr";
+            this.CcRewardDummyAddress = "CcwX6LmbL1ZUxgbdVz1pDe25SmmNtLnnTr";
 
             var consensusFactory = new SmartContractCollateralPoAConsensusFactory();
 
@@ -55,7 +55,7 @@ namespace Xels.Sidechains.Networks
             this.GenesisReward = Money.Zero;
 
             string coinbaseText = "There is hope yet! We all need to work together. WE GOT THIS!!!";
-            Block genesisBlock = CCNetwork.CreateGenesis(consensusFactory, this.GenesisTime, this.GenesisNonce, this.GenesisBits, this.GenesisVersion, this.GenesisReward, coinbaseText);
+            Block genesisBlock = CcNetwork.CreateGenesis(consensusFactory, this.GenesisTime, this.GenesisNonce, this.GenesisBits, this.GenesisVersion, this.GenesisReward, coinbaseText);
 
             this.Genesis = genesisBlock;
 
@@ -176,7 +176,7 @@ namespace Xels.Sidechains.Networks
 
             this.Checkpoints = new Dictionary<int, CheckpointInfo>()
             {
-                
+
             };
 
             this.DNSSeeds = new List<DNSSeedData>

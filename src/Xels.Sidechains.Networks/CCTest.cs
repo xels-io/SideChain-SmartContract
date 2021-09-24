@@ -19,13 +19,13 @@ namespace Xels.Sidechains.Networks
     /// <summary>
     /// Right now, ripped nearly straight from <see cref="PoANetwork"/>.
     /// </summary>
-    public class CCTest : PoANetwork
+    public class CcTest : PoANetwork
     {
-        public CCTest()
+        public CcTest()
         {
-            this.Name = "CCTest";
+            this.Name = "CcTest";
             this.NetworkType = NetworkType.Testnet;
-            this.CoinTicker = "TXCC";
+            this.CoinTicker = "TCRS";
             this.Magic = 0x522357B;
             this.DefaultPort = 26179;
             this.DefaultMaxOutboundConnections = 16;
@@ -37,12 +37,12 @@ namespace Xels.Sidechains.Networks
             this.MinTxFee = 10000;
             this.FallbackFee = 10000;
             this.MinRelayTxFee = 10000;
-            this.RootFolderName = CCNetwork.NetworkRootFolderName;
-            this.DefaultConfigFilename = CCNetwork.NetworkDefaultConfigFilename;
+            this.RootFolderName = CcNetwork.NetworkRootFolderName;
+            this.DefaultConfigFilename = CcNetwork.NetworkDefaultConfigFilename;
             this.MaxTimeOffsetSeconds = 25 * 60;
             this.DefaultBanTimeSeconds = 1920; // 240 (MaxReorg) * 16 (TargetSpacing) / 2 = 32 Minutes
 
-            this.CCRewardDummyAddress = "tGXZrZiU44fx3SQj8tAQ3Zexy2VuELZtoh";
+            this.CcRewardDummyAddress = "tGXZrZiU44fx3SQj8tAQ3Zexy2VuELZtoh";
 
             var consensusFactory = new SmartContractCollateralPoAConsensusFactory();
 
@@ -53,8 +53,8 @@ namespace Xels.Sidechains.Networks
             this.GenesisVersion = 1;
             this.GenesisReward = Money.Zero;
 
-            string coinbaseText = "https://github.com/Xelsproject/XelsBitcoinFullNode/tree/master/src/Xels.CCD";
-            Block genesisBlock = CCNetwork.CreateGenesis(consensusFactory, this.GenesisTime, this.GenesisNonce, this.GenesisBits, this.GenesisVersion, this.GenesisReward, coinbaseText);
+            string coinbaseText = "https://github.com/Xelsproject/XelsBitcoinFullNode/tree/master/src/Xels.CcD";
+            Block genesisBlock = CcNetwork.CreateGenesis(consensusFactory, this.GenesisTime, this.GenesisNonce, this.GenesisBits, this.GenesisVersion, this.GenesisReward, coinbaseText);
 
             this.Genesis = genesisBlock;
 
@@ -216,11 +216,12 @@ namespace Xels.Sidechains.Networks
                 { 1_800_000, new CheckpointInfo(new uint256("0x57a3119de52cf43b66d6e805a644c20fdee63557038cd68c429d47b21d111084")) },
                 { 1_900_000, new CheckpointInfo(new uint256("0xd413f3aed50f4a1a4580e7c506223a605e222849da9649ca6d43ad7aac5c5af5")) },
                 { 2_050_000, new CheckpointInfo(new uint256("0x543511cdefc38ee4fc272872543427cf08c6406ab602799b47138e418aa195fc")) },
+                { 2_300_000, new CheckpointInfo(new uint256("0x8e189e0c38cb55c795276d13cc7f6d9c6825eb85324f38ec94a9d4df5d5b5938")) },
             };
 
             this.DNSSeeds = new List<DNSSeedData>
             {
-                new DNSSeedData("CCtest1.Xelsnetwork.com", "CCtest1.Xelsnetwork.com")
+                new DNSSeedData("cctest1.Xelsnetwork.com", "cctest1.Xelsnetwork.com")
             };
 
             this.SeedNodes = new List<NetworkAddress>();

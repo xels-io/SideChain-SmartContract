@@ -2,9 +2,9 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
-        <AssemblyName>Xels.CCDnsD</AssemblyName>
+        <AssemblyName>Xels.CcDnsD</AssemblyName>
         <OutputType>Exe</OutputType>
-        <PackageId>Xels.CCDnsD</PackageId>
+        <PackageId>Xels.CcDnsD</PackageId>
         <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
         <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
         <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
@@ -17,7 +17,7 @@
     <PropertyGroup>
         <LangVersion>latest</LangVersion>
         <Authors>Xels Group Ltd.</Authors>
-        <Version>1.0.7.0</Version>
+        <Version>1.0.9.5</Version>
     </PropertyGroup>
 
     <ItemGroup>

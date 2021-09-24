@@ -154,7 +154,6 @@ namespace Xels.Bitcoin.Features.BlockStore.Tests
             var chainState = new Mock<IChainState>();
             var addressIndexer = new Mock<IAddressIndexer>();
             var utxoIndexer = new Mock<IUtxoIndexer>();
-            var scriptAddressReader = Mock.Of<IScriptAddressReader>();
 
             ChainIndexer chainIndexer = WalletTestsHelpers.GenerateChainWithHeight(3, new XlcTest());
 
@@ -163,7 +162,7 @@ namespace Xels.Bitcoin.Features.BlockStore.Tests
             chainState.Setup(c => c.ConsensusTip)
                 .Returns(chainIndexer.GetHeader(2));
 
-            var controller = new BlockStoreController(new XlcMain(), logger.Object, store.Object, chainState.Object, chainIndexer, addressIndexer.Object, utxoIndexer.Object, scriptAddressReader);
+            var controller = new BlockStoreController(new XlcMain(), logger.Object, store.Object, chainState.Object, chainIndexer, addressIndexer.Object, utxoIndexer.Object);
 
             var json = (JsonResult)controller.GetBlockCount();
             int result = int.Parse(json.Value.ToString());
@@ -178,7 +177,6 @@ namespace Xels.Bitcoin.Features.BlockStore.Tests
             var chainState = new Mock<IChainState>();
             var addressIndexer = new Mock<IAddressIndexer>();
             var utxoIndexer = new Mock<IUtxoIndexer>();
-            var scriptAddressReader = Mock.Of<IScriptAddressReader>();
 
             logger.Setup(l => l.CreateLogger(It.IsAny<string>())).Returns(Mock.Of<ILogger>);
 
@@ -187,7 +185,7 @@ namespace Xels.Bitcoin.Features.BlockStore.Tests
             chain.Setup(c => c.GetHeader(It.IsAny<uint256>())).Returns(new ChainedHeader(block.Header, block.Header.GetHash(), 1));
             chain.Setup(x => x.Tip).Returns(new ChainedHeader(block.Header, block.Header.GetHash(), 1));
 
-            var controller = new BlockStoreController(new XlcMain(), logger.Object, store.Object, chainState.Object, chain.Object, addressIndexer.Object, utxoIndexer.Object, scriptAddressReader);
+            var controller = new BlockStoreController(new XlcMain(), logger.Object, store.Object, chainState.Object, chain.Object, addressIndexer.Object, utxoIndexer.Object);
 
             return (store, controller);
         }

@@ -905,12 +905,9 @@ namespace Xels.Bitcoin.Consensus
             {
                 var badPeers = new List<int>();
 
-                if (!validationContext.InsufficientHeaderInformation)
+                lock (this.peerLock)
                 {
-                    lock (this.peerLock)
-                    {
-                        badPeers = this.chainedHeaderTree.PartialOrFullValidationFailed(blockToConnect.ChainedHeader);
-                    }
+                    badPeers = this.chainedHeaderTree.PartialOrFullValidationFailed(blockToConnect.ChainedHeader);
                 }
 
                 var failureResult = new ConnectBlocksResult(false)

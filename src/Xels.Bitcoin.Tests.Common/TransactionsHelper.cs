@@ -40,10 +40,10 @@ namespace Xels.Bitcoin.Tests.Common
             return coinStake;
         }
 
-        public static void CreateCCRewardOutput(Transaction coinstakeTransaction, Network network)
+        public static void CreateCcRewardOutput(Transaction coinstakeTransaction, Network network)
         {
-            var CCRewardOutput = new TxOut(network.Consensus.ProofOfStakeReward / 2, XlcCoinstakeRule.CCRewardScript);
-            coinstakeTransaction.Outputs.Add(CCRewardOutput);
+            var ccRewardOutput = new TxOut(network.Consensus.ProofOfStakeReward / 2, XlcCoinstakeRule.CcRewardScript);
+            coinstakeTransaction.Outputs.Add(ccRewardOutput);
         }
 
         /// <summary>Creates invalid PoW block with coinbase transaction.</summary>

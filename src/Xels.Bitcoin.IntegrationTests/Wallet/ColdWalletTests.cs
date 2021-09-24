@@ -8,6 +8,8 @@ using Xels.Bitcoin.Builder;
 using Xels.Bitcoin.Features.Api;
 using Xels.Bitcoin.Features.BlockStore;
 using Xels.Bitcoin.Features.ColdStaking;
+using Xels.Bitcoin.Features.ColdStaking.Controllers;
+using Xels.Bitcoin.Features.ColdStaking.Models;
 using Xels.Bitcoin.Features.Consensus;
 using Xels.Bitcoin.Features.MemoryPool;
 using Xels.Bitcoin.Features.Miner;
@@ -197,6 +199,56 @@ namespace Xels.Bitcoin.IntegrationTests.Wallet
                     TestHelper.MineBlocks(XelsSender, 1, true);
                     return coldWalletManager.GetSpendableTransactionsInColdWallet(WalletName, true).Sum(s => s.Transaction.Amount) > receivetotal2;
                 }, cancellationToken: cancellationToken);
+            }
+        }
+
+        [Fact]
+        [Trait("Unstable", "True")]
+        public async Task CanRetrieveFilteredUtxosAsync()
+        {
+            using (var builder = NodeBuilder.Create(this))
+            {
+                var network = new XlcRegTest();
+
+                CoreNode XelsSender = CreatePowPosMiningNode(builder, network, TestBase.CreateTestDir(this), coldStakeNode: false);
+                CoreNode XelsColdStake = CreatePowPosMiningNode(builder, network, TestBase.CreateTestDir(this), coldStakeNode: true);
+
+                XelsSender.WithReadyBlockchainData(ReadyBlockchain.XlcRegTest150Miner).Start();
+                XelsColdStake.WithWallet().Start();
+
+                var coldWalletManager = XelsColdStake.FullNode.WalletManager() as ColdStakingManager;
+
+                // Set up cold staking account on cold wallet.
+                coldWalletManager.GetOrCreateColdStakingAccount(WalletName, true, Password, null);
+                HdAddress coldWalletAddress = coldWalletManager.GetFirstUnusedColdStakingAddress(WalletName, true);
+
+                var walletAccountReference = new WalletAccountReference(WalletName, Account);
+                long total2 = XelsSender.FullNode.WalletManager().GetSpendableTransactionsInAccount(walletAccountReference, 1).Sum(s => s.Transaction.Amount);
+
+                // Sync nodes.
+                TestHelper.Connect(XelsSender, XelsColdStake);
+
+                // Send coins to cold address.
+                Money amountToSend = total2 - network.Consensus.ProofOfWorkReward;
+                Transaction transaction1 = XelsSender.FullNode.WalletTransactionHandler().BuildTransaction(CreateContext(XelsSender.FullNode.Network, new WalletAccountReference(WalletName, Account), Password, coldWalletAddress.ScriptPubKey, amountToSend, FeeType.Medium, 1));
+
+                // Broadcast to the other nodes.
+                await XelsSender.FullNode.NodeController<WalletController>().SendTransaction(new SendTransactionRequest(transaction1.ToHex()));
+
+                // Wait for the transaction to arrive.
+                TestBase.WaitLoop(() => XelsColdStake.CreateRPCClient().GetRawMempool().Length > 0);
+
+                // Despite the funds being sent to an address in the cold account, the wallet does not recognise the output as funds belonging to it.
+                Assert.True(XelsColdStake.FullNode.WalletManager().GetBalances(WalletName, Account).Sum(a => a.AmountUnconfirmed + a.AmountUnconfirmed) == 0);
+
+                uint256[] mempoolTransactionId = XelsColdStake.CreateRPCClient().GetRawMempool();
+
+                Transaction misspentTransaction = XelsColdStake.CreateRPCClient().GetRawTransaction(mempoolTransactionId[0]);
+
+                // Now retrieve the UTXO sent to the cold address. The funds will reappear in a normal account on the cold staking node.
+                XelsColdStake.FullNode.NodeController<ColdStakingController>().RetrieveFilteredUtxos(new RetrieveFilteredUtxosRequest() { WalletName = XelsColdStake.WalletName, WalletPassword = XelsColdStake.WalletPassword, Hex = misspentTransaction.ToHex(), WalletAccount = null, Broadcast = true});
+
+                TestBase.WaitLoop(() => XelsColdStake.FullNode.WalletManager().GetBalances(WalletName, Account).Sum(a => a.AmountUnconfirmed + a.AmountUnconfirmed) > 0);
             }
         }
     }

@@ -10,12 +10,12 @@ public class BehaviourTest : SmartContract
     {
         get
         {
-            return this.PersistentState.GetBytes(nameof(Data));
+            return this.State.GetBytes(nameof(Data));
         }
 
         private set
         {
-            this.PersistentState.SetBytes(nameof(Data), value);
+            this.State.SetBytes(nameof(Data), value);
         }
     }
 

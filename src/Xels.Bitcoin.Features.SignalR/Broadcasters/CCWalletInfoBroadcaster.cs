@@ -8,9 +8,9 @@ namespace Xels.Bitcoin.Features.SignalR.Broadcasters
     /// <summary>
     /// Broadcasts current staking information to SignalR clients
     /// </summary>
-    public class CCWalletInfoBroadcaster : WalletInfoBroadcaster
+    public class CcWalletInfoBroadcaster : WalletInfoBroadcaster
     {
-        public CCWalletInfoBroadcaster(
+        public CcWalletInfoBroadcaster(
             ILoggerFactory loggerFactory,
             IWalletService walletService,
             IAsyncProvider asyncProvider,

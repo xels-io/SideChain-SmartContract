@@ -5,15 +5,7 @@
     
     <AssemblyName>Xels.Bitcoin.IntegrationTests.Common</AssemblyName>
     <PackageId>Xels.Features.IntegrationTests.Common</PackageId>
-    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
-    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
-    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
-    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
-    <Version>1.0.8.0</Version>
+    <Version>1.0.9.5</Version>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Product />
   </PropertyGroup>

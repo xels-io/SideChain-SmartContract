@@ -105,7 +105,7 @@ namespace Xels.Bitcoin.Networks
                     new DateTime(2020, 10, 1, 0, 0, 0, DateTimeKind.Utc),
                     BIP9DeploymentsParameters.DefaultMainnetThreshold),
 
-                [XelsBIP9Deployments.ColdStaking] = new BIP9DeploymentsParameters("ColdStaking", 2, 
+                [XelsBIP9Deployments.ColdStaking] = new BIP9DeploymentsParameters("ColdStaking", 2,
                     new DateTime(2019, 12, 2, 0, 0, 0, DateTimeKind.Utc),
                     new DateTime(2020, 12, 2, 0, 0, 0, DateTimeKind.Utc),
                     BIP9DeploymentsParameters.DefaultMainnetThreshold)
@@ -173,8 +173,8 @@ namespace Xels.Bitcoin.Networks
 
             this.DNSSeeds = new List<DNSSeedData>
             {
-                new DNSSeedData("mainnet1.Xelsnetwork.com", "mainnet1.Xelsnetwork.com"),
-                new DNSSeedData("mainnet2.Xelsnetwork.com", "mainnet2.Xelsnetwork.com")
+                new DNSSeedData("api.xels.io","api.xels.io"),
+                new DNSSeedData("mainnet.xels.io","mainnet.xels.io")
             };
 
             this.SeedNodes = new List<NetworkAddress>

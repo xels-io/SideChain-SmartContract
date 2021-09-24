@@ -71,7 +71,7 @@
 
         public static ConsensusError BadCoinstakeAmount => new ConsensusError("bad-cs-amount", "coinstake pays too much");
 
-        public static ConsensusError BadCCRewardAmount => new ConsensusError("bad-CC-reward", "CC reward percentage too small");
+        public static ConsensusError BadCcRewardAmount => new ConsensusError("bad-cc-reward", "cc reward percentage too small");
 
         public static ConsensusError BadTransactionPrematureCoinbaseSpending => new ConsensusError("bad-txns-premature-spend-of-coinbase", "tried to spend coinbase before maturity");
 

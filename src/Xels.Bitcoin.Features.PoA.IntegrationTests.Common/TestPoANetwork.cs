@@ -32,7 +32,7 @@ namespace Xels.Bitcoin.Features.PoA.IntegrationTests.Common
                 new FederationMember(this.FederationKey3.PubKey)  // 02d6792cf941b68edd1e9056653573917cbaf974d46e9eeb9801d6fcedf846477a
             };
 
-            this.CCRewardDummyAddress = "PDpvfcpPm9cjQEoxWzQUL699N8dPaf8qML";
+            this.CcRewardDummyAddress = "PDpvfcpPm9cjQEoxWzQUL699N8dPaf8qML";
 
             this.XlcMiningMultisigMembers = genesisFederationMembers.Select(m => m.PubKey).ToArray();
 

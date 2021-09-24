@@ -13,7 +13,7 @@ namespace Xels.SmartContracts.Core.Tests
 
         public ChainIndexerRangeQueryTests()
         {
-            this.network = new CCRegTest();
+            this.network = new CcRegTest();
         }
 
         [Theory]

@@ -92,7 +92,7 @@ namespace Xels.Bitcoin.Features.Consensus.Rules.CommonRules
             // Check that ScriptPubKeys of all outputs of this transaction, except for the marker output (a special first
             // output of each coinstake transaction) and the pubkey output (an optional special second output that contains
             // public key in coinstake transaction), are the same as ScriptPubKeys of the inputs. If they are not, the script fails.
-            bool CCScriptFlagSeen = false;
+            bool ccScriptFlagSeen = false;
 
             for (int i = 2; i < coinstakeTransaction.Outputs.Count; i++)
             {
@@ -101,9 +101,9 @@ namespace Xels.Bitcoin.Features.Consensus.Rules.CommonRules
                     // We have to make allowance for the fact that one of the cold stake outputs will be the CC reward payment script.
                     // So do not throw a consensus error for those unless more than one appears in the transaction.
                     // We do not need to check the reward amount, because that is done elsewhere.
-                    if (coinstakeTransaction.Outputs[i].ScriptPubKey == XlcCoinstakeRule.CCRewardScript && !CCScriptFlagSeen)
+                    if (coinstakeTransaction.Outputs[i].ScriptPubKey == XlcCoinstakeRule.CcRewardScript && !ccScriptFlagSeen)
                     {
-                        CCScriptFlagSeen = true;
+                        ccScriptFlagSeen = true;
                         continue;
                     }
 

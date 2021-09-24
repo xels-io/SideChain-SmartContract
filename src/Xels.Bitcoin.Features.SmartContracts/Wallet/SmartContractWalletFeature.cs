@@ -6,8 +6,10 @@ using NLog;
 using Xels.Bitcoin.Builder;
 using Xels.Bitcoin.Builder.Feature;
 using Xels.Bitcoin.Configuration.Logging;
+using Xels.Bitcoin.Consensus;
 using Xels.Bitcoin.Features.Wallet;
 using Xels.Bitcoin.Features.Wallet.Interfaces;
+using Xels.Bitcoin.Interfaces;
 
 namespace Xels.Bitcoin.Features.SmartContracts.Wallet
 {
@@ -52,6 +54,11 @@ namespace Xels.Bitcoin.Features.SmartContracts.Wallet
                 .DependOn<BaseWalletFeature>()
                 .FeatureServices(services =>
                 {
+                    // Registers the ScriptAddressReader concrete type and replaces the IScriptAddressReader implementation
+                    // with SmartContractScriptAddressReader, which depends on the ScriptAddressReader concrete type.
+                    services.AddSingleton<ScriptAddressReader>();
+                    services.Replace(new ServiceDescriptor(typeof(IScriptAddressReader), typeof(SmartContractScriptAddressReader), ServiceLifetime.Singleton));
+
                     services.RemoveAll(typeof(StandardTransactionPolicy));
                     services.AddSingleton<StandardTransactionPolicy, SmartContractTransactionPolicy>();
 

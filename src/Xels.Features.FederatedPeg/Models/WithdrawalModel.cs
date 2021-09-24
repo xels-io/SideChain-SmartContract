@@ -16,7 +16,7 @@ namespace Xels.Features.FederatedPeg.Models
             this.Id = transfer.PartialTransaction?.GetHash();
             this.Amount = transfer.DepositAmount;
             var target = transfer.DepositTargetAddress.GetDestinationAddress(network).ToString();
-            this.PayingTo = target == network.CCRewardDummyAddress ? RewardsString : target;
+            this.PayingTo = target == network.CcRewardDummyAddress ? RewardsString : target;
             this.BlockHeight = transfer.BlockHeight ?? 0;
             this.BlockHash = transfer.BlockHash;
         }
@@ -28,7 +28,7 @@ namespace Xels.Features.FederatedPeg.Models
             this.Amount = withdrawal.Amount;
             this.BlockHash = withdrawal.BlockHash;
             this.BlockHeight = withdrawal.BlockNumber;
-            this.PayingTo = withdrawal.TargetAddress == network.CCRewardDummyAddress ? RewardsString : withdrawal.TargetAddress;
+            this.PayingTo = withdrawal.TargetAddress == network.CcRewardDummyAddress ? RewardsString : withdrawal.TargetAddress;
             this.TransferStatus = transfer?.Status.ToString();
         }
 

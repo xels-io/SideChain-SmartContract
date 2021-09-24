@@ -1,14 +1,14 @@
 {
   "profiles": {
-    "Xels.CCMinerD": {
+    "Xels.CcMinerD": {
       "commandName": "Project",
       "commandLineArgs": "-txindex=1"
     },
-    "Xels.CCMinerD TestNet": {
+    "Xels.CcMinerD TestNet": {
       "commandName": "Project",
       "commandLineArgs": "-testnet -txindex=1"
     },
-    "Xels.CCMinerD RegTest": {
+    "Xels.CcMinerD RegTest": {
       "commandName": "Project",
       "commandLineArgs": "-regtest -txindex=1"
     }

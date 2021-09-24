@@ -34,7 +34,6 @@ namespace Xels.Features.FederatedPeg.Controllers
     /// </summary>
     [ApiVersion("1")]
     [Route("api/[controller]")]
-    [ApiController]
     public class FederationWalletController : Controller
     {
         private readonly ICrossChainTransferStore crossChainTransferStore;

@@ -57,7 +57,7 @@ namespace Xels.SmartContracts.CLR.Serialization
             return this.primitiveSerializer.Serialize(u128);
         }
 
-        public byte[] Serialize( UInt256 u256)
+        public byte[] Serialize(UInt256 u256)
         {
             return this.primitiveSerializer.Serialize(u256);
         }
@@ -185,7 +185,7 @@ namespace Xels.SmartContracts.CLR.Serialization
             return success ? result : default(ulong);
         }
 
-        public  UInt128 ToUInt128(byte[] val)
+        public UInt128 ToUInt128(byte[] val)
         {
             if (val == null)
                 return 0;
@@ -193,12 +193,12 @@ namespace Xels.SmartContracts.CLR.Serialization
             if (val.Length < 16)
                 return 0;
 
-            (bool success,  UInt128 result) = this.TryDeserializeValue< UInt128>(val);
+            (bool success, UInt128 result) = this.TryDeserializeValue<UInt128>(val);
 
-            return success ? result :  UInt128.Zero;
+            return success ? result : UInt128.Zero;
         }
 
-        public  UInt256 ToUInt256(byte[] val)
+        public UInt256 ToUInt256(byte[] val)
         {
             if (val == null)
                 return 0;
@@ -206,9 +206,9 @@ namespace Xels.SmartContracts.CLR.Serialization
             if (val.Length < 32)
                 return 0;
 
-            (bool success,  UInt256 result) = this.TryDeserializeValue< UInt256>(val);
+            (bool success, UInt256 result) = this.TryDeserializeValue<UInt256>(val);
 
-            return success ? result :  UInt256.Zero;
+            return success ? result : UInt256.Zero;
         }
 
         public string ToString(byte[] val)

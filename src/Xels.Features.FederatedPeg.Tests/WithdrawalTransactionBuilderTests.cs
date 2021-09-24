@@ -32,7 +32,7 @@ namespace Xels.Features.FederatedPeg.Tests
         public WithdrawalTransactionBuilderTests()
         {
             this.loggerFactory = new Mock<ILoggerFactory>();
-            this.network = NetworkRegistration.Register(new CCRegTest());
+            this.network = NetworkRegistration.Register(new CcRegTest());
             this.federationWalletManager = new Mock<IFederationWalletManager>();
             this.federationWalletTransactionHandler = new Mock<IFederationWalletTransactionHandler>();
             this.federationGatewaySettings = new Mock<IFederatedPegSettings>();

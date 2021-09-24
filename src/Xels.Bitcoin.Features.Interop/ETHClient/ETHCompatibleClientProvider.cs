@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Xels.Features.FederatedPeg.Conversion;
+using Xels.Bitcoin.Features.Wallet;
 
 namespace Xels.Bitcoin.Features.Interop.ETHClient
 {

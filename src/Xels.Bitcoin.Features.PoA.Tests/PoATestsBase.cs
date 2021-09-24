@@ -69,11 +69,13 @@ namespace Xels.Bitcoin.Features.PoA.Tests
             this.asyncProvider = new AsyncProvider(this.loggerFactory, this.signals);
 
             var dataFolder = new DataFolder(TestBase.CreateTestDir(this));
+            var finalizedBlockRepo = new FinalizedBlockInfoRepository(new LevelDbKeyValueRepository(dataFolder, this.dBreezeSerializer), this.asyncProvider);
+            finalizedBlockRepo.LoadFinalizedBlockInfoAsync(this.network).GetAwaiter().GetResult();
 
             this.resultExecutorMock = new Mock<IPollResultExecutor>();
 
-            this.votingManager = new VotingManager(this.federationManager, this.loggerFactory, this.resultExecutorMock.Object, new NodeStats(dateTimeProvider, NodeSettings.Default(this.network), new Mock<IVersionProvider>().Object),
-                 dataFolder, this.dBreezeSerializer, this.signals, this.network, null, this.chainIndexerMock.Object);
+            this.votingManager = new VotingManager(this.federationManager, this.resultExecutorMock.Object, new NodeStats(dateTimeProvider, NodeSettings.Default(this.network), new Mock<IVersionProvider>().Object), dataFolder,
+                 this.dBreezeSerializer, this.signals, finalizedBlockRepo, this.network);
 
             this.votingManager.Initialize(this.federationHistory);
 
@@ -110,12 +112,14 @@ namespace Xels.Bitcoin.Features.PoA.Tests
 
             var federationManager = new FederationManager(fullNode.Object, network, nodeSettings, signals, counterChainSettings);
             var asyncProvider = new AsyncProvider(loggerFactory, signals);
+            var finalizedBlockRepo = new FinalizedBlockInfoRepository(new LevelDbKeyValueRepository(nodeSettings.DataFolder, dbreezeSerializer), asyncProvider);
+            finalizedBlockRepo.LoadFinalizedBlockInfoAsync(network).GetAwaiter().GetResult();
 
             var chainIndexerMock = new Mock<ChainIndexer>();
             var header = new BlockHeader();
             chainIndexerMock.Setup(x => x.Tip).Returns(new ChainedHeader(header, header.GetHash(), 0));
-            var votingManager = new VotingManager(federationManager, loggerFactory,
-                new Mock<IPollResultExecutor>().Object, new Mock<INodeStats>().Object, nodeSettings.DataFolder, dbreezeSerializer, signals, network, null, chainIndexerMock.Object, null, nodeSettings);
+            var votingManager = new VotingManager(federationManager, new Mock<IPollResultExecutor>().Object,
+                new Mock<INodeStats>().Object, nodeSettings.DataFolder, dbreezeSerializer, signals, finalizedBlockRepo, network);
 
             var federationHistory = new Mock<IFederationHistory>();
             federationHistory.Setup(x => x.GetFederationMemberForBlock(It.IsAny<ChainedHeader>())).Returns<ChainedHeader>((chainedHeader) =>
@@ -124,12 +128,33 @@ namespace Xels.Bitcoin.Features.PoA.Tests
                 return members[chainedHeader.Height % members.Count];
             });
 
+            federationHistory.Setup(x => x.GetFederationMemberForBlock(It.IsAny<ChainedHeader>(), It.IsAny<List<IFederationMember>>())).Returns<ChainedHeader, List<IFederationMember>>((chainedHeader, members) =>
+            {
+                members = members ?? ((PoAConsensusOptions)network.Consensus.Options).GenesisFederationMembers;
+                return members[chainedHeader.Height % members.Count];
+            });
+
             federationHistory.Setup(x => x.GetFederationForBlock(It.IsAny<ChainedHeader>())).Returns<ChainedHeader>((chainedHeader) =>
             {
                 return ((PoAConsensusOptions)network.Consensus.Options).GenesisFederationMembers;
             });
 
-            federationHistory.Setup(x => x.CanGetFederationForBlock(It.IsAny<ChainedHeader>())).Returns<ChainedHeader>((chainedHeader) => true);
+            federationHistory
+                .Setup(x => x.GetFederationMemberForTimestamp(It.IsAny<uint>(), It.IsAny<PoAConsensusOptions>()))
+                .Returns<uint, PoAConsensusOptions>((headerUnixTimestamp, poAConsensusOptions) =>
+                {
+                    List<IFederationMember> federationMembers = poAConsensusOptions.GenesisFederationMembers;
+
+                    uint roundTime = (uint)(federationMembers.Count * poAConsensusOptions.TargetSpacingSeconds);
+
+                    // Time when current round started.
+                    uint roundStartTimestamp = (headerUnixTimestamp / roundTime) * roundTime;
+
+                    // Slot number in current round.
+                    int currentSlotNumber = (int)((headerUnixTimestamp - roundStartTimestamp) / poAConsensusOptions.TargetSpacingSeconds);
+
+                    return federationMembers[currentSlotNumber];
+                });
 
             votingManager.Initialize(federationHistory.Object);
             fullNode.Setup(x => x.NodeService<VotingManager>(It.IsAny<bool>())).Returns(votingManager);

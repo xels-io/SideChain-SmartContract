@@ -225,7 +225,7 @@ namespace Xels.Features.FederatedPeg
                 benchLog.AppendLine(string.Join(Environment.NewLine, maturingDeposits.Select(d =>
                 {
                     var target = d.deposit.TargetAddress;
-                    if (target == this.network.CCRewardDummyAddress)
+                    if (target == this.network.CcRewardDummyAddress)
                         target = "Reward Distribution";
                     return $"{d.deposit.Amount} ({d.blocksBeforeMature}) => {target} ({d.deposit.RetrievalType})";
                 }).Take(10)));

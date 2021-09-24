@@ -454,7 +454,7 @@ namespace NBitcoin
         /// <summary>
         /// This is used for reward distribution transactions.
         /// </summary>
-        public string CCRewardDummyAddress { get; protected set; }
+        public string CcRewardDummyAddress { get; protected set; }
 
         /// <summary>
         /// The height at which reward batching will be activated.

@@ -31,13 +31,13 @@ namespace Xels.Features.FederatedPeg.IntegrationTests
     {
         private const int DepositConfirmations = 5;
 
-        private readonly CCRegTest sidechainNetwork;
+        private readonly CcRegTest sidechainNetwork;
         private readonly Network mainNetwork;
         private readonly (Script payToMultiSig, BitcoinAddress sidechainMultisigAddress, BitcoinAddress mainchainMultisigAddress) scriptAndAddresses;
 
         public NodeInitialisationTests()
         {
-            this.sidechainNetwork = (CCRegTest)CCNetwork.NetworksSelector.Regtest();
+            this.sidechainNetwork = (CcRegTest)CcNetwork.NetworksSelector.Regtest();
             this.mainNetwork = Networks.Xlc.Regtest();
             this.mainNetwork.RewardClaimerBatchActivationHeight = 50;
 
@@ -50,7 +50,7 @@ namespace Xels.Features.FederatedPeg.IntegrationTests
         {
             using (var nodeBuilder = SidechainNodeBuilder.CreateSidechainNodeBuilder(this))
             {
-                CoreNode user = nodeBuilder.CreateSidechainNode(new CCSideChainStartsRegTest());
+                CoreNode user = nodeBuilder.CreateSidechainNode(new CcSideChainStartsRegTest());
 
                 user.Start();
 
@@ -133,7 +133,7 @@ namespace Xels.Features.FederatedPeg.IntegrationTests
         [Fact]
         public void MinerPairStarts()
         {
-            CCRegTest collateralSidechainNetwork = new CCSingleCollateralRegTest();
+            CcRegTest collateralSidechainNetwork = new CcSingleCollateralRegTest();
 
             using var sideNodeBuilder = SidechainNodeBuilder.CreateSidechainNodeBuilder(this);
             using var nodeBuilder = NodeBuilder.Create(this);
@@ -225,22 +225,22 @@ namespace Xels.Features.FederatedPeg.IntegrationTests
         }
     }
 
-    internal class CCSingleCollateralRegTest : CCRegTest
+    internal class CcSingleCollateralRegTest : CcRegTest
     {
-        internal CCSingleCollateralRegTest()
+        internal CcSingleCollateralRegTest()
         {
-            this.Name = "CCSingleCollateralRegTest";
+            this.Name = "CcSingleCollateralRegTest";
             var firstMember = this.ConsensusOptions.GenesisFederationMembers[0] as CollateralFederationMember;
             firstMember.CollateralAmount = Money.Coins(100m);
             firstMember.CollateralMainchainAddress = new Key().ScriptPubKey.GetDestinationAddress(this).ToString();
         }
     }
 
-    internal class CCSideChainStartsRegTest : CCRegTest
+    internal class CcSideChainStartsRegTest : CcRegTest
     {
-        internal CCSideChainStartsRegTest()
+        internal CcSideChainStartsRegTest()
         {
-            this.Name = "CCSideChainStartsRegTest";
+            this.Name = "CcSideChainStartsRegTest";
         }
     }
 }

@@ -37,7 +37,6 @@ namespace Xels.Bitcoin.Features.PoA.IntegrationTests.Common
             IConnectionManager connectionManager,
             PoABlockHeaderValidator poaHeaderValidator,
             IFederationManager federationManager,
-            IFederationHistory federationHistory,
             IIntegrityValidator integrityValidator,
             IWalletManager walletManager,
             INodeStats nodeStats,
@@ -47,7 +46,7 @@ namespace Xels.Bitcoin.Features.PoA.IntegrationTests.Common
             IIdleFederationMembersKicker idleFederationMembersKicker,
             NodeSettings nodeSettings)
             : base(consensusManager, dateTimeProvider, network, nodeLifetime, loggerFactory, ibdState, blockDefinition, slotsManager,
-                connectionManager, poaHeaderValidator, federationManager, federationHistory, integrityValidator, walletManager, nodeStats, votingManager, poAMinerSettings, asyncProvider, idleFederationMembersKicker, nodeSettings)
+                connectionManager, poaHeaderValidator, federationManager, integrityValidator, walletManager, nodeStats, votingManager, poAMinerSettings, asyncProvider, idleFederationMembersKicker, nodeSettings)
         {
             this.timeProvider = dateTimeProvider as EditableTimeProvider;
 

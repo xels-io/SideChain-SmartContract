@@ -18,7 +18,6 @@ namespace Xels.Bitcoin.Features.Miner.Controllers
     /// </summary>
     [ApiVersion("1")]
     [Controller]
-     
     public class MiningRpcController : FeatureController
     {
         /// <summary>Instance logger.</summary>

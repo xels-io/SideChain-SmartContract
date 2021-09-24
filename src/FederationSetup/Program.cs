@@ -260,17 +260,17 @@ namespace FederationSetup
             {
                 case "mainnet":
                     mainchainNetwork = null;
-                    sideChainNetwork = CCNetwork.NetworksSelector.Mainnet();
+                    sideChainNetwork = CcNetwork.NetworksSelector.Mainnet();
                     targetMainchainNetwork = Networks.Xlc.Mainnet();
                     break;
                 case "testnet":
                     mainchainNetwork = null;
-                    sideChainNetwork = CCNetwork.NetworksSelector.Testnet();
+                    sideChainNetwork = CcNetwork.NetworksSelector.Testnet();
                     targetMainchainNetwork = Networks.Xlc.Testnet();
                     break;
                 case "regtest":
                     mainchainNetwork = null;
-                    sideChainNetwork = CCNetwork.NetworksSelector.Regtest();
+                    sideChainNetwork = CcNetwork.NetworksSelector.Regtest();
                     targetMainchainNetwork = Networks.Xlc.Regtest();
                     break;
                 default:

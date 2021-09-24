@@ -22,7 +22,6 @@ namespace Xels.Bitcoin.Features.Miner.Controllers
     /// </summary>
     [ApiVersion("1")]
     [Route("api/[controller]")]
-    [ApiController]
     public class MiningController : Controller
     {
         private const string ExceptionOccurredMessage = "Exception occurred: {0}";
@@ -110,27 +109,6 @@ namespace Xels.Bitcoin.Features.Miner.Controllers
                 this.logger.LogError(ExceptionOccurredMessage, e.ToString());
                 return ErrorHelpers.BuildErrorResponse(HttpStatusCode.BadRequest, e.Message, e.ToString());
             }
-        }
-
-        [Route("startmining")]
-        [HttpPost]
-        public IActionResult StartMining([FromBody] StartMiningRequest request)
-        {
-            try
-            {
-                Script powAddressScript = this.walletManager.GetUnusedAddresses(new WalletAccountReference(request.WalletName, "account 0"), 1).FirstOrDefault().ScriptPubKey;
-                this.powMining.Mine(powAddressScript);
-                return this.Ok();
-            }
-            catch (Exception e)
-            {
-                this.logger.LogError(ExceptionOccurredMessage, e.ToString());
-                return ErrorHelpers.BuildErrorResponse(HttpStatusCode.BadRequest, e.Message, e.ToString());
-            }
-            //IEnumerable<HdAddress> addresses = account.CreateAddresses(wallet.Network, 1, isChange: false);
-            //this.walletManager.UpdateKeysLookupLocked(addresses);
-
-            //this.fullNode.NodeFeature<MiningFeature>(true)
         }
 
         /// <summary>

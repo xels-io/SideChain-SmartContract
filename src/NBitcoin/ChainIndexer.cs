@@ -37,7 +37,7 @@ namespace NBitcoin
         }
 
         public ChainIndexer(Network network) : this()
-        {   
+        {
             this.Network = network;
 
             this.Initialize(new ChainedHeader(network.GetGenesis().Header, network.GetGenesis().GetHash(), 0));
@@ -76,7 +76,7 @@ namespace NBitcoin
                 this.Tip = chainedHeader;
             }
         }
-        
+
         /// <summary>
         /// Returns the first chained block header that exists in the chain from the list of block hashes.
         /// </summary>
@@ -185,7 +185,7 @@ namespace NBitcoin
         {
             lock (this.lockObject)
             {
-                if(this.Tip.HashBlock != addTip.Previous.HashBlock)
+                if (this.Tip.HashBlock != addTip.Previous.HashBlock)
                     throw new InvalidOperationException("New tip must be consecutive");
 
                 this.blocksById.Add(addTip.HashBlock, addTip);

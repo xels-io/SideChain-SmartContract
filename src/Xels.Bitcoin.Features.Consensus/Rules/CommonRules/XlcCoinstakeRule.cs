@@ -20,10 +20,10 @@ namespace Xels.Bitcoin.Features.Consensus.Rules.CommonRules
 
         // The redeem script is defined first (and separately) because it is needed for claiming the reward.
         // It is not the scriptPubKey that must appear in the reward transaction output.
-        public static readonly Script CCRewardScriptRedeem = new Script(new List<Op>() { OpcodeType.OP_TRUE });
+        public static readonly Script CcRewardScriptRedeem = new Script(new List<Op>() { OpcodeType.OP_TRUE });
 
         // This payment script is what must actually be checked against in the consensus rule i.e. the reward transaction has this as an output's scriptPubKey.
-        public static readonly Script CCRewardScript = CCRewardScriptRedeem.PaymentScript;
+        public static readonly Script CcRewardScript = CcRewardScriptRedeem.PaymentScript;
 
         /// <summary>Allow access to the POS parent.</summary>
         protected PosConsensusRuleEngine PosParent;
@@ -38,7 +38,7 @@ namespace Xels.Bitcoin.Features.Consensus.Rules.CommonRules
 
         // This is not used within consensus, but it makes sense to keep the value close to the other script definitions so that it isn't buried inside the reward claimer.
         // TODO: Replace this & its script with a vanity/burn address with unknowable private key
-        public static Script CCTransactionTag(string dummyAddress)
+        public static Script CcTransactionTag(string dummyAddress)
         {
             if (string.IsNullOrEmpty(dummyAddress))
                 return null;
@@ -94,17 +94,17 @@ namespace Xels.Bitcoin.Features.Consensus.Rules.CommonRules
                     ConsensusErrors.BadStakeBlock.Throw();
                 }
 
-                bool CCRewardOutput = false;
+                bool ccRewardOutput = false;
                 foreach (var output in coinStake.Outputs)
                 {
-                    if (output.ScriptPubKey == CCRewardScript)
+                    if (output.ScriptPubKey == CcRewardScript)
                     {
-                        CCRewardOutput = true;
+                        ccRewardOutput = true;
                     }
                 }
 
                 // TODO: Add proper Xlc-specific consensus error
-                if (!CCRewardOutput)
+                if (!ccRewardOutput)
                 {
                     this.Logger.LogTrace("(-)[MISSING_REWARD_SCRIPT_COINSTAKE_OUTPUT]");
                     ConsensusErrors.BadTransactionNoOutput.Throw();

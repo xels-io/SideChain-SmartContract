@@ -38,6 +38,7 @@ namespace Xels.Bitcoin.Features.Consensus.Tests.ProvenBlockHeaders
             ibdMock.Setup(s => s.IsInitialBlockDownload()).Returns(false);
 
             this.provenBlockHeaderRepository = new LevelDbProvenBlockHeaderRepository(this.Network, CreateTestDir(this), this.LoggerFactory.Object, dBreezeSerializer);
+
             this.provenBlockHeaderStore = new ProvenBlockHeaderStore(DateTimeProvider.Default, this.LoggerFactory.Object, this.provenBlockHeaderRepository, nodeStats, ibdMock.Object);
         }
 
@@ -341,11 +342,9 @@ namespace Xels.Bitcoin.Features.Consensus.Tests.ProvenBlockHeaders
         }
 
         [Fact]
-        public async Task AddToPending_Then_Reorg_New_Items_Not_Consecutive_Is_Not_Tip_Then_Save_Async()
+        public void AddToPending_Then_Reorg_New_Items_Not_Consecutive_Is_Not_Tip_Then_Save()
         {
             var chainWithHeaders = this.BuildProvenHeaderChain(21);
-
-            await this.provenBlockHeaderStore.InitializeAsync(chainWithHeaders).ConfigureAwait(false);
 
             var chainedHeaders = chainWithHeaders.EnumerateToGenesis().Reverse().ToList();
 
@@ -395,13 +394,9 @@ namespace Xels.Bitcoin.Features.Consensus.Tests.ProvenBlockHeaders
         }
 
         [Fact]
-        public async Task AddToPending_Then_Save_Incorrect_Sequence_Push_To_Store_Async()
+        public void AddToPending_Then_Save_Incorrect_Sequence_Push_To_Store()
         {
-            var genesis = this.BuildProvenHeaderChain(1);
-
             var inHeader = this.CreateNewProvenBlockHeaderMock();
-
-            await this.provenBlockHeaderStore.InitializeAsync(genesis).ConfigureAwait(false);
 
             // Add headers to pending batch in the wrong height order.
             for (int i = 1; i >= 0; i--)
@@ -420,8 +415,6 @@ namespace Xels.Bitcoin.Features.Consensus.Tests.ProvenBlockHeaders
         {
             var chainWithHeaders = this.BuildProvenHeaderChain(3);
             SortedDictionary<int, ProvenBlockHeader> provenBlockheaders = this.ConvertToDictionaryOfProvenHeaders(chainWithHeaders);
-
-            await this.provenBlockHeaderStore.InitializeAsync(chainWithHeaders).ConfigureAwait(false);
 
             // Persist current chain.
             await this.provenBlockHeaderRepository.PutAsync(

@@ -14,11 +14,15 @@
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
-    <Version>1.0.8.6</Version>
+    <Version>1.0.9.5</Version>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <CodeAnalysisRuleSet>..\Xels.ruleset</CodeAnalysisRuleSet>
     <Authors>Xels Group Ltd.</Authors>
   </PropertyGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="ConcurrentHashSet" Version="1.0.2" />

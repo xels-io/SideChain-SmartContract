@@ -61,7 +61,7 @@ namespace Xels.Features.FederatedPeg.Tests
 
             // Setup MempoolManager.
             this.dateTimeProvider = Substitute.For<IDateTimeProvider>();
-            this.nodeSettings = new NodeSettings(networksSelector: CCNetwork.NetworksSelector, protocolVersion: NBitcoin.Protocol.ProtocolVersion.ALT_PROTOCOL_VERSION);
+            this.nodeSettings = new NodeSettings(networksSelector: CcNetwork.NetworksSelector, protocolVersion: NBitcoin.Protocol.ProtocolVersion.ALT_PROTOCOL_VERSION);
 
             this.mempoolSettings = new MempoolSettings(this.nodeSettings)
             {

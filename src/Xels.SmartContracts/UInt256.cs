@@ -1,24 +1,21 @@
-﻿ 
-using System;
+﻿using System;
 using System.Numerics;
 
 namespace Xels.SmartContracts
 {
     public struct UInt256 : IComparable
     {
-        private const int WIDTH = 32;
+        const int WIDTH = 32;
 
-        private UIntBase value;
+        internal UIntBase value;
 
         public static UInt256 Zero => 0;
-
         public static UInt256 MinValue => 0;
-
-        public static UInt256 MaxValue => (BigInteger.One << 256) - 1;
+        public static UInt256 MaxValue => new UInt256((BigInteger.One << (WIDTH * 8)) - 1);        
 
         public UInt256(string hex)
         {
-            value = new UIntBase(32, hex);
+            this.value = new UIntBase(WIDTH, hex);
         }
 
         public static UInt256 Parse(string str)
@@ -26,14 +23,14 @@ namespace Xels.SmartContracts
             return new UInt256(str);
         }
 
-        public UInt256(BigInteger value)
+        internal UInt256(BigInteger value)
         {
-            this.value = new UIntBase(32, value);
+            this.value = new UIntBase(WIDTH, value);
         }
 
         public UInt256(byte[] vch, bool lendian = true)
         {
-            value = new UIntBase(32, vch, lendian);
+            this.value = new UIntBase(WIDTH, vch, lendian);
         }
 
         public static UInt256 operator >>(UInt256 a, int shift)
@@ -46,33 +43,67 @@ namespace Xels.SmartContracts
             return new UInt256(a.value.ShiftLeft(shift));
         }
 
+        /// <summary>
+        /// Subtracts the first number from the second.
+        /// </summary>
+        /// <param name="a">Number to subtract from.</param>
+        /// <param name="b">Number to subtract.</param>
+        /// <returns>The result as a zero or positive number.</returns>
+        /// <exception cref="OverflowException">Always thrown if the result is negative regardless of checked context.</exception>
         public static UInt256 operator -(UInt256 a, UInt256 b)
         {
             return new UInt256(a.value.Subtract(b.value.GetValue()));
         }
 
+        /// <summary>
+        /// Adds two numbers.
+        /// </summary>
+        /// <param name="a">Number to add.</param>
+        /// <param name="b">Number to add.</param>
+        /// <returns>The result as a zero or positive number.</returns>
+        /// <exception cref="OverflowException">Always thrown if the result is greater than <see cref="MaxValue"/>.</exception>
         public static UInt256 operator +(UInt256 a, UInt256 b)
         {
             return new UInt256(a.value.Add(b.value.GetValue()));
         }
 
+        /// <summary>
+        /// Multiplies two numbers.
+        /// </summary>
+        /// <param name="a">Number to multiply.</param>
+        /// <param name="b">Number to multiply.</param>
+        /// <returns>The result as a zero or positive number.</returns>
+        /// <exception cref="OverflowException">Always thrown if the result is greater than <see cref="MaxValue"/>.</exception>
         public static UInt256 operator *(UInt256 a, UInt256 b)
         {
             return new UInt256(a.value.Multiply(b.value.GetValue()));
         }
 
+        /// <summary>
+        /// Divides the first number by the second.
+        /// </summary>
+        /// <param name="a">Number to divide.</param>
+        /// <param name="b">Number to divide by.</param>
+        /// <returns>The result as a zero or positive number.</returns>
+        /// <exception cref="DivideByZeroException">Always thrown if <paramref name="b"/> is zero.</exception>
         public static UInt256 operator /(UInt256 a, UInt256 b)
         {
             return new UInt256(a.value.Divide(b.value.GetValue()));
         }
 
+        /// <summary>
+        /// Computes the remainder of the division of the first number by the second - i.e. a mod b.
+        /// </summary>
+        /// <param name="a">Number to divide.</param>
+        /// <param name="b">Number to divide by.</param>
+        /// <returns>The remainder as a zero or positive number.</returns>
+        /// <exception cref="DivideByZeroException">Always thrown if <paramref name="b"/> is zero.</exception>
         public static UInt256 operator %(UInt256 a, UInt256 b)
         {
             return new UInt256(a.value.Mod(b.value.GetValue()));
         }
 
-        public UInt256(byte[] vch)
-            : this(vch, lendian: true)
+        public UInt256(byte[] vch) : this(vch, true)
         {
         }
 
@@ -115,7 +146,7 @@ namespace Xels.SmartContracts
         {
             return new UInt256(value);
         }
-
+  
         public static implicit operator UInt256(int value)
         {
             return new UInt256(value);
@@ -126,86 +157,61 @@ namespace Xels.SmartContracts
             return new UInt256(value);
         }
 
-        public static implicit operator UInt256(BigInteger value)
-        {
-            return new UInt256(value);
-        }
-
         public static implicit operator UInt256(UInt128 value)
         {
-            return new UInt256(value);
+            var bytes = new byte[32];
+            value.ToBytes().CopyTo(bytes, 0);
+            return new UInt256(bytes);
         }
 
-        public static implicit operator int(UInt256 value)
+        public static explicit operator int(UInt256 value)
         {
             return (int)value.value.GetValue();
         }
 
-        public static implicit operator uint(UInt256 value)
+        public static explicit operator uint(UInt256 value)
         {
             return (uint)value.value.GetValue();
         }
 
-        public static implicit operator long(UInt256 value)
+        public static explicit operator long(UInt256 value)
         {
             return (long)value.value.GetValue();
         }
 
-        public static implicit operator ulong(UInt256 value)
+        public static explicit operator ulong(UInt256 value)
         {
             return (ulong)value.value.GetValue();
         }
 
-        public static implicit operator BigInteger(UInt256 value)
+        public static explicit operator UInt128(UInt256 value)
         {
-            return value.value.GetValue();
+            return new UInt128(value.value.GetValue());
         }
 
         public byte[] ToBytes()
         {
-            return value.ToBytes();
+            return this.value.ToBytes();
         }
 
         public int CompareTo(object b)
         {
-            return value.CompareTo(((UInt256)b).value);
+            return this.value.CompareTo(((UInt256)b).value);
         }
 
         public override int GetHashCode()
         {
-            return value.GetHashCode();
+            return this.value.GetHashCode();
         }
 
         public override bool Equals(object obj)
         {
-            return CompareTo(obj) == 0;
+            return this.CompareTo(obj) == 0;
         }
 
         public override string ToString()
         {
-            return value.ToString();
+            return this.value.ToString();
         }
     }
 }
-#if false // Decompilation log
-'266' items in cache
-------------------
-Resolve: 'System.Runtime, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'
-Found single assembly: 'System.Runtime, Version=4.2.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'
-WARN: Version mismatch. Expected: '4.2.1.0', Got: '4.2.2.0'
-Load from: 'C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\3.1.0\ref\netcoreapp3.1\System.Runtime.dll'
-------------------
-Resolve: 'System.Runtime.Numerics, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'
-Found single assembly: 'System.Runtime.Numerics, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'
-WARN: Version mismatch. Expected: '4.1.1.0', Got: '4.1.2.0'
-Load from: 'C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\3.1.0\ref\netcoreapp3.1\System.Runtime.Numerics.dll'
-------------------
-Resolve: 'System.Runtime.Extensions, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'
-Found single assembly: 'System.Runtime.Extensions, Version=4.2.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'
-WARN: Version mismatch. Expected: '4.2.1.0', Got: '4.2.2.0'
-Load from: 'C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\3.1.0\ref\netcoreapp3.1\System.Runtime.Extensions.dll'
-------------------
-Resolve: 'System.Runtime, Version=4.2.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'
-Found single assembly: 'System.Runtime, Version=4.2.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'
-Load from: 'C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\3.1.0\ref\netcoreapp3.1\System.Runtime.dll'
-#endif

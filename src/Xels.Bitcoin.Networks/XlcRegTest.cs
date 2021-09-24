@@ -34,9 +34,7 @@ namespace Xels.Bitcoin.Networks
             this.CoinTicker = "TXLC";
             this.DefaultBanTimeSeconds = 11250; // 500 (MaxReorg) * 45 (TargetSpacing) / 2 = 3 hours, 7 minutes and 30 seconds
 
-            this.RewardClaimerBatchActivationHeight = 0;
-            this.RewardClaimerBlockInterval = 100;
-            this.CCRewardDummyAddress = "PDpvfcpPm9cjQEoxWzQUL699N8dPaf8qML"; // CC test address
+            this.CcRewardDummyAddress = "PDpvfcpPm9cjQEoxWzQUL699N8dPaf8qML"; // CC test address
 
             var powLimit = new Target(new uint256("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"));
 
@@ -82,7 +80,7 @@ namespace Xels.Bitcoin.Networks
             this.Federations = new Federations();
 
             // CC federation.
-            var CCFederationMnemonics = new[] {
+            var ccFederationMnemonics = new[] {
                 "ensure feel swift crucial bridge charge cloud tell hobby twenty people mandate",
                 "quiz sunset vote alley draw turkey hill scrap lumber game differ fiction",
                 "exchange rent bronze pole post hurry oppose drama eternal voice client state"
@@ -94,13 +92,13 @@ namespace Xels.Bitcoin.Networks
                 "fat chalk grant major hair possible adjust talent magnet lobster retreat siren"
             }.Select(m => new Mnemonic(m, Wordlist.English)).ToList();
 
-            // Mimic the code found in CCRegTest.
-            var CCFederationKeys = CCFederationMnemonics.Take(2).Concat(newFederationMemberMnemonics).Select(m => m.DeriveExtKey().PrivateKey).ToList();
+            // Mimic the code found in CcRegTest.
+            var ccFederationKeys = ccFederationMnemonics.Take(2).Concat(newFederationMemberMnemonics).Select(m => m.DeriveExtKey().PrivateKey).ToList();
 
-            List<PubKey> CCFederationPubKeys = CCFederationKeys.Select(k => k.PubKey).ToList();
+            List<PubKey> ccFederationPubKeys = ccFederationKeys.Select(k => k.PubKey).ToList();
 
             // Transaction-signing keys!
-            this.Federations.RegisterFederation(new Federation(CCFederationPubKeys.ToArray()));
+            this.Federations.RegisterFederation(new Federation(ccFederationPubKeys.ToArray()));
 
             this.Consensus = new NBitcoin.Consensus(
                 consensusFactory: consensusFactory,

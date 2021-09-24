@@ -9,7 +9,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using NBitcoin;
-using NBitcoin.DataEncoders;
 using NBitcoin.Policy;
 using Xels.Bitcoin.Builder.Feature;
 using Xels.Bitcoin.Configuration;
@@ -20,7 +19,6 @@ using Xels.Bitcoin.Features.Wallet.Broadcasting;
 using Xels.Bitcoin.Features.Wallet.Controllers;
 using Xels.Bitcoin.Features.Wallet.Interfaces;
 using Xels.Bitcoin.Features.Wallet.Models;
-using Xels.Bitcoin.Networks;
 using Xels.Bitcoin.Utilities;
 
 namespace Xels.Bitcoin.Features.Wallet.Services
@@ -195,9 +193,9 @@ namespace Xels.Bitcoin.Features.Wallet.Services
             IEnumerable<AccountHistory> accountsHistory;
 
             if (request.Skip.HasValue && request.Take.HasValue)
-                accountsHistory = this.walletManager.GetHistory(request.WalletName, request.AccountName, request.SearchQuery, request.Take.Value, request.Skip.Value);
+                accountsHistory = this.walletManager.GetHistory(request.WalletName, request.AccountName, request.SearchQuery, request.Take.Value, request.Skip.Value, accountAddress: request.Address);
             else
-                accountsHistory = this.walletManager.GetHistory(request.WalletName, request.AccountName, request.SearchQuery);
+                accountsHistory = this.walletManager.GetHistory(request.WalletName, request.AccountName, request.SearchQuery, accountAddress: request.Address);
 
             var model = new WalletHistoryModel();
 
@@ -553,8 +551,6 @@ namespace Xels.Bitcoin.Features.Wallet.Services
                 }
 
                 Transaction transactionResult = this.walletTransactionHandler.BuildTransaction(context);
-
-                DepositValidationHelper.ValidateCrossChainDeposit(this.network, transactionResult);
 
                 return new WalletBuildTransactionModel
                 {

@@ -97,6 +97,9 @@ namespace Xels.Bitcoin.Features.SmartContracts.Rules
         /// <remarks>Should someone wish to use POW only we'll need to implement subsidy halving.</remarks>
         public override Money GetProofOfWorkReward(int height)
         {
+            if (height == this.network.Consensus.PremineHeight)
+                return this.network.Consensus.PremineReward;
+
             return this.GetCalculatedRewardFromHeight(height);
         }
 

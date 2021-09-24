@@ -36,7 +36,7 @@ namespace Xels.Bitcoin.Features.MemoryPool.Rules
                     context.State.Fail(MempoolErrors.MissingOrSpentInputs).Throw();
                 }
 
-                if (unspentOutput.Coins.TxOut.ScriptPubKey == XlcCoinstakeRule.CCRewardScript)
+                if (unspentOutput.Coins.TxOut.ScriptPubKey == XlcCoinstakeRule.CcRewardScript)
                 {
                     this.logger.LogDebug("Reward distribution transaction seen in mempool, paying to '{0}'.", unspentOutput.Coins.TxOut.ScriptPubKey);
 
@@ -47,7 +47,7 @@ namespace Xels.Bitcoin.Features.MemoryPool.Rules
                             if (output.Value != 0)
                             {
                                 this.logger.LogTrace("(-)[INVALID_REWARD_OP_RETURN_SPEND]");
-                                context.State.Fail(new MempoolError(MempoolErrors.RejectInvalid, "bad-CC-reward-tx-opreturn-not-zero"), "CC reward transaction invalid, op_return value is not 0.").Throw();
+                                context.State.Fail(new MempoolError(MempoolErrors.RejectInvalid, "bad-cc-reward-tx-opreturn-not-zero"), "CC reward transaction invalid, op_return value is not 0.").Throw();
                             }
 
                             continue;
@@ -57,7 +57,7 @@ namespace Xels.Bitcoin.Features.MemoryPool.Rules
                         if (output.ScriptPubKey != this.network.Federations.GetOnlyFederation().MultisigScript.PaymentScript)
                         {
                             this.logger.LogTrace("(-)[INVALID_REWARD_SPEND_DESTINATION]");
-                            context.State.Fail(new MempoolError(MempoolErrors.RejectInvalid, "bad-CC-reward-tx-reward-dest-invalid"), "CC reward transaction invalid, reward destination invalid.").Throw();
+                            context.State.Fail(new MempoolError(MempoolErrors.RejectInvalid, "bad-cc-reward-tx-reward-dest-invalid"), "CC reward transaction invalid, reward destination invalid.").Throw();
                         }
                     }
                 }

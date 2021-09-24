@@ -1,7 +1,7 @@
 ﻿using NBitcoin;
 using Newtonsoft.Json;
+using Xels.Bitcoin.Features.Wallet;
 using Xels.Bitcoin.Utilities.JsonConverters;
-using Xels.Features.FederatedPeg.Conversion;
 using Xels.Features.FederatedPeg.SourceChain;
 
 namespace Xels.Features.FederatedPeg.Interfaces

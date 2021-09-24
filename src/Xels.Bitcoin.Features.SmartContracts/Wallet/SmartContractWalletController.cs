@@ -23,7 +23,6 @@ namespace Xels.Bitcoin.Features.SmartContracts.Wallet
 {
     [ApiVersion("1")]
     [Route("api/[controller]")]
-    [ApiController]
     public sealed class SmartContractWalletController : Controller
     {
         private readonly IBroadcasterManager broadcasterManager;
@@ -174,38 +173,19 @@ namespace Xels.Bitcoin.Features.SmartContracts.Wallet
                 HdAccount account = this.walletManager.GetAccounts(request.WalletName).First();
 
                 // Get a list of all the transactions found in an account (or in a wallet if no account is specified), with the addresses associated with them.
-                IEnumerable<AccountHistory> accountsHistory = this.walletManager.GetHistory(request.WalletName, account.Name, null);
+                IEnumerable<AccountHistory> accountsHistory = this.walletManager.GetHistory(request.WalletName, account.Name, null, offset: request.Skip ?? 0, limit: request.Take ?? int.MaxValue, accountAddress: request.Address, forSmartContracts: true);
 
                 // Wallet manager returns only 1 when an account name is specified.
                 AccountHistory accountHistory = accountsHistory.First();
 
-                List<FlatHistory> items = new List<FlatHistory>();// accountHistory.History.ToList();//.Where(x => x.Address.Address == request.Address).ToList();
-
-                // Represents a sublist of transactions associated with receive addresses + a sublist of already spent transactions associated with change addresses.
-                // In effect, we filter out 'change' transactions that are not spent, as we don't want to show these in the history.
-                List<FlatHistory> history = items.Where(t => !t.Address.IsChangeAddress() || (t.Address.IsChangeAddress() && t.Transaction.IsSpent())).ToList();
-
-                // TransactionData in history is confusingly named. A "TransactionData" actually represents an input, and the outputs that spend it are "SpendingDetails".
-                // There can be multiple "TransactionData" which have the same "SpendingDetails".
-                // For SCs we need to group spending details by their transaction ID, to get all the inputs related to the same outputs.
-                // Each group represents 1 SC transaction.
-                // Each item.Transaction in a group is an input.
-                // Each item.Transaction.SpendingDetails in the group represent the outputs, and they should all be the same so we can pick any one.
-                var scTransactions = history
-                    .Where(item => item.Transaction.SpendingDetails != null)
-                    .Where(item => item.Transaction.SpendingDetails.Payments.Any(x => x.DestinationScriptPubKey.IsSmartContractExec()))
-                    .GroupBy(item => item.Transaction.SpendingDetails.TransactionId)
-                    .Skip(request.Skip ?? 0)
-                    .Take(request.Take ?? history.Count)
-                    .Select(g => new
-                    {
-                        TransactionId = g.Key,
-                        InputAmount = g.Sum(i => i.Transaction.Amount), // Sum the inputs to the SC transaction.
-                        Outputs = g.First().Transaction.SpendingDetails.Payments, // Each item in the group will have the same outputs.
-                        OutputAmount = g.First().Transaction.SpendingDetails.Payments.Sum(o => o.Amount),
-                        BlockHeight = g.First().Transaction.SpendingDetails.BlockHeight // Each item in the group will have the same block height.
-                    })
-                    .ToList();
+                var scTransactions = accountHistory.History.Select(h => new
+                {
+                    TransactionId = uint256.Parse(h.Id),
+                    Fee = h.Fee,
+                    SendToScriptPubKey = Script.FromHex(h.SendToScriptPubkey),
+                    OutputAmount = h.Amount,
+                    BlockHeight = h.BlockHeight
+                }).ToList();
 
                 // Get all receipts in one transaction
                 IList<Receipt> receipts = this.receiptRepository.RetrieveMany(scTransactions.Select(x => x.TransactionId).ToList());
@@ -215,11 +195,8 @@ namespace Xels.Bitcoin.Features.SmartContracts.Wallet
                     var scTransaction = scTransactions[i];
                     Receipt receipt = receipts[i];
 
-                    // Consensus rules state that each transaction can have only one smart contract exec output.
-                    PaymentDetails scPayment = scTransaction.Outputs.First(x => x.DestinationScriptPubKey.IsSmartContractExec());
-
                     // This will always give us a value - the transaction has to be serializable to get past consensus.
-                    Result<ContractTxData> txDataResult = this.callDataSerializer.Deserialize(scPayment.DestinationScriptPubKey.ToBytes());
+                    Result<ContractTxData> txDataResult = this.callDataSerializer.Deserialize(scTransaction.SendToScriptPubKey.ToBytes());
                     ContractTxData txData = txDataResult.Value;
 
                     // If the receipt is not available yet, we don't know how much gas was consumed so use the full gas budget.
@@ -227,132 +204,24 @@ namespace Xels.Bitcoin.Features.SmartContracts.Wallet
                         ? receipt.GasUsed * receipt.GasPrice
                         : txData.GasCostBudget;
 
-                    long totalFees = scTransaction.InputAmount - scTransaction.OutputAmount;
+                    long totalFees = scTransaction.Fee;
                     Money transactionFee = Money.FromUnit(totalFees, MoneyUnit.Satoshi) - Money.FromUnit(txData.GasCostBudget, MoneyUnit.Satoshi);
 
                     var result = new ContractTransactionItem
                     {
-                        Amount = scPayment.Amount.ToUnit(MoneyUnit.Satoshi),
+                        Amount = new Money(scTransaction.OutputAmount).ToUnit(MoneyUnit.Satoshi),
                         BlockHeight = scTransaction.BlockHeight,
                         Hash = scTransaction.TransactionId,
                         TransactionFee = transactionFee.ToUnit(MoneyUnit.Satoshi),
                         GasFee = gasFee
                     };
 
-                    if (scPayment.DestinationScriptPubKey.IsSmartContractCreate())
+                    if (scTransaction.SendToScriptPubKey.IsSmartContractCreate())
                     {
                         result.Type = ContractTransactionItemType.ContractCreate;
                         result.To = receipt?.NewContractAddress?.ToBase58Address(this.network) ?? string.Empty;
                     }
-                    else if (scPayment.DestinationScriptPubKey.IsSmartContractCall())
-                    {
-                        result.Type = ContractTransactionItemType.ContractCall;
-                        result.To = txData.ContractAddress.ToBase58Address(this.network);
-                    }
-
-                    transactionItems.Add(result);
-                }
-
-                return this.Json(transactionItems.OrderByDescending(x => x.BlockHeight ?? Int32.MaxValue));
-            }
-            catch (Exception e)
-            {
-                this.logger.LogError("Exception occurred: {0}", e.ToString());
-                return ErrorHelpers.BuildErrorResponse(HttpStatusCode.BadRequest, e.Message, e.ToString());
-            }
-        }
-
-        [Route("historyForWPF")]
-        [HttpGet]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        public IActionResult GetHistoryForWPF(string walletName, string address, int? Skip , int? Take)
-        {
-            if (string.IsNullOrWhiteSpace(walletName))
-                return ErrorHelpers.BuildErrorResponse(HttpStatusCode.BadRequest, "No wallet name", "No wallet name provided");
-
-            if (string.IsNullOrWhiteSpace(address))
-                return ErrorHelpers.BuildErrorResponse(HttpStatusCode.BadRequest, "No address", "No address provided");
-
-            try
-            {
-                var transactionItems = new List<ContractTransactionItem>();
-
-                HdAccount account = this.walletManager.GetAccounts(walletName).First();
-
-                // Get a list of all the transactions found in an account (or in a wallet if no account is specified), with the addresses associated with them.
-                IEnumerable<AccountHistory> accountsHistory = this.walletManager.GetHistory(walletName, account.Name, null);
-
-                // Wallet manager returns only 1 when an account name is specified.
-                AccountHistory accountHistory = accountsHistory.First();
-
-                List<FlatHistory> items = new List<FlatHistory>();// accountHistory.History.ToList();//.Where(x => x.Address.Address == request.Address).ToList();
-
-                // Represents a sublist of transactions associated with receive addresses + a sublist of already spent transactions associated with change addresses.
-                // In effect, we filter out 'change' transactions that are not spent, as we don't want to show these in the history.
-                List<FlatHistory> history = items.Where(t => !t.Address.IsChangeAddress() || (t.Address.IsChangeAddress() && t.Transaction.IsSpent())).ToList();
-
-                // TransactionData in history is confusingly named. A "TransactionData" actually represents an input, and the outputs that spend it are "SpendingDetails".
-                // There can be multiple "TransactionData" which have the same "SpendingDetails".
-                // For SCs we need to group spending details by their transaction ID, to get all the inputs related to the same outputs.
-                // Each group represents 1 SC transaction.
-                // Each item.Transaction in a group is an input.
-                // Each item.Transaction.SpendingDetails in the group represent the outputs, and they should all be the same so we can pick any one.
-                var scTransactions = history
-                    .Where(item => item.Transaction.SpendingDetails != null)
-                    .Where(item => item.Transaction.SpendingDetails.Payments.Any(x => x.DestinationScriptPubKey.IsSmartContractExec()))
-                    .GroupBy(item => item.Transaction.SpendingDetails.TransactionId)
-                    .Skip(Skip ?? 0)
-                    .Take(Take ?? history.Count)
-                    .Select(g => new
-                    {
-                        TransactionId = g.Key,
-                        InputAmount = g.Sum(i => i.Transaction.Amount), // Sum the inputs to the SC transaction.
-                        Outputs = g.First().Transaction.SpendingDetails.Payments, // Each item in the group will have the same outputs.
-                        OutputAmount = g.First().Transaction.SpendingDetails.Payments.Sum(o => o.Amount),
-                        BlockHeight = g.First().Transaction.SpendingDetails.BlockHeight // Each item in the group will have the same block height.
-                    })
-                    .ToList();
-
-                // Get all receipts in one transaction
-                IList<Receipt> receipts = this.receiptRepository.RetrieveMany(scTransactions.Select(x => x.TransactionId).ToList());
-
-                for (int i = 0; i < scTransactions.Count; i++)
-                {
-                    var scTransaction = scTransactions[i];
-                    Receipt receipt = receipts[i];
-
-                    // Consensus rules state that each transaction can have only one smart contract exec output.
-                    PaymentDetails scPayment = scTransaction.Outputs.First(x => x.DestinationScriptPubKey.IsSmartContractExec());
-
-                    // This will always give us a value - the transaction has to be serializable to get past consensus.
-                    Result<ContractTxData> txDataResult = this.callDataSerializer.Deserialize(scPayment.DestinationScriptPubKey.ToBytes());
-                    ContractTxData txData = txDataResult.Value;
-
-                    // If the receipt is not available yet, we don't know how much gas was consumed so use the full gas budget.
-                    ulong gasFee = receipt != null
-                        ? receipt.GasUsed * receipt.GasPrice
-                        : txData.GasCostBudget;
-
-                    long totalFees = scTransaction.InputAmount - scTransaction.OutputAmount;
-                    Money transactionFee = Money.FromUnit(totalFees, MoneyUnit.Satoshi) - Money.FromUnit(txData.GasCostBudget, MoneyUnit.Satoshi);
-
-                    var result = new ContractTransactionItem
-                    {
-                        Amount = scPayment.Amount.ToUnit(MoneyUnit.Satoshi),
-                        BlockHeight = scTransaction.BlockHeight,
-                        Hash = scTransaction.TransactionId,
-                        TransactionFee = transactionFee.ToUnit(MoneyUnit.Satoshi),
-                        GasFee = gasFee
-                    };
-
-                    if (scPayment.DestinationScriptPubKey.IsSmartContractCreate())
-                    {
-                        result.Type = ContractTransactionItemType.ContractCreate;
-                        result.To = receipt?.NewContractAddress?.ToBase58Address(this.network) ?? string.Empty;
-                    }
-                    else if (scPayment.DestinationScriptPubKey.IsSmartContractCall())
+                    else if (scTransaction.SendToScriptPubKey.IsSmartContractCall())
                     {
                         result.Type = ContractTransactionItemType.ContractCall;
                         result.To = txData.ContractAddress.ToBase58Address(this.network);

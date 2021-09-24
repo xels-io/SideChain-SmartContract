@@ -316,7 +316,7 @@ namespace Xels.Bitcoin.Features.Consensus.CoinViews
         {
             if (!force)
             {
-                // Check if periodic flush is required.
+                // Check if periodic flush is reuired.
                 // Ideally this will flush less frequent and always be behind 
                 // blockstore which is currently set to 17 sec.
 

@@ -60,7 +60,7 @@ namespace Xels.Bitcoin.Tests.Common
             return chainedHeaders;
         }
 
-        public static List<ChainedHeaderBlock> CreateConsecutiveHeadersAndBlocks(int count, bool includePrevBlock, Network network = null, ChainIndexer chainIndexer = null, bool withCoinbaseAndCoinStake = false, bool createCCReward = false)
+        public static List<ChainedHeaderBlock> CreateConsecutiveHeadersAndBlocks(int count, bool includePrevBlock, Network network = null, ChainIndexer chainIndexer = null, bool withCoinbaseAndCoinStake = false, bool createCcReward = false)
         {
             List<ChainedHeader> chainedHeaders = CreateConsecutiveHeaders(count, null, includePrevBlock, network: network, chainIndexer: chainIndexer);
 
@@ -75,8 +75,8 @@ namespace Xels.Bitcoin.Tests.Common
                     Transaction coinstakeTransaction = TransactionsHelper.CreateCoinStakeTransaction(network, new Key(), chainedHeader.Height, new uint256(0));
                     block.AddTransaction(coinstakeTransaction);
 
-                    if (createCCReward)
-                        TransactionsHelper.CreateCCRewardOutput(coinstakeTransaction, network);
+                    if (createCcReward)
+                        TransactionsHelper.CreateCcRewardOutput(coinstakeTransaction, network);
                 }
 
                 chainedHeader.Block = block;

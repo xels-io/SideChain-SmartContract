@@ -20,7 +20,7 @@ namespace Xels.Features.FederatedPeg.TargetChain
     /// Handles block syncing between gateways on 2 chains. This node will request
     /// blocks from another chain to look for cross chain deposit transactions.
     /// </summary>
-    /// <remarks>Processes matured block deposits from the CC chain and creates instances of <see cref="ConversionRequest"/> which are
+    /// <remarks>Processes matured block deposits from the cc chain and creates instances of <see cref="ConversionRequest"/> which are
     /// saved to <see cref="IConversionRequestRepository"/>.</remarks>
     public interface IMaturedBlocksSyncManager : IDisposable
     {

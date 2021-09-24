@@ -43,16 +43,16 @@ namespace Xels.Bitcoin.Features.Miner.Staking
 
         public override Transaction PrepareCoinStakeTransactions(int currentChainHeight, CoinstakeContext coinstakeContext, long coinstakeOutputValue, int utxosCount, long amountStaked, long reward)
         {
-            long CCReward = reward * XlcCoinviewRule.CCRewardPercentage / 100;
+            long ccReward = reward * XlcCoinviewRule.CcRewardPercentage / 100;
 
-            coinstakeOutputValue -= CCReward;
+            coinstakeOutputValue -= ccReward;
 
             // Populate the initial coinstake with the modified overall reward amount, the outputs will be split as necessary
             base.PrepareCoinStakeTransactions(currentChainHeight, coinstakeContext, coinstakeOutputValue, utxosCount, amountStaked, reward);
 
             // Now add the remaining reward into an additional output on the coinstake
-            var CCRewardOutput = new TxOut(CCReward, XlcCoinstakeRule.CCRewardScript);
-            coinstakeContext.CoinstakeTx.Outputs.Add(CCRewardOutput);
+            var ccRewardOutput = new TxOut(ccReward, XlcCoinstakeRule.CcRewardScript);
+            coinstakeContext.CoinstakeTx.Outputs.Add(ccRewardOutput);
 
             return coinstakeContext.CoinstakeTx;
         }

@@ -19,9 +19,9 @@ namespace FederationSetup
 
             var targets = new Dictionary<uint256, string>
             {
-                { new Target(0x1e0fffff).ToUInt256(), "-- MainNet network --" },
-                { new Target(0x1e00ffff).ToUInt256(), "-- TestNet network --" },
-                { new Target(0x1e000fff).ToUInt256(), "-- RegTest network --" },
+                { new Target(CcNetwork.NetworksSelector.Mainnet().GenesisBits).ToUInt256(), "-- MainNet network --" },
+                { new Target(CcNetwork.NetworksSelector.Testnet().GenesisBits).ToUInt256(), "-- TestNet network --" },
+                { new Target(CcNetwork.NetworksSelector.Regtest().GenesisBits).ToUInt256(), "-- RegTest network --" },
             };
 
             foreach (KeyValuePair<uint256, string> target in targets)

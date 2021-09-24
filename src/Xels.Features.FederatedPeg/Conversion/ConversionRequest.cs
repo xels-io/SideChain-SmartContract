@@ -1,4 +1,5 @@
 ﻿using NBitcoin;
+using Xels.Bitcoin.Features.Wallet;
 
 namespace Xels.Features.FederatedPeg.Conversion
 {
@@ -21,17 +22,6 @@ namespace Xels.Features.FederatedPeg.Conversion
         NotOriginator
     }
 
-    /// <summary>Chains supported by InterFlux integration.</summary>
-    public enum DestinationChain
-    {
-        XLC = 0, // Xels
-        ETH, // Ethereum
-        BNB, // Binance
-
-        ETC, // Ethereum classic
-        AVAX, // Avalanche
-        ADA, // Cardano
-    }
 
     /// <summary>Request to mint or burn wXLC.</summary>
     /// <remarks>

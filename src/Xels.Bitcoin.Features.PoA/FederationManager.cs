@@ -229,19 +229,15 @@ namespace Xels.Bitcoin.Features.PoA
                 // Update member types by using the multisig mining keys supplied on the command-line. Don't add/remove members.
                 foreach (CollateralFederationMember federationMember in this.federationMembers)
                 {
-                    bool shouldBeMultisigMember;
                     if (xlcEra)
                     {
-                        shouldBeMultisigMember = this.network.XlcMiningMultisigMembers.Contains(federationMember.PubKey);
+                        federationMember.IsMultisigMember = this.network.XlcMiningMultisigMembers.Contains(federationMember.PubKey);
                     }
                     else
                     {
-                        shouldBeMultisigMember = ((PoAConsensusOptions)this.network.Consensus.Options).GenesisFederationMembers
+                        federationMember.IsMultisigMember = ((PoAConsensusOptions)this.network.Consensus.Options).GenesisFederationMembers
                             .Any(m => m.PubKey == federationMember.PubKey && ((CollateralFederationMember)m).IsMultisigMember);
                     }
-
-                    if (federationMember.IsMultisigMember != shouldBeMultisigMember)
-                        federationMember.IsMultisigMember = shouldBeMultisigMember;
                 }
             }
         }
@@ -295,9 +291,9 @@ namespace Xels.Bitcoin.Features.PoA
         {
             if (federationMember is CollateralFederationMember collateralFederationMember)
             {
-                if (this.federationMembers.Cast<CollateralFederationMember>().Any(x => x.CollateralMainchainAddress == collateralFederationMember.CollateralMainchainAddress))
+                if (this.federationMembers.IsCollateralAddressRegistered(collateralFederationMember.CollateralMainchainAddress))
                 {
-                    this.logger.Trace("(-)[DUPLICATED_COLLATERAL_ADDR]");
+                    this.logger.Warn($"Federation member with address '{collateralFederationMember.CollateralMainchainAddress}' already exists.");
                     return;
                 }
 
@@ -334,18 +330,13 @@ namespace Xels.Bitcoin.Features.PoA
         {
             VotingManager votingManager = this.fullNode.NodeService<VotingManager>();
             this.federationMembers = votingManager.GetFederationFromExecutedPolls();
-            this.UpdateMultisigMiners(this.GetMultisigMinersApplicabilityHeight() != null);
+            this.UpdateMultisigMiners(this.multisigMinersApplicabilityHeight != null);
         }
 
         /// <inheritdoc />
         public int? GetMultisigMinersApplicabilityHeight()
         {
             IConsensusManager consensusManager = this.fullNode.NodeService<IConsensusManager>();
-
-            // Not always passed in tests.
-            if (consensusManager == null)
-                return 0;
-
             ChainedHeader fork = (this.lastBlockChecked == null) ? null : consensusManager.Tip.FindFork(this.lastBlockChecked);
 
             if (this.multisigMinersApplicabilityHeight != null && fork?.HashBlock == this.lastBlockChecked?.HashBlock)
@@ -374,12 +365,32 @@ namespace Xels.Bitcoin.Features.PoA
             this.lastBlockChecked = headers.LastOrDefault();
             this.multisigMinersApplicabilityHeight = first?.Height;
 
+            this.UpdateMultisigMiners(first != null);
+
             return this.multisigMinersApplicabilityHeight;
         }
 
         public bool IsMultisigMember(PubKey pubKey)
         {
             return this.GetFederationMembers().Any(m => m.PubKey == pubKey && m is CollateralFederationMember member && member.IsMultisigMember);
+        }
+    }
+
+    public static class FederationExtensions
+    {
+        /// <summary>
+        /// Checks to see if a particular collateral address is already present in the current set of 
+        /// federation members.
+        /// </summary>
+        /// <param name="federationMembers">The list of federation members to check against.</param>
+        /// <param name="collateralAddress">The collateral address to verify.</param>
+        /// <returns><c>true</c> if present, <c>false</c> otherwise.</returns>
+        public static bool IsCollateralAddressRegistered(this List<IFederationMember> federationMembers, string collateralAddress)
+        {
+            if (federationMembers.Cast<CollateralFederationMember>().Any(x => x.CollateralMainchainAddress == collateralAddress))
+                return true;
+
+            return false;
         }
     }
 }

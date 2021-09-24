@@ -12,9 +12,9 @@ using Xels.Bitcoin.Configuration;
 using Xels.Bitcoin.Consensus;
 using Xels.Bitcoin.Controllers;
 using Xels.Bitcoin.Features.MemoryPool;
+using Xels.Bitcoin.Features.Wallet;
 using Xels.Bitcoin.Features.Wallet.Models;
 using Xels.Bitcoin.Tests.Common;
-using Xels.Features.FederatedPeg.Conversion;
 using Xels.Features.FederatedPeg.Events;
 using Xels.Features.FederatedPeg.Interfaces;
 using Xels.Features.FederatedPeg.Models;
@@ -604,7 +604,7 @@ namespace Xels.Features.FederatedPeg.Tests
 
             var transaction = new PosTransaction(model.Hex);
 
-            var reader = new OpReturnDataReader(CCNetwork.NetworksSelector.Testnet());
+            var reader = new OpReturnDataReader(CcNetwork.NetworksSelector.Testnet());
             var extractor = new DepositExtractor(this.federatedPegSettings, this.network, this.opReturnDataReader);
             IDeposit deposit = extractor.ExtractDepositFromTransaction(transaction, 2, 1);
 

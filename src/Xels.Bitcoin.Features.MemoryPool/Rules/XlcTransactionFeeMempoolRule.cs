@@ -28,7 +28,7 @@ namespace Xels.Bitcoin.Features.MemoryPool.Rules
             bool federationPayment = !(context.Transaction.Outputs.Count < 2);
 
             // The OP_RETURN output that marks the transaction as cross-chain (and in particular a reward claiming transaction) must be present.
-            if (context.Transaction.Outputs.All(o => o.ScriptPubKey != XlcCoinstakeRule.CCTransactionTag(this.network.CCRewardDummyAddress)))
+            if (context.Transaction.Outputs.All(o => o.ScriptPubKey != XlcCoinstakeRule.CcTransactionTag(this.network.CcRewardDummyAddress)))
             {
                 federationPayment = false;
             }

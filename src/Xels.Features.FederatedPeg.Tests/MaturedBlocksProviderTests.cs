@@ -13,7 +13,6 @@ using Xels.Bitcoin.Networks;
 using Xels.Bitcoin.Primitives;
 using Xels.Bitcoin.Tests.Common;
 using Xels.Bitcoin.Utilities;
-using Xels.Features.FederatedPeg.Conversion;
 using Xels.Features.FederatedPeg.Interfaces;
 using Xels.Features.FederatedPeg.Models;
 using Xels.Features.FederatedPeg.SourceChain;
@@ -44,7 +43,7 @@ namespace Xels.Features.FederatedPeg.Tests
             this.logger = Substitute.For<ILogger>();
             this.loggerFactory.CreateLogger(null).ReturnsForAnyArgs(this.logger);
             this.consensusManager = Substitute.For<IConsensusManager>();
-            this.network = new CCRegTest();
+            this.network = new CcRegTest();
             this.mainChainNetwork = new XlcRegTest();
 
             this.opReturnDataReader = Substitute.For<IOpReturnDataReader>();
@@ -54,7 +53,7 @@ namespace Xels.Features.FederatedPeg.Tests
 
             this.addressHelper = new MultisigAddressHelper(this.network, this.mainChainNetwork);
             this.targetAddress = this.addressHelper.GetNewTargetChainPubKeyAddress();
-            this.opReturnBytes = Encoding.UTF8.GetBytes(InterFluxOpReturnEncoder.Encode((int)DestinationChain.XLC, this.targetAddress.ToString()));
+            this.opReturnBytes = Encoding.UTF8.GetBytes(InterFluxOpReturnEncoder.Encode(DestinationChain.XLC, this.targetAddress.ToString()));
 
             this.federatedPegSettings = Substitute.For<IFederatedPegSettings>();
             this.federatedPegSettings.MultiSigRedeemScript.Returns(this.addressHelper.PayToMultiSig);

@@ -997,7 +997,7 @@ namespace Xels.Bitcoin.Features.MemoryPool.Tests.PoS
             // The current chain factory only gives blocks from the PoW phase of the network, which are not required to have the
             // reward split. So create a dummy reward output to spend from first.
             tx.AddInput(new TxIn(new OutPoint(context.SrcTxs[0].GetHash(), 0), PayToPubkeyHashTemplate.Instance.GenerateScriptPubKey(minerSecret.PubKey)));
-            tx.AddOutput(new TxOut(Money.Coins(1), XlcCoinstakeRule.CCRewardScript));
+            tx.AddOutput(new TxOut(Money.Coins(1), XlcCoinstakeRule.CcRewardScript));
             tx.Sign(this.Network, minerSecret, false);
 
             var state = new MempoolValidationState(false);
@@ -1008,13 +1008,13 @@ namespace Xels.Bitcoin.Features.MemoryPool.Tests.PoS
             // Now try spend the 'reward' output to the correct destination.
             Transaction tx2 = this.Network.CreateTransaction();
 
-            tx2.AddInput(new TxIn(new OutPoint(tx.GetHash(), 0), XlcCoinstakeRule.CCRewardScriptRedeem));
+            tx2.AddInput(new TxIn(new OutPoint(tx.GetHash(), 0), XlcCoinstakeRule.CcRewardScriptRedeem));
 
             // These transactions must be acceptable with zero fees, so spend the entire value of the precursor transaction.
             tx2.AddOutput(new TxOut(tx.Outputs.First().Value, this.Network.Federations.GetOnlyFederation().MultisigScript.PaymentScript));
 
             // Without the marker output a zero fee would not be allowed as the transaction is not in the proper cross-chain format.
-            tx2.AddOutput(new TxOut(Money.Zero, XlcCoinstakeRule.CCTransactionTag(this.Network.CCRewardDummyAddress)));
+            tx2.AddOutput(new TxOut(Money.Zero, XlcCoinstakeRule.CcTransactionTag(this.Network.CcRewardDummyAddress)));
 
             tx2.Sign(this.Network, minerSecret, true);
 
@@ -1038,7 +1038,7 @@ namespace Xels.Bitcoin.Features.MemoryPool.Tests.PoS
             // The current chain factory only gives blocks from the PoW phase of the network, which are not required to have the
             // reward split. So create a dummy reward output to spend from first.
             tx.AddInput(new TxIn(new OutPoint(context.SrcTxs[0].GetHash(), 0), PayToPubkeyHashTemplate.Instance.GenerateScriptPubKey(minerSecret.PubKey)));
-            tx.AddOutput(new TxOut(Money.Coins(1), XlcCoinstakeRule.CCRewardScript));
+            tx.AddOutput(new TxOut(Money.Coins(1), XlcCoinstakeRule.CcRewardScript));
             tx.Sign(this.Network, minerSecret, false);
 
             var state = new MempoolValidationState(false);
@@ -1049,18 +1049,18 @@ namespace Xels.Bitcoin.Features.MemoryPool.Tests.PoS
             // Now try spend the 'reward' output to the correct destination.
             Transaction tx2 = this.Network.CreateTransaction();
 
-            tx2.AddInput(new TxIn(new OutPoint(tx.GetHash(), 0), XlcCoinstakeRule.CCRewardScriptRedeem));
+            tx2.AddInput(new TxIn(new OutPoint(tx.GetHash(), 0), XlcCoinstakeRule.CcRewardScriptRedeem));
             tx2.AddOutput(new TxOut(tx.Outputs.First().Value - Money.Coins(0.05m), this.Network.Federations.GetOnlyFederation().MultisigScript.PaymentScript));
 
             // Assign some of the value to the unspendable output.
-            tx2.AddOutput(new TxOut(Money.Coins(0.05m), XlcCoinstakeRule.CCTransactionTag(this.Network.CCRewardDummyAddress)));
+            tx2.AddOutput(new TxOut(Money.Coins(0.05m), XlcCoinstakeRule.CcTransactionTag(this.Network.CcRewardDummyAddress)));
 
             tx2.Sign(this.Network, minerSecret, true);
 
             isSuccess = await validator.AcceptToMemoryPool(state, tx2);
 
             Assert.False(isSuccess, "Transaction with nonzero OP_RETURN value should not have been accepted.");
-            Assert.Equal("bad-CC-reward-tx-opreturn-not-zero", state.Error.Code);
+            Assert.Equal("bad-cc-reward-tx-opreturn-not-zero", state.Error.Code);
         }
 
         [Fact]
@@ -1078,7 +1078,7 @@ namespace Xels.Bitcoin.Features.MemoryPool.Tests.PoS
             // The current chain factory only gives blocks from the PoW phase of the network, which are not required to have the
             // reward split. So create a dummy reward output to spend from first.
             tx.AddInput(new TxIn(new OutPoint(context.SrcTxs[0].GetHash(), 0), PayToPubkeyHashTemplate.Instance.GenerateScriptPubKey(minerSecret.PubKey)));
-            tx.AddOutput(new TxOut(Money.Coins(1), XlcCoinstakeRule.CCRewardScript));
+            tx.AddOutput(new TxOut(Money.Coins(1), XlcCoinstakeRule.CcRewardScript));
             tx.Sign(this.Network, minerSecret, false);
 
             var state = new MempoolValidationState(false);
@@ -1089,7 +1089,7 @@ namespace Xels.Bitcoin.Features.MemoryPool.Tests.PoS
             // Now try spend the 'reward' output to the correct destination.
             Transaction tx2 = this.Network.CreateTransaction();
 
-            tx2.AddInput(new TxIn(new OutPoint(tx.GetHash(), 0), XlcCoinstakeRule.CCRewardScriptRedeem));
+            tx2.AddInput(new TxIn(new OutPoint(tx.GetHash(), 0), XlcCoinstakeRule.CcRewardScriptRedeem));
 
             // We do not have the marker output, so a zero fee transaction will be rejected, as the fee logic bypass conditions aren't met.
             tx2.AddOutput(new TxOut(tx.Outputs.First().Value, this.Network.Federations.GetOnlyFederation().MultisigScript.PaymentScript));
@@ -1118,7 +1118,7 @@ namespace Xels.Bitcoin.Features.MemoryPool.Tests.PoS
             // The current chain factory only gives blocks from the PoW phase of the network, which are not required to have the
             // reward split. So create a dummy reward output to spend from first.
             tx.AddInput(new TxIn(new OutPoint(context.SrcTxs[0].GetHash(), 0), PayToPubkeyHashTemplate.Instance.GenerateScriptPubKey(minerSecret.PubKey)));
-            tx.AddOutput(new TxOut(Money.Coins(1), XlcCoinstakeRule.CCRewardScript));
+            tx.AddOutput(new TxOut(Money.Coins(1), XlcCoinstakeRule.CcRewardScript));
             tx.Sign(this.Network, minerSecret, false);
 
             var state = new MempoolValidationState(false);
@@ -1130,16 +1130,16 @@ namespace Xels.Bitcoin.Features.MemoryPool.Tests.PoS
             var destSecret = new BitcoinSecret(new Key(), this.Network);
             Transaction tx2 = this.Network.CreateTransaction();
 
-            tx2.AddInput(new TxIn(new OutPoint(tx.GetHash(), 0), XlcCoinstakeRule.CCRewardScriptRedeem));
+            tx2.AddInput(new TxIn(new OutPoint(tx.GetHash(), 0), XlcCoinstakeRule.CcRewardScriptRedeem));
             tx2.AddOutput(new TxOut(Money.Coins(0.99m), destSecret.PubKeyHash));
-            tx2.AddOutput(new TxOut(Money.Zero, XlcCoinstakeRule.CCTransactionTag(this.Network.CCRewardDummyAddress)));
+            tx2.AddOutput(new TxOut(Money.Zero, XlcCoinstakeRule.CcTransactionTag(this.Network.CcRewardDummyAddress)));
 
             tx2.Sign(this.Network, minerSecret, true);
 
             isSuccess = await validator.AcceptToMemoryPool(state, tx2);
 
             Assert.False(isSuccess, "Transaction spending reward output to invalid destination should not have been accepted.");
-            Assert.Equal("bad-CC-reward-tx-reward-dest-invalid", state.Error.Code);
+            Assert.Equal("bad-cc-reward-tx-reward-dest-invalid", state.Error.Code);
         }
 
         [Fact]

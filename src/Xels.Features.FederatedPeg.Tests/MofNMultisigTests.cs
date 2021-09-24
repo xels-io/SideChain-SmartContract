@@ -68,7 +68,7 @@ namespace Xels.Features.FederatedPeg.Tests
                 "redeemscript=" + redeemScript.ToString(),
                 "publickey=" + keys[0].PubKey.ToHex(),
                 "federationips=0.0.0.0"
-            }), new CounterChainNetworkWrapper(CCNetwork.NetworksSelector.Regtest()));
+            }), new CounterChainNetworkWrapper(CcNetwork.NetworksSelector.Regtest()));
 
             // Construct the withdrawal tx
             var txBuilder = new TransactionBuilder(network);
@@ -145,7 +145,7 @@ namespace Xels.Features.FederatedPeg.Tests
                 "redeemscript=" + redeemScript.ToString(),
                 "publickey=" + keys[0].PubKey.ToHex(),
                 "federationips=0.0.0.0"
-            }), new CounterChainNetworkWrapper(CCNetwork.NetworksSelector.Regtest()));
+            }), new CounterChainNetworkWrapper(CcNetwork.NetworksSelector.Regtest()));
 
             // Construct the withdrawal tx
             var txBuilder = new TransactionBuilder(network);

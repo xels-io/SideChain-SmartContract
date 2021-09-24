@@ -19,7 +19,6 @@ namespace Xels.Features.Diagnostic.Controllers
     /// </summary>
     [ApiVersion("1")]
     [Route("api/[controller]/[action]")]
-    [ApiController]
     public class DiagnosticController : FeatureController
     {
         private readonly PeerStatisticsCollector peerStatisticsCollector;

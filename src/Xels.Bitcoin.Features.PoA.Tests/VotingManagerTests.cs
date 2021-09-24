@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Moq;
 using NBitcoin;
 using Xels.Bitcoin.EventBus.CoreEvents;
@@ -21,7 +19,7 @@ namespace Xels.Bitcoin.Features.PoA.Tests
 
         public VotingManagerTests()
         {
-            this.encoder = new VotingDataEncoder(this.loggerFactory);
+            this.encoder = new VotingDataEncoder();
             this.changesApplied = new List<VotingData>();
             this.changesReverted = new List<VotingData>();
 
@@ -55,37 +53,13 @@ namespace Xels.Bitcoin.Features.PoA.Tests
             };
 
             int votesRequired = (this.federationManager.GetFederationMembers().Count / 2) + 1;
-            ChainedHeaderBlock[] blocks = GetBlocksWithVotingData(votesRequired, votingData);
 
             for (int i = 0; i < votesRequired; i++)
             {
-                this.TriggerOnBlockConnected(blocks[i]);
+                this.TriggerOnBlockConnected(this.CreateBlockWithVotingData(new List<VotingData>() { votingData }, i + 1));
             }
 
             Assert.Single(this.votingManager.GetApprovedPolls());
-        }
-
-        private ChainedHeaderBlock[] GetBlocksWithVotingData(int count, VotingData votingData)
-        {
-            return GetBlocks(count, i => this.CreateBlockWithVotingData(new List<VotingData>() { votingData }, i + 1));
-        }
-
-        private ChainedHeaderBlock[] GetBlocksWithVotingRequest(int count, JoinFederationRequest votingRequest)
-        {
-            return GetBlocks(count, i => this.CreateBlockWithVotingRequest(votingRequest, i + 1));
-        }
-
-        private ChainedHeaderBlock[] GetBlocks(int count, Func<int, ChainedHeaderBlock> block)
-        {
-            ChainedHeader previous = null;
-
-            return Enumerable.Range(0, count).Select(i =>
-            {
-                ChainedHeaderBlock chainedHeaderBlock = block(i);
-                chainedHeaderBlock.ChainedHeader.SetPrivatePropertyValue("Previous", previous);
-                previous = chainedHeaderBlock.ChainedHeader;
-                return chainedHeaderBlock;
-            }).ToArray();
         }
 
         [Fact]
@@ -101,18 +75,16 @@ namespace Xels.Bitcoin.Features.PoA.Tests
 
             int votesRequired = (this.federationManager.GetFederationMembers().Count / 2) + 1;
 
-            ChainedHeaderBlock[] blocks = GetBlocksWithVotingData(votesRequired + 1, votingData);
-
             for (int i = 0; i < votesRequired; i++)
             {
-                this.TriggerOnBlockConnected(blocks[i]);
+                this.TriggerOnBlockConnected(this.CreateBlockWithVotingData(new List<VotingData>() { votingData }, i + 1));
             }
 
             Assert.Single(this.votingManager.GetApprovedPolls());
             Assert.Empty(this.votingManager.GetPendingPolls());
 
             // Now that poll is complete, add another vote for it.
-            ChainedHeaderBlock blockToDisconnect = blocks[votesRequired];
+            ChainedHeaderBlock blockToDisconnect = this.CreateBlockWithVotingData(new List<VotingData>() { votingData }, votesRequired + 1);
             this.TriggerOnBlockConnected(blockToDisconnect);
 
             // Now we have 1 finished and 1 pending for the same data.
@@ -139,11 +111,9 @@ namespace Xels.Bitcoin.Features.PoA.Tests
 
             int votesRequired = (this.federationManager.GetFederationMembers().Count / 2) + 1;
 
-            ChainedHeaderBlock[] blocks = GetBlocksWithVotingRequest(votesRequired, votingRequest);
-
             for (int i = 0; i < votesRequired; i++)
             {
-                this.TriggerOnBlockConnected(blocks[i]);
+                this.TriggerOnBlockConnected(this.CreateBlockWithVotingRequest(votingRequest, i + 1));
             }
         }
 

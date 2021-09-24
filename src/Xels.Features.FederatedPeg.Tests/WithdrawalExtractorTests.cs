@@ -35,7 +35,7 @@ namespace Xels.Features.FederatedPeg.Tests
 
         public WithdrawalExtractorTests()
         {
-            this.network = CCNetwork.NetworksSelector.Regtest();
+            this.network = CcNetwork.NetworksSelector.Regtest();
             this.counterChainNetwork = Networks.Xels.Regtest();
 
             this.loggerFactory = Substitute.For<ILoggerFactory>();

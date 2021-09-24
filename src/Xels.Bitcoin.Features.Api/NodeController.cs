@@ -36,7 +36,6 @@ namespace Xels.Bitcoin.Features.Api
     /// </summary>
     [ApiVersion("1")]
     [Route("api/[controller]")]
-    [ApiController]
     public class NodeController : Controller
     {
         /// <summary>Full Node.</summary>
@@ -662,19 +661,6 @@ namespace Xels.Bitcoin.Features.Api
                 this.logger.LogError("Exception occurred: {0}", e.ToString());
                 return ErrorHelpers.BuildErrorResponse(HttpStatusCode.BadRequest, e.Message, e.ToString());
             }
-        }
-
-        /// <summary>
-        /// Schedules data folder storing chain state in the <see cref="DataFolder"/> for deletion on the next graceful shutdown.
-        /// </summary>
-        /// <returns></returns>
-        [HttpDelete]
-        [Route("datafolder/chain")]
-        public IActionResult DeleteChain()
-        {
-            this.nodeSettings.DataFolder.ScheduleChainDeletion();
-
-            return Ok();
         }
 
         /// <summary>

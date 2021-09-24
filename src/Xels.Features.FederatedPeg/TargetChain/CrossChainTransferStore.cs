@@ -79,6 +79,7 @@ namespace Xels.Features.FederatedPeg.TargetChain
         private readonly DBreezeSerializer dBreezeSerializer;
         private readonly IFederationWalletManager federationWalletManager;
         private readonly Network network;
+        private readonly INodeStats nodeStats;
         private readonly IFederatedPegSettings settings;
         private readonly ISignals signals;
         private readonly IStateRepositoryRoot stateRepositoryRoot;
@@ -109,6 +110,7 @@ namespace Xels.Features.FederatedPeg.TargetChain
             Guard.NotNull(withdrawalTransactionBuilder, nameof(withdrawalTransactionBuilder));
 
             this.network = network;
+            this.nodeStats = nodeStats;
             this.chainIndexer = chainIndexer;
             this.blockRepository = blockRepository;
             this.federationWalletManager = federationWalletManager;
@@ -1486,35 +1488,13 @@ namespace Xels.Features.FederatedPeg.TargetChain
             }
         }
 
+
         /// <inheritdoc />
         public List<WithdrawalModel> GetCompletedWithdrawals(int transfersToDisplay)
         {
             HashSet<uint256> depositIds = this.depositsIdsByStatus[CrossChainTransferStatus.SeenInBlock];
             ICrossChainTransfer[] transfers = this.Get(depositIds.ToArray()).Where(t => t != null).ToArray();
             return this.withdrawalHistoryProvider.GetHistory(transfers, transfersToDisplay);
-        }
-
-        /// <inheritdoc />
-        public int DeleteSuspendedTransfers()
-        {
-            HashSet<uint256> depositIds = this.depositsIdsByStatus[CrossChainTransferStatus.Suspended];
-            ICrossChainTransfer[] transfers = this.Get(depositIds.ToArray()).Where(t => t != null).ToArray();
-
-            using (DBreeze.Transactions.Transaction dbreezeTransaction = this.DBreeze.GetTransaction())
-            {
-                dbreezeTransaction.SynchronizeTables(transferTableName, commonTableName);
-                dbreezeTransaction.ValuesLazyLoadingIsOn = false;
-
-                foreach (ICrossChainTransfer transfer in transfers)
-                {
-                    this.DeleteTransfer(dbreezeTransaction, transfer);
-                    this.logger.Debug($"Suspended transfer with deposit id '{transfer.DepositTransactionId}' deleted.");
-                }
-
-                dbreezeTransaction.Commit();
-            }
-
-            return transfers.Count();
         }
 
         /// <inheritdoc />

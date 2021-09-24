@@ -324,7 +324,6 @@ namespace NBitcoin.Tests
         {
             Network network = this.xlcMain;
 
-            Assert.Equal(16, network.Checkpoints.Count);
             Assert.Equal(2, network.DNSSeeds.Count);
             Assert.Empty(network.SeedNodes);
 
@@ -399,7 +398,6 @@ namespace NBitcoin.Tests
         {
             Network network = this.xlcTest;
 
-            Assert.Equal(8, network.Checkpoints.Count);
             Assert.Single(network.SeedNodes);
 
             Assert.Equal("XlcTest", network.Name);

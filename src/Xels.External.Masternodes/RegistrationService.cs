@@ -24,11 +24,11 @@ namespace Xels.External.Masternodes
 {
     public sealed class RegistrationService
     {
-        /// <summary>The folder where the CCMinerD.exe is stored.</summary>
+        /// <summary>The folder where the CcMinerD.exe is stored.</summary>
         private string nodeExecutablesPath;
         private Network mainchainNetwork;
         private Network sidechainNetwork;
-        private const string nodeExecutable = "Xels.CCMinerD.exe";
+        private const string nodeExecutable = "Xels.CcMinerD.exe";
 
         private const int CollateralRequirement = 100_000;
         private const int FeeRequirement = 500;
@@ -43,19 +43,19 @@ namespace Xels.External.Masternodes
             if (networkType == NetworkType.Mainnet)
             {
                 this.mainchainNetwork = new XlcMain();
-                this.sidechainNetwork = new CCMain();
+                this.sidechainNetwork = new CcMain();
             }
 
             if (networkType == NetworkType.Testnet)
             {
                 this.mainchainNetwork = new XlcTest();
-                this.sidechainNetwork = new CCTest();
+                this.sidechainNetwork = new CcTest();
             }
 
             if (networkType == NetworkType.Regtest)
             {
                 this.mainchainNetwork = new XlcRegTest();
-                this.sidechainNetwork = new CCRegTest();
+                this.sidechainNetwork = new CcRegTest();
             }
 
             // Start main chain node
@@ -447,8 +447,8 @@ namespace Xels.External.Masternodes
             string collateralWallet;
             string collateralPassword;
             string collateralAddress;
-            string CCWalletName;
-            string CCWalletPassword;
+            string ccWalletName;
+            string ccWalletPassword;
 
             do
             {
@@ -460,12 +460,12 @@ namespace Xels.External.Masternodes
                 collateralAddress = Console.ReadLine();
 
                 Console.WriteLine($"[CC] Please enter the wallet name which holds the registration fee of {FeeRequirement} {this.sidechainNetwork.CoinTicker}:");
-                CCWalletName = Console.ReadLine();
+                ccWalletName = Console.ReadLine();
                 Console.WriteLine($"[CC] Please enter the above wallet's password:");
-                CCWalletPassword = Console.ReadLine();
+                ccWalletPassword = Console.ReadLine();
 
                 if (!string.IsNullOrEmpty(collateralWallet) && !string.IsNullOrEmpty(collateralPassword) && !string.IsNullOrEmpty(collateralAddress) &&
-                    !string.IsNullOrEmpty(CCWalletName) && !string.IsNullOrEmpty(CCWalletPassword))
+                    !string.IsNullOrEmpty(ccWalletName) && !string.IsNullOrEmpty(ccWalletPassword))
                     break;
 
                 Console.WriteLine("ERROR: Please ensure that you enter the relevant details correctly.");
@@ -478,8 +478,8 @@ namespace Xels.External.Masternodes
                 CollateralWalletName = collateralWallet,
                 CollateralWalletPassword = collateralPassword,
                 WalletAccount = "account 0",
-                WalletName = CCWalletName,
-                WalletPassword = CCWalletPassword
+                WalletName = ccWalletName,
+                WalletPassword = ccWalletPassword
             };
 
             try

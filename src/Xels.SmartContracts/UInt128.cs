@@ -1,28 +1,21 @@
-﻿#region Assembly Stratis.SmartContracts, Version=1.4.1.0, Culture=neutral, PublicKeyToken=null
-// C:\Users\fazle\.nuget\packages\stratis.smartcontracts\1.4.1-alpha\lib\netcoreapp2.1\Stratis.SmartContracts.dll
-// Decompiled with ICSharpCode.Decompiler 6.1.0.5902
-#endregion
-
-using System;
+﻿using System;
 using System.Numerics;
 
 namespace Xels.SmartContracts
 {
     public struct UInt128 : IComparable
     {
-        private const int WIDTH = 16;
+        const int WIDTH = 16;
 
-        private UIntBase value;
+        internal UIntBase value;
 
         public static UInt128 Zero => 0;
-
         public static UInt128 MinValue => 0;
-
-        public static UInt128 MaxValue => (BigInteger.One << 128) - 1;
+        public static UInt128 MaxValue => new UInt128((BigInteger.One << (WIDTH * 8)) - 1);
 
         public UInt128(string hex)
         {
-            value = new UIntBase(16, hex);
+            this.value = new UIntBase(WIDTH, hex);
         }
 
         public static UInt128 Parse(string str)
@@ -30,14 +23,14 @@ namespace Xels.SmartContracts
             return new UInt128(str);
         }
 
-        public UInt128(BigInteger value)
+        internal UInt128(BigInteger value)
         {
-            this.value = new UIntBase(16, value);
+            this.value = new UIntBase(WIDTH, value);
         }
 
         public UInt128(byte[] vch, bool lendian = true)
         {
-            value = new UIntBase(16, vch, lendian);
+            this.value = new UIntBase(WIDTH, vch, lendian);
         }
 
         public static UInt128 operator >>(UInt128 a, int shift)
@@ -50,33 +43,67 @@ namespace Xels.SmartContracts
             return new UInt128(a.value.ShiftLeft(shift));
         }
 
+        /// <summary>
+        /// Subtracts the first number from the second.
+        /// </summary>
+        /// <param name="a">Number to subtract from.</param>
+        /// <param name="b">Number to subtract.</param>
+        /// <returns>The result as a zero or positive number.</returns>
+        /// <exception cref="OverflowException">Always thrown if the result is negative regardless of checked context.</exception>
         public static UInt128 operator -(UInt128 a, UInt128 b)
         {
             return new UInt128(a.value.Subtract(b.value.GetValue()));
         }
 
+        /// <summary>
+        /// Adds two numbers.
+        /// </summary>
+        /// <param name="a">Number to add.</param>
+        /// <param name="b">Number to add.</param>
+        /// <returns>The result as a zero or positive number.</returns>
+        /// <exception cref="OverflowException">Always thrown if the result is greater than <see cref="MaxValue"/>.</exception>
         public static UInt128 operator +(UInt128 a, UInt128 b)
         {
             return new UInt128(a.value.Add(b.value.GetValue()));
         }
 
+        /// <summary>
+        /// Multiplies two numbers.
+        /// </summary>
+        /// <param name="a">Number to multiply.</param>
+        /// <param name="b">Number to multiply.</param>
+        /// <returns>The result as a zero or positive number.</returns>
+        /// <exception cref="OverflowException">Always thrown if the result is greater than <see cref="MaxValue"/>.</exception>
         public static UInt128 operator *(UInt128 a, UInt128 b)
         {
             return new UInt128(a.value.Multiply(b.value.GetValue()));
         }
 
+        /// <summary>
+        /// Divides the first number by the second.
+        /// </summary>
+        /// <param name="a">Number to divide.</param>
+        /// <param name="b">Number to divide by.</param>
+        /// <returns>The result as a zero or positive number.</returns>
+        /// <exception cref="DivideByZeroException">Always thrown if <paramref name="b"/> is zero.</exception>
         public static UInt128 operator /(UInt128 a, UInt128 b)
         {
             return new UInt128(a.value.Divide(b.value.GetValue()));
         }
 
+        /// <summary>
+        /// Computes the remainder of the division of the first number by the second - i.e. a mod b.
+        /// </summary>
+        /// <param name="a">Number to divide.</param>
+        /// <param name="b">Number to divide by.</param>
+        /// <returns>The remainder as a zero or positive number.</returns>
+        /// <exception cref="DivideByZeroException">Always thrown if <paramref name="b"/> is zero.</exception>
         public static UInt128 operator %(UInt128 a, UInt128 b)
         {
             return new UInt128(a.value.Mod(b.value.GetValue()));
         }
 
-        public UInt128(byte[] vch)
-            : this(vch, lendian: true)
+        public UInt128(byte[] vch) : this(vch, true)
         {
         }
 
@@ -130,86 +157,49 @@ namespace Xels.SmartContracts
             return new UInt128(value);
         }
 
-        public static implicit operator UInt128(BigInteger value)
-        {
-            return new UInt128(value);
-        }
-
-        public static implicit operator UInt128(UInt256 value)
-        {
-            return new UInt128(value);
-        }
-
-        public static implicit operator int(UInt128 value)
+        public static explicit operator int(UInt128 value)
         {
             return (int)value.value.GetValue();
         }
 
-        public static implicit operator uint(UInt128 value)
+        public static explicit operator uint(UInt128 value)
         {
             return (uint)value.value.GetValue();
         }
 
-        public static implicit operator long(UInt128 value)
+        public static explicit operator long(UInt128 value)
         {
             return (long)value.value.GetValue();
         }
 
-        public static implicit operator ulong(UInt128 value)
+        public static explicit operator ulong(UInt128 value)
         {
             return (ulong)value.value.GetValue();
         }
 
-        public static implicit operator BigInteger(UInt128 value)
-        {
-            return value.value.GetValue();
-        }
-
         public byte[] ToBytes()
         {
-            return value.ToBytes();
+            return this.value.ToBytes();
         }
 
         public int CompareTo(object b)
         {
-            return value.CompareTo(((UInt128)b).value);
+            return this.value.CompareTo(((UInt128)b).value);
         }
 
         public override int GetHashCode()
         {
-            return value.GetHashCode();
+            return this.value.GetHashCode();
         }
 
         public override bool Equals(object obj)
         {
-            return CompareTo(obj) == 0;
+            return this.CompareTo(obj) == 0;
         }
 
         public override string ToString()
         {
-            return value.ToString();
+            return this.value.ToString();
         }
     }
 }
-#if false // Decompilation log
-'266' items in cache
-------------------
-Resolve: 'System.Runtime, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'
-Found single assembly: 'System.Runtime, Version=4.2.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'
-WARN: Version mismatch. Expected: '4.2.1.0', Got: '4.2.2.0'
-Load from: 'C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\3.1.0\ref\netcoreapp3.1\System.Runtime.dll'
-------------------
-Resolve: 'System.Runtime.Numerics, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'
-Found single assembly: 'System.Runtime.Numerics, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'
-WARN: Version mismatch. Expected: '4.1.1.0', Got: '4.1.2.0'
-Load from: 'C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\3.1.0\ref\netcoreapp3.1\System.Runtime.Numerics.dll'
-------------------
-Resolve: 'System.Runtime.Extensions, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'
-Found single assembly: 'System.Runtime.Extensions, Version=4.2.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'
-WARN: Version mismatch. Expected: '4.2.1.0', Got: '4.2.2.0'
-Load from: 'C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\3.1.0\ref\netcoreapp3.1\System.Runtime.Extensions.dll'
-------------------
-Resolve: 'System.Runtime, Version=4.2.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'
-Found single assembly: 'System.Runtime, Version=4.2.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'
-Load from: 'C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\3.1.0\ref\netcoreapp3.1\System.Runtime.dll'
-#endif

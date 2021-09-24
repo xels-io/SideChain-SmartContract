@@ -145,9 +145,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xels.Features.FederatedPeg"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xels.Features.FederatedPeg.Tests", "Xels.Features.FederatedPeg.Tests\Xels.Features.FederatedPeg.Tests.csproj", "{DE629FE5-BC8A-4597-B19C-DDAB5EC1528D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xels.CCD", "Xels.CCD\Xels.CCD.csproj", "{D1A3A36B-4F50-4C10-9DAE-DACFAF617A6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xels.CcD", "Xels.CcD\Xels.CcD.csproj", "{D1A3A36B-4F50-4C10-9DAE-DACFAF617A6D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xels.CCPegD", "Xels.CCPegD\Xels.CCPegD.csproj", "{3E6D4D9E-CAF5-4A23-9C96-07B1B1FE76B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xels.CcPegD", "Xels.CcPegD\Xels.CcPegD.csproj", "{3E6D4D9E-CAF5-4A23-9C96-07B1B1FE76B7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xels.Features.FederatedPeg.IntegrationTests", "Xels.Features.FederatedPeg.IntegrationTests\Xels.Features.FederatedPeg.IntegrationTests.csproj", "{D71A7BBE-E64A-4F2E-B2A9-6D742FE94ED9}"
 EndProject
@@ -155,11 +155,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Benchmarks", "Benchmarks", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xels.Benchmark", "Xels.Benchmark\Xels.Benchmark.csproj", "{B8BC6552-6409-4BE1-B085-E8E6513EC251}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xels.CCDnsD", "Xels.CCDnsD\Xels.CCDnsD.csproj", "{62CE1282-A077-4454-A718-7A5BA5756BE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xels.CcDnsD", "Xels.CcDnsD\Xels.CcDnsD.csproj", "{62CE1282-A077-4454-A718-7A5BA5756BE9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FederationSetup", "FederationSetup\FederationSetup.csproj", "{C83A089D-7B30-46BB-BBE3-AFBBAFB9A40D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xels.CCMinerD", "Xels.CCMinerD\Xels.CCMinerD.csproj", "{4548A1D1-C4E2-460C-A06A-FF8A994919D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xels.CcMinerD", "Xels.CcMinerD\Xels.CcMinerD.csproj", "{4548A1D1-C4E2-460C-A06A-FF8A994919D8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xels.Bitcoin.Features.SignalR", "Xels.Bitcoin.Features.SignalR\Xels.Bitcoin.Features.SignalR.csproj", "{6BBFFE59-0597-4ADA-A592-CED25C05C01A}"
 EndProject
@@ -187,11 +187,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xels.External.Masternodes",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xels.Features.Unity3dApi", "Xels.Features.Unity3dApi\Xels.Features.Unity3dApi.csproj", "{B08D2057-F48D-4E72-99F4-95A35E6E0DFD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xels.SmartContracts", "Xels.SmartContracts\Xels.SmartContracts.csproj", "{2CCE1B2F-E44C-4E64-8F48-7CB2A5535197}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xels.SmartContracts", "Xels.SmartContracts\Xels.SmartContracts.csproj", "{87A5D02A-D196-428C-97D4-32C95E4822E6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xels.SmartContracts.Standards", "Xels.SmartContracts.Standards\Xels.SmartContracts.Standards.csproj", "{6F9A47E8-8D53-4DF6-A058-F78CCC5905FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xels.SmartContracts.Standards", "Xels.SmartContracts.Standards\Xels.SmartContracts.Standards.csproj", "{7C0D684F-0B42-44BA-A983-4575845195BC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XelsDesktopWalletApp", "XelsDesktopWalletApp\XelsDesktopWalletApp.csproj", "{53201757-AEC6-4AAF-ADA9-B4A823E9A0CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XelsDesktopWalletApp", "XelsDesktopWalletApp\XelsDesktopWalletApp.csproj", "{0124F3B6-25EC-41FA-A5BB-AC96E9991823}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -499,18 +499,18 @@ Global
 		{B08D2057-F48D-4E72-99F4-95A35E6E0DFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B08D2057-F48D-4E72-99F4-95A35E6E0DFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B08D2057-F48D-4E72-99F4-95A35E6E0DFD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2CCE1B2F-E44C-4E64-8F48-7CB2A5535197}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2CCE1B2F-E44C-4E64-8F48-7CB2A5535197}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2CCE1B2F-E44C-4E64-8F48-7CB2A5535197}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2CCE1B2F-E44C-4E64-8F48-7CB2A5535197}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6F9A47E8-8D53-4DF6-A058-F78CCC5905FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6F9A47E8-8D53-4DF6-A058-F78CCC5905FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6F9A47E8-8D53-4DF6-A058-F78CCC5905FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6F9A47E8-8D53-4DF6-A058-F78CCC5905FF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{53201757-AEC6-4AAF-ADA9-B4A823E9A0CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{53201757-AEC6-4AAF-ADA9-B4A823E9A0CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{53201757-AEC6-4AAF-ADA9-B4A823E9A0CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{53201757-AEC6-4AAF-ADA9-B4A823E9A0CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87A5D02A-D196-428C-97D4-32C95E4822E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87A5D02A-D196-428C-97D4-32C95E4822E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87A5D02A-D196-428C-97D4-32C95E4822E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87A5D02A-D196-428C-97D4-32C95E4822E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C0D684F-0B42-44BA-A983-4575845195BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C0D684F-0B42-44BA-A983-4575845195BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C0D684F-0B42-44BA-A983-4575845195BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C0D684F-0B42-44BA-A983-4575845195BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0124F3B6-25EC-41FA-A5BB-AC96E9991823}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0124F3B6-25EC-41FA-A5BB-AC96E9991823}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0124F3B6-25EC-41FA-A5BB-AC96E9991823}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0124F3B6-25EC-41FA-A5BB-AC96E9991823}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -581,8 +581,8 @@ Global
 		{3DCC6195-1271-4A12-8B94-E821925D98DC} = {15D29FFD-6142-4DC5-AFFD-10BA0CA55C45}
 		{F04464B5-9D56-4C9A-9778-27B9D314A296} = {1B9A916F-DDAC-4675-B424-EDEDC1A58231}
 		{B08D2057-F48D-4E72-99F4-95A35E6E0DFD} = {15D29FFD-6142-4DC5-AFFD-10BA0CA55C45}
-		{2CCE1B2F-E44C-4E64-8F48-7CB2A5535197} = {1B9A916F-DDAC-4675-B424-EDEDC1A58231}
-		{6F9A47E8-8D53-4DF6-A058-F78CCC5905FF} = {1B9A916F-DDAC-4675-B424-EDEDC1A58231}
+		{87A5D02A-D196-428C-97D4-32C95E4822E6} = {1B9A916F-DDAC-4675-B424-EDEDC1A58231}
+		{7C0D684F-0B42-44BA-A983-4575845195BC} = {1B9A916F-DDAC-4675-B424-EDEDC1A58231}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6C780ABA-5872-4B83-AD3F-A5BD423AD907}

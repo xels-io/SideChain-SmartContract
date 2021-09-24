@@ -20,7 +20,7 @@ using Xels.Features.Collateral.CounterChain;
 using Xels.Features.SQLiteWalletRepository;
 using Xels.Sidechains.Networks;
 
-namespace Xels.CCDnsD
+namespace Xels.CcDnsD
 {
     /// <summary>
     /// Main entry point.
@@ -36,7 +36,7 @@ namespace Xels.CCDnsD
         {
             try
             {
-                var nodeSettings = new NodeSettings(networksSelector: CCNetwork.NetworksSelector, protocolVersion: ProtocolVersion.CC_VERSION, args: args)
+                var nodeSettings = new NodeSettings(networksSelector: CcNetwork.NetworksSelector, protocolVersion: ProtocolVersion.CC_VERSION, args: args)
                 {
                     MinProtocolVersion = ProtocolVersion.ALT_PROTOCOL_VERSION
                 };

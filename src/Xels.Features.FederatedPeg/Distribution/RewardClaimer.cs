@@ -127,7 +127,7 @@ namespace Xels.Features.FederatedPeg.Distribution
             var coins = new List<ScriptCoin>();
 
             // Identify any outputs paying the reward script a nonzero amount.
-            TxOut[] rewardOutputs = coinStake.Outputs.Where(o => o.ScriptPubKey == XlcCoinstakeRule.CCRewardScript && o.Value != 0).ToArray();
+            TxOut[] rewardOutputs = coinStake.Outputs.Where(o => o.ScriptPubKey == XlcCoinstakeRule.CcRewardScript && o.Value != 0).ToArray();
 
             // This shouldn't be the case but check anyway.
             if (rewardOutputs.Length != 0)
@@ -135,7 +135,7 @@ namespace Xels.Features.FederatedPeg.Distribution
                 foreach (TxOut txOutput in rewardOutputs)
                 {
                     // The reward script is P2SH, so we need to inform the builder of the corresponding redeem script to enable it to be spent.
-                    var coin = ScriptCoin.Create(this.network, coinStake, txOutput, XlcCoinstakeRule.CCRewardScriptRedeem);
+                    var coin = ScriptCoin.Create(this.network, coinStake, txOutput, XlcCoinstakeRule.CcRewardScriptRedeem);
                     coins.Add(coin);
                 }
             }
@@ -156,7 +156,7 @@ namespace Xels.Features.FederatedPeg.Distribution
             builder.AddCoins(coins);
 
             // An OP_RETURN for a dummy CC address that tells the sidechain federation they can distribute the transaction.
-            builder.Send(XlcCoinstakeRule.CCTransactionTag(this.network.CCRewardDummyAddress), Money.Zero);
+            builder.Send(XlcCoinstakeRule.CcTransactionTag(this.network.CcRewardDummyAddress), Money.Zero);
 
             // The mempool will accept a zero-fee transaction as long as it matches this structure, paying to the federation.
             builder.Send(this.network.Federations.GetOnlyFederation().MultisigScript.PaymentScript, coins.Sum(o => o.Amount));
@@ -210,14 +210,6 @@ namespace Xels.Features.FederatedPeg.Distribution
             // Check if the current block is after reward batching activation height.
             if (blockConnected.ConnectedBlock.ChainedHeader.Height >= this.network.RewardClaimerBatchActivationHeight)
             {
-                // Check if the block connected height is equal or below the last distribution height.
-                // This is could happen due to a reorg and therefore we do nothing.
-                if (blockConnected.ConnectedBlock.ChainedHeader.Height <= (this.lastDistributionHeight + 1))
-                {
-                    this.logger.Info($"Reward claiming skipped as block window already processed; Block connected at {blockConnected.ConnectedBlock.ChainedHeader.Height}; Last distribution at {this.lastDistributionHeight}.");
-                    return;
-                }
-
                 // Check if the reward claimer should be triggered.
                 if (blockConnected.ConnectedBlock.ChainedHeader.Height > this.network.RewardClaimerBatchActivationHeight &&
                     blockConnected.ConnectedBlock.ChainedHeader.Height % this.network.RewardClaimerBlockInterval == 0)

@@ -8,7 +8,6 @@ namespace Xels.Bitcoin.Features.SignalR.Controllers
     /// Controller for connecting to SignalR.
     /// </summary>
     [Route("api/[controller]")]
-    [ApiController]
     public class SignalRController : Controller
     {
         private readonly SignalRSettings signalRSettings;

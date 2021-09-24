@@ -22,7 +22,7 @@ using Xels.Features.SQLiteWalletRepository;
 using Xels.Features.Unity3dApi;
 using Xels.Sidechains.Networks;
 
-namespace Xels.CCD
+namespace Xels.CcD
 {
     class Program
     {
@@ -36,7 +36,7 @@ namespace Xels.CCD
             try
             {
                 // set the console window title to identify this as a CC full node (for clarity when running Xlc and CC on the same machine)
-                var nodeSettings = new NodeSettings(networksSelector: CCNetwork.NetworksSelector, protocolVersion: ProtocolVersion.CC_VERSION, args: args)
+                var nodeSettings = new NodeSettings(networksSelector: CcNetwork.NetworksSelector, protocolVersion: ProtocolVersion.CC_VERSION, args: args)
                 {
                     MinProtocolVersion = ProtocolVersion.ALT_PROTOCOL_VERSION
                 };
@@ -82,7 +82,7 @@ namespace Xels.CCD
             .AddRPC()
             .AddSignalR(options =>
             {
-                DaemonConfiguration.ConfigureSignalRForCC(options);
+                DaemonConfiguration.ConfigureSignalRForCc(options);
             })
             .UseDiagnosticFeature();
 

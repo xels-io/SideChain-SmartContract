@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using NBitcoin;
+using Xels.Bitcoin.Features.Wallet;
 using Xels.Bitcoin.Utilities;
-using Xels.Features.FederatedPeg.Conversion;
 using Xels.Features.FederatedPeg.Interfaces;
 using Xels.Features.FederatedPeg.Models;
 using Xels.Features.FederatedPeg.SourceChain;

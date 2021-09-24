@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ConcurrentCollections;
-using Microsoft.Extensions.Logging;
 using NBitcoin;
+using NLog;
 using Xels.Bitcoin.Configuration;
 using Xels.Bitcoin.Configuration.Logging;
+using Xels.Bitcoin.Consensus;
 using Xels.Bitcoin.EventBus;
 using Xels.Bitcoin.EventBus.CoreEvents;
 using Xels.Bitcoin.Features.BlockStore;
+using Xels.Bitcoin.Features.PoA.Events;
 using Xels.Bitcoin.Primitives;
 using Xels.Bitcoin.Signals;
 using Xels.Bitcoin.Utilities;
@@ -37,14 +39,15 @@ namespace Xels.Bitcoin.Features.PoA.Voting
         private readonly Network network;
         private readonly ILogger logger;
 
-        /// <summary>Protects access to <see cref="scheduledVotingData"/>, <see cref="polls"/>, <see cref="PollsRepository"/>.</summary>
+        private readonly IFinalizedBlockInfoRepository finalizedBlockInfo;
+
+        /// <summary>Protects access to <see cref="scheduledVotingData"/>, <see cref="polls"/>, <see cref="pollsRepository"/>.</summary>
         private readonly object locker;
 
         /// <summary>All access should be protected by <see cref="locker"/>.</remarks>
-        public PollsRepository PollsRepository { get; private set; }
+        private readonly PollsRepository pollsRepository;
 
         private IIdleFederationMembersKicker idleFederationMembersKicker;
-        private INodeLifetime nodeLifetime;
 
         /// <summary>In-memory collection of pending polls.</summary>
         /// <remarks>All access should be protected by <see cref="locker"/>.</remarks>
@@ -57,33 +60,31 @@ namespace Xels.Bitcoin.Features.PoA.Voting
         /// <remarks>All access should be protected by <see cref="locker"/>.</remarks>
         private List<VotingData> scheduledVotingData;
 
-        internal bool isInitialized;
+        private bool isInitialized;
+        private bool isBusyReconstructing;
 
-        public VotingManager(IFederationManager federationManager, ILoggerFactory loggerFactory, IPollResultExecutor pollResultExecutor,
-            INodeStats nodeStats, DataFolder dataFolder, DBreezeSerializer dBreezeSerializer, ISignals signals,
+        public VotingManager(IFederationManager federationManager, IPollResultExecutor pollResultExecutor, INodeStats nodeStats,
+            DataFolder dataFolder, DBreezeSerializer dBreezeSerializer, ISignals signals, IFinalizedBlockInfoRepository finalizedBlockInfo,
             Network network,
             IBlockRepository blockRepository = null,
-            ChainIndexer chainIndexer = null,
-            INodeLifetime nodeLifetime = null,
-            NodeSettings nodeSettings = null)
+            ChainIndexer chainIndexer = null)
         {
             this.federationManager = Guard.NotNull(federationManager, nameof(federationManager));
             this.pollResultExecutor = Guard.NotNull(pollResultExecutor, nameof(pollResultExecutor));
             this.signals = Guard.NotNull(signals, nameof(signals));
             this.nodeStats = Guard.NotNull(nodeStats, nameof(nodeStats));
+            this.finalizedBlockInfo = Guard.NotNull(finalizedBlockInfo, nameof(finalizedBlockInfo));
 
             this.locker = new object();
-            this.votingDataEncoder = new VotingDataEncoder(loggerFactory);
+            this.votingDataEncoder = new VotingDataEncoder();
             this.scheduledVotingData = new List<VotingData>();
-            this.PollsRepository = new PollsRepository(dataFolder, loggerFactory, dBreezeSerializer, chainIndexer, nodeSettings);
-
-            this.logger = loggerFactory.CreateLogger(this.GetType().FullName);
+            this.pollsRepository = new PollsRepository(dataFolder, dBreezeSerializer);
+            this.logger = LogManager.GetCurrentClassLogger();
             this.network = network;
             this.poaConsensusOptions = (PoAConsensusOptions)this.network.Consensus.Options;
 
             this.blockRepository = blockRepository;
             this.chainIndexer = chainIndexer;
-            this.nodeLifetime = nodeLifetime;
 
             this.isInitialized = false;
         }
@@ -93,9 +94,9 @@ namespace Xels.Bitcoin.Features.PoA.Voting
             this.federationHistory = federationHistory;
             this.idleFederationMembersKicker = idleFederationMembersKicker;
 
-            this.PollsRepository.Initialize();
+            this.pollsRepository.Initialize();
 
-            this.PollsRepository.WithTransaction(transaction => this.polls = this.PollsRepository.GetAllPolls(transaction));
+            this.polls = this.pollsRepository.GetAllPolls();
 
             this.blockConnectedSubscription = this.signals.Subscribe<BlockConnected>(this.OnBlockConnected);
             this.blockDisconnectedSubscription = this.signals.Subscribe<BlockDisconnected>(this.OnBlockDisconnected);
@@ -104,7 +105,74 @@ namespace Xels.Bitcoin.Features.PoA.Voting
 
             this.isInitialized = true;
 
-            this.logger.LogDebug("VotingManager initialized.");
+            this.logger.Debug("VotingManager initialized.");
+        }
+
+        /// <summary> Remove all polls that started on or after the given height.</summary>
+        /// <param name="height">The height to clean polls from.</param>
+        public void DeletePollsAfterHeight(int height)
+        {
+            this.logger.Info($"Cleaning poll data from height {height}.");
+
+            var idsToRemove = new List<int>();
+
+            this.polls = this.pollsRepository.GetAllPolls();
+
+            foreach (Poll poll in this.polls.Where(p => p.PollStartBlockData.Height >= height))
+            {
+                idsToRemove.Add(poll.Id);
+            }
+
+            if (idsToRemove.Any())
+            {
+                this.pollsRepository.DeletePollsAndSetHighestPollId(idsToRemove.ToArray());
+                this.polls = this.pollsRepository.GetAllPolls();
+            }
+        }
+
+        /// <summary> Reconstructs voting and poll data from a given height.</summary>
+        /// <param name="height">The height to start reconstructing from.</param>
+        public void ReconstructVotingDataFromHeightLocked(int height)
+        {
+            try
+            {
+                this.isBusyReconstructing = true;
+
+                var currentHeight = height;
+                var progress = $"Reconstructing voting poll data from height {currentHeight}.";
+                this.logger.Info(progress);
+                this.signals.Publish(new RecontructFederationProgressEvent() { Progress = progress });
+
+                do
+                {
+                    ChainedHeader chainedHeader = this.chainIndexer.GetHeader(currentHeight);
+                    if (chainedHeader == null)
+                        break;
+
+                    Block block = this.blockRepository.GetBlock(chainedHeader.HashBlock);
+                    if (block == null)
+                        break;
+
+                    var chainedHeaderBlock = new ChainedHeaderBlock(block, chainedHeader);
+
+                    this.idleFederationMembersKicker.UpdateFederationMembersLastActiveTime(chainedHeaderBlock, false);
+
+                    OnBlockConnected(new BlockConnected(chainedHeaderBlock));
+
+                    currentHeight++;
+
+                    if (currentHeight % 10000 == 0)
+                    {
+                        progress = $"Reconstructing voting data at height {currentHeight}";
+                        this.logger.Info(progress);
+                        this.signals.Publish(new RecontructFederationProgressEvent() { Progress = progress });
+                    }
+                } while (true);
+            }
+            finally
+            {
+                this.isBusyReconstructing = false;
+            }
         }
 
         /// <summary>Schedules a vote for the next time when the block will be mined.</summary>
@@ -115,7 +183,7 @@ namespace Xels.Bitcoin.Features.PoA.Voting
 
             if (!this.federationManager.IsFederationMember)
             {
-                this.logger.LogTrace("(-)[NOT_FED_MEMBER]");
+                this.logger.Trace("(-)[NOT_FED_MEMBER]");
                 throw new InvalidOperationException("Not a federation member!");
             }
 
@@ -127,7 +195,7 @@ namespace Xels.Bitcoin.Features.PoA.Voting
                 this.CleanFinishedPollsLocked();
             }
 
-            this.logger.LogDebug("Vote was scheduled with key: {0}.", votingData.Key);
+            this.logger.Debug("Vote was scheduled with key: {0}.", votingData.Key);
         }
 
         /// <summary>Provides a copy of scheduled voting data.</summary>
@@ -158,7 +226,7 @@ namespace Xels.Bitcoin.Features.PoA.Voting
                 this.scheduledVotingData = new List<VotingData>();
 
                 if (votingData.Count > 0)
-                    this.logger.LogDebug("{0} scheduled votes were taken.", votingData.Count);
+                    this.logger.Debug("{0} scheduled votes were taken.", votingData.Count);
 
                 return votingData;
             }
@@ -265,94 +333,41 @@ namespace Xels.Bitcoin.Features.PoA.Voting
         {
             lock (this.locker)
             {
-                var federation = new List<IFederationMember>(this.poaConsensusOptions.GenesisFederationMembers);
+                var federationMembers = new List<IFederationMember>(this.poaConsensusOptions.GenesisFederationMembers);
 
                 IEnumerable<Poll> executedPolls = this.GetExecutedPolls().MemberPolls();
                 foreach (Poll poll in executedPolls.OrderBy(a => a.PollExecutedBlockData.Height))
                 {
-                    IFederationMember federationMember = ((PoAConsensusFactory)(this.network.Consensus.ConsensusFactory)).DeserializeFederationMember(poll.VotingData.Data);
+                    IFederationMember federationMember = ((PoAConsensusFactory)this.network.Consensus.ConsensusFactory).DeserializeFederationMember(poll.VotingData.Data);
 
                     if (poll.VotingData.Key == VoteKey.AddFederationMember)
-                        federation.Add(federationMember);
+                    {
+                        if (federationMember is CollateralFederationMember collateralFederationMember && !federationMembers.IsCollateralAddressRegistered(collateralFederationMember.CollateralMainchainAddress))
+                            federationMembers.Add(federationMember);
+                    }
                     else if (poll.VotingData.Key == VoteKey.KickFederationMember)
-                        federation.Remove(federationMember);
+                        federationMembers.Remove(federationMember);
                 }
 
-                return federation;
-            }
-        }
-
-        public int LastKnownFederationHeight()
-        {
-            return (this.PollsRepository.CurrentTip?.Height ?? 0) + (int)this.network.Consensus.MaxReorgLength - 1;
-        }
-
-        public bool CanGetFederationForBlock(ChainedHeader chainedHeader)
-        {
-            return chainedHeader.Height <= LastKnownFederationHeight();
-        }
-
-        private Dictionary<uint256, List<IFederationMember>> cachedFederations = new Dictionary<uint256, List<IFederationMember>>();
-
-        public void EnterXlcEra(List<IFederationMember> modifiedFederation)
-        {
-            // If we are accessing blocks prior to XLC activation then the IsMultisigMember values for the members may be different. 
-            for (int i = 0; i < modifiedFederation.Count; i++)
-            {
-                bool shouldBeMultisigMember = ((PoANetwork)this.network).XlcMiningMultisigMembers.Contains(modifiedFederation[i].PubKey);
-                var member = (CollateralFederationMember)modifiedFederation[i];
-
-                if (member.IsMultisigMember != shouldBeMultisigMember)
-                {
-                    // Clone the member if we will be changing the flag.
-                    modifiedFederation[i] = new CollateralFederationMember(member.PubKey, shouldBeMultisigMember, member.CollateralAmount, member.CollateralMainchainAddress);
-                }
+                return federationMembers;
             }
         }
 
         public List<IFederationMember> GetModifiedFederation(ChainedHeader chainedHeader)
         {
-            return GetModifiedFederations(new[] { chainedHeader }).Single().federation;
-        }
-
-        public IEnumerable<(List<IFederationMember> federation, HashSet<IFederationMember> whoJoined)> GetModifiedFederations(IEnumerable<ChainedHeader> chainedHeaders)
-        {
             lock (this.locker)
             {
                 // Starting with the genesis federation...
-                List<IFederationMember> modifiedFederation = new List<IFederationMember>(this.poaConsensusOptions.GenesisFederationMembers);
-                Poll[] approvedPolls = this.GetApprovedPolls().MemberPolls().OrderBy(a => a.PollVotedInFavorBlockData.Height).ToArray();
-                int pollIndex = 0;
-                bool xlcEra = false;
-                int? multisigMinersApplicabilityHeight = this.federationManager.GetMultisigMinersApplicabilityHeight();
+                var modifiedFederation = new List<IFederationMember>(this.poaConsensusOptions.GenesisFederationMembers);
+                IEnumerable<Poll> approvedPolls = this.GetApprovedPolls().MemberPolls();
 
-                foreach (ChainedHeader chainedHeader in chainedHeaders)
+                // Modify the federation with the polls that would have been executed up to the given height.
+                if (this.network.Consensus.ConsensusFactory is PoAConsensusFactory poaConsensusFactory)
                 {
-                    var whoJoined = new HashSet<IFederationMember>();
-
-                    if (!(this.network.Consensus.ConsensusFactory is PoAConsensusFactory poaConsensusFactory))
+                    foreach (Poll poll in approvedPolls.OrderBy(a => a.PollVotedInFavorBlockData.Height))
                     {
-                        yield return (new List<IFederationMember>(this.poaConsensusOptions.GenesisFederationMembers),
-                            new HashSet<IFederationMember>((chainedHeader.Height != 0) ? new List<IFederationMember>() : this.poaConsensusOptions.GenesisFederationMembers));
-
-                        continue;
-                    }
-
-                    if (!xlcEra && (multisigMinersApplicabilityHeight != null && chainedHeader.Height >= multisigMinersApplicabilityHeight))
-                    {
-                        EnterXlcEra(modifiedFederation);
-                        xlcEra = true;
-                    }
-
-                    // Apply all polls that executed at or before the current height.
-                    for (; pollIndex < approvedPolls.Length; pollIndex++)
-                    {
-                        // Modify the federation with the polls that would have been executed up to the given height.
-                        Poll poll = approvedPolls[pollIndex];
-
-                        // If it executed after the current height then exit this loop.
-                        int pollExecutionHeight = poll.PollVotedInFavorBlockData.Height + (int)this.network.Consensus.MaxReorgLength;
-                        if (pollExecutionHeight > chainedHeader.Height)
+                        // When block "PollVotedInFavorBlockData"+MaxReorgLength connects, block "PollVotedInFavorBlockData" is executed. See VotingManager.OnBlockConnected.
+                        if ((poll.PollVotedInFavorBlockData.Height + this.network.Consensus.MaxReorgLength) > chainedHeader.Height)
                             break;
 
                         IFederationMember federationMember = ((PoAConsensusFactory)(this.network.Consensus.ConsensusFactory)).DeserializeFederationMember(poll.VotingData.Data);
@@ -360,32 +375,34 @@ namespace Xels.Bitcoin.Features.PoA.Voting
                         // Addition/removal.
                         if (poll.VotingData.Key == VoteKey.AddFederationMember)
                         {
-                            if (!modifiedFederation.Contains(federationMember))
-                            {
-                                if (xlcEra && federationMember is CollateralFederationMember collateralFederationMember)
-                                {
-                                    bool shouldBeMultisigMember = ((PoANetwork)this.network).XlcMiningMultisigMembers.Contains(federationMember.PubKey);
-                                    if (collateralFederationMember.IsMultisigMember != shouldBeMultisigMember)
-                                        collateralFederationMember.IsMultisigMember = shouldBeMultisigMember;
-                                }
-
-                                if (pollExecutionHeight == chainedHeader.Height)
-                                    whoJoined.Add(federationMember);
-
+                            if (federationMember is CollateralFederationMember collateralFederationMember && !modifiedFederation.IsCollateralAddressRegistered(collateralFederationMember.CollateralMainchainAddress))
                                 modifiedFederation.Add(federationMember);
-                            }
                         }
                         else if (poll.VotingData.Key == VoteKey.KickFederationMember)
+                            modifiedFederation.Remove(federationMember);
+                    }
+
+                    // Set the IsMultisigMember flags to match the expected values.
+                    int? multisigMinersApplicabilityHeight = this.federationManager.GetMultisigMinersApplicabilityHeight();
+                    if (multisigMinersApplicabilityHeight != null && chainedHeader.Height < multisigMinersApplicabilityHeight)
+                    {
+                        // If we are accessing blocks prior to XLC activation then the IsMultisigMember values for the members may be different. 
+                        foreach (CollateralFederationMember member in modifiedFederation.Where(m => m is CollateralFederationMember))
                         {
-                            if (modifiedFederation.Contains(federationMember))
+                            bool wasMultisigMember = ((PoAConsensusOptions)this.network.Consensus.Options).GenesisFederationMembers
+                                .Any(m => m.PubKey == member.PubKey && ((CollateralFederationMember)m).IsMultisigMember);
+
+                            if (member.IsMultisigMember != wasMultisigMember)
                             {
-                                modifiedFederation.Remove(federationMember);
+                                // Clone the member if we will be changing the flag.
+                                modifiedFederation[modifiedFederation.IndexOf(member)] = new CollateralFederationMember(member.PubKey,
+                                    wasMultisigMember, member.CollateralAmount, member.CollateralMainchainAddress);
                             }
                         }
                     }
-
-                    yield return (new List<IFederationMember>(modifiedFederation), whoJoined);
                 }
+
+                return modifiedFederation;
             }
         }
 
@@ -403,184 +420,186 @@ namespace Xels.Bitcoin.Features.PoA.Voting
         private bool IsVotingOnMultisigMember(VotingData votingData)
         {
             IFederationMember member = GetMemberVotedOn(votingData);
-            if (member == null)
-                return false;
 
             // Ignore votes on multisig-members.
-            return this.federationManager.IsMultisigMember(member.PubKey);
+            return member != null && this.federationManager.IsMultisigMember(member.PubKey);
         }
 
-        private void ProcessBlock(DBreeze.Transactions.Transaction transaction, ChainedHeaderBlock chBlock)
+        private void OnBlockConnected(BlockConnected blockConnected)
         {
             try
             {
+                ChainedHeaderBlock chBlock = blockConnected.ConnectedBlock;
+                HashHeightPair newFinalizedHash = this.finalizedBlockInfo.GetFinalizedBlockInfo();
+
                 lock (this.locker)
                 {
-                    foreach (Poll poll in this.GetApprovedPolls())
+                    if (this.isBusyReconstructing)
                     {
-                        if (chBlock.ChainedHeader.Height != (poll.PollVotedInFavorBlockData.Height + this.network.Consensus.MaxReorgLength))
-                            continue;
-
-                        this.logger.LogDebug("Applying poll '{0}'.", poll);
-                        this.pollResultExecutor.ApplyChange(poll.VotingData);
-
-                        poll.PollExecutedBlockData = new HashHeightPair(chBlock.ChainedHeader);
-                        this.PollsRepository.UpdatePoll(transaction, poll);
-                    }
-
-                    if (this.federationManager.GetMultisigMinersApplicabilityHeight() == chBlock.ChainedHeader.Height)
-                        this.federationManager.UpdateMultisigMiners(true);
-
-                    byte[] rawVotingData = this.votingDataEncoder.ExtractRawVotingData(chBlock.Block.Transactions[0]);
-
-                    if (rawVotingData == null)
-                    {
-                        this.PollsRepository.SaveCurrentTip(null, chBlock.ChainedHeader);
-                        return;
-                    }
-
-                    IFederationMember member = this.federationHistory.GetFederationMemberForBlock(chBlock.ChainedHeader);
-                    if (member == null)
-                    {
-                        this.logger.LogError("The block was mined by a non-federation-member!");
-                        this.logger.LogTrace("(-)[ALIEN_BLOCK]");
-                        return;
-                    }
-
-                    PubKey fedMemberKey = member.PubKey;
-
-                    string fedMemberKeyHex = fedMemberKey.ToHex();
-
-                    List<VotingData> votingDataList = this.votingDataEncoder.Decode(rawVotingData);
-
-                    this.logger.LogDebug("Applying {0} voting data items included in a block by '{1}'.", votingDataList.Count, fedMemberKeyHex);
-
-                    lock (this.locker)
-                    {
-                        foreach (VotingData data in votingDataList)
+                        foreach (Poll poll in this.GetApprovedPolls().ToList())
                         {
-                            if (this.federationManager.CurrentFederationKey?.PubKey.ToHex() == fedMemberKeyHex)
+                            if (blockConnected.ConnectedBlock.ChainedHeader.Height - poll.PollVotedInFavorBlockData.Height == this.network.Consensus.MaxReorgLength)
                             {
-                                // Any votes found in the block is no longer scheduled.
-                                // This avoids clinging to votes scheduled during IBD.
-                                if (this.scheduledVotingData.Any(v => v == data))
-                                    this.scheduledVotingData.Remove(data);
+                                this.logger.Debug("Applying poll '{0}'.", poll);
+                                this.pollResultExecutor.ApplyChange(poll.VotingData);
+
+                                poll.PollExecutedBlockData = new HashHeightPair(chBlock.ChainedHeader);
+                                this.pollsRepository.UpdatePoll(poll);
                             }
-
-                            if (this.IsVotingOnMultisigMember(data))
-                                continue;
-
-                            Poll poll = this.polls.SingleOrDefault(x => x.VotingData == data && x.IsPending);
-
-                            if (poll == null)
-                            {
-                                // Ensures that highestPollId can't be changed before the poll is committed.
-                                this.PollsRepository.Synchronous(() =>
-                                {
-                                    poll = new Poll()
-                                    {
-                                        Id = this.PollsRepository.GetHighestPollId() + 1,
-                                        PollVotedInFavorBlockData = null,
-                                        PollExecutedBlockData = null,
-                                        PollStartBlockData = new HashHeightPair(chBlock.ChainedHeader),
-                                        VotingData = data,
-                                        PubKeysHexVotedInFavor = new List<string>() { fedMemberKeyHex }
-                                    };
-
-                                    this.polls.Add(poll);
-                                    this.PollsRepository.AddPolls(transaction, poll);
-
-                                    this.logger.LogDebug("New poll was created: '{0}'.", poll);
-                                });
-                            }
-                            else if (!poll.PubKeysHexVotedInFavor.Contains(fedMemberKeyHex))
-                            {
-                                poll.PubKeysHexVotedInFavor.Add(fedMemberKeyHex);
-                                this.PollsRepository.UpdatePoll(transaction, poll);
-
-                                this.logger.LogDebug("Voted on existing poll: '{0}'.", poll);
-                            }
-                            else
-                            {
-                                this.logger.LogDebug("Fed member '{0}' already voted for this poll. Ignoring his vote. Poll: '{1}'.", fedMemberKeyHex, poll);
-                            }
-
-                            List<IFederationMember> modifiedFederation = this.federationManager.GetFederationMembers();
-
-                            var fedMembersHex = new ConcurrentHashSet<string>(modifiedFederation.Select(x => x.PubKey.ToHex()));
-
-                            // Member that were about to be kicked when voting started don't participate.
-                            if (this.idleFederationMembersKicker != null)
-                            {
-                                ChainedHeader chainedHeader = chBlock.ChainedHeader.GetAncestor(poll.PollStartBlockData.Height);
-
-                                if (chainedHeader?.Header == null)
-                                {
-                                    this.logger.LogWarning("Couldn't retrieve header for block at height-hash: {0}-{1}.", poll.PollStartBlockData.Height, poll.PollStartBlockData.Hash?.ToString());
-
-                                    Guard.NotNull(chainedHeader, nameof(chainedHeader));
-                                    Guard.NotNull(chainedHeader.Header, nameof(chainedHeader.Header));
-                                }
-
-                                foreach (IFederationMember miner in modifiedFederation)
-                                {
-                                    if (this.idleFederationMembersKicker.ShouldMemberBeKicked(miner, chainedHeader, chBlock.ChainedHeader, out _))
-                                    {
-                                        fedMembersHex.TryRemove(miner.PubKey.ToHex());
-                                    }
-                                }
-                            }
-
-                            // It is possible that there is a vote from a federation member that was deleted from the federation.
-                            // Do not count votes from entities that are not active fed members.
-                            int validVotesCount = poll.PubKeysHexVotedInFavor.Count(x => fedMembersHex.Contains(x));
-
-                            int requiredVotesCount = (fedMembersHex.Count / 2) + 1;
-
-                            this.logger.LogDebug("Fed members count: {0}, valid votes count: {1}, required votes count: {2}.", fedMembersHex.Count, validVotesCount, requiredVotesCount);
-
-                            if (validVotesCount < requiredVotesCount)
-                                continue;
-
-                            poll.PollVotedInFavorBlockData = new HashHeightPair(chBlock.ChainedHeader);
-                            this.PollsRepository.UpdatePoll(transaction, poll);
                         }
                     }
+                    else
+                    {
+                        foreach (Poll poll in this.GetApprovedPolls().Where(x => x.PollVotedInFavorBlockData.Hash == newFinalizedHash.Hash).ToList())
+                        {
+                            this.logger.Debug("Applying poll '{0}'.", poll);
+                            this.pollResultExecutor.ApplyChange(poll.VotingData);
 
-                    this.PollsRepository.SaveCurrentTip(null, chBlock.ChainedHeader);
+                            poll.PollExecutedBlockData = new HashHeightPair(chBlock.ChainedHeader);
+                            this.pollsRepository.UpdatePoll(poll);
+                        }
+                    }
+                }
+
+                byte[] rawVotingData = this.votingDataEncoder.ExtractRawVotingData(chBlock.Block.Transactions[0]);
+
+                if (rawVotingData == null)
+                {
+                    this.logger.Trace("(-)[NO_VOTING_DATA]");
+                    return;
+                }
+
+                string fedMemberKeyHex;
+
+                // Please see the description under `VotingManagerV2ActivationHeight`.
+                // PubKey of the federation member that created the voting data.
+                if (this.poaConsensusOptions.VotingManagerV2ActivationHeight == 0 || blockConnected.ConnectedBlock.ChainedHeader.Height < this.poaConsensusOptions.VotingManagerV2ActivationHeight)
+                    fedMemberKeyHex = this.federationHistory.GetFederationMemberForTimestamp(chBlock.Block.Header.Time, this.poaConsensusOptions).PubKey.ToHex();
+                else
+                    fedMemberKeyHex = this.federationHistory.GetFederationMemberForBlock(chBlock.ChainedHeader).PubKey.ToHex();
+
+                List<VotingData> votingDataList = this.votingDataEncoder.Decode(rawVotingData);
+
+                this.logger.Debug("Applying {0} voting data items included in a block by '{1}'.", votingDataList.Count, fedMemberKeyHex);
+
+                lock (this.locker)
+                {
+                    foreach (VotingData data in votingDataList)
+                    {
+                        if (this.federationManager.CurrentFederationKey?.PubKey.ToHex() == fedMemberKeyHex)
+                        {
+                            // Any votes found in the block is no longer scheduled.
+                            // This avoids clinging to votes scheduled during IBD.
+                            if (this.scheduledVotingData.Any(v => v == data))
+                                this.scheduledVotingData.Remove(data);
+                        }
+
+                        if (this.IsVotingOnMultisigMember(data))
+                            continue;
+
+                        Poll poll = this.polls.SingleOrDefault(x => x.VotingData == data && x.IsPending);
+
+                        if (poll == null)
+                        {
+                            // Ensures that highestPollId can't be changed before the poll is committed.
+                            this.pollsRepository.Synchronous(() =>
+                            {
+                                poll = new Poll()
+                                {
+                                    Id = this.pollsRepository.GetHighestPollId() + 1,
+                                    PollVotedInFavorBlockData = null,
+                                    PollExecutedBlockData = null,
+                                    PollStartBlockData = new HashHeightPair(chBlock.ChainedHeader),
+                                    VotingData = data,
+                                    PubKeysHexVotedInFavor = new List<string>() { fedMemberKeyHex }
+                                };
+
+                                this.polls.Add(poll);
+                                this.pollsRepository.AddPolls(poll);
+
+                                this.logger.Debug("New poll was created: '{0}'.", poll);
+                            });
+                        }
+                        else if (!poll.PubKeysHexVotedInFavor.Contains(fedMemberKeyHex))
+                        {
+                            poll.PubKeysHexVotedInFavor.Add(fedMemberKeyHex);
+                            this.pollsRepository.UpdatePoll(poll);
+
+                            this.logger.Debug("Voted on existing poll: '{0}'.", poll);
+                        }
+                        else
+                        {
+                            this.logger.Debug("Fed member '{0}' already voted for this poll. Ignoring his vote. Poll: '{1}'.", fedMemberKeyHex, poll);
+                        }
+
+                        var fedMembersHex = new ConcurrentHashSet<string>(this.federationManager.GetFederationMembers().Select(x => x.PubKey.ToHex()));
+
+                        // Member that were about to be kicked when voting started don't participate.
+                        if (this.idleFederationMembersKicker != null)
+                        {
+                            ChainedHeader chainedHeader = chBlock.ChainedHeader.GetAncestor(poll.PollStartBlockData.Height);
+
+                            if (chainedHeader?.Header == null)
+                            {
+                                this.logger.Warn("Couldn't retrieve header for block at height-hash: {0}-{1}.", poll.PollStartBlockData.Height, poll.PollStartBlockData.Hash?.ToString());
+
+                                Guard.NotNull(chainedHeader, nameof(chainedHeader));
+                                Guard.NotNull(chainedHeader.Header, nameof(chainedHeader.Header));
+                            }
+
+                            foreach (string pubKey in fedMembersHex)
+                            {
+                                if (this.idleFederationMembersKicker.ShouldMemberBeKicked(new PubKey(pubKey), chainedHeader.Header.Time, out _))
+                                {
+                                    fedMembersHex.TryRemove(pubKey);
+                                }
+                            }
+                        }
+
+                        // It is possible that there is a vote from a federation member that was deleted from the federation.
+                        // Do not count votes from entities that are not active fed members.
+                        int validVotesCount = poll.PubKeysHexVotedInFavor.Count(x => fedMembersHex.Contains(x));
+
+                        int requiredVotesCount = (fedMembersHex.Count / 2) + 1;
+
+                        this.logger.Debug("Fed members count: {0}, valid votes count: {1}, required votes count: {2}.", fedMembersHex.Count, validVotesCount, requiredVotesCount);
+
+                        if (validVotesCount < requiredVotesCount)
+                            continue;
+
+                        poll.PollVotedInFavorBlockData = new HashHeightPair(chBlock.ChainedHeader);
+                        this.pollsRepository.UpdatePoll(poll);
+                    }
                 }
             }
             catch (Exception ex)
             {
-                this.logger.LogError(ex, ex.ToString());
+                this.logger.Error(ex, ex.ToString());
                 throw;
             }
         }
 
-        private void UnProcessBlock(DBreeze.Transactions.Transaction transaction, ChainedHeaderBlock chBlock)
+        private void OnBlockDisconnected(BlockDisconnected blockDisconnected)
         {
+            ChainedHeaderBlock chBlock = blockDisconnected.DisconnectedBlock;
+
             lock (this.locker)
             {
                 foreach (Poll poll in this.polls.Where(x => !x.IsPending && x.PollExecutedBlockData?.Hash == chBlock.ChainedHeader.HashBlock).ToList())
                 {
-                    this.logger.LogDebug("Reverting poll execution '{0}'.", poll);
+                    this.logger.Debug("Reverting poll execution '{0}'.", poll);
                     this.pollResultExecutor.RevertChange(poll.VotingData);
 
                     poll.PollExecutedBlockData = null;
-                    this.PollsRepository.UpdatePoll(transaction, poll);
+                    this.pollsRepository.UpdatePoll(poll);
                 }
-
-                if (this.federationManager.GetMultisigMinersApplicabilityHeight() == chBlock.ChainedHeader.Height)
-                    this.federationManager.UpdateMultisigMiners(false);
             }
 
             byte[] rawVotingData = this.votingDataEncoder.ExtractRawVotingData(chBlock.Block.Transactions[0]);
 
             if (rawVotingData == null)
             {
-                this.logger.LogTrace("(-)[NO_VOTING_DATA]");
-
-                this.PollsRepository.SaveCurrentTip(null, chBlock.ChainedHeader.Previous);
+                this.logger.Trace("(-)[NO_VOTING_DATA]");
                 return;
             }
 
@@ -603,13 +622,13 @@ namespace Xels.Bitcoin.Features.PoA.Voting
                         targetPoll = this.polls.Last(x => x.VotingData == votingData);
                     }
 
-                    this.logger.LogDebug("Reverting poll voting in favor: '{0}'.", targetPoll);
+                    this.logger.Debug("Reverting poll voting in favor: '{0}'.", targetPoll);
 
                     if (targetPoll.PollVotedInFavorBlockData == new HashHeightPair(chBlock.ChainedHeader))
                     {
                         targetPoll.PollVotedInFavorBlockData = null;
 
-                        this.PollsRepository.UpdatePoll(transaction, targetPoll);
+                        this.pollsRepository.UpdatePoll(targetPoll);
                     }
 
                     // Pub key of a fed member that created voting data.
@@ -620,149 +639,12 @@ namespace Xels.Bitcoin.Features.PoA.Voting
                     if (targetPoll.PubKeysHexVotedInFavor.Count == 0)
                     {
                         this.polls.Remove(targetPoll);
-                        this.PollsRepository.RemovePolls(transaction, targetPoll.Id);
+                        this.pollsRepository.RemovePolls(targetPoll.Id);
 
-                        this.logger.LogDebug("Poll with Id {0} was removed.", targetPoll.Id);
+                        this.logger.Debug("Poll with Id {0} was removed.", targetPoll.Id);
                     }
                 }
-
-                this.PollsRepository.SaveCurrentTip(null, chBlock.ChainedHeader.Previous);
             }
-        }
-
-        public ChainedHeader GetPollsRepositoryTip()
-        {
-            return (this.PollsRepository.CurrentTip == null) ? null : this.chainIndexer.GetHeader(this.PollsRepository.CurrentTip.Hash);
-        }
-
-        public List<IFederationMember> GetFederationAtPollsRepositoryTip(ChainedHeader repoTip)
-        {
-            if (repoTip == null)
-                return new List<IFederationMember>(((PoAConsensusOptions)this.network.Consensus.Options).GenesisFederationMembers);
-
-            return this.GetModifiedFederation(repoTip);
-        }
-
-        public List<IFederationMember> GetLastKnownFederation()
-        {
-            // If too far behind to accurately determine the federation then just take the last known federation. 
-            if (((this.PollsRepository.CurrentTip?.Height ?? 0) + this.network.Consensus.MaxReorgLength) <= this.chainIndexer.Tip.Height)
-            {
-                ChainedHeader chainedHeader = this.chainIndexer.Tip.GetAncestor((int)(this.PollsRepository.CurrentTip?.Height ?? 0) + (int)this.network.Consensus.MaxReorgLength - 1);
-                return this.GetModifiedFederation(chainedHeader);
-            }
-
-            return this.GetModifiedFederation(this.chainIndexer.Tip);
-        }
-
-        internal bool Synchronize(ChainedHeader newTip)
-        {
-            if (newTip?.HashBlock == this.PollsRepository.CurrentTip?.Hash)
-                return true;
-
-            ChainedHeader repoTip = GetPollsRepositoryTip();
-
-            bool bSuccess = true;
-
-            this.PollsRepository.Synchronous(() =>
-            {
-                // Remove blocks as required.
-                if (repoTip != null)
-                {
-                    ChainedHeader fork = repoTip.FindFork(newTip);
-
-                    if (repoTip.Height > fork.Height)
-                    {
-                        this.PollsRepository.WithTransaction(transaction =>
-                        {
-                            List<IFederationMember> modifiedFederation = this.GetFederationAtPollsRepositoryTip(repoTip);
-
-                            for (ChainedHeader header = repoTip; header.Height > fork.Height; header = header.Previous)
-                            {
-                                Block block = this.blockRepository.GetBlock(header.HashBlock);
-
-                                this.UnProcessBlock(transaction, new ChainedHeaderBlock(block, header));
-                            }
-
-                            transaction.Commit();
-                        });
-
-                        repoTip = fork;
-                    }
-                }
-
-                // Add blocks as required.
-                var headers = new List<ChainedHeader>();
-                for (int height = (repoTip?.Height ?? 0) + 1; height <= newTip.Height; height++)
-                {
-                    ChainedHeader header = this.chainIndexer.GetHeader(height);
-                    headers.Add(header);
-                }
-
-                if (headers.Count > 0)
-                {
-                    this.PollsRepository.WithTransaction(transaction =>
-                    {
-                        int i = 0;
-                        foreach (Block block in this.blockRepository.EnumerateBatch(headers))
-                        {
-                            if (this.nodeLifetime.ApplicationStopping.IsCancellationRequested)
-                            {
-                                this.logger.LogTrace("(-)[NODE_DISPOSED]");
-                                this.PollsRepository.SaveCurrentTip(transaction);
-                                transaction.Commit();
-
-                                bSuccess = false;
-                                return;
-                            }
-
-                            ChainedHeader header = headers[i++];
-                            this.ProcessBlock(transaction, new ChainedHeaderBlock(block, header));
-
-                            if (header.Height % 10000 == 0)
-                            {
-                                this.logger.LogInformation($"Synchronizing voting data at height {header.Height}.");
-                            }
-                        }
-
-                        this.PollsRepository.SaveCurrentTip(transaction);
-
-                        transaction.Commit();
-                    });
-                }
-            });
-
-            return bSuccess;
-        }
-
-        private void OnBlockConnected(BlockConnected blockConnected)
-        {
-            this.PollsRepository.Synchronous(() =>
-            {                
-                if (this.Synchronize(blockConnected.ConnectedBlock.ChainedHeader.Previous))
-                {
-                    this.PollsRepository.WithTransaction(transaction =>
-                    {
-                        this.ProcessBlock(transaction, blockConnected.ConnectedBlock);
-                        transaction.Commit();
-                    });
-                }
-            });
-        }
-
-        private void OnBlockDisconnected(BlockDisconnected blockDisconnected)
-        {
-            this.PollsRepository.Synchronous(() =>
-            {
-                if (this.Synchronize(blockDisconnected.DisconnectedBlock.ChainedHeader))
-                {
-                    this.PollsRepository.WithTransaction(transaction =>
-                    {
-                        this.UnProcessBlock(transaction, blockDisconnected.DisconnectedBlock);
-                        transaction.Commit();
-                    });
-                }
-            });
         }
 
         [NoTrace]
@@ -797,7 +679,7 @@ namespace Xels.Bitcoin.Features.PoA.Voting
             this.signals.Unsubscribe(this.blockConnectedSubscription);
             this.signals.Unsubscribe(this.blockDisconnectedSubscription);
 
-            this.PollsRepository.Dispose();
+            this.pollsRepository.Dispose();
         }
     }
 }

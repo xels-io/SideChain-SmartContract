@@ -40,7 +40,7 @@ namespace Xels.Bitcoin.Features.Wallet
             depositsToMultisig = transaction.Outputs.Where(output =>
                 output.ScriptPubKey == depositScript &&
                 output.Value >= crossChainTransferMinimum).ToList();
-            
+
             return depositsToMultisig.Any();
         }
 
@@ -49,9 +49,10 @@ namespace Xels.Bitcoin.Features.Wallet
             conversion = false;
             targetChain = 0 /* DestinationChain.XLC */;
 
-            // Check the common case first.
+            // First check cross chain transfers from the XLC to CC network or vice versa.
             if (!opReturnDataReader.TryGetTargetAddress(transaction, out targetAddress))
             {
+                // Else try and validate the destination adress by the destination chain.
                 byte[] opReturnBytes = OpReturnDataReader.SelectBytesContentFromOpReturn(transaction).FirstOrDefault();
 
                 if (opReturnBytes != null && InterFluxOpReturnEncoder.TryDecode(opReturnBytes, out int destinationChain, out targetAddress))
@@ -61,7 +62,7 @@ namespace Xels.Bitcoin.Features.Wallet
                 else
                     return false;
 
-                conversion = true;                
+                conversion = true;
             }
 
             return true;
@@ -76,7 +77,7 @@ namespace Xels.Bitcoin.Features.Wallet
         /// <exception cref="FeatureException">If the address is invalid or inappropriate for the target network.</exception>
         public static bool ValidateCrossChainDeposit(Network network, Transaction transaction)
         {
-            if (!DepositValidationHelper.TryGetDepositsToMultisig(network, transaction, Money.Zero, out List<TxOut> depositsToMultisig))
+            if (!TryGetDepositsToMultisig(network, transaction, Money.Zero, out List<TxOut> depositsToMultisig))
                 return false;
 
             if (depositsToMultisig.Any(d => d.Value < Money.COIN))
@@ -93,7 +94,7 @@ namespace Xels.Bitcoin.Features.Wallet
             }
             else if (network.Name.StartsWith("Xlc"))
             {
-                targetNetwork = new CCAddressValidationNetwork(network.Name.Replace("Xlc", "CC"));
+                targetNetwork = new CcAddressValidationNetwork(network.Name.Replace("Xlc", "CC"));
             }
             else
             {
@@ -101,7 +102,7 @@ namespace Xels.Bitcoin.Features.Wallet
             }
 
             IOpReturnDataReader opReturnDataReader = new OpReturnDataReader(targetNetwork);
-            if (!DepositValidationHelper.TryGetTarget(transaction, opReturnDataReader, out _, out _, out _))
+            if (!TryGetTarget(transaction, opReturnDataReader, out _, out _, out _))
             {
                 throw new FeatureException(HttpStatusCode.BadRequest, "No valid target address.",
                     $"The cross-chain transfer transaction contains no valid target address for the target network.");
@@ -116,23 +117,23 @@ namespace Xels.Bitcoin.Features.Wallet
     /// When running on Xlc its difficult to get the correct CC network class due to circular references.
     /// This is a bare-minimum network class for the sole purpose of address validation.
     /// </summary>
-    public class CCAddressValidationNetwork : Network
+    public class CcAddressValidationNetwork : Network
     {
-        public CCAddressValidationNetwork(string name) : base()
+        public CcAddressValidationNetwork(string name) : base()
         {
             this.Name = name;
             this.Base58Prefixes = new byte[12][];
             switch (name)
             {
-                case "CCMain":
+                case "CcMain":
                     this.Base58Prefixes[(int)Base58Type.PUBKEY_ADDRESS] = new byte[] { 28 }; // C
                     this.Base58Prefixes[(int)Base58Type.SCRIPT_ADDRESS] = new byte[] { 88 }; // c
                     break;
-                case "CCTest":
+                case "CcTest":
                     this.Base58Prefixes[(int)Base58Type.PUBKEY_ADDRESS] = new byte[] { 127 }; // t
                     this.Base58Prefixes[(int)Base58Type.SCRIPT_ADDRESS] = new byte[] { 137 }; // x
                     break;
-                case "CCRegTest":
+                case "CcRegTest":
                     this.Base58Prefixes[(int)Base58Type.PUBKEY_ADDRESS] = new byte[] { 55 }; // P
                     this.Base58Prefixes[(int)Base58Type.SCRIPT_ADDRESS] = new byte[] { 117 }; // p
                     break;

@@ -25,7 +25,7 @@ namespace Xels.Features.FederatedPeg.TargetChain
         private readonly ILogger logger;
         private readonly Network network;
 
-        private readonly Script CCRewardDummyAddressScriptPubKey;
+        private readonly Script ccRewardDummyAddressScriptPubKey;
         private readonly IFederationWalletManager federationWalletManager;
         private readonly IFederationWalletTransactionHandler federationWalletTransactionHandler;
         private readonly IFederatedPegSettings federatedPegSettings;
@@ -50,7 +50,7 @@ namespace Xels.Features.FederatedPeg.TargetChain
             this.distributionManager = distributionManager;
 
             if (!this.federatedPegSettings.IsMainChain)
-                this.CCRewardDummyAddressScriptPubKey = BitcoinAddress.Create(this.network.CCRewardDummyAddress).ScriptPubKey;
+                this.ccRewardDummyAddressScriptPubKey = BitcoinAddress.Create(this.network.CcRewardDummyAddress).ScriptPubKey;
 
             this.previousDistributionHeight = 0;
         }
@@ -80,7 +80,7 @@ namespace Xels.Features.FederatedPeg.TargetChain
                 multiSigContext.Recipients = new List<Recipient> { recipient.WithPaymentReducedByFee(FederatedPegSettings.CrossChainTransferFee) };
 
                 // Withdrawals from the sidechain won't have the OP_RETURN transaction tag, so we need to check against the ScriptPubKey of the CC Dummy address.
-                if (!this.federatedPegSettings.IsMainChain && recipient.ScriptPubKey.Length > 0 && recipient.ScriptPubKey == this.CCRewardDummyAddressScriptPubKey)
+                if (!this.federatedPegSettings.IsMainChain && recipient.ScriptPubKey.Length > 0 && recipient.ScriptPubKey == this.ccRewardDummyAddressScriptPubKey)
                 {
                     // Use the distribution manager to determine the actual list of recipients.
                     // TODO: This would probably be neater if it was moved to the CCTS with the current method accepting a list of recipients instead

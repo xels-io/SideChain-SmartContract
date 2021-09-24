@@ -19,10 +19,9 @@ namespace Xels.Bitcoin.Features.Wallet.Controllers
     /// </summary>
     [ApiVersion("1")]
     [Route("api/[controller]")]
-    [ApiController]
     public class WalletController : FeatureControllerBase
     {
-        private readonly IWalletService walletService; 
+        private readonly IWalletService walletService;
         private readonly IWalletManager walletManager;
         private readonly IWalletSyncManager walletSyncManager;
         private readonly ChainIndexer chainIndexer;
@@ -366,24 +365,6 @@ namespace Xels.Bitcoin.Features.Wallet.Controllers
                     this.Json(await this.walletService.GetMaximumSpendableBalance(request, cancellationToken)));
         }
 
-        [Route("maximumbalancewpf")]
-        [HttpGet]
-        public async Task<IActionResult> GetMaximumSpendableBalanceWpf( string walletName,  string feeType, bool allowUnconfirmed,
-          CancellationToken cancellationToken = default(CancellationToken))
-        {
-            WalletMaximumBalanceRequest request = new WalletMaximumBalanceRequest()
-            {
-                WalletName = walletName,
-                AccountName = "account 0",
-                FeeType = feeType,
-                AllowUnconfirmed = allowUnconfirmed
-            };
-
-            return await this.Execute(request, cancellationToken,
-                async (req, token) =>
-                    this.Json(await this.walletService.GetMaximumSpendableBalance(request, cancellationToken)));
-        }
-
         /// <summary>
         /// Gets the spendable transactions for an account with the option to specify how many confirmations
         /// a transaction needs to be included.
@@ -461,13 +442,14 @@ namespace Xels.Bitcoin.Features.Wallet.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        public async Task<IActionResult> BuildInterFluxTransaction([FromBody] BuildInterFluxTransactionRequest request,
-            CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<IActionResult> BuildInterFluxTransaction([FromBody] BuildInterFluxTransactionRequest request)
         {
-            request.OpReturnData = InterFluxOpReturnEncoder.Encode(request.DestinationChain, request.DestinationAddress);
+            if (request.DestinationChain != (int)DestinationChain.ETH)
+                return ErrorHelpers.BuildErrorResponse(HttpStatusCode.BadRequest, "Invalid destination chain", "Only InterFlux transactions to the Ethereum chain are currently supported.");
 
-            return await this.Execute(request, cancellationToken,
-                async (req, token) => Json(await this.walletService.BuildTransaction(req, token)));
+            request.OpReturnData = InterFluxOpReturnEncoder.Encode((DestinationChain)request.DestinationChain, request.DestinationAddress);
+
+            return await this.Execute(request, default, async (req, token) => Json(await this.walletService.BuildTransaction(req, token)));
         }
 
         /// <summary>

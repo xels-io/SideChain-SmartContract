@@ -20,15 +20,15 @@ namespace Xels.Sidechains.Networks
     /// <summary>
     /// Right now, ripped nearly straight from <see cref="PoANetwork"/>.
     /// </summary>
-    public class CCRegTest : PoANetwork
+    public class CcRegTest : PoANetwork
     {
         public IList<Mnemonic> FederationMnemonics { get; }
 
-        public CCRegTest()
+        public CcRegTest()
         {
-            this.Name = "CCRegTest";
+            this.Name = "CcRegTest";
             this.NetworkType = NetworkType.Regtest;
-            this.CoinTicker = "TXCC";
+            this.CoinTicker = "TCRS";
             this.Magic = 0x522357C;
             this.DefaultPort = 26179;
             this.DefaultMaxOutboundConnections = 16;
@@ -39,12 +39,12 @@ namespace Xels.Sidechains.Networks
             this.MinTxFee = 10000;
             this.FallbackFee = 10000;
             this.MinRelayTxFee = 10000;
-            this.RootFolderName = CCNetwork.NetworkRootFolderName;
-            this.DefaultConfigFilename = CCNetwork.NetworkDefaultConfigFilename;
+            this.RootFolderName = CcNetwork.NetworkRootFolderName;
+            this.DefaultConfigFilename = CcNetwork.NetworkDefaultConfigFilename;
             this.MaxTimeOffsetSeconds = 25 * 60;
             this.DefaultBanTimeSeconds = 1920; // 240 (MaxReorg) * 16 (TargetSpacing) / 2 = 32 Minutes
 
-            this.CCRewardDummyAddress = "PDpvfcpPm9cjQEoxWzQUL699N8dPaf8qML";
+            this.CcRewardDummyAddress = "PDpvfcpPm9cjQEoxWzQUL699N8dPaf8qML";
 
             var consensusFactory = new SmartContractCollateralPoAConsensusFactory();
 
@@ -56,7 +56,7 @@ namespace Xels.Sidechains.Networks
             this.GenesisReward = Money.Zero;
 
             string coinbaseText = "https://news.bitcoin.com/markets-update-cryptocurrencies-shed-billions-in-bloody-sell-off/";
-            Block genesisBlock = CCNetwork.CreateGenesis(consensusFactory, this.GenesisTime, this.GenesisNonce, this.GenesisBits, this.GenesisVersion, this.GenesisReward, coinbaseText);
+            Block genesisBlock = CcNetwork.CreateGenesis(consensusFactory, this.GenesisTime, this.GenesisNonce, this.GenesisBits, this.GenesisVersion, this.GenesisReward, coinbaseText);
 
             this.Genesis = genesisBlock;
 

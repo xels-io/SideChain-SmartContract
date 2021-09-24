@@ -142,7 +142,7 @@ namespace Xels.Features.FederatedPeg.TargetChain
                     return null;
 
                 withdrawalAmount = txOuts.Sum(t => t.Value);
-                targetAddress = this.network.CCRewardDummyAddress;
+                targetAddress = this.network.CcRewardDummyAddress;
             }
 
             var withdrawal = new Withdrawal(uint256.Parse(depositId), transaction.GetHash(), withdrawalAmount, targetAddress, blockHeight, blockHash);

@@ -526,9 +526,9 @@ namespace Xels.Bitcoin.Features.SmartContracts.Tests
             string senderAddress = uint160.Zero.ToBase58Address(this.network);
             string changeAddress = new uint160(2).ToBase58Address(this.network);
 
-            // This is a valid non-P2PKH address on CCTest.
+            // This is a valid non-P2PKH address on CcTest.
             string recipientAddress = "xH1GHWVNKwdebkgiFPtQtM4qb3vrvNX2Rg";
-            var CCNetwork = CCNetwork.NetworksSelector.Testnet();
+            var ccNetwork = CcNetwork.NetworksSelector.Testnet();
 
             var amount = 1234.567M;
 
@@ -549,7 +549,7 @@ namespace Xels.Bitcoin.Features.SmartContracts.Tests
             };
 
             SmartContractTransactionService service = new SmartContractTransactionService(
-                CCNetwork,
+                ccNetwork,
                 this.walletManager.Object,
                 this.walletTransactionHandler.Object,
                 this.stringSerializer.Object,
@@ -863,9 +863,9 @@ namespace Xels.Bitcoin.Features.SmartContracts.Tests
             string senderAddress = uint160.Zero.ToBase58Address(this.network);
             string changeAddress = new uint160(2).ToBase58Address(this.network);
 
-            // This is a valid non-P2PKH address on CCTest.
+            // This is a valid non-P2PKH address on CcTest.
             string recipientAddress = "xH1GHWVNKwdebkgiFPtQtM4qb3vrvNX2Rg";
-            var CCNetwork = CCNetwork.NetworksSelector.Testnet();
+            var ccNetwork = CcNetwork.NetworksSelector.Testnet();
 
             var amount = 1234.567M;
 
@@ -885,7 +885,7 @@ namespace Xels.Bitcoin.Features.SmartContracts.Tests
             };
 
             SmartContractTransactionService service = new SmartContractTransactionService(
-                CCNetwork,
+                ccNetwork,
                 this.walletManager.Object,
                 this.walletTransactionHandler.Object,
                 this.stringSerializer.Object,

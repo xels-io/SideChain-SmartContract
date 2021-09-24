@@ -411,8 +411,8 @@ namespace Xels.Bitcoin.Features.Miner
                     packageSigOpsCost = modit.SigOpCostWithAncestors;
                 }
 
-                // Don't check the package fees if this is a CCRewardScript transaction.
-                if (!mempoolEntry.Transaction.Outputs.Any(o => o.ScriptPubKey == XlcCoinstakeRule.CCTransactionTag(this.Network.CCRewardDummyAddress)))
+                // Don't check the package fees if this is a CcRewardScript transaction.
+                if (!mempoolEntry.Transaction.Outputs.Any(o => o.ScriptPubKey == XlcCoinstakeRule.CcTransactionTag(this.Network.CcRewardDummyAddress)))
                 {
                     if (packageFees < this.BlockMinFeeRate.GetFee((int)packageSize))
                     {

@@ -74,7 +74,7 @@ namespace Xels.Bitcoin.Tests.Consensus
 
             int result = checkpoints.GetLastCheckpointHeight();
 
-            Assert.Equal(300_000, result);
+            Assert.Equal(450_000, result);
         }
 
         [Fact]
@@ -84,17 +84,7 @@ namespace Xels.Bitcoin.Tests.Consensus
 
             int result = checkpoints.GetLastCheckpointHeight();
 
-            Assert.Equal(350_000, result);
-        }
-
-        [Fact]
-        public void GetLastCheckPointHeight_XelsRegTestNet_DoesNotLoadCheckpoints()
-        {
-            var checkpoints = new Checkpoints(KnownNetworks.XlcRegTest, new ConsensusSettings(NodeSettings.Default(KnownNetworks.XlcTest)) { UseCheckpoints = true });
-
-            int result = checkpoints.GetLastCheckpointHeight();
-
-            Assert.Equal(0, result);
+            Assert.Equal(500_000, result);
         }
 
         [Fact]

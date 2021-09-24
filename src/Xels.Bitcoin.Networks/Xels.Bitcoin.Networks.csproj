@@ -14,9 +14,9 @@
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
-    <AssemblyVersion>1.0.7.0</AssemblyVersion>
-    <FileVersion>1.0.7.0</FileVersion>
-    <Version>1.0.8.0</Version>
+    <AssemblyVersion>1.0.9.5</AssemblyVersion>
+    <FileVersion>1.0.9.5</FileVersion>
+    <Version>1.0.9.5</Version>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Authors>Xels Group Ltd.</Authors>
   </PropertyGroup>

@@ -1,6 +1,6 @@
 ﻿using NBitcoin;
 using Newtonsoft.Json;
-using Xels.Features.FederatedPeg.Conversion;
+using Xels.Bitcoin.Features.Wallet;
 using Xels.Features.FederatedPeg.Interfaces;
 
 namespace Xels.Features.FederatedPeg.SourceChain
@@ -34,7 +34,7 @@ namespace Xels.Features.FederatedPeg.SourceChain
         public int BlockNumber { get; }
 
         /// <inheritdoc />
-        public uint256 BlockHash { get; set; }
+        public uint256 BlockHash { get; }
 
         /// <inheritdoc />
         public DepositRetrievalType RetrievalType { get; }

@@ -758,7 +758,7 @@ namespace Xels.Bitcoin.Features.Miner.Staking
 
             int eventuallyStakableUtxosCount = utxoStakeDescriptions.Count;
             Transaction coinstakeTx = this.PrepareCoinStakeTransactions(chainTip.Height, coinstakeContext, coinstakeOutputValue, eventuallyStakableUtxosCount, ourWeight, reward);
-            
+
             // Sign.
             if (!this.SignTransactionInput(coinstakeInput, coinstakeTx))
             {

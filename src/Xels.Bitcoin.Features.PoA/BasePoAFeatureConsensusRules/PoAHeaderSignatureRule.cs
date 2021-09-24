@@ -1,8 +1,13 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using NBitcoin;
+using Xels.Bitcoin.Base;
 using Xels.Bitcoin.Consensus;
 using Xels.Bitcoin.Consensus.Rules;
+using Xels.Bitcoin.Utilities;
 
 namespace Xels.Bitcoin.Features.PoA.BasePoAFeatureConsensusRules
 {
@@ -18,6 +23,14 @@ namespace Xels.Bitcoin.Features.PoA.BasePoAFeatureConsensusRules
 
         private IFederationHistory federationHistory;
 
+        private uint maxReorg;
+
+        private IChainState chainState;
+
+        private Network network;
+
+        private HashHeightPair lastCheckPoint;
+
         /// <inheritdoc />
         public override void Initialize()
         {
@@ -29,37 +42,49 @@ namespace Xels.Bitcoin.Features.PoA.BasePoAFeatureConsensusRules
             this.slotsManager = engine.SlotsManager;
             this.federationHistory = engine.FederationHistory;
             this.validator = engine.PoaHeaderValidator;
+            this.chainState = engine.ChainState;
+            this.network = this.Parent.Network;
+
+            this.maxReorg = this.network.Consensus.MaxReorgLength;
+
+            KeyValuePair<int, CheckpointInfo> lastCheckPoint = engine.Network.Checkpoints.LastOrDefault();
+            this.lastCheckPoint = (lastCheckPoint.Value != null) ? new HashHeightPair(lastCheckPoint.Value.Hash, lastCheckPoint.Key) : null;
         }
 
         public override async Task RunAsync(RuleContext context)
         {
+            // Only start validating at the last checkpoint block.
+            if (context.ValidationContext.ChainedHeaderToValidate.Height < (this.lastCheckPoint?.Height ?? 0))
+                return;
+
             ChainedHeader chainedHeader = context.ValidationContext.ChainedHeaderToValidate;
-
-            // If we're evaluating a batch of received headers it's possible that we're so far beyond the current tip
-            // that we have not yet processed all the votes that may determine the federation make-up.
-            if (!this.federationHistory.CanGetFederationForBlock(chainedHeader))
-            {
-                // Mark header as insufficient to avoid banning the peer that presented it.
-                // When we advance consensus we will be able to validate it.
-                context.ValidationContext.InsufficientHeaderInformation = true;
-
-                this.Logger.LogWarning("The polls repository is too far behind to reliably determine the federation members.");
-                this.Logger.LogDebug("(-)[INVALID_SIGNATURE]");
-                PoAConsensusErrors.InvalidHeaderSignature.Throw();
-            }
 
             var header = chainedHeader.Header as PoABlockHeader;
 
-            PubKey pubKey = this.federationHistory.GetFederationMemberForBlock(chainedHeader)?.PubKey;
+            List<IFederationMember> federation = this.federationHistory.GetFederationForBlock(chainedHeader);
+
+            PubKey pubKey = this.federationHistory.GetFederationMemberForBlock(context.ValidationContext.ChainedHeaderToValidate, federation)?.PubKey;
+
             if (pubKey == null || !this.validator.VerifySignature(pubKey, header))
             {
-                this.Logger.LogWarning("The block signature could not be matched with a current federation member.");
+                ChainedHeader currentHeader = context.ValidationContext.ChainedHeaderToValidate;
+
+                // If we're evaluating a batch of received headers it's possible that we're so far beyond the current tip
+                // that we have not yet processed all the votes that may determine the federation make-up.
+                bool mightBeInsufficient = currentHeader.Height - this.chainState.ConsensusTip.Height > this.maxReorg;
+                if (mightBeInsufficient)
+                {
+                    // Mark header as insufficient to avoid banning the peer that presented it.
+                    // When we advance consensus we will be able to validate it.
+                    context.ValidationContext.InsufficientHeaderInformation = true;
+                }
+
                 this.Logger.LogDebug("(-)[INVALID_SIGNATURE]");
                 PoAConsensusErrors.InvalidHeaderSignature.Throw();
             }
 
             // Look at the last round of blocks to find the previous time that the miner mined.
-            var roundTime = this.slotsManager.GetRoundLength(this.federationHistory.GetFederationForBlock(chainedHeader).Count);
+            TimeSpan roundTime = this.slotsManager.GetRoundLength(federation.Count);
             int blockCounter = 0;
 
             for (ChainedHeader prevHeader = chainedHeader.Previous; prevHeader.Previous != null; prevHeader = prevHeader.Previous)

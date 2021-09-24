@@ -183,7 +183,7 @@ namespace Xels.Bitcoin.Features.Consensus.Tests.Rules.CommonRules
             coinstakeTransaction.Outputs.Add(new TxOut(Money.Zero, (IDestination)null));
             
             // We need to pay the CC reward to the correct scriptPubKey to prevent failing that consensus rule.
-            coinstakeTransaction.Outputs.Add(new TxOut(Money.COIN * 9, XlcCoinstakeRule.CCRewardScript));
+            coinstakeTransaction.Outputs.Add(new TxOut(Money.COIN * 9, XlcCoinstakeRule.CcRewardScript));
             
             // Normal pay to public key that belongs to the second miner with value that
             // equals to the sum of the inputs.

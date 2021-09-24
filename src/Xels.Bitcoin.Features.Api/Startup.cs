@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.Mvc.Versioning;
@@ -82,7 +81,6 @@ namespace Xels.Bitcoin.Features.Api
                         options.Filters.Add(typeof(KeepaliveActionFilter));
                     }
                 })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 // add serializers for NBitcoin objects
                 .AddNewtonsoftJson(options => {
                     Utilities.JsonConverters.Serializer.RegisterFrontConverters(options.SerializerSettings);
@@ -160,7 +158,7 @@ namespace Xels.Bitcoin.Features.Api
 
                 // Build a swagger endpoint for each discovered API version
                 foreach (ApiVersionDescription description in provider.ApiVersionDescriptions)
-                 {
+                {
                     c.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
                 }
 

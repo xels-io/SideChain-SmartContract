@@ -78,12 +78,12 @@
         SHORT_IDS_BLOCKS_VERSION = 70014,
 
         /// <summary>
-        /// Oldest supported version of the CCNode which this node can connect to.
+        /// Oldest supported version of the CcNode which this node can connect to.
         /// </summary>
         CC_MIN_SUPPORTED_VERSION = 80000,
 
         /// <summary>
-        /// Current version of the CCNode.
+        /// Current version of the CcNode.
         /// </summary>
         CC_VERSION = 80000,
     }

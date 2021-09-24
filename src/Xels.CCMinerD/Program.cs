@@ -1,10 +1,6 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-
-using IWshRuntimeLibrary;
-
 using NBitcoin.Protocol;
 using Xels.Bitcoin;
 using Xels.Bitcoin.Builder;
@@ -28,7 +24,7 @@ using Xels.Features.Collateral.CounterChain;
 using Xels.Features.SQLiteWalletRepository;
 using Xels.Sidechains.Networks;
 
-namespace Xels.CCMinerD
+namespace Xels.CcMinerD
 {
     class Program
     {
@@ -37,17 +33,11 @@ namespace Xels.CCMinerD
 
         public static void Main(string[] args)
         {
-            //args = new string[] { "-sidechain" };
             MainAsync(args).Wait();
-            CreateShortCut();
         }
 
         public static async Task MainAsync(string[] args)
         {
-            //if (args.Length == 0)
-            //{
-            //    args = new string[] { "-mainchain" };
-            //}
             try
             {
                 bool isMainchainNode = args.FirstOrDefault(a => a.ToLower() == MainchainArgument) != null;
@@ -58,14 +48,14 @@ namespace Xels.CCMinerD
 
                 if (startInDevMode)
                 {
-                    fullNode = BuildDevCCMiningNode(args);
+                    fullNode = BuildDevCcMiningNode(args);
                 }
                 else
                 {
                     if (isSidechainNode == isMainchainNode)
                         throw new ArgumentException($"Gateway node needs to be started specifying either a {SidechainArgument} or a {MainchainArgument} argument");
 
-                    fullNode = isMainchainNode ? BuildXlcNode(args) : BuildCCMiningNode(args);
+                    fullNode = isMainchainNode ? BuildXlcNode(args) : BuildCcMiningNode(args);
 
                     // set the console window title to identify which node this is (for clarity when running Xlc and CC on the same machine)
                     Console.Title = isMainchainNode ? $"Xlc Full Node {fullNode.Network.NetworkType}" : $"CC Full Node {fullNode.Network.NetworkType}";
@@ -80,9 +70,9 @@ namespace Xels.CCMinerD
             }
         }
 
-        private static IFullNode BuildCCMiningNode(string[] args)
+        private static IFullNode BuildCcMiningNode(string[] args)
         {
-            var nodeSettings = new NodeSettings(networksSelector: CCNetwork.NetworksSelector, protocolVersion: ProtocolVersion.CC_VERSION, args: args)
+            var nodeSettings = new NodeSettings(networksSelector: CcNetwork.NetworksSelector, protocolVersion: ProtocolVersion.CC_VERSION, args: args)
             {
                 MinProtocolVersion = ProtocolVersion.ALT_PROTOCOL_VERSION
             };
@@ -115,10 +105,10 @@ namespace Xels.CCMinerD
             return node;
         }
 
-        private static IFullNode BuildDevCCMiningNode(string[] args)
+        private static IFullNode BuildDevCcMiningNode(string[] args)
         {
-            string[] devModeArgs = new[] { "-bootstrap=1", "-dbtype=rocksdb", "-defaultwalletname=CCdev", "-defaultwalletpassword=password" }.Concat(args).ToArray();
-            var network = new CCDev();
+            string[] devModeArgs = new[] { "-bootstrap=1", "-dbtype=rocksdb", "-defaultwalletname=ccdev", "-defaultwalletpassword=password" }.Concat(args).ToArray();
+            var network = new CcDev();
 
             var nodeSettings = new NodeSettings(network, protocolVersion: ProtocolVersion.CC_VERSION, args: devModeArgs)
             {
@@ -179,27 +169,6 @@ namespace Xels.CCMinerD
                 .Build();
 
             return node;
-        }
-
-        public static void CreateShortCut()
-        {
-
-            string[] argumentList = { "-mainchain","-sidechain" };
-
-            string destinationPath = Directory.GetCurrentDirectory();
-            //Console.WriteLine(distinationPath);
-            //Console.ReadLine();
-            foreach (var arg in argumentList)
-            {
-                object shDesktop = (object)"Desktop";
-                WshShell shell = new WshShell();
-                string shortcutAddress = (string)shell.SpecialFolders.Item(ref shDesktop) + @"\xels-app" + arg + ".lnk";
-                IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutAddress);
-
-                shortcut.Arguments = arg;
-                shortcut.TargetPath = destinationPath + @"\Xels.CCMinerD.exe";
-                shortcut.Save();
-            }
         }
     }
 }

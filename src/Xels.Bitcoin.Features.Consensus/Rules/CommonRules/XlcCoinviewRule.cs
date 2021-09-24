@@ -12,7 +12,7 @@ namespace Xels.Bitcoin.Features.Consensus.Rules.CommonRules
     {
         // 50% of the block reward should be assigned to the reward script.
         // This has to be within the coinview rule because we need access to the coinstake input value to determine the size of the block reward.
-        public static readonly int CCRewardPercentage = 100;
+        public static readonly int CcRewardPercentage = 50;
 
         /// <inheritdoc />
         public override void CheckBlockReward(RuleContext context, Money fees, int height, Block block)
@@ -39,19 +39,19 @@ namespace Xels.Bitcoin.Features.Consensus.Rules.CommonRules
                 foreach (TxOut output in coinstake.Outputs)
                 {
                     // TODO: Double check which rule we have the negative output (and overflow) amount check inside; we assume that has been done before this check
-                    if (output.ScriptPubKey == XlcCoinstakeRule.CCRewardScript)
+                    if (output.ScriptPubKey == XlcCoinstakeRule.CcRewardScript)
                         rewardScriptTotal += output.Value;
                 }
 
-                // It must be CCRewardPercentage of the maximum possible reward precisely.
+                // It must be CcRewardPercentage of the maximum possible reward precisely.
                 // This additionally protects cold staking transactions from over-allocating to the CC reward script at the expense of the non-CC reward.
                 // This means that the hot key can be used for staking by anybody and they will not be able to redirect the non-CC reward to the CC script.
                 // It must additionally not be possible to short-change the CC reward script by deliberately sacrificing part of the overall claimed reward.
                 // TODO: Create a distinct consensus error for this?
-                if ((calcStakeReward * CCRewardPercentage / 100) != rewardScriptTotal)
+                if ((calcStakeReward * CcRewardPercentage / 100) != rewardScriptTotal)
                 {
                     this.Logger.LogTrace("(-)[BAD_COINSTAKE_REWARD_SCRIPT_AMOUNT]");
-                    ConsensusErrors.BadCCRewardAmount.Throw();
+                    ConsensusErrors.BadCcRewardAmount.Throw();
                 }
 
                 // TODO: Perhaps we should limit it to a single output to prevent unnecessary UTXO set bloating
@@ -75,7 +75,7 @@ namespace Xels.Bitcoin.Features.Consensus.Rules.CommonRules
         {
             // We further need to check that any transactions that spend outputs from the reward script only go to the cross-chain multisig.
             // This check is not isolated to PoS specifically.
-            if (prevOut.ScriptPubKey == XlcCoinstakeRule.CCRewardScript)
+            if (prevOut.ScriptPubKey == XlcCoinstakeRule.CcRewardScript)
             {
                 foreach (TxOut output in tx.Outputs)
                 {

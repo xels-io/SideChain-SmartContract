@@ -156,11 +156,6 @@ namespace Xels.Bitcoin.Features.Wallet.Models
 
     public class WalletTransactionCountRequest : RequestModel
     {
-        public WalletTransactionCountRequest()
-        {
-            this.AccountName = WalletManager.DefaultAccount;
-        }
-
         /// <summary>
         /// The name of the wallet to query transaction count for.
         /// </summary>
@@ -475,9 +470,11 @@ namespace Xels.Bitcoin.Features.Wallet.Models
     {
         /// <summary>Target chain that is supported by InterFlux integration.</summary>
         /// <remarks>See Xels.Features.FederatedPeg.Conversion.DestinationChain enum.</remarks>
+        [Required]
         public int DestinationChain { get; set; }
 
         /// <summary>Address at destination chain at which coins should be deposited.</summary>
+        [Required]
         public string DestinationAddress { get; set; }
     }
 

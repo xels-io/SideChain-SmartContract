@@ -45,7 +45,7 @@ namespace Xels.Features.FederatedPeg.Tests.Distribution
                 RewardClaimerBlockInterval = 10
             };
 
-            this.addressHelper = new MultisigAddressHelper(this.network, new CCRegTest());
+            this.addressHelper = new MultisigAddressHelper(this.network, new CcRegTest());
             this.broadCasterManager = Substitute.For<IBroadcasterManager>();
             this.chainIndexer = new ChainIndexer(this.network);
             this.consensusManager = Substitute.For<IConsensusManager>();
@@ -57,7 +57,7 @@ namespace Xels.Features.FederatedPeg.Tests.Distribution
             this.initialBlockDownloadState = Substitute.For<IInitialBlockDownloadState>();
             this.initialBlockDownloadState.IsInitialBlockDownload().Returns(false);
 
-            this.opReturnDataReader = new OpReturnDataReader(new CCRegTest());
+            this.opReturnDataReader = new OpReturnDataReader(new CcRegTest());
 
             this.federatedPegSettings = Substitute.For<IFederatedPegSettings>();
             this.federatedPegSettings.MultiSigRedeemScript.Returns(this.addressHelper.PayToMultiSig);
@@ -83,7 +83,7 @@ namespace Xels.Features.FederatedPeg.Tests.Distribution
             var keyValueRepository = new LevelDbKeyValueRepository(dataFolder, this.dbreezeSerializer);
 
             // Create a "chain" of 30 blocks.
-            this.blocks = ChainedHeadersHelper.CreateConsecutiveHeadersAndBlocks(30, true, network: this.network, chainIndexer: this.chainIndexer, withCoinbaseAndCoinStake: true, createCCReward: true);
+            this.blocks = ChainedHeadersHelper.CreateConsecutiveHeadersAndBlocks(30, true, network: this.network, chainIndexer: this.chainIndexer, withCoinbaseAndCoinStake: true, createCcReward: true);
             using (var rewardClaimer = new RewardClaimer(this.broadCasterManager, this.chainIndexer, this.consensusManager, this.initialBlockDownloadState, keyValueRepository, this.network, this.signals))
             {
                 var depositExtractor = new DepositExtractor(this.federatedPegSettings, this.network, this.opReturnDataReader);
@@ -111,7 +111,7 @@ namespace Xels.Features.FederatedPeg.Tests.Distribution
             var keyValueRepository = new LevelDbKeyValueRepository(dataFolder, this.dbreezeSerializer);
 
             // Create a "chain" of 30 blocks.
-            this.blocks = ChainedHeadersHelper.CreateConsecutiveHeadersAndBlocks(30, true, network: this.network, chainIndexer: this.chainIndexer, withCoinbaseAndCoinStake: true, createCCReward: true);
+            this.blocks = ChainedHeadersHelper.CreateConsecutiveHeadersAndBlocks(30, true, network: this.network, chainIndexer: this.chainIndexer, withCoinbaseAndCoinStake: true, createCcReward: true);
 
             // The reward claimer should look at block 10 to 20.
             using (var rewardClaimer = new RewardClaimer(this.broadCasterManager, this.chainIndexer, this.consensusManager, this.initialBlockDownloadState, keyValueRepository, this.network, this.signals))

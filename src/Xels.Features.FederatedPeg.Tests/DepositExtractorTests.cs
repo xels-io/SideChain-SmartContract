@@ -7,7 +7,6 @@ using NSubstitute;
 using Xels.Bitcoin;
 using Xels.Bitcoin.Features.Wallet;
 using Xels.Bitcoin.Networks;
-using Xels.Features.FederatedPeg.Conversion;
 using Xels.Features.FederatedPeg.Interfaces;
 using Xels.Features.FederatedPeg.SourceChain;
 using Xels.Features.FederatedPeg.Tests.Utils;
@@ -29,7 +28,7 @@ namespace Xels.Features.FederatedPeg.Tests
 
         public DepositExtractorTests()
         {
-            this.network = new CCRegTest();
+            this.network = new CcRegTest();
 
             this.addressHelper = new MultisigAddressHelper(this.network, new XlcRegTest());
 
@@ -271,23 +270,23 @@ namespace Xels.Features.FederatedPeg.Tests
             // Create the target address.
             BitcoinPubKeyAddress targetAddress = this.addressHelper.GetNewTargetChainPubKeyAddress();
             byte[] opReturnBytes = Encoding.UTF8.GetBytes(targetAddress.ToString());
-            
+
             // Set amount to be less than deposit minimum
             CreateDepositTransaction(targetAddress, block, FederatedPegSettings.CrossChainTransferMinimum - 1, opReturnBytes);
-            
+
             // Set amount to be less than the small threshold amount.
             CreateDepositTransaction(targetAddress, block, this.federationSettings.SmallDepositThresholdAmount - 1, opReturnBytes);
-            
+
             // Set amount to be exactly the normal threshold amount.
             CreateDepositTransaction(targetAddress, block, this.federationSettings.NormalDepositThresholdAmount, opReturnBytes);
 
-            byte[] ethOpReturnBytes = Encoding.UTF8.GetBytes(InterFluxOpReturnEncoder.Encode((int)DestinationChain.ETH, TargetETHAddress));
+            byte[] ethOpReturnBytes = Encoding.UTF8.GetBytes(InterFluxOpReturnEncoder.Encode(DestinationChain.ETH, TargetETHAddress));
 
             // Set amount to be equal to the normal threshold amount.
-            CreateConversionTransaction(TargetETHAddress, block, this.federationSettings.NormalDepositThresholdAmount, ethOpReturnBytes);
+            CreateConversionTransaction(block, this.federationSettings.NormalDepositThresholdAmount, ethOpReturnBytes);
 
             // Set amount to be greater than the conversion deposit minimum amount.
-            CreateConversionTransaction(TargetETHAddress, block, Money.Coins(DepositExtractor.ConversionTransactionMinimum + 1), ethOpReturnBytes);
+            CreateConversionTransaction(block, Money.Coins(DepositExtractor.ConversionTransactionMinimum + 1), ethOpReturnBytes);
 
             int blockHeight = 12345;
             IReadOnlyList<IDeposit> extractedDeposits = this.depositExtractor.ExtractDepositsFromBlock(block, blockHeight, new[] { DepositRetrievalType.ConversionLarge });
@@ -301,19 +300,13 @@ namespace Xels.Features.FederatedPeg.Tests
             }
         }
 
-        private Transaction CreateConversionTransaction(string targetETHAddress, Block block, Money depositAmount, byte[] opReturnBytes)
+        private Transaction CreateConversionTransaction(Block block, Money depositAmount, byte[] opReturnBytes)
         {
             // Create the conversion transaction.
             Transaction conversionTransaction = this.transactionBuilder.BuildOpReturnTransaction(this.addressHelper.SourceChainMultisigAddress, opReturnBytes, depositAmount);
 
             // Add the conversion transaction to the block.
             block.AddTransaction(conversionTransaction);
-
-            this.opReturnDataReader.TryGetTargetETHAddress(conversionTransaction, out string _).Returns(callInfo =>
-            {
-                callInfo[1] = targetETHAddress;
-                return true;
-            });
 
             return conversionTransaction;
         }

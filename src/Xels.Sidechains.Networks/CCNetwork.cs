@@ -4,19 +4,19 @@ using Xels.Bitcoin.Features.SmartContracts.PoA;
 
 namespace Xels.Sidechains.Networks
 {
-    public static class CCNetwork
+    public static class CcNetwork
     {
         /// <summary> The name of the root folder containing the different side chain block data.</summary>
-        public const string NetworkRootFolderName = "CC";
+        public const string NetworkRootFolderName = "cc";
 
         /// <summary> The default name used for the side chain configuration file. </summary>
-        public const string NetworkDefaultConfigFilename = "CC.conf";
+        public const string NetworkDefaultConfigFilename = "cc.conf";
 
         public static NetworksSelector NetworksSelector
         {
             get
             {
-                return new NetworksSelector(() => new CCMain(), () => new CCTest(), () => new CCRegTest());
+                return new NetworksSelector(() => new CcMain(), () => new CcTest(), () => new CcRegTest());
             }
         }
 

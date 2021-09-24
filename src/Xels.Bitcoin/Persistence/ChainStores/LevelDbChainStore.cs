@@ -7,7 +7,7 @@ using Xels.Bitcoin.Utilities;
 
 namespace Xels.Bitcoin.Persistence.ChainStores
 {
-    public class LevelDbChainStore : IChainStore, IDisposable
+    public class LevelDbChainStore : IChainStore
     {
         private readonly Network network;
 

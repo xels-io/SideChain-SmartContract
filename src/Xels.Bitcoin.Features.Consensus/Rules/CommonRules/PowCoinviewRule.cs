@@ -47,7 +47,7 @@ namespace Xels.Bitcoin.Features.Consensus.Rules.CommonRules
             if (halvings >= 64)
                 return 0;
 
-            Money subsidy = this.consensus.ProofOfWorkReward;
+            Money subsidy = this.GetCalculatedRewardFromHeight(height);
             // Subsidy is cut in half every 210,000 blocks which will occur approximately every 4 years.
             subsidy >>= halvings;
 

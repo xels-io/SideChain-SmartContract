@@ -287,8 +287,6 @@ namespace Xels.Features.SQLiteWalletRepository
             // Ok seems safe. Adjust the tip and rewind relevant transactions.
             walletContainer.WriteLockWait();
 
-            bool notifyWalletUI = false;
-
             DBConnection conn = walletContainer.Conn;
             try
             {
@@ -305,8 +303,6 @@ namespace Xels.Features.SQLiteWalletRepository
                     this.logger.LogDebug("Wallet '{0}' rewound to start.", walletName);
                 else
                     this.logger.LogDebug("Wallet '{0}' rewound to height '{1}'.", walletName, lastBlockSynced);
-
-                notifyWalletUI = true;
 
                 return (true, res.Select(i => (uint256.Parse(i.txId), DateTimeOffset.FromUnixTimeSeconds(i.creationTime))).ToList());
             }
@@ -326,14 +322,6 @@ namespace Xels.Features.SQLiteWalletRepository
             finally
             {
                 walletContainer.WriteLockRelease();
-
-                if (notifyWalletUI)
-                {
-                    // It is possible that a re-org occurred of a block that the wallet just had an interest in
-                    // (e.g. it staked a block and subsequently re-org).
-                    // We therefore also need to notify the UI that it needs to get the balance and history again.
-                    this.signals?.Publish(new WalletProcessedTransactionOfInterestEvent());
-                }
             }
         }
 
@@ -869,7 +857,7 @@ namespace Xels.Features.SQLiteWalletRepository
 
                         Parallel.ForEach(rounds, round =>
                         {
-                            if (!ParallelProcessBlock(round, block, chainedHeader))
+                            if (!ParallelProcessBlock(round, block, chainedHeader, out bool _))
                                 done = true;
                         });
 
@@ -883,18 +871,34 @@ namespace Xels.Features.SQLiteWalletRepository
                 ProcessBlocksInfo round = (walletName != null) ? this.Wallets[walletName] : this.processBlocksInfo;
 
                 if (this.StartBatch(round, blocks.First().header))
+                {
+                    bool signalUI = false;
+
                     foreach ((ChainedHeader chainedHeader, Block block) in blocks.Append((null, null)))
                     {
                         this.logger.LogDebug("Processing '{0}'.", chainedHeader);
 
-                        if (!ParallelProcessBlock(round, block, chainedHeader))
+                        if (!ParallelProcessBlock(round, block, chainedHeader, out bool transactionOfInterestProcessed))
                             break;
+
+                        if (transactionOfInterestProcessed)
+                            signalUI = true;
                     }
+
+                    if (signalUI)
+                    {
+                        // We only want to raise events for the UI (via SignalR) to query the wallet balance if a transaction pertaining to the wallet 
+                        // was processed.
+                        this.signals?.Publish(new WalletProcessedTransactionOfInterestEvent() { Source = "processblock" });
+                    }
+                }
             }
         }
 
-        private bool ParallelProcessBlock(ProcessBlocksInfo round, Block block, ChainedHeader chainedHeader)
+        private bool ParallelProcessBlock(ProcessBlocksInfo round, Block block, ChainedHeader chainedHeader, out bool transactionOfInterestProcessed)
         {
+            transactionOfInterestProcessed = false;
+
             try
             {
                 HDWallet wallet = round.Wallet;
@@ -1016,10 +1020,7 @@ namespace Xels.Features.SQLiteWalletRepository
                     ITransactionsToLists transactionsToLists = new TransactionsToLists(this.Network, this.ScriptAddressReader, round, this.dateTimeProvider);
                     if (transactionsToLists.ProcessTransactions(block.Transactions, new HashHeightPair(chainedHeader), blockTime: block.Header.BlockTime.ToUnixTimeSeconds()))
                     {
-                        // We only want to raise events for the UI (via SignalR) to query the wallet balance if a transaction pertaining to the wallet 
-                        // was processed.
-                        this.signals?.Publish(new WalletProcessedTransactionOfInterestEvent());
-
+                        transactionOfInterestProcessed = true;
                         this.Metrics.ProcessCount++;
                     }
 
@@ -1222,17 +1223,15 @@ namespace Xels.Features.SQLiteWalletRepository
 
             ProcessBlocksInfo processBlocksInfo = walletContainer;
 
+            bool notifyWallet = false;
+
             try
             {
                 IEnumerable<IEnumerable<string>> txToScript;
                 {
                     var transactionsToLists = new TransactionsToLists(this.Network, this.ScriptAddressReader, processBlocksInfo, this.dateTimeProvider);
                     if (transactionsToLists.ProcessTransactions(new[] { transaction }, null, fixedTxId))
-                    {
-                        // We only want to raise events for the UI (via SignalR) to query the wallet balance if a transaction pertaining to the wallet 
-                        // was processed.
-                        this.signals?.Publish(new WalletProcessedTransactionOfInterestEvent());
-                    }
+                        notifyWallet = true;
 
                     txToScript = (new[] { processBlocksInfo.Outputs, processBlocksInfo.PrevOuts }).Select(list => list.CreateScript());
                 }
@@ -1275,6 +1274,13 @@ namespace Xels.Features.SQLiteWalletRepository
 
                 walletContainer.LockProcessBlocks.Release();
                 walletContainer.WriteLockRelease();
+            }
+
+            if (notifyWallet)
+            {
+                // We only want to raise events for the UI (via SignalR) to query the wallet balance if a transaction pertaining to the wallet 
+                // was processed.
+                this.signals?.Publish(new WalletProcessedTransactionOfInterestEvent() { Source = "processtx" });
             }
         }
 
@@ -1441,7 +1447,7 @@ namespace Xels.Features.SQLiteWalletRepository
 
             HDAccount account = (accountName == null) ? null : conn.GetAccountByName(walletName, accountName);
 
-            return HDTransactionData.GetTransactionCount(conn, walletId, account?.AccountIndex);
+            return HDTransactionData.GetTransactionCount(conn, walletId, account.AccountIndex);
         }
 
         /// <inheritdoc />
@@ -1504,13 +1510,13 @@ namespace Xels.Features.SQLiteWalletRepository
         }
 
         /// <inheritdoc />
-        public AccountHistory GetHistory(HdAccount account, int limit, int offset, string txId = null)
+        public AccountHistory GetHistory(HdAccount account, int limit, int offset, string txId = null, string accountAddress = null, bool forSmartContracts = false)
         {
             Wallet wallet = account.AccountRoot.Wallet;
             WalletContainer walletContainer = this.GetWalletContainer(wallet.Name);
             (HDWallet HDWallet, DBConnection conn) = (walletContainer.Wallet, walletContainer.Conn);
 
-            var result = HDTransactionData.GetHistory(conn, HDWallet.WalletId, account.Index, limit, offset, txId);
+            var result = HDTransactionData.GetHistory(conn, HDWallet.WalletId, account.Index, limit, offset, txId, accountAddress, forSmartContracts, this.Network.Name.Contains("CC"));
 
             // Filter ColdstakeUtxos
             result = result.Where(r =>
@@ -1528,7 +1534,7 @@ namespace Xels.Features.SQLiteWalletRepository
 
                     foreach (var group in grouped)
                     {
-                        result.First().Payments.Add(new FlattenedHistoryItemPayment() { Amount = group.First().Amount, DestinationAddress = group.First().DestinationAddress, IsChange = group.First().IsChange });
+                        result.First().Payments.Add(new FlattenedHistoryItemPayment() { Amount = group.First().Amount, DestinationScriptPubKey = group.First().DestinationScriptPubKey, DestinationAddress = group.First().DestinationAddress, IsChange = group.First().IsChange });
                     }
                 }
             }

@@ -20,15 +20,15 @@ namespace Xels.Sidechains.Networks
     /// <summary>
     /// Network to be used when CC Miner is started in devmode.
     /// </summary>
-    public sealed class CCDev : PoANetwork
+    public sealed class CcDev : PoANetwork
     {
         public IList<Mnemonic> FederationMnemonics { get; }
 
-        public CCDev()
+        public CcDev()
         {
-            this.Name = "CCDev";
+            this.Name = "CcDev";
             this.NetworkType = NetworkType.Regtest;
-            this.CoinTicker = "TXCC";
+            this.CoinTicker = "TCRS";
             this.Magic = 0x522357C;
             this.DefaultPort = 26179;
             this.DefaultMaxOutboundConnections = 16;
@@ -39,12 +39,12 @@ namespace Xels.Sidechains.Networks
             this.MinTxFee = 10000;
             this.FallbackFee = 10000;
             this.MinRelayTxFee = 10000;
-            this.RootFolderName = CCNetwork.NetworkRootFolderName;
-            this.DefaultConfigFilename = CCNetwork.NetworkDefaultConfigFilename;
+            this.RootFolderName = CcNetwork.NetworkRootFolderName;
+            this.DefaultConfigFilename = CcNetwork.NetworkDefaultConfigFilename;
             this.MaxTimeOffsetSeconds = 25 * 60;
             this.DefaultBanTimeSeconds = 1920; // 240 (MaxReorg) * 16 (TargetSpacing) / 2 = 32 Minutes
 
-            this.CCRewardDummyAddress = "PDpvfcpPm9cjQEoxWzQUL699N8dPaf8qML";
+            this.CcRewardDummyAddress = "PDpvfcpPm9cjQEoxWzQUL699N8dPaf8qML";
 
             var consensusFactory = new SmartContractPoAConsensusFactory();
 

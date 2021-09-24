@@ -13,7 +13,7 @@ namespace Xels.SmartContracts.Core.Tests.Receipts
 
         public ReceiptMatcherTests()
         {
-            this.network = new CCRegTest();
+            this.network = new CcRegTest();
         }
 
         [Fact]
