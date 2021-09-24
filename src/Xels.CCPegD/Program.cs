@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+
+using IWshRuntimeLibrary;
+
 using NBitcoin;
 using NBitcoin.Protocol;
+
 using Xels.Bitcoin;
 using Xels.Bitcoin.Builder;
 using Xels.Bitcoin.Configuration;
@@ -28,7 +33,7 @@ using Xels.Features.FederatedPeg;
 using Xels.Features.SQLiteWalletRepository;
 using Xels.Sidechains.Networks;
 
-namespace Xels.CcPegD
+namespace Xels.CCPegD
 {
     class Program
     {
@@ -37,14 +42,16 @@ namespace Xels.CcPegD
 
         private static readonly Dictionary<NetworkType, Func<Network>> SidechainNetworks = new Dictionary<NetworkType, Func<Network>>
         {
-            { NetworkType.Mainnet, CcNetwork.NetworksSelector.Mainnet },
-            { NetworkType.Testnet, CcNetwork.NetworksSelector.Testnet },
-            { NetworkType.Regtest, CcNetwork.NetworksSelector.Regtest }
+            { NetworkType.Mainnet, CCNetwork.NetworksSelector.Mainnet },
+            { NetworkType.Testnet, CCNetwork.NetworksSelector.Testnet },
+            { NetworkType.Regtest, CCNetwork.NetworksSelector.Regtest }
         };
 
         private static void Main(string[] args)
         {
+           //args = new string[] { "-sidechain" };           
             RunFederationGatewayAsync(args).Wait();
+            CreateShortCut();
         }
 
         private static async Task RunFederationGatewayAsync(string[] args)
@@ -107,7 +114,7 @@ namespace Xels.CcPegD
 
         private static IFullNode GetSidechainFullNode(string[] args)
         {
-            var nodeSettings = new NodeSettings(networksSelector: CcNetwork.NetworksSelector, protocolVersion: ProtocolVersion.CC_VERSION, args: args)
+            var nodeSettings = new NodeSettings(networksSelector: CCNetwork.NetworksSelector, protocolVersion: ProtocolVersion.CC_VERSION, args: args)
             {
                 MinProtocolVersion = ProtocolVersion.ALT_PROTOCOL_VERSION
             };
@@ -140,6 +147,27 @@ namespace Xels.CcPegD
                 .Build();
 
             return node;
+        }
+
+        public static void CreateShortCut()
+        {
+
+            string[] argumentList = { "-mainchain", "-sidechain" };
+
+            string destinationPath = Directory.GetCurrentDirectory();
+            //Console.WriteLine(distinationPath);
+            //Console.ReadLine();
+            foreach (var arg in argumentList)
+            {
+                object shDesktop = (object)"Desktop";
+                WshShell shell = new WshShell();
+                string shortcutAddress = (string)shell.SpecialFolders.Item(ref shDesktop) + @"\xels-app" + arg + ".lnk";
+                IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutAddress);
+
+                shortcut.Arguments = arg;
+                shortcut.TargetPath = destinationPath + @"\Xels.CCPegD.exe";
+                shortcut.Save();
+            }
         }
     }
 }

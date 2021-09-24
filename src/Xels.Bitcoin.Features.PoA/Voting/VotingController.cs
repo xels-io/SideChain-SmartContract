@@ -14,6 +14,7 @@ namespace Xels.Bitcoin.Features.PoA.Voting
 {
     [ApiVersion("1")]
     [Route("api/[controller]")]
+    [ApiController]
     public sealed class VotingController : Controller
     {
         private readonly IFederationManager federationManager;
