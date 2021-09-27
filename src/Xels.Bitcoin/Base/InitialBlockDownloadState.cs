@@ -47,6 +47,8 @@ namespace Xels.Bitcoin.Base
         /// <inheritdoc />
         public bool IsInitialBlockDownload()
         {
+           // if (this.network.Name.ToLowerInvariant().Contains("cc"))
+            //    return false;
             if (this.chainState.ConsensusTip == null)
                 return true;
 

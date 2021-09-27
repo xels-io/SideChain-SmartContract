@@ -33,7 +33,7 @@ using Xels.Features.FederatedPeg;
 using Xels.Features.SQLiteWalletRepository;
 using Xels.Sidechains.Networks;
 
-namespace Xels.CCPegD
+namespace Xels.CcPegD
 {
     class Program
     {
@@ -42,9 +42,9 @@ namespace Xels.CCPegD
 
         private static readonly Dictionary<NetworkType, Func<Network>> SidechainNetworks = new Dictionary<NetworkType, Func<Network>>
         {
-            { NetworkType.Mainnet, CCNetwork.NetworksSelector.Mainnet },
-            { NetworkType.Testnet, CCNetwork.NetworksSelector.Testnet },
-            { NetworkType.Regtest, CCNetwork.NetworksSelector.Regtest }
+            { NetworkType.Mainnet, CcNetwork.NetworksSelector.Mainnet },
+            { NetworkType.Testnet, CcNetwork.NetworksSelector.Testnet },
+            { NetworkType.Regtest, CcNetwork.NetworksSelector.Regtest }
         };
 
         private static void Main(string[] args)
@@ -114,7 +114,7 @@ namespace Xels.CCPegD
 
         private static IFullNode GetSidechainFullNode(string[] args)
         {
-            var nodeSettings = new NodeSettings(networksSelector: CCNetwork.NetworksSelector, protocolVersion: ProtocolVersion.CC_VERSION, args: args)
+            var nodeSettings = new NodeSettings(networksSelector: CcNetwork.NetworksSelector, protocolVersion: ProtocolVersion.CC_VERSION, args: args)
             {
                 MinProtocolVersion = ProtocolVersion.ALT_PROTOCOL_VERSION
             };
@@ -165,7 +165,7 @@ namespace Xels.CCPegD
                 IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutAddress);
 
                 shortcut.Arguments = arg;
-                shortcut.TargetPath = destinationPath + @"\Xels.CCPegD.exe";
+                shortcut.TargetPath = destinationPath + @"\Xels.CcPegD.exe";
                 shortcut.Save();
             }
         }

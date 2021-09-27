@@ -138,6 +138,27 @@ namespace Xels.Bitcoin.Features.Miner.Controllers
             }
         }
 
+        [Route("startmining")]
+        [HttpPost]
+        public IActionResult StartMining([FromBody] StartMiningRequest request)
+        {
+            try
+            {
+                Script powAddressScript = this.walletManager.GetUnusedAddresses(new WalletAccountReference(request.WalletName, "account 0"), 1).FirstOrDefault().ScriptPubKey;
+                this.powMining.Mine(powAddressScript);
+                return this.Ok();
+            }
+            catch (Exception e)
+            {
+                this.logger.LogError(ExceptionOccurredMessage, e.ToString());
+                return ErrorHelpers.BuildErrorResponse(HttpStatusCode.BadRequest, e.Message, e.ToString());
+            }
+            //IEnumerable<HdAddress> addresses = account.CreateAddresses(wallet.Network, 1, isChange: false);
+            //this.walletManager.UpdateKeysLookupLocked(addresses);
+
+            //this.fullNode.NodeFeature<MiningFeature>(true)
+        }
+
         /// <summary>
         /// Finds first available wallet and its account.
         /// </summary>

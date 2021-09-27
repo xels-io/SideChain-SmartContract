@@ -101,7 +101,7 @@ namespace XelsDesktopWalletApp
             URLConfiguration.Chain = args[0];
             URLConfiguration.BaseURL = "http://localhost:37223/api"; //Side Chain Url
 
-            var nodeSettings = new NodeSettings(networksSelector: CCNetwork.NetworksSelector, protocolVersion: ProtocolVersion.CC_VERSION, args: args)
+            var nodeSettings = new NodeSettings(networksSelector: CcNetwork.NetworksSelector, protocolVersion: ProtocolVersion.CC_VERSION, args: args)
             {
                 MinProtocolVersion = ProtocolVersion.ALT_PROTOCOL_VERSION
             };
@@ -138,7 +138,7 @@ namespace XelsDesktopWalletApp
         private static IFullNode BuildDevCCMiningNode(string[] args)
         {
             string[] devModeArgs = new[] { "-bootstrap=1", "-dbtype=rocksdb", "-defaultwalletname=CCdev", "-defaultwalletpassword=password" }.Concat(args).ToArray();
-            var network = new CCDev();
+            var network = new CcDev();
 
             var nodeSettings = new NodeSettings(network, protocolVersion: ProtocolVersion.CC_VERSION, args: devModeArgs)
             {
