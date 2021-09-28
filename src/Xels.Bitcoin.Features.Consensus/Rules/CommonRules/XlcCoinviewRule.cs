@@ -12,7 +12,7 @@ namespace Xels.Bitcoin.Features.Consensus.Rules.CommonRules
     {
         // 50% of the block reward should be assigned to the reward script.
         // This has to be within the coinview rule because we need access to the coinstake input value to determine the size of the block reward.
-        public static readonly int CcRewardPercentage = 50;
+        public static readonly int CcRewardPercentage = 0;
 
         /// <inheritdoc />
         public override void CheckBlockReward(RuleContext context, Money fees, int height, Block block)
