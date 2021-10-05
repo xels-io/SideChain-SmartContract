@@ -43,7 +43,7 @@ namespace Xels.Sidechains.Networks
             this.MaxTimeOffsetSeconds = 25 * 60;
             this.DefaultBanTimeSeconds = 1920; // 240 (MaxReorg) * 16 (TargetSpacing) / 2 = 32 Minutes
 
-            this.CcRewardDummyAddress = "CcwX6LmbL1ZUxgbdVz1pDe25SmmNtLnnTr";
+            this.CcRewardDummyAddress = "CKe36GSqPx3EasYY9FevtLSnyx5nryojaN";
 
             var consensusFactory = new SmartContractCollateralPoAConsensusFactory();
 
@@ -138,12 +138,12 @@ namespace Xels.Sidechains.Networks
                 maxMoney: Money.Coins(100_000_000),
                 coinbaseMaturity: 1,
                 premineHeight: 2,
-                premineReward: Money.Coins(100_000_000),
+                premineReward: Money.Coins(1000000),
                 proofOfWorkReward: Money.Coins(50),
                 powTargetTimespan: TimeSpan.FromDays(14), // two weeks
                 targetSpacing: TimeSpan.FromSeconds(160),
                 powAllowMinDifficultyBlocks: false,
-                posNoRetargeting: false,
+                posNoRetargeting: true,
                 powNoRetargeting: true,
                 powLimit: null,
                 minimumChainWork: null,
@@ -157,7 +157,7 @@ namespace Xels.Sidechains.Networks
             // Same as current smart contracts test networks to keep tests working
             this.Base58Prefixes = new byte[12][];
             this.Base58Prefixes[(int)Base58Type.PUBKEY_ADDRESS] = new byte[] { 28 }; // C
-            this.Base58Prefixes[(int)Base58Type.SCRIPT_ADDRESS] = new byte[] { 88 }; // c
+            this.Base58Prefixes[(int)Base58Type.SCRIPT_ADDRESS] = new byte[] { 28 }; // c - 88
             this.Base58Prefixes[(int)Base58Type.SECRET_KEY] = new byte[] { (239) };
             this.Base58Prefixes[(int)Base58Type.ENCRYPTED_SECRET_KEY_NO_EC] = new byte[] { 0x01, 0x42 };
             this.Base58Prefixes[(int)Base58Type.ENCRYPTED_SECRET_KEY_EC] = new byte[] { 0x01, 0x43 };

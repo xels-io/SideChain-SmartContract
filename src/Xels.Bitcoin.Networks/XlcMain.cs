@@ -34,7 +34,7 @@ namespace Xels.Bitcoin.Networks
             this.CoinTicker = "XLC";
             this.DefaultBanTimeSeconds = 11250; // 500 (MaxReorg) * 45 (TargetSpacing) / 2 = 3 hours, 7 minutes and 30 seconds
 
-            this.CcRewardDummyAddress = "CcwX6LmbL1ZUxgbdVz1pDe25SmmNtLnnTr"; // CC main address
+            this.CcRewardDummyAddress = "CKe36GSqPx3EasYY9FevtLSnyx5nryojaN"; // CC main address
             this.RewardClaimerBatchActivationHeight = 100; // Tuesday, 12 January 2021 9:00:00 AM (Estimated)
             this.RewardClaimerBlockInterval = 100;
 
@@ -128,7 +128,7 @@ namespace Xels.Bitcoin.Networks
 
             this.Base58Prefixes = new byte[12][];
             this.Base58Prefixes[(int)Base58Type.PUBKEY_ADDRESS] = new byte[] { 75 }; // X
-            this.Base58Prefixes[(int)Base58Type.SCRIPT_ADDRESS] = new byte[] { 75 }; //x // y
+            this.Base58Prefixes[(int)Base58Type.SCRIPT_ADDRESS] = new byte[] { 75 }; //x -137// y
             this.Base58Prefixes[(int)Base58Type.SECRET_KEY] = new byte[] { (75 + 128) };
             this.Base58Prefixes[(int)Base58Type.ENCRYPTED_SECRET_KEY_NO_EC] = new byte[] { 0x01, 0x42 };
             this.Base58Prefixes[(int)Base58Type.ENCRYPTED_SECRET_KEY_EC] = new byte[] { 0x01, 0x43 };

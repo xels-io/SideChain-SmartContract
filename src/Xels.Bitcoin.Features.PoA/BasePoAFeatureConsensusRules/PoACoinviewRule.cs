@@ -43,7 +43,7 @@ namespace Xels.Bitcoin.Features.PoA.BasePoAFeatureConsensusRules
             if (height == this.network.Consensus.PremineHeight)
                 return this.network.Consensus.PremineReward;
 
-            return 0;
+            return this.network.Consensus.ProofOfWorkReward;
         }
 
         protected override Money GetTransactionFee(UnspentOutputSet view, Transaction tx)
