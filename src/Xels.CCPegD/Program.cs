@@ -49,7 +49,7 @@ namespace Xels.CcPegD
 
         private static void Main(string[] args)
         {
-           //args = new string[] { "-sidechain" };           
+            //args = new string[] { "-sidechain" };
             RunFederationGatewayAsync(args).Wait();
             CreateShortCut();
         }
