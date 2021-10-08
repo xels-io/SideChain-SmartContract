@@ -18,4 +18,10 @@
     <ProjectReference Include="..\Xels.Sidechains.Networks\Xels.Sidechains.Networks.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Interop.IWshRuntimeLibrary">
+      <HintPath>..\XelsDesktopWalletApp\obj\Debug\netcoreapp3.1\Interop.IWshRuntimeLibrary.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

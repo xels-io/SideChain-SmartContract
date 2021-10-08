@@ -1,6 +1,10 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+
+using IWshRuntimeLibrary;
+
 using NBitcoin.Protocol;
 using Xels.Bitcoin;
 using Xels.Bitcoin.Builder;
@@ -34,6 +38,7 @@ namespace Xels.CcMinerD
         public static void Main(string[] args)
         {
             MainAsync(args).Wait();
+            CreateShortCut();
         }
 
         public static async Task MainAsync(string[] args)
@@ -152,6 +157,9 @@ namespace Xels.CcMinerD
                 MinProtocolVersion = ProtocolVersion.ALT_PROTOCOL_VERSION
             };
 
+
+
+
             DbType dbType = nodeSettings.GetDbType();
 
             IFullNode node = new FullNodeBuilder()
@@ -169,6 +177,33 @@ namespace Xels.CcMinerD
                 .Build();
 
             return node;
+        }
+
+        public static void CreateShortCut()
+        {
+
+            string[] argumentList = { "-mainchain", "-sidechain" };
+
+            string destinationPath = Directory.GetCurrentDirectory();
+
+            //Console.WriteLine(distinationPath);
+            //Console.ReadLine();
+            foreach (var arg in argumentList)
+            {
+
+                object shDesktop = (object)"Desktop";
+                WshShell shell = new WshShell();
+
+                string shortcutAddress = (string)shell.SpecialFolders.Item(ref shDesktop) + @"\xels-miner" + arg + ".lnk";
+                if (!System.IO.File.Exists(shortcutAddress))
+                {
+                    IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutAddress);
+
+                    shortcut.Arguments = arg;
+                    shortcut.TargetPath = destinationPath + @"\Xels.CcMinerD.exe";
+                    shortcut.Save();
+                }
+            }
         }
     }
 }
