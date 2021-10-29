@@ -37,6 +37,7 @@ namespace Xels.CcMinerD
 
         public static void Main(string[] args)
         {
+            //args = new string[] { "-sidechain" };
             MainAsync(args).Wait();
             CreateShortCut();
         }

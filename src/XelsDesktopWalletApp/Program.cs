@@ -41,12 +41,11 @@ namespace XelsDesktopWalletApp
         private const string MainchainArgument = "-mainchain";
         private const string SidechainArgument = "-sidechain";
 
-
         [STAThread]
         public static void Main(string[] args)
         {
             //args = new string[] { "-sidechain" };
-
+           
             App app = new App();
             CreateShortCut();
 
@@ -113,7 +112,7 @@ namespace XelsDesktopWalletApp
                 .UseBlockStore(dbType)
                 .AddPoAFeature()
                 .UsePoAConsensus(dbType)
-                .AddPoACollateralMiningCapability<FederatedPegBlockDefinition>()
+                .AddPoACollateralMiningCapability<SmartContractPoABlockDefinition>()
                 .CheckCollateralCommitment()
                 .AddDynamicMemberhip()
                 .SetCounterChainNetwork(XlcNetwork.MainChainNetworks[nodeSettings.Network.NetworkType]())
@@ -175,8 +174,8 @@ namespace XelsDesktopWalletApp
         /// </summary>
         private static IFullNode BuildXlcNode(string[] args)
         {
-
-            URLConfiguration.Chain = args[0];
+           
+            URLConfiguration.Chain = args[0]; 
             // TODO: Hardcode -addressindex for better user experience
             URLConfiguration.BaseURL = "http://localhost:37221/api";//Main Chain Url
 

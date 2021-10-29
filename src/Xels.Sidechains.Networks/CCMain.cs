@@ -194,7 +194,8 @@ namespace Xels.Sidechains.Networks
                 new NetworkAddress(IPAddress.Parse("52.192.229.45"), this.DefaultPort), // public node
                 new NetworkAddress(IPAddress.Parse("52.199.121.139"), this.DefaultPort ) // public node
             };
-            //this.CollateralCommitmentActivationHeight = 25810;
+
+            this.CollateralCommitmentActivationHeight = 25810;
 
             this.StandardScriptsRegistry = new PoAStandardScriptsRegistry();
 

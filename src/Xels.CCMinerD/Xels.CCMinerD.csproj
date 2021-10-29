@@ -7,6 +7,7 @@
     <Authors>Xels Group Ltd.</Authors>
     <Company>Xels Group Ltd.</Company>
     <Product />
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
