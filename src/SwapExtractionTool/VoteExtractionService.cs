@@ -18,7 +18,7 @@ namespace SwapExtractionTool
         private readonly Dictionary<string, CollateralVote> collateralVotes = new Dictionary<string, CollateralVote>();
         private readonly BlockExplorerClient blockExplorerClient;
 
-        public VoteExtractionService(int XelsNetworkApiPort, Network xlcNetwork, BlockExplorerClient blockExplorerClient) : base(XelsNetworkApiPort, xlcNetwork)
+        public VoteExtractionService(int xelsNetworkApiPort, Network xlcNetwork, BlockExplorerClient blockExplorerClient) : base(xelsNetworkApiPort, xlcNetwork)
         {
             this.blockExplorerClient = blockExplorerClient;
         }
@@ -58,7 +58,7 @@ namespace SwapExtractionTool
             var dWeight = Money.Satoshis(votes.Where(v => v.Selection == "D").Sum(v => v.Balance)).ToUnit(MoneyUnit.BTC);
             var eWeight = Money.Satoshis(votes.Where(v => v.Selection == "E").Sum(v => v.Balance)).ToUnit(MoneyUnit.BTC);
 
-            Console.WriteLine($"Total Weight: {totalWeight} STRAT");
+            Console.WriteLine($"Total Weight: {totalWeight} XEL");
 
             if (totalWeight == 0)
                 return;
@@ -84,7 +84,7 @@ namespace SwapExtractionTool
             var noWeight = Money.Satoshis(votes.Where(v => !v.InFavour).Sum(v => v.Balance)).ToUnit(MoneyUnit.BTC);
             var yesWeight = Money.Satoshis(votes.Where(v => v.InFavour).Sum(v => v.Balance)).ToUnit(MoneyUnit.BTC);
 
-            Console.WriteLine($"Total Weight: {totalWeight} STRAT");
+            Console.WriteLine($"Total Weight: {totalWeight} XEL");
             Console.WriteLine($"Total No Weight: {(noWeight / totalWeight * 100).ToString("F")}% [{noWeight}]");
             Console.WriteLine($"Total Yes Weight: {(yesWeight / totalWeight * 100).ToString("F")}% [{yesWeight}]");
         }
@@ -174,7 +174,7 @@ namespace SwapExtractionTool
                         continue;
                     }
 
-                    // Verify the sender address is a valid Strat address
+                    // Verify the sender address is a valid Xel address
                     var potentialStratAddress = potentialVote.Substring(3);
                     ValidatedAddress validateResult = await $"http://localhost:{this.XelsNetworkApiPort}/api"
                         .AppendPathSegment("node/validateaddress")
@@ -183,7 +183,7 @@ namespace SwapExtractionTool
 
                     if (!validateResult.IsValid)
                     {
-                        Console.WriteLine($"Invalid STRAT address: '{potentialStratAddress}'");
+                        Console.WriteLine($"Invalid XEL address: '{potentialStratAddress}'");
                         continue;
                     }
 
@@ -234,7 +234,7 @@ namespace SwapExtractionTool
                     var isVoteValue = potentialVote.Substring(1, 1);
                     if (isVoteValue == "1" || isVoteValue == "0")
                     {
-                        // Verify the sender address is a valid Strat address
+                        // Verify the sender address is a valid Xel address
                         var potentialStratAddress = potentialVote.Substring(2);
                         ValidatedAddress validateResult = await $"http://localhost:{this.XelsNetworkApiPort}/api"
                             .AppendPathSegment("node/validateaddress")
@@ -243,7 +243,7 @@ namespace SwapExtractionTool
 
                         if (!validateResult.IsValid)
                         {
-                            Console.WriteLine($"Invalid STRAT address: '{potentialStratAddress}'");
+                            Console.WriteLine($"Invalid XEL address: '{potentialStratAddress}'");
                             continue;
                         }
 

@@ -65,7 +65,7 @@ namespace Xels.Bitcoin.Features.Consensus.CoinViews
                 nodeStats.RegisterStats(this.AddBenchStats, StatsType.Benchmark, this.GetType().Name, 300);
         }
 
-        public void Initialize()
+        public void Initialize(ChainedHeader chainTip)
         {
             Block genesis = this.network.GetGenesis();
 
@@ -162,7 +162,7 @@ namespace Xels.Bitcoin.Features.Consensus.CoinViews
                 // Speed can degrade when keys are in random order and, especially, if these keys have high entropy.
                 // This settings helps with speed, see dBreeze documentations about details.
                 // We should double check if this settings help in our scenario, or sorting keys and operations is enough.
-                // Refers to issue #2483. https://github.com/Xelsproject/XelsBitcoinFullNode/issues/2483
+                // Refers to issue #2483. https://github.com/xelsproject/XelsBitcoinFullNode/issues/2483
                 transaction.Technical_SetTable_OverwriteIsNotAllowed("Coins");
 
                 using (new StopwatchDisposable(o => this.performanceCounter.AddInsertTime(o)))
@@ -238,6 +238,22 @@ namespace Xels.Bitcoin.Features.Consensus.CoinViews
                 transaction.SynchronizeTables("BlockHash", "Coins", "Rewind");
                 Row<int, byte[]> row = transaction.Select<int, byte[]>("Rewind", height);
                 return row.Exists ? this.dBreezeSerializer.Deserialize<RewindData>(row.Value) : null;
+            }
+        }
+
+        /// <inheritdoc />
+        public int GetMinRewindHeight()
+        {
+            using (DBreeze.Transactions.Transaction transaction = this.CreateTransaction())
+            {
+                Row<int, byte[]> row = transaction.SelectForward<int, byte[]>("Rewind").FirstOrDefault();
+
+                if (!row.Exists)
+                {
+                    return -1;
+                }
+
+                return row.Key;
             }
         }
 

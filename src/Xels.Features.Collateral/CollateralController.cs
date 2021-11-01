@@ -65,7 +65,7 @@ namespace Xels.Features.Collateral
 
             try
             {
-                PubKey minerPubKey = await this.joinFederationRequestService.JoinFederationAsync(request, cancellationToken);
+                PubKey minerPubKey = await this.joinFederationRequestService.JoinFederationAsync(request, cancellationToken).ConfigureAwait(false);
 
                 var model = new JoinFederationResponseModel
                 {

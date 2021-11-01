@@ -12,7 +12,7 @@ namespace Xels.Bitcoin.Utilities
     /// <remarks>
     /// Note that we are using <see cref="DateTime.Ticks"/> as a basic unit of measurement,
     /// not <see cref="System.Diagnostics.Stopwatch.ElapsedTicks"/>.
-    /// Issue that cover this subject is <see href="https://github.com/Xelsproject/XelsBitcoinFullNode/issues/2391"/>.
+    /// Issue that cover this subject is <see href="https://github.com/xelsproject/XelsBitcoinFullNode/issues/2391"/>.
     /// </remarks>
     /// <example>
     /// <code>

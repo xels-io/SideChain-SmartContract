@@ -691,7 +691,7 @@ namespace Xels.Bitcoin.Features.Wallet.Tests
 
             string walletFileExtension = "wallet.json";
             string testWalletFileName = Path.ChangeExtension("myWallet", walletFileExtension);
-            string testWalletPath = Path.Combine(AppContext.BaseDirectory, "Xelsnode", testWalletFileName);
+            string testWalletPath = Path.Combine(AppContext.BaseDirectory, "xelsnode", testWalletFileName);
 
             var controller = this.GetWalletController();
 

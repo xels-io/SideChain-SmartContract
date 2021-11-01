@@ -7,10 +7,8 @@ using Xels.Bitcoin.Configuration;
 using Xels.Bitcoin.Consensus;
 using Xels.Bitcoin.Features.PoA.Events;
 using Xels.Bitcoin.Features.PoA.Voting;
-using Xels.Bitcoin.Primitives;
 using Xels.Bitcoin.Signals;
 using Xels.Bitcoin.Utilities;
-using Xels.Features.PoA.Collateral;
 using Xels.Features.PoA.Collateral.CounterChain;
 
 namespace Xels.Bitcoin.Features.PoA
@@ -27,7 +25,7 @@ namespace Xels.Bitcoin.Features.PoA
 
         /// <summary>This method updates the <see cref="CollateralFederationMember.IsMultisigMember"/> flags from 
         /// <see cref="PoANetwork.XlcMiningMultisigMembers"/> or <see cref="PoAConsensusOptions.GenesisFederationMembers"/>
-        /// depending on whether the CC chain has reached the XLC-era blocks.</summary>
+        /// depending on whether the Cc chain has reached the XLC-era blocks.</summary>
         /// <param name="xlcEra">This is set to <c>true</c> for the Xlc-era flag values and <c>false</c> for the Xels era.</param>
         void UpdateMultisigMiners(bool xlcEra);
 
@@ -81,9 +79,6 @@ namespace Xels.Bitcoin.Features.PoA
         private readonly PoANetwork network;
         private readonly NodeSettings nodeSettings;
         private readonly ISignals signals;
-
-        private int? multisigMinersApplicabilityHeight;
-        private ChainedHeader lastBlockChecked;
 
         public FederationManager(
             IFullNode fullNode,
@@ -229,15 +224,19 @@ namespace Xels.Bitcoin.Features.PoA
                 // Update member types by using the multisig mining keys supplied on the command-line. Don't add/remove members.
                 foreach (CollateralFederationMember federationMember in this.federationMembers)
                 {
+                    bool shouldBeMultisigMember;
                     if (xlcEra)
                     {
-                        federationMember.IsMultisigMember = this.network.XlcMiningMultisigMembers.Contains(federationMember.PubKey);
+                        shouldBeMultisigMember = this.network.XlcMiningMultisigMembers.Contains(federationMember.PubKey);
                     }
                     else
                     {
-                        federationMember.IsMultisigMember = ((PoAConsensusOptions)this.network.Consensus.Options).GenesisFederationMembers
+                        shouldBeMultisigMember = ((PoAConsensusOptions)this.network.Consensus.Options).GenesisFederationMembers
                             .Any(m => m.PubKey == federationMember.PubKey && ((CollateralFederationMember)m).IsMultisigMember);
                     }
+
+                    if (federationMember.IsMultisigMember != shouldBeMultisigMember)
+                        federationMember.IsMultisigMember = shouldBeMultisigMember;
                 }
             }
         }
@@ -293,7 +292,7 @@ namespace Xels.Bitcoin.Features.PoA
             {
                 if (this.federationMembers.IsCollateralAddressRegistered(collateralFederationMember.CollateralMainchainAddress))
                 {
-                    this.logger.Warn($"Federation member with address '{collateralFederationMember.CollateralMainchainAddress}' already exists.");
+                    this.logger.Trace("(-)[DUPLICATED_COLLATERAL_ADDR]");
                     return;
                 }
 
@@ -330,44 +329,25 @@ namespace Xels.Bitcoin.Features.PoA
         {
             VotingManager votingManager = this.fullNode.NodeService<VotingManager>();
             this.federationMembers = votingManager.GetFederationFromExecutedPolls();
-            this.UpdateMultisigMiners(this.multisigMinersApplicabilityHeight != null);
+            this.UpdateMultisigMiners(this.GetMultisigMinersApplicabilityHeight() != null);
         }
 
         /// <inheritdoc />
         public int? GetMultisigMinersApplicabilityHeight()
         {
             IConsensusManager consensusManager = this.fullNode.NodeService<IConsensusManager>();
-            ChainedHeader fork = (this.lastBlockChecked == null) ? null : consensusManager.Tip.FindFork(this.lastBlockChecked);
 
-            if (this.multisigMinersApplicabilityHeight != null && fork?.HashBlock == this.lastBlockChecked?.HashBlock)
-                return this.multisigMinersApplicabilityHeight;
+            // Not always passed in tests.
+            if (consensusManager == null)
+                return 0;
 
-            this.lastBlockChecked = fork;
-            this.multisigMinersApplicabilityHeight = null;
-            var commitmentHeightEncoder = new CollateralHeightCommitmentEncoder();
+            if (this.network.MultisigMinersApplicabilityHeight == null)
+                return null;
 
-            ChainedHeader[] headers = consensusManager.Tip.EnumerateToGenesis().TakeWhile(h => h != this.lastBlockChecked && h.Height >= this.network.CollateralCommitmentActivationHeight).Reverse().ToArray();
+            if (consensusManager.Tip.Height < this.network.MultisigMinersApplicabilityHeight)
+                return null;
 
-            ChainedHeader first = BinarySearch.BinaryFindFirst<ChainedHeader>(headers, (chainedHeader) =>
-            {
-                ChainedHeaderBlock block = consensusManager.GetBlockData(chainedHeader.HashBlock);
-                if (block == null)
-                    return null;
-
-                // Finding the height of the first XLC collateral commitment height.
-                (int? commitmentHeight, uint? magic) = commitmentHeightEncoder.DecodeCommitmentHeight(block.Block.Transactions.First());
-                if (commitmentHeight == null)
-                    return null;
-
-                return magic == this.counterChainSettings.CounterChainNetwork.Magic;
-            });
-
-            this.lastBlockChecked = headers.LastOrDefault();
-            this.multisigMinersApplicabilityHeight = first?.Height;
-
-            this.UpdateMultisigMiners(first != null);
-
-            return this.multisigMinersApplicabilityHeight;
+            return this.network.MultisigMinersApplicabilityHeight;
         }
 
         public bool IsMultisigMember(PubKey pubKey)

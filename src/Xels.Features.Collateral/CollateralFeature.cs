@@ -23,6 +23,8 @@ namespace Xels.Features.Collateral
 
         public override async Task InitializeAsync()
         {
+            // Note that the node's startup can remain here for a while as it retrieves the collateral for all federation members.
+            // This is in contrast with other features' async startup methods that are not required to complete before proceeding.
             await this.collateralChecker.InitializeAsync().ConfigureAwait(false);
         }
 
@@ -37,10 +39,10 @@ namespace Xels.Features.Collateral
     /// </summary>
     public static class FullNodeBuilderCollateralFeatureExtension
     {
-        // All CC nodes should call this.
+        // All Cc nodes should call this.
         public static IFullNodeBuilder CheckCollateralCommitment(this IFullNodeBuilder fullNodeBuilder)
         {
-            // These rules always execute between all CC nodes.
+            // These rules always execute between all Cc nodes.
             fullNodeBuilder.Network.Consensus.ConsensusRules.FullValidationRules.Insert(0, typeof(CheckCollateralCommitmentHeightRule));
             return fullNodeBuilder;
         }

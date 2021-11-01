@@ -25,17 +25,17 @@ namespace Xels.Features.PoA.Voting
         [JsonProperty(PropertyName = "collateralWalletPassword")]
         public string CollateralWalletPassword { get; set; }
 
-        /// <summary>The name of the wallet which will supply the fee on the CC network.</summary>
+        /// <summary>The name of the wallet which will supply the fee on the Cc network.</summary>
         [Required(ErrorMessage = "The fee wallet name is required")]
         [JsonProperty(PropertyName = "walletName")]
         public string WalletName { get; set; }
 
-        /// <summary>The password of the wallet which will supply the fee on the CC network.</summary>
+        /// <summary>The password of the wallet which will supply the fee on the Cc network.</summary>
         [Required(ErrorMessage = "The fee wallet password is required")]
         [JsonProperty(PropertyName = "walletPassword")]
         public string WalletPassword { get; set; }
 
-        /// <summary>The account of the wallet which will supply the fee on the CC network.</summary>
+        /// <summary>The account of the wallet which will supply the fee on the Cc network.</summary>
         [Required(ErrorMessage = "The fee wallet account is required")]
         [JsonProperty(PropertyName = "walletAccount")]
         public string WalletAccount { get; set; }

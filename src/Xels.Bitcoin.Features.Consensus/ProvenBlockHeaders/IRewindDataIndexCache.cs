@@ -7,7 +7,7 @@ namespace Xels.Bitcoin.Features.Consensus.ProvenBlockHeaders
     /// <summary>
     /// Rewind data index data store, where index structure consists of a key-value storage where key is a TxId + N (N is an index of output in a transaction)
     /// and value is a rewind data index. This data structure will always contain as many entries as there are rewind data instances in the database (currently
-    /// we do not delete old rewind data that is no longer needed but after the issue #5 (https://github.com/Xelsproject/XelsBitcoinFullNode/issues/5)
+    /// we do not delete old rewind data that is no longer needed but after the issue #5 (https://github.com/xelsproject/XelsBitcoinFullNode/issues/5)
     /// is fixed we should also make sure that old fork point data is deleted as well).
     /// </summary>
     public interface IRewindDataIndexCache

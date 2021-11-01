@@ -1,13 +1,10 @@
 ﻿using System.Linq;
 using FluentAssertions;
-using Microsoft.Extensions.Logging;
 using NBitcoin;
 using NSubstitute;
 using Xels.Bitcoin;
 using Xels.Bitcoin.Networks;
-using Xels.Features.FederatedPeg.Conversion;
 using Xels.Features.FederatedPeg.Interfaces;
-using Xels.Features.FederatedPeg.TargetChain;
 using Xels.Features.FederatedPeg.Tests.Utils;
 using Xels.Sidechains.Networks;
 
@@ -17,14 +14,7 @@ namespace Xels.Features.FederatedPeg.Tests
     {
         private readonly IFederatedPegSettings settings;
 
-        private readonly IConversionRequestRepository repository;
-
         private readonly IOpReturnDataReader opReturnDataReader;
-
-        private readonly ILoggerFactory loggerFactory;
-
-        private WithdrawalExtractor withdrawalExtractor;
-
         private readonly Network network;
 
         private readonly Network counterChainNetwork;
@@ -38,9 +28,7 @@ namespace Xels.Features.FederatedPeg.Tests
             this.network = CcNetwork.NetworksSelector.Regtest();
             this.counterChainNetwork = Networks.Xels.Regtest();
 
-            this.loggerFactory = Substitute.For<ILoggerFactory>();
             this.settings = Substitute.For<IFederatedPegSettings>();
-            this.repository = Substitute.For<IConversionRequestRepository>();
             this.opReturnDataReader = Substitute.For<IOpReturnDataReader>();
 
             this.addressHelper = new MultisigAddressHelper(this.network, this.counterChainNetwork);
@@ -52,12 +40,9 @@ namespace Xels.Features.FederatedPeg.Tests
             this.opReturnDataReader.TryGetTargetAddress(null, out string address).Returns(callInfo => { callInfo[1] = null; return false; });
 
             this.transactionBuilder = new TestMultisigTransactionBuilder(this.addressHelper);
-
-            this.withdrawalExtractor = new WithdrawalExtractor(
-                this.settings, this.repository, this.opReturnDataReader, this.network);
         }
 
-        // TODO: Will depend on decision made on backlog issue https://github.com/Xelsproject/FederatedSidechains/issues/124
+        // TODO: Will depend on decision made on backlog issue https://github.com/xelsproject/FederatedSidechains/issues/124
         /*
         [Fact(Skip = TestingValues.SkipTests)]
         public void ExtractWithdrawalsFromBlock_Should_Find_Withdrawals_From_Multisig()

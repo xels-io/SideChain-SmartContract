@@ -23,7 +23,7 @@ namespace Xels.Bitcoin.Features.Wallet
     public class WalletTransactionHandler : IWalletTransactionHandler
     {
         /// <summary>
-        /// We will assume that we're never going to have a fee over 1 STRAT.
+        /// We will assume that we're never going to have a fee over 1 XEL.
         /// </summary>
         private static readonly Money PretendMaxFee = Money.Coins(1);
 

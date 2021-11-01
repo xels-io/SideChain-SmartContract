@@ -17,12 +17,12 @@ namespace Xels.Bitcoin.Networks
         {
             this.Name = "XlcMain";
             this.NetworkType = NetworkType.Mainnet;
-            this.Magic = BitConverter.ToUInt32(Encoding.ASCII.GetBytes("XelS"));
-            this.DefaultPort = 27770;// 17105;
+            this.Magic = BitConverter.ToUInt32(Encoding.ASCII.GetBytes("StrX"));
+            this.DefaultPort = 27770;
             this.DefaultMaxOutboundConnections = 16;
             this.DefaultMaxInboundConnections = 109;
             this.DefaultRPCPort = 17104;
-            this.DefaultAPIPort = 37221;//17103;
+            this.DefaultAPIPort = 37221;
             this.DefaultSignalRPort = 17102;
             this.MaxTipAge = 2 * 60 * 60;
             this.MinTxFee = 10000;
@@ -34,9 +34,11 @@ namespace Xels.Bitcoin.Networks
             this.CoinTicker = "XLC";
             this.DefaultBanTimeSeconds = 11250; // 500 (MaxReorg) * 45 (TargetSpacing) / 2 = 3 hours, 7 minutes and 30 seconds
 
-            this.CcRewardDummyAddress = "CKe36GSqPx3EasYY9FevtLSnyx5nryojaN"; // CC main address
-            this.RewardClaimerBatchActivationHeight = 100; // Tuesday, 12 January 2021 9:00:00 AM (Estimated)
-            this.RewardClaimerBlockInterval = 100;
+            this.CcRewardDummyAddress = "CKe36GSqPx3EasYY9FevtLSnyx5nryojaN"; // Cc main address
+            this.RewardClaimerBatchActivationHeight = 1; // Tuesday, 12 January 2021 9:00:00 AM (Estimated)
+            this.RewardClaimerBlockInterval = 1;
+
+            //this.ConversionTransactionFeeDistributionDummyAddress = "CXK1AhmK8XhmBWHUrCKRt5WMhz1CcYeguF";
 
             // To successfully process the OP_FEDERATION opcode the federations should be known.
             this.Federations = new Federations();

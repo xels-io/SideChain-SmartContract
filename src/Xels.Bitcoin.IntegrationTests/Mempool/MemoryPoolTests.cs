@@ -35,23 +35,23 @@ namespace Xels.Bitcoin.IntegrationTests.Mempool
         {
             using (NodeBuilder builder = NodeBuilder.Create(this))
             {
-                CoreNode XelsNodeSync = builder.CreateXelsPowNode(this.network).WithDummyWallet().Start();
+                CoreNode xelsNodeSync = builder.CreateXelsPowNode(this.network).WithDummyWallet().Start();
 
-                TestHelper.MineBlocks(XelsNodeSync, 105); // coinbase maturity = 100
+                TestHelper.MineBlocks(xelsNodeSync, 105); // coinbase maturity = 100
 
-                Block block = XelsNodeSync.FullNode.BlockStore().GetBlock(XelsNodeSync.FullNode.ChainIndexer.GetHeader(4).HashBlock);
+                Block block = xelsNodeSync.FullNode.BlockStore().GetBlock(xelsNodeSync.FullNode.ChainIndexer.GetHeader(4).HashBlock);
                 Transaction prevTrx = block.Transactions.First();
-                var dest = new BitcoinSecret(new Key(), XelsNodeSync.FullNode.Network);
+                var dest = new BitcoinSecret(new Key(), xelsNodeSync.FullNode.Network);
 
-                Transaction tx = XelsNodeSync.FullNode.Network.CreateTransaction();
-                tx.AddInput(new TxIn(new OutPoint(prevTrx.GetHash(), 0), PayToPubkeyHashTemplate.Instance.GenerateScriptPubKey(XelsNodeSync.MinerSecret.PubKey)));
+                Transaction tx = xelsNodeSync.FullNode.Network.CreateTransaction();
+                tx.AddInput(new TxIn(new OutPoint(prevTrx.GetHash(), 0), PayToPubkeyHashTemplate.Instance.GenerateScriptPubKey(xelsNodeSync.MinerSecret.PubKey)));
                 tx.AddOutput(new TxOut("25", dest.PubKey.Hash));
                 tx.AddOutput(new TxOut("24", new Key().PubKey.Hash)); // 1 btc fee
-                tx.Sign(XelsNodeSync.FullNode.Network, XelsNodeSync.MinerSecret, false);
+                tx.Sign(xelsNodeSync.FullNode.Network, xelsNodeSync.MinerSecret, false);
 
-                XelsNodeSync.Broadcast(tx);
+                xelsNodeSync.Broadcast(tx);
 
-                TestBase.WaitLoop(() => XelsNodeSync.CreateRPCClient().GetRawMempool().Length == 1);
+                TestBase.WaitLoop(() => xelsNodeSync.CreateRPCClient().GetRawMempool().Length == 1);
             }
         }
 
@@ -60,37 +60,37 @@ namespace Xels.Bitcoin.IntegrationTests.Mempool
         {
             using (NodeBuilder builder = NodeBuilder.Create(this))
             {
-                CoreNode XelsNodeSync = builder.CreateXelsPowNode(this.network).WithDummyWallet().Start();
+                CoreNode xelsNodeSync = builder.CreateXelsPowNode(this.network).WithDummyWallet().Start();
 
-                TestHelper.MineBlocks(XelsNodeSync, 105); // coinbase maturity = 100
+                TestHelper.MineBlocks(xelsNodeSync, 105); // coinbase maturity = 100
 
-                Block block = XelsNodeSync.FullNode.BlockStore().GetBlock(XelsNodeSync.FullNode.ChainIndexer.GetHeader(4).HashBlock);
+                Block block = xelsNodeSync.FullNode.BlockStore().GetBlock(xelsNodeSync.FullNode.ChainIndexer.GetHeader(4).HashBlock);
                 Transaction prevTrx = block.Transactions.First();
-                var dest1 = new BitcoinSecret(new Key(), XelsNodeSync.FullNode.Network);
-                var dest2 = new BitcoinSecret(new Key(), XelsNodeSync.FullNode.Network);
+                var dest1 = new BitcoinSecret(new Key(), xelsNodeSync.FullNode.Network);
+                var dest2 = new BitcoinSecret(new Key(), xelsNodeSync.FullNode.Network);
 
-                Transaction parentTx = XelsNodeSync.FullNode.Network.CreateTransaction();
-                parentTx.AddInput(new TxIn(new OutPoint(prevTrx.GetHash(), 0), PayToPubkeyHashTemplate.Instance.GenerateScriptPubKey(XelsNodeSync.MinerSecret.PubKey)));
+                Transaction parentTx = xelsNodeSync.FullNode.Network.CreateTransaction();
+                parentTx.AddInput(new TxIn(new OutPoint(prevTrx.GetHash(), 0), PayToPubkeyHashTemplate.Instance.GenerateScriptPubKey(xelsNodeSync.MinerSecret.PubKey)));
                 parentTx.AddOutput(new TxOut("25", dest1.PubKey.Hash));
                 parentTx.AddOutput(new TxOut("24", dest2.PubKey.Hash)); // 1 btc fee
-                parentTx.Sign(XelsNodeSync.FullNode.Network, XelsNodeSync.MinerSecret, false);
+                parentTx.Sign(xelsNodeSync.FullNode.Network, xelsNodeSync.MinerSecret, false);
 
-                XelsNodeSync.Broadcast(parentTx);
+                xelsNodeSync.Broadcast(parentTx);
                 // wiat for the trx to enter the pool
-                TestBase.WaitLoop(() => XelsNodeSync.CreateRPCClient().GetRawMempool().Length == 1);
+                TestBase.WaitLoop(() => xelsNodeSync.CreateRPCClient().GetRawMempool().Length == 1);
                 // mine the transactions in the mempool
-                TestHelper.GenerateBlockManually(XelsNodeSync, XelsNodeSync.FullNode.MempoolManager().InfoAllAsync().Result.Select(s => s.Trx).ToList());
-                TestBase.WaitLoop(() => XelsNodeSync.CreateRPCClient().GetRawMempool().Length == 0);
+                TestHelper.GenerateBlockManually(xelsNodeSync, xelsNodeSync.FullNode.MempoolManager().InfoAllAsync().Result.Select(s => s.Trx).ToList());
+                TestBase.WaitLoop(() => xelsNodeSync.CreateRPCClient().GetRawMempool().Length == 0);
 
                 //create a new trx spending both outputs
-                Transaction tx = XelsNodeSync.FullNode.Network.CreateTransaction();
+                Transaction tx = xelsNodeSync.FullNode.Network.CreateTransaction();
                 tx.AddInput(new TxIn(new OutPoint(parentTx.GetHash(), 0), PayToPubkeyHashTemplate.Instance.GenerateScriptPubKey(dest1.PubKey)));
                 tx.AddInput(new TxIn(new OutPoint(parentTx.GetHash(), 1), PayToPubkeyHashTemplate.Instance.GenerateScriptPubKey(dest2.PubKey)));
                 tx.AddOutput(new TxOut("48", new Key().PubKey.Hash)); // 1 btc fee
-                Transaction signed = new TransactionBuilder(XelsNodeSync.FullNode.Network).AddKeys(dest1, dest2).AddCoins(parentTx.Outputs.AsCoins()).SignTransaction(tx);
+                Transaction signed = new TransactionBuilder(xelsNodeSync.FullNode.Network).AddKeys(dest1, dest2).AddCoins(parentTx.Outputs.AsCoins()).SignTransaction(tx);
 
-                XelsNodeSync.Broadcast(signed);
-                TestBase.WaitLoop(() => XelsNodeSync.CreateRPCClient().GetRawMempool().Length == 1);
+                xelsNodeSync.Broadcast(signed);
+                TestBase.WaitLoop(() => xelsNodeSync.CreateRPCClient().GetRawMempool().Length == 1);
             }
         }
 
@@ -99,32 +99,32 @@ namespace Xels.Bitcoin.IntegrationTests.Mempool
         {
             using (NodeBuilder builder = NodeBuilder.Create(this))
             {
-                CoreNode XelsNodeSync = builder.CreateXelsPowNode(this.network).WithDummyWallet().Start();
+                CoreNode xelsNodeSync = builder.CreateXelsPowNode(this.network).WithDummyWallet().Start();
 
-                TestHelper.MineBlocks(XelsNodeSync, 201); // coinbase maturity = 100
+                TestHelper.MineBlocks(xelsNodeSync, 201); // coinbase maturity = 100
 
                 var trxs = new List<Transaction>();
                 foreach (int index in Enumerable.Range(1, 100))
                 {
-                    Block block = XelsNodeSync.FullNode.BlockStore().GetBlock(XelsNodeSync.FullNode.ChainIndexer.GetHeader(index).HashBlock);
+                    Block block = xelsNodeSync.FullNode.BlockStore().GetBlock(xelsNodeSync.FullNode.ChainIndexer.GetHeader(index).HashBlock);
                     Transaction prevTrx = block.Transactions.First();
-                    var dest = new BitcoinSecret(new Key(), XelsNodeSync.FullNode.Network);
+                    var dest = new BitcoinSecret(new Key(), xelsNodeSync.FullNode.Network);
 
-                    Transaction tx = XelsNodeSync.FullNode.Network.CreateTransaction();
-                    tx.AddInput(new TxIn(new OutPoint(prevTrx.GetHash(), 0), PayToPubkeyHashTemplate.Instance.GenerateScriptPubKey(XelsNodeSync.MinerSecret.PubKey)));
+                    Transaction tx = xelsNodeSync.FullNode.Network.CreateTransaction();
+                    tx.AddInput(new TxIn(new OutPoint(prevTrx.GetHash(), 0), PayToPubkeyHashTemplate.Instance.GenerateScriptPubKey(xelsNodeSync.MinerSecret.PubKey)));
                     tx.AddOutput(new TxOut("25", dest.PubKey.Hash));
                     tx.AddOutput(new TxOut("24", new Key().PubKey.Hash)); // 1 btc fee
-                    tx.Sign(XelsNodeSync.FullNode.Network, XelsNodeSync.MinerSecret, false);
+                    tx.Sign(xelsNodeSync.FullNode.Network, xelsNodeSync.MinerSecret, false);
                     trxs.Add(tx);
                 }
 
                 var options = new ParallelOptions { MaxDegreeOfParallelism = 10 };
                 Parallel.ForEach(trxs, options, transaction =>
                 {
-                    XelsNodeSync.Broadcast(transaction);
+                    xelsNodeSync.Broadcast(transaction);
                 });
 
-                TestBase.WaitLoop(() => XelsNodeSync.CreateRPCClient().GetRawMempool().Length == 100);
+                TestBase.WaitLoop(() => xelsNodeSync.CreateRPCClient().GetRawMempool().Length == 100);
             }
         }
 
@@ -141,62 +141,62 @@ namespace Xels.Bitcoin.IntegrationTests.Mempool
 
             using (NodeBuilder builder = NodeBuilder.Create(this))
             {
-                CoreNode XelsNode = builder.CreateXelsPowNode(this.network).WithDummyWallet().Start();
+                CoreNode xelsNode = builder.CreateXelsPowNode(this.network).WithDummyWallet().Start();
 
                 // 50 orphan transactions:
                 for (ulong i = 0; i < 50; i++)
                 {
-                    Transaction tx = XelsNode.FullNode.Network.CreateTransaction();
+                    Transaction tx = xelsNode.FullNode.Network.CreateTransaction();
                     tx.AddInput(new TxIn(new OutPoint(randHash(), 0), new Script(OpcodeType.OP_1)));
-                    tx.AddOutput(new TxOut(new Money(1 * Money.CENT), XelsNode.MinerSecret.ScriptPubKey));
+                    tx.AddOutput(new TxOut(new Money(1 * Money.CENT), xelsNode.MinerSecret.ScriptPubKey));
 
-                    XelsNode.FullNode.NodeService<MempoolOrphans>().AddOrphanTx(i, tx);
+                    xelsNode.FullNode.NodeService<MempoolOrphans>().AddOrphanTx(i, tx);
                 }
 
-                Assert.Equal(50, XelsNode.FullNode.NodeService<MempoolOrphans>().OrphansList().Count);
+                Assert.Equal(50, xelsNode.FullNode.NodeService<MempoolOrphans>().OrphansList().Count);
 
                 // ... and 50 that depend on other orphans:
                 for (ulong i = 0; i < 50; i++)
                 {
-                    MempoolOrphans.OrphanTx txPrev = XelsNode.FullNode.NodeService<MempoolOrphans>().OrphansList().ElementAt(rand.Next(XelsNode.FullNode.NodeService<MempoolOrphans>().OrphansList().Count));
+                    MempoolOrphans.OrphanTx txPrev = xelsNode.FullNode.NodeService<MempoolOrphans>().OrphansList().ElementAt(rand.Next(xelsNode.FullNode.NodeService<MempoolOrphans>().OrphansList().Count));
 
-                    Transaction tx = XelsNode.FullNode.Network.CreateTransaction();
+                    Transaction tx = xelsNode.FullNode.Network.CreateTransaction();
                     tx.AddInput(new TxIn(new OutPoint(txPrev.Tx.GetHash(), 0), new Script(OpcodeType.OP_1)));
-                    tx.AddOutput(new TxOut(new Money((1 + i + 100) * Money.CENT), XelsNode.MinerSecret.ScriptPubKey));
-                    XelsNode.FullNode.NodeService<MempoolOrphans>().AddOrphanTx(i, tx);
+                    tx.AddOutput(new TxOut(new Money((1 + i + 100) * Money.CENT), xelsNode.MinerSecret.ScriptPubKey));
+                    xelsNode.FullNode.NodeService<MempoolOrphans>().AddOrphanTx(i, tx);
                 }
 
-                Assert.Equal(100, XelsNode.FullNode.NodeService<MempoolOrphans>().OrphansList().Count);
+                Assert.Equal(100, xelsNode.FullNode.NodeService<MempoolOrphans>().OrphansList().Count);
 
                 // This really-big orphan should be ignored:
                 for (ulong i = 0; i < 10; i++)
                 {
-                    MempoolOrphans.OrphanTx txPrev = XelsNode.FullNode.NodeService<MempoolOrphans>().OrphansList().ElementAt(rand.Next(XelsNode.FullNode.NodeService<MempoolOrphans>().OrphansList().Count));
-                    Transaction tx = XelsNode.FullNode.Network.CreateTransaction();
-                    tx.AddOutput(new TxOut(new Money(1 * Money.CENT), XelsNode.MinerSecret.ScriptPubKey));
+                    MempoolOrphans.OrphanTx txPrev = xelsNode.FullNode.NodeService<MempoolOrphans>().OrphansList().ElementAt(rand.Next(xelsNode.FullNode.NodeService<MempoolOrphans>().OrphansList().Count));
+                    Transaction tx = xelsNode.FullNode.Network.CreateTransaction();
+                    tx.AddOutput(new TxOut(new Money(1 * Money.CENT), xelsNode.MinerSecret.ScriptPubKey));
                     foreach (int index in Enumerable.Range(0, 2777))
                         tx.AddInput(new TxIn(new OutPoint(txPrev.Tx.GetHash(), index), new Script(OpcodeType.OP_1)));
 
-                    Assert.False(XelsNode.FullNode.NodeService<MempoolOrphans>().AddOrphanTx(i, tx));
+                    Assert.False(xelsNode.FullNode.NodeService<MempoolOrphans>().AddOrphanTx(i, tx));
                 }
 
-                Assert.Equal(100, XelsNode.FullNode.NodeService<MempoolOrphans>().OrphansList().Count);
+                Assert.Equal(100, xelsNode.FullNode.NodeService<MempoolOrphans>().OrphansList().Count);
 
                 // Test EraseOrphansFor:
                 for (ulong i = 0; i < 3; i++)
                 {
-                    int sizeBefore = XelsNode.FullNode.NodeService<MempoolOrphans>().OrphansList().Count;
-                    XelsNode.FullNode.NodeService<MempoolOrphans>().EraseOrphansFor(i);
-                    Assert.True(XelsNode.FullNode.NodeService<MempoolOrphans>().OrphansList().Count < sizeBefore);
+                    int sizeBefore = xelsNode.FullNode.NodeService<MempoolOrphans>().OrphansList().Count;
+                    xelsNode.FullNode.NodeService<MempoolOrphans>().EraseOrphansFor(i);
+                    Assert.True(xelsNode.FullNode.NodeService<MempoolOrphans>().OrphansList().Count < sizeBefore);
                 }
 
                 // Test LimitOrphanTxSize() function:
-                XelsNode.FullNode.NodeService<MempoolOrphans>().LimitOrphanTxSize(40);
-                Assert.True(XelsNode.FullNode.NodeService<MempoolOrphans>().OrphansList().Count <= 40);
-                XelsNode.FullNode.NodeService<MempoolOrphans>().LimitOrphanTxSize(10);
-                Assert.True(XelsNode.FullNode.NodeService<MempoolOrphans>().OrphansList().Count <= 10);
-                XelsNode.FullNode.NodeService<MempoolOrphans>().LimitOrphanTxSize(0);
-                Assert.True(!XelsNode.FullNode.NodeService<MempoolOrphans>().OrphansList().Any());
+                xelsNode.FullNode.NodeService<MempoolOrphans>().LimitOrphanTxSize(40);
+                Assert.True(xelsNode.FullNode.NodeService<MempoolOrphans>().OrphansList().Count <= 40);
+                xelsNode.FullNode.NodeService<MempoolOrphans>().LimitOrphanTxSize(10);
+                Assert.True(xelsNode.FullNode.NodeService<MempoolOrphans>().OrphansList().Count <= 10);
+                xelsNode.FullNode.NodeService<MempoolOrphans>().LimitOrphanTxSize(0);
+                Assert.True(!xelsNode.FullNode.NodeService<MempoolOrphans>().OrphansList().Any());
             }
         }
 
@@ -205,34 +205,34 @@ namespace Xels.Bitcoin.IntegrationTests.Mempool
         {
             using (NodeBuilder builder = NodeBuilder.Create(this))
             {
-                CoreNode XelsNodeSync = builder.CreateXelsPowNode(this.network).WithDummyWallet().Start();
+                CoreNode xelsNodeSync = builder.CreateXelsPowNode(this.network).WithDummyWallet().Start();
 
-                TestHelper.MineBlocks(XelsNodeSync, 101); // coinbase maturity = 100
+                TestHelper.MineBlocks(xelsNodeSync, 101); // coinbase maturity = 100
 
-                Block block = XelsNodeSync.FullNode.BlockStore().GetBlock(XelsNodeSync.FullNode.ChainIndexer.GetHeader(1).HashBlock);
+                Block block = xelsNodeSync.FullNode.BlockStore().GetBlock(xelsNodeSync.FullNode.ChainIndexer.GetHeader(1).HashBlock);
                 Transaction prevTrx = block.Transactions.First();
-                var dest = new BitcoinSecret(new Key(), XelsNodeSync.FullNode.Network);
+                var dest = new BitcoinSecret(new Key(), xelsNodeSync.FullNode.Network);
 
                 var key = new Key();
-                Transaction tx = XelsNodeSync.FullNode.Network.CreateTransaction();
-                tx.AddInput(new TxIn(new OutPoint(prevTrx.GetHash(), 0), PayToPubkeyHashTemplate.Instance.GenerateScriptPubKey(XelsNodeSync.MinerSecret.PubKey)));
+                Transaction tx = xelsNodeSync.FullNode.Network.CreateTransaction();
+                tx.AddInput(new TxIn(new OutPoint(prevTrx.GetHash(), 0), PayToPubkeyHashTemplate.Instance.GenerateScriptPubKey(xelsNodeSync.MinerSecret.PubKey)));
                 tx.AddOutput(new TxOut("25", dest.PubKey.Hash));
                 tx.AddOutput(new TxOut("24", key.PubKey.Hash)); // 1 btc fee
-                tx.Sign(XelsNodeSync.FullNode.Network, XelsNodeSync.MinerSecret, false);
+                tx.Sign(xelsNodeSync.FullNode.Network, xelsNodeSync.MinerSecret, false);
 
-                Transaction txOrphan = XelsNodeSync.FullNode.Network.CreateTransaction();
+                Transaction txOrphan = xelsNodeSync.FullNode.Network.CreateTransaction();
                 txOrphan.AddInput(new TxIn(new OutPoint(tx.GetHash(), 1), PayToPubkeyHashTemplate.Instance.GenerateScriptPubKey(key.PubKey)));
                 txOrphan.AddOutput(new TxOut("10", new Key().PubKey.Hash));
-                txOrphan.Sign(XelsNodeSync.FullNode.Network, key.GetBitcoinSecret(XelsNodeSync.FullNode.Network), false);
+                txOrphan.Sign(xelsNodeSync.FullNode.Network, key.GetBitcoinSecret(xelsNodeSync.FullNode.Network), false);
 
                 // broadcast the orphan
-                XelsNodeSync.Broadcast(txOrphan);
-                TestBase.WaitLoop(() => XelsNodeSync.FullNode.NodeService<MempoolOrphans>().OrphansList().Count == 1);
+                xelsNodeSync.Broadcast(txOrphan);
+                TestBase.WaitLoop(() => xelsNodeSync.FullNode.NodeService<MempoolOrphans>().OrphansList().Count == 1);
                 // broadcast the parent
-                XelsNodeSync.Broadcast(tx);
-                TestBase.WaitLoop(() => XelsNodeSync.FullNode.NodeService<MempoolOrphans>().OrphansList().Count == 0);
+                xelsNodeSync.Broadcast(tx);
+                TestBase.WaitLoop(() => xelsNodeSync.FullNode.NodeService<MempoolOrphans>().OrphansList().Count == 0);
                 // wait for orphan to get in the pool
-                TestBase.WaitLoop(() => XelsNodeSync.CreateRPCClient().GetRawMempool().Length == 2);
+                TestBase.WaitLoop(() => xelsNodeSync.CreateRPCClient().GetRawMempool().Length == 2);
             }
         }
 
@@ -241,56 +241,56 @@ namespace Xels.Bitcoin.IntegrationTests.Mempool
         {
             using (NodeBuilder builder = NodeBuilder.Create(this))
             {
-                CoreNode XelsNodeSync = builder.CreateXelsPowNode(this.network).WithDummyWallet().Start();
-                CoreNode XelsNode1 = builder.CreateXelsPowNode(this.network).Start();
-                CoreNode XelsNode2 = builder.CreateXelsPowNode(this.network).Start();
+                CoreNode xelsNodeSync = builder.CreateXelsPowNode(this.network).WithDummyWallet().Start();
+                CoreNode xelsNode1 = builder.CreateXelsPowNode(this.network).Start();
+                CoreNode xelsNode2 = builder.CreateXelsPowNode(this.network).Start();
 
                 // Generate blocks and wait for the downloader to pickup
-                TestHelper.MineBlocks(XelsNodeSync, 105); // coinbase maturity = 100
+                TestHelper.MineBlocks(xelsNodeSync, 105); // coinbase maturity = 100
 
                 // Sync both nodes.
-                TestHelper.ConnectAndSync(XelsNode1, XelsNodeSync);
-                TestHelper.ConnectAndSync(XelsNode2, XelsNodeSync);
+                TestHelper.ConnectAndSync(xelsNode1, xelsNodeSync);
+                TestHelper.ConnectAndSync(xelsNode2, xelsNodeSync);
 
                 // Create some transactions and push them to the pool.
                 var trxs = new List<Transaction>();
                 foreach (int index in Enumerable.Range(1, 5))
                 {
-                    Block block = XelsNodeSync.FullNode.BlockStore().GetBlock(XelsNodeSync.FullNode.ChainIndexer.GetHeader(index).HashBlock);
+                    Block block = xelsNodeSync.FullNode.BlockStore().GetBlock(xelsNodeSync.FullNode.ChainIndexer.GetHeader(index).HashBlock);
                     Transaction prevTrx = block.Transactions.First();
-                    var dest = new BitcoinSecret(new Key(), XelsNodeSync.FullNode.Network);
+                    var dest = new BitcoinSecret(new Key(), xelsNodeSync.FullNode.Network);
 
-                    Transaction tx = XelsNodeSync.FullNode.Network.CreateTransaction();
-                    tx.AddInput(new TxIn(new OutPoint(prevTrx.GetHash(), 0), PayToPubkeyHashTemplate.Instance.GenerateScriptPubKey(XelsNodeSync.MinerSecret.PubKey)));
+                    Transaction tx = xelsNodeSync.FullNode.Network.CreateTransaction();
+                    tx.AddInput(new TxIn(new OutPoint(prevTrx.GetHash(), 0), PayToPubkeyHashTemplate.Instance.GenerateScriptPubKey(xelsNodeSync.MinerSecret.PubKey)));
                     tx.AddOutput(new TxOut("25", dest.PubKey.Hash));
                     tx.AddOutput(new TxOut("24", new Key().PubKey.Hash)); // 1 btc fee
-                    tx.Sign(XelsNodeSync.FullNode.Network, XelsNodeSync.MinerSecret, false);
+                    tx.Sign(xelsNodeSync.FullNode.Network, xelsNodeSync.MinerSecret, false);
                     trxs.Add(tx);
                 }
                 var options = new ParallelOptions { MaxDegreeOfParallelism = 5 };
                 Parallel.ForEach(trxs, options, transaction =>
                 {
-                    XelsNodeSync.Broadcast(transaction);
+                    xelsNodeSync.Broadcast(transaction);
                 });
 
                 // wait for all nodes to have all trx
-                TestBase.WaitLoop(() => XelsNodeSync.CreateRPCClient().GetRawMempool().Length == 5);
+                TestBase.WaitLoop(() => xelsNodeSync.CreateRPCClient().GetRawMempool().Length == 5);
 
                 // the full node should be connected to both nodes
-                Assert.True(XelsNodeSync.FullNode.ConnectionManager.ConnectedPeers.Count() >= 2);
+                Assert.True(xelsNodeSync.FullNode.ConnectionManager.ConnectedPeers.Count() >= 2);
 
-                TestBase.WaitLoop(() => XelsNode1.CreateRPCClient().GetRawMempool().Length == 5);
-                TestBase.WaitLoop(() => XelsNode2.CreateRPCClient().GetRawMempool().Length == 5);
+                TestBase.WaitLoop(() => xelsNode1.CreateRPCClient().GetRawMempool().Length == 5);
+                TestBase.WaitLoop(() => xelsNode2.CreateRPCClient().GetRawMempool().Length == 5);
 
                 // mine the transactions in the mempool
-                TestHelper.MineBlocks(XelsNodeSync, 1);
-                TestBase.WaitLoop(() => XelsNodeSync.CreateRPCClient().GetRawMempool().Length == 0);
+                TestHelper.MineBlocks(xelsNodeSync, 1);
+                TestBase.WaitLoop(() => xelsNodeSync.CreateRPCClient().GetRawMempool().Length == 0);
 
                 // wait for block and mempool to change
-                TestBase.WaitLoop(() => XelsNode1.CreateRPCClient().GetBestBlockHash() == XelsNodeSync.CreateRPCClient().GetBestBlockHash());
-                TestBase.WaitLoop(() => XelsNode2.CreateRPCClient().GetBestBlockHash() == XelsNodeSync.CreateRPCClient().GetBestBlockHash());
-                TestBase.WaitLoop(() => XelsNode1.CreateRPCClient().GetRawMempool().Length == 0);
-                TestBase.WaitLoop(() => XelsNode2.CreateRPCClient().GetRawMempool().Length == 0);
+                TestBase.WaitLoop(() => xelsNode1.CreateRPCClient().GetBestBlockHash() == xelsNodeSync.CreateRPCClient().GetBestBlockHash());
+                TestBase.WaitLoop(() => xelsNode2.CreateRPCClient().GetBestBlockHash() == xelsNodeSync.CreateRPCClient().GetBestBlockHash());
+                TestBase.WaitLoop(() => xelsNode1.CreateRPCClient().GetRawMempool().Length == 0);
+                TestBase.WaitLoop(() => xelsNode2.CreateRPCClient().GetRawMempool().Length == 0);
             }
         }
 
@@ -358,32 +358,32 @@ namespace Xels.Bitcoin.IntegrationTests.Mempool
 
             using (NodeBuilder builder = NodeBuilder.Create(this))
             {
-                CoreNode XelsSender = builder.CreateXelsPosNode(network).WithReadyBlockchainData(ReadyBlockchain.XlcRegTest10Miner).Start();
+                CoreNode xelsSender = builder.CreateXelsPosNode(network).WithReadyBlockchainData(ReadyBlockchain.XlcRegTest10Miner).Start();
 
-                TestHelper.MineBlocks(XelsSender, 5);
+                TestHelper.MineBlocks(xelsSender, 5);
 
                 // Send coins to the receiver.
                 var context = WalletTests.CreateContext(network, new WalletAccountReference(WalletName, Account), Password, new Key().PubKey.GetAddress(network).ScriptPubKey, Money.COIN * 100, FeeType.Medium, 1);
 
-                Transaction trx = XelsSender.FullNode.WalletTransactionHandler().BuildTransaction(context);
+                Transaction trx = xelsSender.FullNode.WalletTransactionHandler().BuildTransaction(context);
 
                 // Treat the locktime as absolute, not relative.
                 trx.Inputs.First().Sequence = new Sequence(Sequence.SEQUENCE_LOCKTIME_DISABLE_FLAG);
 
                 // Set the nLockTime to be behind the current tip so that locktime has elapsed.
-                trx.LockTime = new LockTime(XelsSender.FullNode.ChainIndexer.Height - 1);
+                trx.LockTime = new LockTime(xelsSender.FullNode.ChainIndexer.Height - 1);
 
                 // Sign trx again after changing the nLockTime.
                 trx = context.TransactionBuilder.SignTransaction(trx);
 
                 // Enable standard policy relay.
-                XelsSender.FullNode.NodeService<MempoolSettings>().RequireStandard = true;
+                xelsSender.FullNode.NodeService<MempoolSettings>().RequireStandard = true;
 
-                var broadcaster = XelsSender.FullNode.NodeService<IBroadcasterManager>();
+                var broadcaster = xelsSender.FullNode.NodeService<IBroadcasterManager>();
 
                 broadcaster.BroadcastTransactionAsync(trx);
 
-                TestBase.WaitLoop(() => XelsSender.CreateRPCClient().GetRawMempool().Length == 1);
+                TestBase.WaitLoop(() => xelsSender.CreateRPCClient().GetRawMempool().Length == 1);
             }
         }
 
@@ -396,28 +396,28 @@ namespace Xels.Bitcoin.IntegrationTests.Mempool
 
             using (NodeBuilder builder = NodeBuilder.Create(this))
             {
-                CoreNode XelsSender = builder.CreateXelsPosNode(network).WithReadyBlockchainData(ReadyBlockchain.XlcRegTest10Miner).Start();
+                CoreNode xelsSender = builder.CreateXelsPosNode(network).WithReadyBlockchainData(ReadyBlockchain.XlcRegTest10Miner).Start();
 
-                TestHelper.MineBlocks(XelsSender, 5);
+                TestHelper.MineBlocks(xelsSender, 5);
 
                 // Send coins to the receiver.
                 var context = WalletTests.CreateContext(network, new WalletAccountReference(WalletName, Account), Password, new Key().PubKey.GetAddress(network).ScriptPubKey, Money.COIN * 100, FeeType.Medium, 1);
 
-                Transaction trx = XelsSender.FullNode.WalletTransactionHandler().BuildTransaction(context);
+                Transaction trx = xelsSender.FullNode.WalletTransactionHandler().BuildTransaction(context);
 
                 // Treat the locktime as absolute, not relative.
                 trx.Inputs.First().Sequence = new Sequence(Sequence.SEQUENCE_LOCKTIME_DISABLE_FLAG);
 
                 // Set the nLockTime to be ahead of the current tip so that locktime has not elapsed.
-                trx.LockTime = new LockTime(XelsSender.FullNode.ChainIndexer.Height + 1);
+                trx.LockTime = new LockTime(xelsSender.FullNode.ChainIndexer.Height + 1);
 
                 // Sign trx again after changing the nLockTime.
                 trx = context.TransactionBuilder.SignTransaction(trx);
 
                 // Enable standard policy relay.
-                XelsSender.FullNode.NodeService<MempoolSettings>().RequireStandard = true;
+                xelsSender.FullNode.NodeService<MempoolSettings>().RequireStandard = true;
 
-                var broadcaster = XelsSender.FullNode.NodeService<IBroadcasterManager>();
+                var broadcaster = xelsSender.FullNode.NodeService<IBroadcasterManager>();
 
                 broadcaster.BroadcastTransactionAsync(trx).GetAwaiter().GetResult();
                 var entry = broadcaster.GetTransaction(trx.GetHash());
@@ -433,14 +433,14 @@ namespace Xels.Bitcoin.IntegrationTests.Mempool
 
             using (NodeBuilder builder = NodeBuilder.Create(this))
             {
-                CoreNode XelsSender = builder.CreateXelsPosNode(network).WithReadyBlockchainData(ReadyBlockchain.XlcRegTest10Miner).Start();
+                CoreNode xelsSender = builder.CreateXelsPosNode(network).WithReadyBlockchainData(ReadyBlockchain.XlcRegTest10Miner).Start();
 
-                TestHelper.MineBlocks(XelsSender, 5);
+                TestHelper.MineBlocks(xelsSender, 5);
 
                 // Send coins to the receiver
                 var context = WalletTests.CreateContext(network, new WalletAccountReference(WalletName, Account), Password, new Key().PubKey.GetAddress(network).ScriptPubKey, Money.COIN * 100, FeeType.Medium, 1);
 
-                Transaction trx = XelsSender.FullNode.WalletTransactionHandler().BuildTransaction(context);
+                Transaction trx = xelsSender.FullNode.WalletTransactionHandler().BuildTransaction(context);
 
                 // Add nonsense script to make tx large.
                 Script script = Script.FromBytesUnsafe(new string('A', network.Consensus.Options.MaxStandardTxWeight).Select(c => (byte)c).ToArray());
@@ -450,9 +450,9 @@ namespace Xels.Bitcoin.IntegrationTests.Mempool
                 trx = context.TransactionBuilder.SignTransaction(trx);
 
                 // Enable standard policy relay.
-                XelsSender.FullNode.NodeService<MempoolSettings>().RequireStandard = true;
+                xelsSender.FullNode.NodeService<MempoolSettings>().RequireStandard = true;
 
-                var broadcaster = XelsSender.FullNode.NodeService<IBroadcasterManager>();
+                var broadcaster = xelsSender.FullNode.NodeService<IBroadcasterManager>();
 
                 broadcaster.BroadcastTransactionAsync(trx).GetAwaiter().GetResult();
                 var entry = broadcaster.GetTransaction(trx.GetHash());
@@ -469,15 +469,15 @@ namespace Xels.Bitcoin.IntegrationTests.Mempool
 
             using (var builder = NodeBuilder.Create(this))
             {
-                CoreNode XelsSender = builder.CreateXelsPosNode(network).WithReadyBlockchainData(ReadyBlockchain.XlcRegTest10Miner).Start();
+                CoreNode xelsSender = builder.CreateXelsPosNode(network).WithReadyBlockchainData(ReadyBlockchain.XlcRegTest10Miner).Start();
 
-                TestHelper.MineBlocks(XelsSender, 5);
+                TestHelper.MineBlocks(xelsSender, 5);
 
                 // Send coins to the receiver.
                 var context = WalletTests.CreateContext(network, new WalletAccountReference(WalletName, Account), Password, new Key().PubKey.GetAddress(network).ScriptPubKey, Money.COIN * 100, FeeType.Medium, 1);
                 context.OpReturnData = "1";
                 context.OpReturnAmount = Money.Coins(0.01m);
-                Transaction trx = XelsSender.FullNode.WalletTransactionHandler().BuildTransaction(context);
+                Transaction trx = xelsSender.FullNode.WalletTransactionHandler().BuildTransaction(context);
 
                 foreach (TxOut output in trx.Outputs)
                 {
@@ -503,9 +503,9 @@ namespace Xels.Bitcoin.IntegrationTests.Mempool
                 trx = context.TransactionBuilder.SignTransaction(trx);
 
                 // Enable standard policy relay.
-                XelsSender.FullNode.NodeService<MempoolSettings>().RequireStandard = true;
+                xelsSender.FullNode.NodeService<MempoolSettings>().RequireStandard = true;
 
-                var broadcaster = XelsSender.FullNode.NodeService<IBroadcasterManager>();
+                var broadcaster = xelsSender.FullNode.NodeService<IBroadcasterManager>();
 
                 broadcaster.BroadcastTransactionAsync(trx).GetAwaiter().GetResult();
                 var entry = broadcaster.GetTransaction(trx.GetHash());

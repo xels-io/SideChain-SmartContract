@@ -116,17 +116,17 @@ namespace Xels.Bitcoin.IntegrationTests.Wallet
             {
                 var network = new XlcRegTest();
 
-                CoreNode XelsSender = CreatePowPosMiningNode(builder, network, TestBase.CreateTestDir(this), coldStakeNode: false);
-                CoreNode XelsHotStake = CreatePowPosMiningNode(builder, network, TestBase.CreateTestDir(this), coldStakeNode: true);
-                CoreNode XelsColdStake = CreatePowPosMiningNode(builder, network, TestBase.CreateTestDir(this), coldStakeNode: true);
+                CoreNode xelsSender = CreatePowPosMiningNode(builder, network, TestBase.CreateTestDir(this), coldStakeNode: false);
+                CoreNode xelsHotStake = CreatePowPosMiningNode(builder, network, TestBase.CreateTestDir(this), coldStakeNode: true);
+                CoreNode xelsColdStake = CreatePowPosMiningNode(builder, network, TestBase.CreateTestDir(this), coldStakeNode: true);
 
-                XelsSender.WithReadyBlockchainData(ReadyBlockchain.XlcRegTest150Miner).Start();
-                XelsHotStake.WithWallet().Start();
-                XelsColdStake.WithWallet().Start();
+                xelsSender.WithReadyBlockchainData(ReadyBlockchain.XlcRegTest150Miner).Start();
+                xelsHotStake.WithWallet().Start();
+                xelsColdStake.WithWallet().Start();
 
-                var senderWalletManager = XelsSender.FullNode.WalletManager() as ColdStakingManager;
-                var coldWalletManager = XelsColdStake.FullNode.WalletManager() as ColdStakingManager;
-                var hotWalletManager = XelsHotStake.FullNode.WalletManager() as ColdStakingManager;
+                var senderWalletManager = xelsSender.FullNode.WalletManager() as ColdStakingManager;
+                var coldWalletManager = xelsColdStake.FullNode.WalletManager() as ColdStakingManager;
+                var hotWalletManager = xelsHotStake.FullNode.WalletManager() as ColdStakingManager;
 
                 // Set up cold staking account on cold wallet.
                 coldWalletManager.GetOrCreateColdStakingAccount(WalletName, true, Password, null);
@@ -137,38 +137,38 @@ namespace Xels.Bitcoin.IntegrationTests.Wallet
                 HdAddress hotWalletAddress = hotWalletManager.GetFirstUnusedColdStakingAddress(WalletName, false);
 
                 var walletAccountReference = new WalletAccountReference(WalletName, Account);
-                long total2 = XelsSender.FullNode.WalletManager().GetSpendableTransactionsInAccount(walletAccountReference, 1).Sum(s => s.Transaction.Amount);
+                long total2 = xelsSender.FullNode.WalletManager().GetSpendableTransactionsInAccount(walletAccountReference, 1).Sum(s => s.Transaction.Amount);
 
                 // Sync all nodes
-                TestHelper.ConnectAndSync(XelsHotStake, XelsSender);
-                TestHelper.ConnectAndSync(XelsHotStake, XelsColdStake);
-                TestHelper.Connect(XelsSender, XelsColdStake);
+                TestHelper.ConnectAndSync(xelsHotStake, xelsSender);
+                TestHelper.ConnectAndSync(xelsHotStake, xelsColdStake);
+                TestHelper.Connect(xelsSender, xelsColdStake);
 
                 // Send coins to hot wallet.
                 Money amountToSend = total2 - network.Consensus.ProofOfWorkReward;
                 HdAddress sendto = hotWalletManager.GetUnusedAddress(new WalletAccountReference(WalletName, Account));
 
-                Transaction transaction1 = XelsSender.FullNode.WalletTransactionHandler().BuildTransaction(CreateContext(XelsSender.FullNode.Network, new WalletAccountReference(WalletName, Account), Password, sendto.ScriptPubKey, amountToSend, FeeType.Medium, 1));
+                Transaction transaction1 = xelsSender.FullNode.WalletTransactionHandler().BuildTransaction(CreateContext(xelsSender.FullNode.Network, new WalletAccountReference(WalletName, Account), Password, sendto.ScriptPubKey, amountToSend, FeeType.Medium, 1));
 
                 // Broadcast to the other node
-                await XelsSender.FullNode.NodeController<WalletController>().SendTransaction(new SendTransactionRequest(transaction1.ToHex()));
+                await xelsSender.FullNode.NodeController<WalletController>().SendTransaction(new SendTransactionRequest(transaction1.ToHex()));
 
                 // Wait for the transaction to arrive
-                TestBase.WaitLoop(() => XelsHotStake.CreateRPCClient().GetRawMempool().Length > 0);
-                Assert.NotNull(XelsHotStake.CreateRPCClient().GetRawTransaction(transaction1.GetHash(), null, false));
-                TestBase.WaitLoop(() => XelsHotStake.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Any());
+                TestBase.WaitLoop(() => xelsHotStake.CreateRPCClient().GetRawMempool().Length > 0);
+                Assert.NotNull(xelsHotStake.CreateRPCClient().GetRawTransaction(transaction1.GetHash(), null, false));
+                TestBase.WaitLoop(() => xelsHotStake.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Any());
 
-                long receiveTotal = XelsHotStake.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Sum(s => s.Transaction.Amount);
+                long receiveTotal = xelsHotStake.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Sum(s => s.Transaction.Amount);
                 Assert.Equal(amountToSend, (Money)receiveTotal);
-                Assert.Null(XelsHotStake.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).First().Transaction.BlockHeight);
+                Assert.Null(xelsHotStake.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).First().Transaction.BlockHeight);
 
                 // Setup cold staking from the hot wallet.
                 Money amountToSend2 = receiveTotal - network.Consensus.ProofOfWorkReward;
-                (Transaction transaction2, _) = hotWalletManager.GetColdStakingSetupTransaction(XelsHotStake.FullNode.WalletTransactionHandler(),
+                (Transaction transaction2, _) = hotWalletManager.GetColdStakingSetupTransaction(xelsHotStake.FullNode.WalletTransactionHandler(),
                     coldWalletAddress.Address, hotWalletAddress.Address, WalletName, Account, Password, amountToSend2, new Money(0.02m, MoneyUnit.BTC), false, false, 1, false);
 
                 // Broadcast to the other node
-                await XelsHotStake.FullNode.NodeController<WalletController>().SendTransaction(new SendTransactionRequest(transaction2.ToHex()));
+                await xelsHotStake.FullNode.NodeController<WalletController>().SendTransaction(new SendTransactionRequest(transaction2.ToHex()));
 
                 // Wait for the transaction to arrive
                 TestBase.WaitLoop(() => coldWalletManager.GetSpendableTransactionsInColdWallet(WalletName, true).Any());
@@ -179,15 +179,15 @@ namespace Xels.Bitcoin.IntegrationTests.Wallet
 
                 // Allow coins to reach maturity
                 int stakingMaturity = ((PosConsensusOptions)network.Consensus.Options).GetStakeMinConfirmations(0, network);
-                TestHelper.MineBlocks(XelsSender, stakingMaturity, true);
+                TestHelper.MineBlocks(xelsSender, stakingMaturity, true);
 
                 // Start staking.
-                var hotMiningFeature = XelsHotStake.FullNode.NodeFeature<MiningFeature>();
+                var hotMiningFeature = xelsHotStake.FullNode.NodeFeature<MiningFeature>();
                 hotMiningFeature.StartStaking(WalletName, Password);
 
                 TestBase.WaitLoop(() =>
                 {
-                    var stakingInfo = XelsHotStake.FullNode.NodeService<IPosMinting>().GetGetStakingInfoModel();
+                    var stakingInfo = xelsHotStake.FullNode.NodeService<IPosMinting>().GetGetStakingInfoModel();
                     return stakingInfo.Staking;
                 });
 
@@ -196,7 +196,7 @@ namespace Xels.Bitcoin.IntegrationTests.Wallet
                 TestBase.WaitLoop(() =>
                 {
                     // Keep mining to ensure that staking outputs reach maturity.
-                    TestHelper.MineBlocks(XelsSender, 1, true);
+                    TestHelper.MineBlocks(xelsSender, 1, true);
                     return coldWalletManager.GetSpendableTransactionsInColdWallet(WalletName, true).Sum(s => s.Transaction.Amount) > receivetotal2;
                 }, cancellationToken: cancellationToken);
             }
@@ -210,45 +210,45 @@ namespace Xels.Bitcoin.IntegrationTests.Wallet
             {
                 var network = new XlcRegTest();
 
-                CoreNode XelsSender = CreatePowPosMiningNode(builder, network, TestBase.CreateTestDir(this), coldStakeNode: false);
-                CoreNode XelsColdStake = CreatePowPosMiningNode(builder, network, TestBase.CreateTestDir(this), coldStakeNode: true);
+                CoreNode xelsSender = CreatePowPosMiningNode(builder, network, TestBase.CreateTestDir(this), coldStakeNode: false);
+                CoreNode xelsColdStake = CreatePowPosMiningNode(builder, network, TestBase.CreateTestDir(this), coldStakeNode: true);
 
-                XelsSender.WithReadyBlockchainData(ReadyBlockchain.XlcRegTest150Miner).Start();
-                XelsColdStake.WithWallet().Start();
+                xelsSender.WithReadyBlockchainData(ReadyBlockchain.XlcRegTest150Miner).Start();
+                xelsColdStake.WithWallet().Start();
 
-                var coldWalletManager = XelsColdStake.FullNode.WalletManager() as ColdStakingManager;
+                var coldWalletManager = xelsColdStake.FullNode.WalletManager() as ColdStakingManager;
 
                 // Set up cold staking account on cold wallet.
                 coldWalletManager.GetOrCreateColdStakingAccount(WalletName, true, Password, null);
                 HdAddress coldWalletAddress = coldWalletManager.GetFirstUnusedColdStakingAddress(WalletName, true);
 
                 var walletAccountReference = new WalletAccountReference(WalletName, Account);
-                long total2 = XelsSender.FullNode.WalletManager().GetSpendableTransactionsInAccount(walletAccountReference, 1).Sum(s => s.Transaction.Amount);
+                long total2 = xelsSender.FullNode.WalletManager().GetSpendableTransactionsInAccount(walletAccountReference, 1).Sum(s => s.Transaction.Amount);
 
                 // Sync nodes.
-                TestHelper.Connect(XelsSender, XelsColdStake);
+                TestHelper.Connect(xelsSender, xelsColdStake);
 
                 // Send coins to cold address.
                 Money amountToSend = total2 - network.Consensus.ProofOfWorkReward;
-                Transaction transaction1 = XelsSender.FullNode.WalletTransactionHandler().BuildTransaction(CreateContext(XelsSender.FullNode.Network, new WalletAccountReference(WalletName, Account), Password, coldWalletAddress.ScriptPubKey, amountToSend, FeeType.Medium, 1));
+                Transaction transaction1 = xelsSender.FullNode.WalletTransactionHandler().BuildTransaction(CreateContext(xelsSender.FullNode.Network, new WalletAccountReference(WalletName, Account), Password, coldWalletAddress.ScriptPubKey, amountToSend, FeeType.Medium, 1));
 
                 // Broadcast to the other nodes.
-                await XelsSender.FullNode.NodeController<WalletController>().SendTransaction(new SendTransactionRequest(transaction1.ToHex()));
+                await xelsSender.FullNode.NodeController<WalletController>().SendTransaction(new SendTransactionRequest(transaction1.ToHex()));
 
                 // Wait for the transaction to arrive.
-                TestBase.WaitLoop(() => XelsColdStake.CreateRPCClient().GetRawMempool().Length > 0);
+                TestBase.WaitLoop(() => xelsColdStake.CreateRPCClient().GetRawMempool().Length > 0);
 
                 // Despite the funds being sent to an address in the cold account, the wallet does not recognise the output as funds belonging to it.
-                Assert.True(XelsColdStake.FullNode.WalletManager().GetBalances(WalletName, Account).Sum(a => a.AmountUnconfirmed + a.AmountUnconfirmed) == 0);
+                Assert.True(xelsColdStake.FullNode.WalletManager().GetBalances(WalletName, Account).Sum(a => a.AmountUnconfirmed + a.AmountUnconfirmed) == 0);
 
-                uint256[] mempoolTransactionId = XelsColdStake.CreateRPCClient().GetRawMempool();
+                uint256[] mempoolTransactionId = xelsColdStake.CreateRPCClient().GetRawMempool();
 
-                Transaction misspentTransaction = XelsColdStake.CreateRPCClient().GetRawTransaction(mempoolTransactionId[0]);
+                Transaction misspentTransaction = xelsColdStake.CreateRPCClient().GetRawTransaction(mempoolTransactionId[0]);
 
                 // Now retrieve the UTXO sent to the cold address. The funds will reappear in a normal account on the cold staking node.
-                XelsColdStake.FullNode.NodeController<ColdStakingController>().RetrieveFilteredUtxos(new RetrieveFilteredUtxosRequest() { WalletName = XelsColdStake.WalletName, WalletPassword = XelsColdStake.WalletPassword, Hex = misspentTransaction.ToHex(), WalletAccount = null, Broadcast = true});
+                xelsColdStake.FullNode.NodeController<ColdStakingController>().RetrieveFilteredUtxos(new RetrieveFilteredUtxosRequest() { WalletName = xelsColdStake.WalletName, WalletPassword = xelsColdStake.WalletPassword, Hex = misspentTransaction.ToHex(), WalletAccount = null, Broadcast = true});
 
-                TestBase.WaitLoop(() => XelsColdStake.FullNode.WalletManager().GetBalances(WalletName, Account).Sum(a => a.AmountUnconfirmed + a.AmountUnconfirmed) > 0);
+                TestBase.WaitLoop(() => xelsColdStake.FullNode.WalletManager().GetBalances(WalletName, Account).Sum(a => a.AmountUnconfirmed + a.AmountUnconfirmed) > 0);
             }
         }
     }

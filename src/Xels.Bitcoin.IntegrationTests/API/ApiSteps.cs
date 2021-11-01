@@ -80,7 +80,7 @@ namespace Xels.Bitcoin.IntegrationTests.API
         private const string BalanceUri = "api/wallet/balance";
         private const string RecoverViaExtPubKeyUri = "api/wallet/recover-via-extpubkey";
 
-        private CoreNode XelsPosApiNode;
+        private CoreNode xelsPosApiNode;
         private CoreNode firstXelsPowApiNode;
         private CoreNode secondXelsPowApiNode;
 
@@ -139,16 +139,16 @@ namespace Xels.Bitcoin.IntegrationTests.API
 
         private void a_proof_of_stake_node_with_api_enabled()
         {
-            this.XelsPosApiNode = this.posNodeBuilder.CreateXelsPosNode(this.posNetwork).Start();
+            this.xelsPosApiNode = this.posNodeBuilder.CreateXelsPosNode(this.posNetwork).Start();
 
-            this.XelsPosApiNode.FullNode.NodeService<IPosMinting>(true).Should().NotBeNull();
-            this.apiUri = this.XelsPosApiNode.FullNode.NodeService<ApiSettings>().ApiUri;
+            this.xelsPosApiNode.FullNode.NodeService<IPosMinting>(true).Should().NotBeNull();
+            this.apiUri = this.xelsPosApiNode.FullNode.NodeService<ApiSettings>().ApiUri;
         }
 
         private void the_proof_of_stake_node_has_passed_LastPOWBlock()
         {
-            typeof(ChainedHeader).GetProperty("Height").SetValue(this.XelsPosApiNode.FullNode.ConsensusManager().Tip,
-                this.XelsPosApiNode.FullNode.Network.Consensus.LastPOWBlock + 1);
+            typeof(ChainedHeader).GetProperty("Height").SetValue(this.xelsPosApiNode.FullNode.ConsensusManager().Tip,
+                this.xelsPosApiNode.FullNode.Network.Consensus.LastPOWBlock + 1);
         }
 
         private void two_connected_proof_of_work_nodes_with_api_enabled()
@@ -201,7 +201,7 @@ namespace Xels.Bitcoin.IntegrationTests.API
             var stakingRequest = new StartStakingRequest() { Name = WalletName, Password = WalletPassword };
 
             // With these tests we still need to create the wallets outside of the builder
-            (_, this.XelsPosApiNode.Mnemonic) = this.XelsPosApiNode.FullNode.WalletManager().CreateWallet(WalletPassword, WalletName, WalletPassphrase);
+            (_, this.xelsPosApiNode.Mnemonic) = this.xelsPosApiNode.FullNode.WalletManager().CreateWallet(WalletPassword, WalletName, WalletPassphrase);
 
             var httpRequestContent = new StringContent(stakingRequest.ToString(), Encoding.UTF8, JsonContentType);
             this.response = this.httpClient.PostAsync($"{this.apiUri}{StartStakingUri}", httpRequestContent).GetAwaiter().GetResult();
@@ -283,8 +283,8 @@ namespace Xels.Bitcoin.IntegrationTests.API
         private void calling_general_info()
         {
             // With these tests we still need to create the wallets outside of the builder
-            this.XelsPosApiNode.FullNode.WalletManager().CreateWallet(WalletPassword, WalletName, WalletPassphrase);
-            this.XelsPosApiNode.FullNode.WalletManager().SaveWallet(WalletName);
+            this.xelsPosApiNode.FullNode.WalletManager().CreateWallet(WalletPassword, WalletName, WalletPassphrase);
+            this.xelsPosApiNode.FullNode.WalletManager().SaveWallet(WalletName);
 
             this.send_api_get_request($"{GeneralInfoUri}?name={WalletName}");
         }
@@ -474,7 +474,7 @@ namespace Xels.Bitcoin.IntegrationTests.API
 
         private void staking_is_enabled_but_nothing_is_staked()
         {
-            var miningRpcController = this.XelsPosApiNode.FullNode.NodeController<StakingRpcController>();
+            var miningRpcController = this.xelsPosApiNode.FullNode.NodeController<StakingRpcController>();
             GetStakingInfoModel stakingInfo = miningRpcController.GetStakingInfo();
             stakingInfo.Should().NotBeNull();
             stakingInfo.Enabled.Should().BeTrue();

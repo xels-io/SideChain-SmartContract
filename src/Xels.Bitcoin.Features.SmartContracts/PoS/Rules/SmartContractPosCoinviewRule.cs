@@ -27,11 +27,11 @@ namespace Xels.Bitcoin.Features.SmartContracts.PoS.Rules
         private readonly IConsensus consensus;
         private readonly IStakeChain stakeChain;
         private readonly IStakeValidator stakeValidator;
-        
+
         public SmartContractPosCoinviewRule(Network network, IStateRepositoryRoot stateRepositoryRoot,
             IContractExecutorFactory executorFactory, ICallDataSerializer callDataSerializer,
             ISenderRetriever senderRetriever, IReceiptRepository receiptRepository, ICoinView coinView,
-            IStakeChain stakeChain, IStakeValidator stakeValidator, IBlockExecutionResultCache executionCache, ILoggerFactory loggerFactory) 
+            IStakeChain stakeChain, IStakeValidator stakeValidator, IBlockExecutionResultCache executionCache, ILoggerFactory loggerFactory)
             : base(network, stateRepositoryRoot, executorFactory, callDataSerializer, senderRetriever, receiptRepository, coinView, executionCache, loggerFactory)
         {
             this.consensus = network.Consensus;

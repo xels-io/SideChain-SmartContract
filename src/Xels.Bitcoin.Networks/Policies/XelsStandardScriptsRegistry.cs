@@ -10,7 +10,7 @@ namespace Xels.Bitcoin.Networks.Policies
     /// </summary>
     public class XelsStandardScriptsRegistry : StandardScriptsRegistry
     {
-        // See MAX_OP_RETURN_RELAY in XelsX, <script.h>
+        // See MAX_OP_RETURN_RELAY in xelsX, <script.h>
         public const int MaxOpReturnRelay = 40;
 
         // Need a network-specific version of the template list

@@ -91,7 +91,7 @@ namespace Xels.External.Masternodes
                 return;
 
             Console.Clear();
-            Console.WriteLine("SUCCESS: XLC Blockchain and CC Blockchain are now fully synchronised.");
+            Console.WriteLine("SUCCESS: XLC Blockchain and Cc Blockchain are now fully synchronised.");
             Console.WriteLine("Assessing Masternode Requirements...");
 
             // Check main chain collateral wallet and balace
@@ -432,7 +432,7 @@ namespace Xels.External.Masternodes
             }
 
             Console.WriteLine(Environment.NewLine);
-            Console.WriteLine($"It has been saved in the root CC data folder: {savePath}");
+            Console.WriteLine($"It has been saved in the root Cc data folder: {savePath}");
             Console.WriteLine($"Please ensure that you take a backup of this file.");
             return true;
         }
@@ -441,7 +441,7 @@ namespace Xels.External.Masternodes
         {
             Console.Clear();
             Console.WriteLine($"The relevant masternode registration wallets has now been setup and verified.");
-            Console.WriteLine($"Press any key to continue (this will deduct the registation fee from your CC wallet)");
+            Console.WriteLine($"Press any key to continue (this will deduct the registation fee from your Cc wallet)");
             Console.ReadKey();
 
             string collateralWallet;
@@ -459,9 +459,9 @@ namespace Xels.External.Masternodes
                 Console.WriteLine($"[Xlc] Please enter the collateral address in which the collateral amount of {CollateralRequirement} {this.mainchainNetwork.CoinTicker} is held:");
                 collateralAddress = Console.ReadLine();
 
-                Console.WriteLine($"[CC] Please enter the wallet name which holds the registration fee of {FeeRequirement} {this.sidechainNetwork.CoinTicker}:");
+                Console.WriteLine($"[Cc] Please enter the wallet name which holds the registration fee of {FeeRequirement} {this.sidechainNetwork.CoinTicker}:");
                 ccWalletName = Console.ReadLine();
-                Console.WriteLine($"[CC] Please enter the above wallet's password:");
+                Console.WriteLine($"[Cc] Please enter the above wallet's password:");
                 ccWalletPassword = Console.ReadLine();
 
                 if (!string.IsNullOrEmpty(collateralWallet) && !string.IsNullOrEmpty(collateralPassword) && !string.IsNullOrEmpty(collateralAddress) &&

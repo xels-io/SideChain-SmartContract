@@ -98,7 +98,7 @@ namespace Xels.Bitcoin.Features.Dns.Tests
             IPeerAddressManager peerAddressManager = new Mock<IPeerAddressManager>().Object;
             IDnsServer dnsServer = new Mock<IDnsServer>().Object;
             DnsSettings dnsSettings = new DnsSettings(NodeSettings.Default(this.Network));
-            dnsSettings.DnsHostName = "Xels.test.com";
+            dnsSettings.DnsHostName = "xels.test.com";
 
             Action a = () => { new WhitelistManager(dateTimeProvider, loggerFactory, peerAddressManager, dnsServer, null, dnsSettings, this.peerBanning); };
 
@@ -116,7 +116,7 @@ namespace Xels.Bitcoin.Features.Dns.Tests
             IPeerAddressManager peerAddressManager = new Mock<IPeerAddressManager>().Object;
             IDnsServer dnsServer = new Mock<IDnsServer>().Object;
             DnsSettings dnsSettings = new DnsSettings(NodeSettings.Default(this.Network));
-            dnsSettings.DnsHostName = "Xels.test.com";
+            dnsSettings.DnsHostName = "xels.test.com";
 
             Action a = () => { new WhitelistManager(dateTimeProvider, loggerFactory, peerAddressManager, dnsServer, null, dnsSettings, this.peerBanning); };
 
@@ -134,7 +134,7 @@ namespace Xels.Bitcoin.Features.Dns.Tests
             IPeerAddressManager peerAddressManager = new Mock<IPeerAddressManager>().Object;
             IDnsServer dnsServer = new Mock<IDnsServer>().Object;
             DnsSettings dnsSettings = new DnsSettings(NodeSettings.Default(this.Network));
-            dnsSettings.DnsHostName = "Xels.test.com";
+            dnsSettings.DnsHostName = "xels.test.com";
             ConnectionManagerSettings connectionManagerSettings = new ConnectionManagerSettings(NodeSettings.Default(this.Network));
 
             Action a = () => new WhitelistManager(dateTimeProvider, loggerFactory, peerAddressManager, dnsServer, connectionManagerSettings, dnsSettings,
@@ -200,7 +200,7 @@ namespace Xels.Bitcoin.Features.Dns.Tests
             NodeSettings nodeSettings = NodeSettings.Default(this.Network);
             DnsSettings dnsSettings = new DnsSettings(NodeSettings.Default(this.Network));
             dnsSettings.DnsPeerBlacklistThresholdInSeconds = inactiveTimePeriod;
-            dnsSettings.DnsHostName = "Xels.test.com";
+            dnsSettings.DnsHostName = "xels.test.com";
             ConnectionManagerSettings connectionSettings = new ConnectionManagerSettings(nodeSettings);
 
             var whitelistManager = new WhitelistManager(dateTimeProvider, loggerFactory, peerAddressManager, mockDnsServer.Object, connectionSettings, dnsSettings, this.peerBanning);
@@ -303,7 +303,7 @@ namespace Xels.Bitcoin.Features.Dns.Tests
             var nodeSettings = new NodeSettings(network, args: args);
             DnsSettings dnsSettings = new DnsSettings(NodeSettings.Default(this.Network));
             dnsSettings.DnsPeerBlacklistThresholdInSeconds = inactiveTimePeriod;
-            dnsSettings.DnsHostName = "Xels.test.com";
+            dnsSettings.DnsHostName = "xels.test.com";
             dnsSettings.DnsFullNode = false;
             ConnectionManagerSettings connectionSettings = new ConnectionManagerSettings(nodeSettings);
 
@@ -391,7 +391,7 @@ namespace Xels.Bitcoin.Features.Dns.Tests
             DnsSettings dnsSettings = new DnsSettings(NodeSettings.Default(this.Network));
             dnsSettings.DnsFullNode = true;
             dnsSettings.DnsPeerBlacklistThresholdInSeconds = inactiveTimePeriod;
-            dnsSettings.DnsHostName = "Xels.test.com";
+            dnsSettings.DnsHostName = "xels.test.com";
             ConnectionManagerSettings connectionSettings = new ConnectionManagerSettings(nodeSettings);
 
             var whitelistManager = new WhitelistManager(dateTimeProvider, loggerFactory, peerAddressManager, mockDnsServer.Object, connectionSettings, dnsSettings, this.peerBanning);
@@ -482,7 +482,7 @@ namespace Xels.Bitcoin.Features.Dns.Tests
             NodeSettings nodeSettings = NodeSettings.Default(this.Network);
             DnsSettings dnsSettings = new DnsSettings(NodeSettings.Default(this.Network));
             dnsSettings.DnsPeerBlacklistThresholdInSeconds = inactiveTimePeriod;
-            dnsSettings.DnsHostName = "Xels.test.com";
+            dnsSettings.DnsHostName = "xels.test.com";
             ConnectionManagerSettings connectionSettings = new ConnectionManagerSettings(nodeSettings);
 
             var whitelistManager = new WhitelistManager(dateTimeProvider, loggerFactory, peerAddressManager, mockDnsServer.Object, connectionSettings, dnsSettings, this.peerBanning);
@@ -539,7 +539,7 @@ namespace Xels.Bitcoin.Features.Dns.Tests
 
             var nodeSettings = NodeSettings.Default(this.Network);
             var dnsSettings = new DnsSettings(nodeSettings);
-            dnsSettings.DnsHostName = "Xels.test.com";
+            dnsSettings.DnsHostName = "xels.test.com";
             var connectionSettings = new ConnectionManagerSettings(nodeSettings);
 
             peerBanning.IsBanned(bannedEndpoint)

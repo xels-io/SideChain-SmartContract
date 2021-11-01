@@ -3315,12 +3315,12 @@ namespace Xels.Bitcoin.Features.Wallet.Tests
         {
             DataFolder dataFolder = CreateDataFolder(this);
 
-            const string XelsAccount0ExtPubKey = "xpub661MyMwAqRbcEgnsMFfhjdrwR52TgicebTrbnttywb9zn3orkrzn6MHJrgBmKrd7MNtS6LAim44a6V2gizt3jYVPHGYq1MzAN849WEyoedJ";
+            const string xelsAccount0ExtPubKey = "xpub661MyMwAqRbcEgnsMFfhjdrwR52TgicebTrbnttywb9zn3orkrzn6MHJrgBmKrd7MNtS6LAim44a6V2gizt3jYVPHGYq1MzAN849WEyoedJ";
             var walletManager = this.CreateWalletManager(dataFolder, this.Network);
 
             walletManager.Start();
 
-            walletManager.RecoverWallet("testWallet", ExtPubKey.Parse(XelsAccount0ExtPubKey), 0, DateTime.Now.AddHours(-2));
+            walletManager.RecoverWallet("testWallet", ExtPubKey.Parse(xelsAccount0ExtPubKey), 0, DateTime.Now.AddHours(-2));
 
             var wallet = walletManager.LoadWallet("password", "testWallet");
 
@@ -3329,7 +3329,7 @@ namespace Xels.Bitcoin.Features.Wallet.Tests
             wallet.ChainCode.Should().BeNull();
 
             wallet.AccountsRoot.SelectMany(x => x.Accounts).Single().ExtendedPubKey
-                .Should().Be(XelsAccount0ExtPubKey);
+                .Should().Be(xelsAccount0ExtPubKey);
         }
 
         [Fact]
@@ -3337,17 +3337,17 @@ namespace Xels.Bitcoin.Features.Wallet.Tests
         {
             DataFolder dataFolder = CreateDataFolder(this);
 
-            const string XelsAccount0ExtPubKey = "xpub661MyMwAqRbcEgnsMFfhjdrwR52TgicebTrbnttywb9zn3orkrzn6MHJrgBmKrd7MNtS6LAim44a6V2gizt3jYVPHGYq1MzAN849WEyoedJ";
-            const string XelsAccount1ExtPubKey = "xpub6DGguHV1FQFPvZ5Xu7VfeENyiySv4R2bdd6VtvwxWGVTVNnHUmphMNgTRkLe8j2JdAv332ogZcyhqSuz1yUPnN4trJ49cFQXmEhwNQHUqk1";
+            const string xelsAccount0ExtPubKey = "xpub661MyMwAqRbcEgnsMFfhjdrwR52TgicebTrbnttywb9zn3orkrzn6MHJrgBmKrd7MNtS6LAim44a6V2gizt3jYVPHGYq1MzAN849WEyoedJ";
+            const string xelsAccount1ExtPubKey = "xpub6DGguHV1FQFPvZ5Xu7VfeENyiySv4R2bdd6VtvwxWGVTVNnHUmphMNgTRkLe8j2JdAv332ogZcyhqSuz1yUPnN4trJ49cFQXmEhwNQHUqk1";
             var walletManager = this.CreateWalletManager(dataFolder, this.Network);
 
             walletManager.Start();
 
-            var wallet = walletManager.RecoverWallet("wallet1", ExtPubKey.Parse(XelsAccount0ExtPubKey), 0, DateTime.Now.AddHours(-2));
+            var wallet = walletManager.RecoverWallet("wallet1", ExtPubKey.Parse(xelsAccount0ExtPubKey), 0, DateTime.Now.AddHours(-2));
 
             try
             {
-                wallet.AddNewAccount(ExtPubKey.Parse(XelsAccount1ExtPubKey), 0, accountCreationTime: DateTime.Now.AddHours(-2));
+                wallet.AddNewAccount(ExtPubKey.Parse(xelsAccount1ExtPubKey), 0, accountCreationTime: DateTime.Now.AddHours(-2));
 
                 Assert.True(false, "should have thrown exception but didn't.");
             }
@@ -3362,17 +3362,17 @@ namespace Xels.Bitcoin.Features.Wallet.Tests
         {
             DataFolder dataFolder = CreateDataFolder(this);
 
-            const string XelsAccount0ExtPubKey = "xpub661MyMwAqRbcEgnsMFfhjdrwR52TgicebTrbnttywb9zn3orkrzn6MHJrgBmKrd7MNtS6LAim44a6V2gizt3jYVPHGYq1MzAN849WEyoedJ";
+            const string xelsAccount0ExtPubKey = "xpub661MyMwAqRbcEgnsMFfhjdrwR52TgicebTrbnttywb9zn3orkrzn6MHJrgBmKrd7MNtS6LAim44a6V2gizt3jYVPHGYq1MzAN849WEyoedJ";
             var walletManager = this.CreateWalletManager(dataFolder, this.Network);
 
             walletManager.Start();
 
-            var wallet = walletManager.RecoverWallet("wallet1", ExtPubKey.Parse(XelsAccount0ExtPubKey), 0, DateTime.Now.AddHours(-2));
+            var wallet = walletManager.RecoverWallet("wallet1", ExtPubKey.Parse(xelsAccount0ExtPubKey), 0, DateTime.Now.AddHours(-2));
 
-            var addNewAccount = new Action(() => wallet.AddNewAccount(ExtPubKey.Parse(XelsAccount0ExtPubKey), 1, accountCreationTime: DateTime.Now.AddHours(-2)));
+            var addNewAccount = new Action(() => wallet.AddNewAccount(ExtPubKey.Parse(xelsAccount0ExtPubKey), 1, accountCreationTime: DateTime.Now.AddHours(-2)));
 
             addNewAccount.Should().Throw<WalletException>()
-                .WithMessage("There is already an account in this wallet with this xpubkey: " + XelsAccount0ExtPubKey);
+                .WithMessage("There is already an account in this wallet with this xpubkey: " + xelsAccount0ExtPubKey);
         }
 
         [Fact]

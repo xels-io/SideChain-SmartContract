@@ -374,11 +374,11 @@ namespace Xels.Bitcoin.Features.BlockStore.Tests
 
             Assert.Equal(maxReorgBtc, AddressIndexer.FallBackMaxReorg);
 
-            var Xels = new XlcMain();
+            var xels = new XlcMain();
 
-            int maxReorgXels = AddressIndexer.GetMaxReorgOrFallbackMaxReorg(Xels);
+            int maxReorgXels = AddressIndexer.GetMaxReorgOrFallbackMaxReorg(xels);
 
-            Assert.Equal(maxReorgXels, (int)Xels.Consensus.MaxReorgLength);
+            Assert.Equal(maxReorgXels, (int)xels.Consensus.MaxReorgLength);
         }
     }
 }

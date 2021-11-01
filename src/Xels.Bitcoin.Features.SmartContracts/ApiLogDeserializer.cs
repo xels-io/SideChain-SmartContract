@@ -120,6 +120,8 @@ namespace Xels.Bitcoin.Features.SmartContracts
 
             var instance = new ExpandoObject() as IDictionary<string, object>;
 
+            instance["Event"] = type.Name;
+
             FieldInfo[] fields = type.GetFields();
 
             for (int i = 0; i < fields.Length; i++)

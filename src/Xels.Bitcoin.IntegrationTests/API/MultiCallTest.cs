@@ -14,13 +14,13 @@ namespace Xels.Bitcoin.IntegrationTests.API
         [Fact]
         public void CanPerformMultipleParallelCallsToTheSameController()
         {
-            this.XelsPosApiNode = this.posNodeBuilder.CreateXelsPosNode(this.posNetwork).Start();
+            this.xelsPosApiNode = this.posNodeBuilder.CreateXelsPosNode(this.posNetwork).Start();
 
-            this.XelsPosApiNode.FullNode.NodeService<IPosMinting>(true);
-            this.apiUri = this.XelsPosApiNode.FullNode.NodeService<ApiSettings>().ApiUri;
+            this.xelsPosApiNode.FullNode.NodeService<IPosMinting>(true);
+            this.apiUri = this.xelsPosApiNode.FullNode.NodeService<ApiSettings>().ApiUri;
 
             // With these tests we still need to create the wallets outside of the builder
-            this.XelsPosApiNode.FullNode.WalletManager().CreateWallet(WalletPassword, WalletName, WalletPassphrase);
+            this.xelsPosApiNode.FullNode.WalletManager().CreateWallet(WalletPassword, WalletName, WalletPassphrase);
 
             var indexes = new List<int>();
             for (int i = 0; i < 1024; i++)

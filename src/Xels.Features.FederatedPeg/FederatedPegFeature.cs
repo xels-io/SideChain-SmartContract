@@ -13,16 +13,17 @@ using Xels.Bitcoin.Builder.Feature;
 using Xels.Bitcoin.Configuration;
 using Xels.Bitcoin.Configuration.Logging;
 using Xels.Bitcoin.Connection;
+using Xels.Bitcoin.Features.ExternalApi;
 using Xels.Bitcoin.Features.Notifications;
 using Xels.Bitcoin.Features.SmartContracts;
 using Xels.Bitcoin.Features.Wallet;
 using Xels.Bitcoin.P2P.Peer;
 using Xels.Bitcoin.P2P.Protocol.Payloads;
 using Xels.Bitcoin.Utilities;
-using Xels.Features.Collateral;
 using Xels.Features.Collateral.CounterChain;
 using Xels.Features.FederatedPeg.Controllers;
 using Xels.Features.FederatedPeg.Conversion;
+using Xels.Features.FederatedPeg.Coordination;
 using Xels.Features.FederatedPeg.Distribution;
 using Xels.Features.FederatedPeg.InputConsolidation;
 using Xels.Features.FederatedPeg.Interfaces;
@@ -81,8 +82,7 @@ namespace Xels.Features.FederatedPeg
             MempoolCleaner mempoolCleaner,
             ISignedMultisigTransactionBroadcaster signedBroadcaster,
             IMaturedBlocksSyncManager maturedBlocksSyncManager,
-            IInputConsolidator inputConsolidator,
-            ICollateralChecker collateralChecker = null)
+            IInputConsolidator inputConsolidator)
         {
             this.connectionManager = connectionManager;
             this.federatedPegSettings = federatedPegSettings;
@@ -115,7 +115,7 @@ namespace Xels.Features.FederatedPeg
             this.federationWalletManager.Start();
 
             // Query the other chain every N seconds for deposits. Triggers signing process if deposits are found.
-            await this.maturedBlocksSyncManager.StartAsync();
+            await this.maturedBlocksSyncManager.StartAsync().ConfigureAwait(false);
 
             // Syncs the wallet correctly when restarting the node. i.e. deals with reorgs.
             this.walletSyncManager.Initialize();
@@ -227,6 +227,9 @@ namespace Xels.Features.FederatedPeg
                     var target = d.deposit.TargetAddress;
                     if (target == this.network.CcRewardDummyAddress)
                         target = "Reward Distribution";
+                    if (target == this.network.ConversionTransactionFeeDistributionDummyAddress)
+                        target = "Conversion Fee";
+
                     return $"{d.deposit.Amount} ({d.blocksBeforeMature}) => {target} ({d.deposit.RetrievalType})";
                 }).Take(10)));
 
@@ -261,6 +264,7 @@ namespace Xels.Features.FederatedPeg
                         services.AddSingleton<IFederatedPegSettings, FederatedPegSettings>();
                         services.AddSingleton<IOpReturnDataReader>(provider => new OpReturnDataReader(provider.GetService<CounterChainNetworkWrapper>().CounterChainNetwork));
                         services.AddSingleton<IDepositExtractor, DepositExtractor>();
+                        services.AddSingleton<IExternalApiClient, ExternalApiClient>();
                         services.AddSingleton<IWithdrawalExtractor, WithdrawalExtractor>();
                         services.AddSingleton<IFederationWalletSyncManager, FederationWalletSyncManager>();
                         services.AddSingleton<IFederationWalletTransactionHandler, FederationWalletTransactionHandler>();
@@ -276,6 +280,14 @@ namespace Xels.Features.FederatedPeg
 
                         services.AddSingleton<IConversionRequestKeyValueStore, ConversionRequestKeyValueStore>();
                         services.AddSingleton<IConversionRequestRepository, ConversionRequestRepository>();
+
+                        // The coordination manager only runs on the side chain.
+                        if (!isMainChain)
+                        {
+                            services.AddSingleton<IConversionRequestCoordinationService, ConversionRequestCoordinationService>();
+                            services.AddSingleton<IConversionRequestFeeService, ConversionRequestFeeService>();
+                            services.AddSingleton<IConversionRequestFeeKeyValueStore, ConversionRequestFeeKeyValueStore>();
+                        }
 
                         services.AddSingleton<IMaturedBlocksSyncManager, MaturedBlocksSyncManager>();
                         services.AddSingleton<IWithdrawalHistoryProvider, WithdrawalHistoryProvider>();

@@ -10,14 +10,12 @@ using NBitcoin;
 using Xels.Bitcoin;
 using Xels.Bitcoin.AsyncWork;
 using Xels.Bitcoin.Configuration;
-using Xels.Bitcoin.Consensus;
 using Xels.Bitcoin.Controllers.Models;
 using Xels.Bitcoin.EventBus;
 using Xels.Bitcoin.Features.BlockStore.Controllers;
 using Xels.Bitcoin.Features.PoA;
 using Xels.Bitcoin.Features.PoA.Voting;
 using Xels.Bitcoin.Networks;
-using Xels.Bitcoin.Persistence.KeyValueStores;
 using Xels.Bitcoin.Signals;
 using Xels.Bitcoin.Tests.Common;
 using Xels.Bitcoin.Utilities;
@@ -63,8 +61,6 @@ namespace Xels.Features.FederatedPeg.Tests
             ISignals signals = new Signals(loggerFactory, new DefaultSubscriptionErrorHandler(loggerFactory));
             var dbreezeSerializer = new DBreezeSerializer(network.Consensus.ConsensusFactory);
             var asyncProvider = new AsyncProvider(loggerFactory, signals);
-            var finalizedBlockRepo = new FinalizedBlockInfoRepository(new LevelDbKeyValueRepository(nodeSettings.DataFolder, dbreezeSerializer), asyncProvider);
-            finalizedBlockRepo.LoadFinalizedBlockInfoAsync(network).GetAwaiter().GetResult();
 
             var chainIndexerMock = new Mock<ChainIndexer>();
             var header = new BlockHeader();
@@ -72,8 +68,9 @@ namespace Xels.Features.FederatedPeg.Tests
             var fullNode = new Mock<IFullNode>();
 
             IFederationManager federationManager = new FederationManager(fullNode.Object, network, nodeSettings, signals, counterChainSettings);
-            var votingManager = new VotingManager(federationManager, new Mock<IPollResultExecutor>().Object, new Mock<INodeStats>().Object, nodeSettings.DataFolder, dbreezeSerializer, signals, finalizedBlockRepo, network);
-            var federationHistory = new FederationHistory(federationManager, votingManager);
+
+            var votingManager = new VotingManager(federationManager, new Mock<IPollResultExecutor>().Object, new Mock<INodeStats>().Object, nodeSettings.DataFolder, dbreezeSerializer, signals, network, chainIndexerMock.Object);
+            var federationHistory = new FederationHistory(federationManager, network, votingManager);
             votingManager.Initialize(federationHistory);
 
             fullNode.Setup(x => x.NodeService<VotingManager>(It.IsAny<bool>())).Returns(votingManager);

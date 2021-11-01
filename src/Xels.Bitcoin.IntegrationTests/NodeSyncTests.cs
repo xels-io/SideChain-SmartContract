@@ -32,43 +32,43 @@ namespace Xels.Bitcoin.IntegrationTests
         }
 
         [Fact]
-        public void Pow_CaNStratisSyncFromCore()
+        public void Pow_CanXelsSyncFromCore()
         {
             using (NodeBuilder builder = NodeBuilder.Create(this))
             {
-                CoreNode XelsNode = builder.CreateXelsPowNode(this.powNetwork).Start();
+                CoreNode xelsNode = builder.CreateXelsPowNode(this.powNetwork).Start();
                 CoreNode coreNode = builder.CreateBitcoinCoreNode().Start();
 
                 Block tip = coreNode.FindBlock(10).Last();
-                TestHelper.ConnectAndSync(XelsNode, coreNode);
+                TestHelper.ConnectAndSync(xelsNode, coreNode);
 
-                TestHelper.Disconnect(XelsNode, coreNode);
+                TestHelper.Disconnect(xelsNode, coreNode);
 
                 coreNode.FindBlock(10).Last();
-                TestHelper.ConnectAndSync(coreNode, XelsNode);
+                TestHelper.ConnectAndSync(coreNode, xelsNode);
             }
         }
 
         [Fact]
-        public void Pow_CaNStratisSyncFromXels()
+        public void Pow_CanXelsSyncFromXels()
         {
             using (NodeBuilder builder = NodeBuilder.Create(this))
             {
-                CoreNode XelsNode = builder.CreateXelsPowNode(this.powNetwork).Start();
-                CoreNode XelsNodeSync = builder.CreateXelsPowNode(this.powNetwork).Start();
+                CoreNode xelsNode = builder.CreateXelsPowNode(this.powNetwork).Start();
+                CoreNode xelsNodeSync = builder.CreateXelsPowNode(this.powNetwork).Start();
                 CoreNode coreCreateNode = builder.CreateBitcoinCoreNode().Start();
 
-                // first seed a core node with blocks and sync them to a Xels node
-                // and wait till the Xels node is fully synced
+                // first seed a core node with blocks and sync them to a xels node
+                // and wait till the xels node is fully synced
                 Block tip = coreCreateNode.FindBlock(5).Last();
-                TestHelper.ConnectAndSync(XelsNode, coreCreateNode);
+                TestHelper.ConnectAndSync(xelsNode, coreCreateNode);
 
-                TestBase.WaitLoop(() => XelsNode.FullNode.ConsensusManager().Tip.Block.GetHash() == tip.GetHash());
+                TestBase.WaitLoop(() => xelsNode.FullNode.ConsensusManager().Tip.Block.GetHash() == tip.GetHash());
 
-                // Add a new Xels node which will download
+                // Add a new xels node which will download
                 // the blocks using the GetData payload
-                TestHelper.ConnectAndSync(XelsNodeSync, XelsNode);
-                TestBase.WaitLoop(() => XelsNodeSync.FullNode.ConsensusManager().Tip.Block.GetHash() == tip.GetHash());
+                TestHelper.ConnectAndSync(xelsNodeSync, xelsNode);
+                TestBase.WaitLoop(() => xelsNodeSync.FullNode.ConsensusManager().Tip.Block.GetHash() == tip.GetHash());
             }
         }
 
@@ -77,19 +77,19 @@ namespace Xels.Bitcoin.IntegrationTests
         {
             using (NodeBuilder builder = NodeBuilder.Create(this))
             {
-                CoreNode XelsNode = builder.CreateXelsPowNode(this.powNetwork).Start();
+                CoreNode xelsNode = builder.CreateXelsPowNode(this.powNetwork).Start();
                 CoreNode coreNodeSync = builder.CreateBitcoinCoreNode().Start();
                 CoreNode coreCreateNode = builder.CreateBitcoinCoreNode().Start();
 
-                // first seed a core node with blocks and sync them to a Xels node
-                // and wait till the Xels node is fully synced
+                // first seed a core node with blocks and sync them to a xels node
+                // and wait till the xels node is fully synced
                 Block tip = coreCreateNode.FindBlock(5).Last();
-                TestHelper.ConnectAndSync(XelsNode, coreCreateNode);
-                TestBase.WaitLoop(() => XelsNode.FullNode.ConsensusManager().Tip.Block.GetHash() == tip.GetHash());
+                TestHelper.ConnectAndSync(xelsNode, coreCreateNode);
+                TestBase.WaitLoop(() => xelsNode.FullNode.ConsensusManager().Tip.Block.GetHash() == tip.GetHash());
 
-                // add a new Xels node which will download
+                // add a new xels node which will download
                 // the blocks using the GetData payload
-                TestHelper.ConnectAndSync(coreNodeSync, XelsNode);
+                TestHelper.ConnectAndSync(coreNodeSync, xelsNode);
             }
         }
 
@@ -101,11 +101,11 @@ namespace Xels.Bitcoin.IntegrationTests
         {
             using (NodeBuilder builder = NodeBuilder.Create(this))
             {
-                var XelsRegTestMaxReorg = new XelsRegTestMaxReorg();
+                var xelsRegTestMaxReorg = new XelsRegTestMaxReorg();
 
-                CoreNode miner = builder.CreateXelsPosNode(XelsRegTestMaxReorg, "ns-5-miner").WithDummyWallet().Start();
-                CoreNode syncer = builder.CreateXelsPosNode(XelsRegTestMaxReorg, "ns-5-syncer").Start();
-                CoreNode reorg = builder.CreateXelsPosNode(XelsRegTestMaxReorg, "ns-5-reorg").WithDummyWallet().Start();
+                CoreNode miner = builder.CreateXelsPosNode(xelsRegTestMaxReorg, "ns-5-miner").WithDummyWallet().Start();
+                CoreNode syncer = builder.CreateXelsPosNode(xelsRegTestMaxReorg, "ns-5-syncer").Start();
+                CoreNode reorg = builder.CreateXelsPosNode(xelsRegTestMaxReorg, "ns-5-reorg").WithDummyWallet().Start();
 
                 TestHelper.MineBlocks(miner, 1);
 

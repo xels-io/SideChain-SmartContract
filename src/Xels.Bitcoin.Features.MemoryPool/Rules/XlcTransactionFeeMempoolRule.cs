@@ -45,7 +45,7 @@ namespace Xels.Bitcoin.Features.MemoryPool.Rules
                 federationPayment = false;
             }
 
-            // We need to bypass the fee checking logic for correctly-formed transactions that pay CC rewards to the federation.
+            // We need to bypass the fee checking logic for correctly-formed transactions that pay Cc rewards to the federation.
             if (federationPayment)
                 return;
 

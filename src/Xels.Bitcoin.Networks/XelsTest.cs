@@ -163,8 +163,8 @@ namespace Xels.Bitcoin.Networks
 
             this.DNSSeeds = new List<DNSSeedData>
             {
-                new DNSSeedData("testnet1.Xelsnetwork.com", "testnet1.Xelsnetwork.com"),
-                new DNSSeedData("testnet2.Xelsnetwork.com", "testnet2.Xelsnetwork.com")
+                new DNSSeedData("testnet1.xelsnetwork.com", "testnet1.xelsnetwork.com"),
+                new DNSSeedData("testnet2.xelsnetwork.com", "testnet2.xelsnetwork.com")
             };
 
             this.SeedNodes = new List<NetworkAddress>

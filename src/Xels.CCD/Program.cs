@@ -35,13 +35,13 @@ namespace Xels.CcD
         {
             try
             {
-                // set the console window title to identify this as a CC full node (for clarity when running Xlc and CC on the same machine)
+                // set the console window title to identify this as a Cc full node (for clarity when running Xlc and Cc on the same machine)
                 var nodeSettings = new NodeSettings(networksSelector: CcNetwork.NetworksSelector, protocolVersion: ProtocolVersion.CC_VERSION, args: args)
                 {
                     MinProtocolVersion = ProtocolVersion.ALT_PROTOCOL_VERSION
                 };
 
-                Console.Title = $"CC Full Node {nodeSettings.Network.NetworkType}";
+                Console.Title = $"Cc Full Node {nodeSettings.Network.NetworkType}";
 
                 IFullNode node = GetSideChainFullNode(nodeSettings);
 
@@ -71,7 +71,7 @@ namespace Xels.CcD
             .UsePoAConsensus(dbType)
             .CheckCollateralCommitment()
 
-            // This needs to be set so that we can check the magic bytes during the Strat to Xlc changeover.
+            // This needs to be set so that we can check the magic bytes during the Xel to Xlc changeover.
             // Perhaps we can introduce a block height check rather?
             .SetCounterChainNetwork(XlcNetwork.MainChainNetworks[nodeSettings.Network.NetworkType]())
 

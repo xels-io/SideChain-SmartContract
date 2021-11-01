@@ -1,8 +1,6 @@
 ﻿using System.Text;
 using FluentAssertions;
-using Microsoft.Extensions.Logging;
 using NBitcoin;
-using NSubstitute;
 using Xels.Bitcoin;
 using Xels.Bitcoin.Networks;
 using Xels.Features.FederatedPeg.Tests.Utils;
@@ -13,7 +11,6 @@ namespace Xels.Features.FederatedPeg.Tests
 {
     public class OpReturnDataReaderTests
     {
-        private readonly ILoggerFactory loggerFactory;
         private readonly Network network;
         private readonly Network counterChainNetwork;
         private readonly OpReturnDataReader opReturnDataReader;
@@ -22,7 +19,6 @@ namespace Xels.Features.FederatedPeg.Tests
 
         public OpReturnDataReaderTests()
         {
-            this.loggerFactory = Substitute.For<ILoggerFactory>();
             this.network = CcNetwork.NetworksSelector.Regtest();
             this.counterChainNetwork = Networks.Xlc.Regtest();
             this.opReturnDataReader = new OpReturnDataReader(this.counterChainNetwork);

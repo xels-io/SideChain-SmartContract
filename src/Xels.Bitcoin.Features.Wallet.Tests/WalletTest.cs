@@ -21,15 +21,15 @@ namespace Xels.Bitcoin.Features.Wallet.Tests
         public void GetAllTransactionsReturnsTransactionsFromWallet()
         {
             var wallet = new Wallet();
-            AccountRoot XelsAccountRoot = CreateAccountRootWithHdAccountHavingAddresses(wallet, "XlcAccount", CoinType.Xlc);
+            AccountRoot xelsAccountRoot = CreateAccountRootWithHdAccountHavingAddresses(wallet, "XlcAccount", CoinType.Xlc);
 
             TransactionData transaction1 = CreateTransaction(new uint256(1), new Money(15000), 1);
             TransactionData transaction2 = CreateTransaction(new uint256(2), new Money(91209), 1);
 
-            XelsAccountRoot.Accounts.ElementAt(0).InternalAddresses.ElementAt(0).Transactions.Add(transaction1);
-            XelsAccountRoot.Accounts.ElementAt(0).ExternalAddresses.ElementAt(0).Transactions.Add(transaction2);
+            xelsAccountRoot.Accounts.ElementAt(0).InternalAddresses.ElementAt(0).Transactions.Add(transaction1);
+            xelsAccountRoot.Accounts.ElementAt(0).ExternalAddresses.ElementAt(0).Transactions.Add(transaction2);
 
-            wallet.AccountsRoot.Add(XelsAccountRoot);
+            wallet.AccountsRoot.Add(xelsAccountRoot);
 
             List<TransactionData> result = wallet.GetAllTransactions().ToList();
 

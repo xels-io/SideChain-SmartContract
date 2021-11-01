@@ -12,7 +12,7 @@ namespace Xels.Bitcoin.Features.Consensus.Rules.CommonRules
     {
         // 50% of the block reward should be assigned to the reward script.
         // This has to be within the coinview rule because we need access to the coinstake input value to determine the size of the block reward.
-        public static readonly int CcRewardPercentage = 0;
+        public static readonly int CcRewardPercentage = 50;
 
         /// <inheritdoc />
         public override void CheckBlockReward(RuleContext context, Money fees, int height, Block block)
@@ -44,9 +44,9 @@ namespace Xels.Bitcoin.Features.Consensus.Rules.CommonRules
                 }
 
                 // It must be CcRewardPercentage of the maximum possible reward precisely.
-                // This additionally protects cold staking transactions from over-allocating to the CC reward script at the expense of the non-CC reward.
-                // This means that the hot key can be used for staking by anybody and they will not be able to redirect the non-CC reward to the CC script.
-                // It must additionally not be possible to short-change the CC reward script by deliberately sacrificing part of the overall claimed reward.
+                // This additionally protects cold staking transactions from over-allocating to the Cc reward script at the expense of the non-Cc reward.
+                // This means that the hot key can be used for staking by anybody and they will not be able to redirect the non-Cc reward to the Cc script.
+                // It must additionally not be possible to short-change the Cc reward script by deliberately sacrificing part of the overall claimed reward.
                 // TODO: Create a distinct consensus error for this?
                 if ((calcStakeReward * CcRewardPercentage / 100) != rewardScriptTotal)
                 {
@@ -80,7 +80,7 @@ namespace Xels.Bitcoin.Features.Consensus.Rules.CommonRules
                 foreach (TxOut output in tx.Outputs)
                 {
                     // We allow OP_RETURNs for tagging purposes, but they must not be allowed to have any value attached
-                    // (as that would then be burning CC rewards)
+                    // (as that would then be burning Cc rewards)
                     if (output.ScriptPubKey.IsUnspendable)
                     {
                         if (output.Value != 0)

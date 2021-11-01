@@ -51,13 +51,13 @@ namespace Xels.Bitcoin.Features.SmartContracts.Models
         public string MethodName { get; set; }
 
         /// <summary>
-        /// The amount of STRAT (or sidechain coin) to send to the smart contract address.
+        /// The amount of XEL (or sidechain coin) to send to the smart contract address.
         /// </summary>
         [Required(ErrorMessage = "An amount is required but this can be set to 0.")]
         public string Amount { get; set; }
 
         /// <summary>
-        /// The fees in STRAT (or sidechain coin) to cover the method call transaction.
+        /// The fees in XEL (or sidechain coin) to cover the method call transaction.
         /// </summary>
         [MoneyFormat(isRequired: true, ErrorMessage = "The fee is not in the correct format.")]
         public string FeeAmount { get; set; }
@@ -100,7 +100,7 @@ namespace Xels.Bitcoin.Features.SmartContracts.Models
         /// An array of encoded strings containing the parameters (and their type) to pass to the smart contract
         /// method when it is called. More information on the
         /// format of a parameter string is available
-        /// <a target="_blank" href="https://academy.Xelsplatform.com/SmartContracts/working-with-contracts.html#parameter-serialization">here</a>.
+        /// <a target="_blank" href="https://academy.xelsplatform.com/SmartContracts/working-with-contracts.html#parameter-serialization">here</a>.
         /// </summary>
         public string[] Parameters { get; set; }
 

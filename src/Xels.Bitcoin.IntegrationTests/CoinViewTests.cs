@@ -55,7 +55,7 @@ namespace Xels.Bitcoin.IntegrationTests
                 chained = this.MakeNext(this.MakeNext(genesisChainedHeader, ctx.Network), ctx.Network);
                 ctx.Coindb.SaveChanges(new List<UnspentOutput>(), new HashHeightPair(previous), new HashHeightPair(chained));
                 Assert.Equal(chained.HashBlock, ctx.Coindb.GetTipHash().Hash);
-                ctx.ReloadPersistentCoinView(network);
+                ctx.ReloadPersistentCoinView(chained);
                 Assert.Equal(chained.HashBlock, ctx.Coindb.GetTipHash().Hash);
                 Assert.NotNull(ctx.Coindb.FetchCoins(new[] { new OutPoint(genesis.Transactions[0], 0) }).UnspentOutputs.Values.FirstOrDefault().Coins);
                 Assert.Null(ctx.Coindb.FetchCoins(new[] { new OutPoint() }).UnspentOutputs.Values.FirstOrDefault().Coins);
@@ -196,33 +196,33 @@ namespace Xels.Bitcoin.IntegrationTests
         {
             using (NodeBuilder builder = NodeBuilder.Create(this))
             {
-                CoreNode XelsNode = builder.CreateXelsPowNode(this.regTest, "cv-1-XelsNode").Start();
+                CoreNode xelsNode = builder.CreateXelsPowNode(this.regTest, "cv-1-xelsNode").Start();
                 CoreNode coreNode1 = builder.CreateBitcoinCoreNode().Start();
                 CoreNode coreNode2 = builder.CreateBitcoinCoreNode().Start();
 
-                //Core1 discovers 10 blocks, sends to Xels
+                //Core1 discovers 10 blocks, sends to xels
                 coreNode1.FindBlock(10).Last();
-                TestHelper.ConnectAndSync(XelsNode, coreNode1);
-                TestHelper.Disconnect(XelsNode, coreNode1);
+                TestHelper.ConnectAndSync(xelsNode, coreNode1);
+                TestHelper.Disconnect(xelsNode, coreNode1);
 
-                //Core2 discovers 20 blocks, sends to Xels
+                //Core2 discovers 20 blocks, sends to xels
                 coreNode2.FindBlock(20).Last();
-                TestHelper.ConnectAndSync(XelsNode, coreNode2);
-                TestHelper.Disconnect(XelsNode, coreNode2);
-                ((CachedCoinView)XelsNode.FullNode.CoinView()).Flush();
+                TestHelper.ConnectAndSync(xelsNode, coreNode2);
+                TestHelper.Disconnect(xelsNode, coreNode2);
+                ((CachedCoinView)xelsNode.FullNode.CoinView()).Flush();
 
-                //Core1 discovers 30 blocks, sends to Xels
+                //Core1 discovers 30 blocks, sends to xels
                 coreNode1.FindBlock(30).Last();
-                TestHelper.ConnectAndSync(XelsNode, coreNode1);
-                TestHelper.Disconnect(XelsNode, coreNode1);
+                TestHelper.ConnectAndSync(xelsNode, coreNode1);
+                TestHelper.Disconnect(xelsNode, coreNode1);
 
-                //Core2 discovers 50 blocks, sends to Xels
+                //Core2 discovers 50 blocks, sends to xels
                 coreNode2.FindBlock(50).Last();
-                TestHelper.ConnectAndSync(XelsNode, coreNode2);
-                TestHelper.Disconnect(XelsNode, coreNode2);
-                ((CachedCoinView)XelsNode.FullNode.CoinView()).Flush();
+                TestHelper.ConnectAndSync(xelsNode, coreNode2);
+                TestHelper.Disconnect(xelsNode, coreNode2);
+                ((CachedCoinView)xelsNode.FullNode.CoinView()).Flush();
 
-                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(XelsNode, coreNode2));
+                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(xelsNode, coreNode2));
             }
         }
 

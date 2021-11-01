@@ -2,15 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using CSharpFunctionalExtensions;
+using Microsoft.AspNetCore.Mvc;
 using NBitcoin;
+using Xels.Bitcoin.Controllers;
 using Xels.Bitcoin.Features.SmartContracts.Models;
 using Xels.Bitcoin.Features.Wallet;
 using Xels.Bitcoin.Features.Wallet.Interfaces;
 using Xels.Bitcoin.Features.Wallet.Models;
 using Xels.Bitcoin.Features.Wallet.Services;
+using Xels.Bitcoin.Interfaces;
 using Xels.SmartContracts.CLR;
+using Xels.SmartContracts.CLR.Caching;
 using Xels.SmartContracts.CLR.Serialization;
 using Xels.SmartContracts.Core;
+using Xels.SmartContracts.Core.Receipts;
 using Xels.SmartContracts.Core.State;
 
 namespace Xels.Bitcoin.Features.SmartContracts.Wallet
@@ -38,6 +43,12 @@ namespace Xels.Bitcoin.Features.SmartContracts.Wallet
         private readonly IStateRepositoryRoot stateRoot;
         private readonly IReserveUtxoService reserveUtxoService;
 
+        private readonly IBlockStore blockStore;
+        private readonly ChainIndexer chainIndexer;
+        private readonly IContractPrimitiveSerializer primitiveSerializer;
+        private readonly IContractAssemblyCache contractAssemblyCache;
+        private readonly IReceiptRepository receiptRepository;
+
         public SmartContractTransactionService(
             Network network,
             IWalletManager walletManager,
@@ -46,7 +57,12 @@ namespace Xels.Bitcoin.Features.SmartContracts.Wallet
             ICallDataSerializer callDataSerializer,
             IAddressGenerator addressGenerator,
             IStateRepositoryRoot stateRoot,
-            IReserveUtxoService reserveUtxoService
+            IReserveUtxoService reserveUtxoService,
+            IBlockStore blockStore,
+            ChainIndexer chainIndexer,
+            IContractPrimitiveSerializer primitiveSerializer,
+            IContractAssemblyCache contractAssemblyCache,
+            IReceiptRepository receiptRepository
             )
         {
             this.network = network;
@@ -57,6 +73,12 @@ namespace Xels.Bitcoin.Features.SmartContracts.Wallet
             this.addressGenerator = addressGenerator;
             this.stateRoot = stateRoot;
             this.reserveUtxoService = reserveUtxoService;
+
+            this.blockStore = blockStore;
+            this.chainIndexer = chainIndexer;
+            this.primitiveSerializer = primitiveSerializer;
+            this.contractAssemblyCache = contractAssemblyCache;
+            this.receiptRepository = receiptRepository;
         }
 
         public EstimateFeeResult EstimateFee(ScTxFeeEstimateRequest request)
@@ -348,6 +370,41 @@ namespace Xels.Bitcoin.Features.SmartContracts.Wallet
             }
 
             return new ContractTxData(ReflectionVirtualMachine.VmVersion, (Xels.SmartContracts.RuntimeObserver.Gas)request.GasPrice, (Xels.SmartContracts.RuntimeObserver.Gas)request.GasLimit, contractAddress, request.MethodName);
+        }
+        
+        /// <inheritdoc />
+        public List<ReceiptResponse> ReceiptSearch(string contractAddress, string eventName, List<string> topics = null, int fromBlock = 0, int? toBlock = null)
+        {
+            uint160 address = contractAddress.ToUint160(this.network);
+
+            byte[] contractCode = this.stateRoot.GetCode(address);
+
+            if (contractCode == null || !contractCode.Any())
+            {
+                return null;
+            }
+
+            IEnumerable<byte[]> topicsBytes = topics != null ? topics.Where(topic => topic != null).Select(t => t.HexToByteArray()) : new List<byte[]>();
+
+
+            var deserializer = new ApiLogDeserializer(this.primitiveSerializer, this.network, this.stateRoot, this.contractAssemblyCache);
+
+            var receiptSearcher = new ReceiptSearcher(this.chainIndexer, this.blockStore, this.receiptRepository, this.network);
+
+            List<Receipt> receipts = receiptSearcher.SearchReceipts(contractAddress, eventName, fromBlock, toBlock, topicsBytes);
+
+            var result = new List<ReceiptResponse>();
+
+            foreach (Receipt receipt in receipts)
+            {
+                List<LogResponse> logResponses = deserializer.MapLogResponses(receipt.Logs);
+
+                var receiptResponse = new ReceiptResponse(receipt, logResponses, this.network);
+
+                result.Add(receiptResponse);
+            }
+
+            return result;
         }
 
         private bool CheckBalance(string address)

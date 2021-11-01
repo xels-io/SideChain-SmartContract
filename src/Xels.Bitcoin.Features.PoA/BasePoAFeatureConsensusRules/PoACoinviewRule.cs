@@ -40,10 +40,10 @@ namespace Xels.Bitcoin.Features.PoA.BasePoAFeatureConsensusRules
         /// <inheritdoc/>
         public override Money GetProofOfWorkReward(int height)
         {
-            if (height == this.network.Consensus.PremineHeight) //
-                return  this.network.Consensus.PremineReward; // 500
+            if (height == this.network.Consensus.PremineHeight)
+                return this.network.Consensus.PremineReward;
 
-            return 0; // this.network.Consensus.ProofOfWorkReward;
+            return 0;
         }
 
         protected override Money GetTransactionFee(UnspentOutputSet view, Transaction tx)

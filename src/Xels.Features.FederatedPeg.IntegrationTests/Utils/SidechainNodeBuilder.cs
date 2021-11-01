@@ -64,7 +64,7 @@ namespace Xels.Features.FederatedPeg.IntegrationTests.Utils
         {
             string agentName = $"mainfed{Interlocked.Increment(ref agentCount)}";
             string dataFolder = this.GetNextDataFolderName(agentName);
-            CoreNode node = this.CreateNode(new MainChainFederationNodeRunner(dataFolder, agentName, network, counterChainNetwork), "Xels.conf");
+            CoreNode node = this.CreateNode(new MainChainFederationNodeRunner(dataFolder, agentName, network, counterChainNetwork), "xels.conf");
 
             return node;
         }

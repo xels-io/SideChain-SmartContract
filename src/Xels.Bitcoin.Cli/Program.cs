@@ -98,8 +98,8 @@ namespace Xels.Bitcoin.Cli
                     builder.AppendLine();
                     builder.AppendLine("Examples:");
                     builder.AppendLine();
-                    builder.AppendLine("dotnet run Xels -testnet GET Wallet/history WalletName=testwallet - Lists all the historical transactions of the wallet called 'testwallet' on the Xels test network.");
-                    builder.AppendLine("dotnet run Xels -rpcuser=Xelstestuser -rpcpassword=Xelstestpassword -rpcconnect=127.0.0.3 -rpcport=26174 getinfo - Displays general information about the Xels node on the 127.0.0.3:26174, authenticating with the RPC specified user.");
+                    builder.AppendLine("dotnet run xels -testnet GET Wallet/history WalletName=testwallet - Lists all the historical transactions of the wallet called 'testwallet' on the xels test network.");
+                    builder.AppendLine("dotnet run xels -rpcuser=xelstestuser -rpcpassword=xelstestpassword -rpcconnect=127.0.0.3 -rpcport=26174 getinfo - Displays general information about the Xels node on the 127.0.0.3:26174, authenticating with the RPC specified user.");
                     builder.AppendLine("dotnet run bitcoin -rpcuser=btctestuser -rpcpassword=btctestpass getbalance - Displays the current balance of the opened wallet on the 127.0.0.1:8332 node, authenticating with the RPC specified user.");
                     Console.WriteLine(builder);
                     return;
@@ -112,7 +112,7 @@ namespace Xels.Bitcoin.Cli
                 {
                     networksSelector = Networks.Networks.Xlc;
                 }
-                else if (networkName.Contains("Xels"))
+                else if (networkName.Contains("xels"))
                 {
                     networksSelector = Networks.Networks.Xels;
                 }

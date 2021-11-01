@@ -13,9 +13,9 @@ namespace SwapExtractionTool
 
         public const int EndHeight = 2500000;
 
-        protected ExtractionBase(int XelsNetworkApiPort, Network xlcNetwork)
+        protected ExtractionBase(int xelsNetworkApiPort, Network xlcNetwork)
         {
-            this.XelsNetworkApiPort = XelsNetworkApiPort;
+            this.XelsNetworkApiPort = xelsNetworkApiPort;
             this.XlcNetwork = xlcNetwork;
         }
 

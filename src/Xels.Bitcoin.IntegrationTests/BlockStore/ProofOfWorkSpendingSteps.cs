@@ -43,7 +43,7 @@ namespace Xels.Bitcoin.IntegrationTests.BlockStore
             this.nodeBuilder.Dispose();
         }
 
-        protected void a_sending_and_receiving_Xels_bitcoin_node_and_wallet()
+        protected void a_sending_and_receiving_xels_bitcoin_node_and_wallet()
         {
             this.sendingXelsBitcoinNode = this.nodeBuilder.CreateXelsPowNode(this.network).WithWallet().Start();
             this.receivingXelsBitcoinNode = this.nodeBuilder.CreateXelsPowNode(this.network).WithWallet().Start();

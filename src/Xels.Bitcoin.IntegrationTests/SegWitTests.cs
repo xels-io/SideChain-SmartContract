@@ -103,16 +103,16 @@ namespace Xels.Bitcoin.IntegrationTests
                 CoreNode coreNode = builder.CreateBitcoinCoreNode(version: "0.15.1");
                 coreNode.Start();
 
-                CoreNode XelsNode = builder.CreateXelsPowNode(KnownNetworks.RegTest).Start();
+                CoreNode xelsNode = builder.CreateXelsPowNode(KnownNetworks.RegTest).Start();
 
-                RPCClient XelsNodeRpc = XelsNode.CreateRPCClient();
+                RPCClient xelsNodeRpc = xelsNode.CreateRPCClient();
                 RPCClient coreRpc = coreNode.CreateRPCClient();
 
-                coreRpc.AddNode(XelsNode.Endpoint, false);
-                XelsNodeRpc.AddNode(coreNode.Endpoint, false);
+                coreRpc.AddNode(xelsNode.Endpoint, false);
+                xelsNodeRpc.AddNode(coreNode.Endpoint, false);
 
                 // Core (in version 0.15.1) only mines segwit blocks above a certain height on regtest
-                // See issue for more details https://github.com/Xelsproject/XelsBitcoinFullNode/issues/1028
+                // See issue for more details https://github.com/xelsproject/XelsBitcoinFullNode/issues/1028
                 BIP9DeploymentsParameters prevSegwitDeployment = KnownNetworks.RegTest.Consensus.BIP9Deployments[BitcoinBIP9Deployments.Segwit];
                 KnownNetworks.RegTest.Consensus.BIP9Deployments[BitcoinBIP9Deployments.Segwit] = new BIP9DeploymentsParameters("Test", 1, 0, DateTime.Now.AddDays(50).ToUnixTimestamp(), BIP9DeploymentsParameters.DefaultRegTestThreshold);
 
@@ -121,7 +121,7 @@ namespace Xels.Bitcoin.IntegrationTests
                     // Generate 450 blocks, block 431 will be segwit activated.
                     coreRpc.Generate(450);
                     var cancellationToken = new CancellationTokenSource(TimeSpan.FromMinutes(2)).Token;
-                    TestBase.WaitLoop(() => XelsNode.CreateRPCClient().GetBestBlockHash() == coreNode.CreateRPCClient().GetBestBlockHash(), cancellationToken: cancellationToken);
+                    TestBase.WaitLoop(() => xelsNode.CreateRPCClient().GetBestBlockHash() == coreNode.CreateRPCClient().GetBestBlockHash(), cancellationToken: cancellationToken);
 
                     // Segwit activation on Bitcoin regtest.
                     // - On regtest deployment state changes every 144 blocks, the threshold for activating a rule is 108 blocks.
@@ -131,11 +131,11 @@ namespace Xels.Bitcoin.IntegrationTests
                     // - LockedIn 287 (as segwit should already be signaled in blocks).
                     // - Active at block 431.
 
-                    var consensusLoop = XelsNode.FullNode.NodeService<IConsensusRuleEngine>() as ConsensusRuleEngine;
-                    ThresholdState[] segwitDefinedState = consensusLoop.NodeDeployments.BIP9.GetStates(XelsNode.FullNode.ChainIndexer.GetHeader(142));
-                    ThresholdState[] segwitStartedState = consensusLoop.NodeDeployments.BIP9.GetStates(XelsNode.FullNode.ChainIndexer.GetHeader(143));
-                    ThresholdState[] segwitLockedInState = consensusLoop.NodeDeployments.BIP9.GetStates(XelsNode.FullNode.ChainIndexer.GetHeader(287));
-                    ThresholdState[] segwitActiveState = consensusLoop.NodeDeployments.BIP9.GetStates(XelsNode.FullNode.ChainIndexer.GetHeader(431));
+                    var consensusLoop = xelsNode.FullNode.NodeService<IConsensusRuleEngine>() as ConsensusRuleEngine;
+                    ThresholdState[] segwitDefinedState = consensusLoop.NodeDeployments.BIP9.GetStates(xelsNode.FullNode.ChainIndexer.GetHeader(142));
+                    ThresholdState[] segwitStartedState = consensusLoop.NodeDeployments.BIP9.GetStates(xelsNode.FullNode.ChainIndexer.GetHeader(143));
+                    ThresholdState[] segwitLockedInState = consensusLoop.NodeDeployments.BIP9.GetStates(xelsNode.FullNode.ChainIndexer.GetHeader(287));
+                    ThresholdState[] segwitActiveState = consensusLoop.NodeDeployments.BIP9.GetStates(xelsNode.FullNode.ChainIndexer.GetHeader(431));
 
                     // Check that segwit got activated at block 431.
                     Assert.Equal(ThresholdState.Defined, segwitDefinedState.GetValue((int)BitcoinBIP9Deployments.Segwit));
@@ -225,8 +225,8 @@ namespace Xels.Bitcoin.IntegrationTests
                 // Set a small confirmation window to reduce time taken by this test.
                 network.Consensus.MinerConfirmationWindow = 10;
 
-                CoreNode XelsNode = builder.CreateXelsPosNode(network).WithWallet();
-                XelsNode.Start();
+                CoreNode xelsNode = builder.CreateXelsPosNode(network).WithWallet();
+                xelsNode.Start();
 
                 // Deployment activation:
                 // - Deployment state changes every 'MinerConfirmationWindow' blocks.
@@ -239,23 +239,23 @@ namespace Xels.Bitcoin.IntegrationTests
                 int activeHeight = lockedInHeight + network.Consensus.MinerConfirmationWindow;
 
                 // Generate enough blocks to cover all state changes.
-                TestHelper.MineBlocks(XelsNode, activeHeight + 1);
+                TestHelper.MineBlocks(xelsNode, activeHeight + 1);
 
                 // Check that Segwit states got updated as expected.
-                ThresholdConditionCache cache = (XelsNode.FullNode.NodeService<IConsensusRuleEngine>() as ConsensusRuleEngine).NodeDeployments.BIP9;
-                Assert.Equal(ThresholdState.Defined, cache.GetState(XelsNode.FullNode.ChainIndexer.GetHeader(startedHeight - 1), XlcBIP9Deployments.Segwit));
-                Assert.Equal(ThresholdState.Started, cache.GetState(XelsNode.FullNode.ChainIndexer.GetHeader(startedHeight), XlcBIP9Deployments.Segwit));
-                Assert.Equal(ThresholdState.LockedIn, cache.GetState(XelsNode.FullNode.ChainIndexer.GetHeader(lockedInHeight), XlcBIP9Deployments.Segwit));
-                Assert.Equal(ThresholdState.Active, cache.GetState(XelsNode.FullNode.ChainIndexer.GetHeader(activeHeight), XlcBIP9Deployments.Segwit));
+                ThresholdConditionCache cache = (xelsNode.FullNode.NodeService<IConsensusRuleEngine>() as ConsensusRuleEngine).NodeDeployments.BIP9;
+                Assert.Equal(ThresholdState.Defined, cache.GetState(xelsNode.FullNode.ChainIndexer.GetHeader(startedHeight - 1), XlcBIP9Deployments.Segwit));
+                Assert.Equal(ThresholdState.Started, cache.GetState(xelsNode.FullNode.ChainIndexer.GetHeader(startedHeight), XlcBIP9Deployments.Segwit));
+                Assert.Equal(ThresholdState.LockedIn, cache.GetState(xelsNode.FullNode.ChainIndexer.GetHeader(lockedInHeight), XlcBIP9Deployments.Segwit));
+                Assert.Equal(ThresholdState.Active, cache.GetState(xelsNode.FullNode.ChainIndexer.GetHeader(activeHeight), XlcBIP9Deployments.Segwit));
 
                 // Verify that the block created before activation does not have the 'Witness' script flag set.
-                var rulesEngine = XelsNode.FullNode.NodeService<IConsensusRuleEngine>();
-                ChainedHeader prevHeader = XelsNode.FullNode.ChainIndexer.GetHeader(activeHeight - 1);
+                var rulesEngine = xelsNode.FullNode.NodeService<IConsensusRuleEngine>();
+                ChainedHeader prevHeader = xelsNode.FullNode.ChainIndexer.GetHeader(activeHeight - 1);
                 DeploymentFlags flags1 = (rulesEngine as ConsensusRuleEngine).NodeDeployments.GetFlags(prevHeader);
                 Assert.Equal(0, (int)(flags1.ScriptFlags & ScriptVerify.Witness));
 
                 // Verify that the block created after activation has the 'Witness' flag set.
-                DeploymentFlags flags2 = (rulesEngine as ConsensusRuleEngine).NodeDeployments.GetFlags(XelsNode.FullNode.ChainIndexer.Tip);
+                DeploymentFlags flags2 = (rulesEngine as ConsensusRuleEngine).NodeDeployments.GetFlags(xelsNode.FullNode.ChainIndexer.Tip);
                 Assert.NotEqual(0, (int)(flags2.ScriptFlags & ScriptVerify.Witness));
             }
         }
@@ -268,20 +268,20 @@ namespace Xels.Bitcoin.IntegrationTests
                 CoreNode coreNode = builder.CreateBitcoinCoreNode(version: "0.18.0", useNewConfigStyle: true);
                 coreNode.Start();
 
-                CoreNode XelsNode = builder.CreateXelsPowNode(KnownNetworks.RegTest).Start();
+                CoreNode xelsNode = builder.CreateXelsPowNode(KnownNetworks.RegTest).Start();
 
-                RPCClient XelsNodeRpc = XelsNode.CreateRPCClient();
+                RPCClient xelsNodeRpc = xelsNode.CreateRPCClient();
                 RPCClient coreRpc = coreNode.CreateRPCClient();
 
-                coreRpc.AddNode(XelsNode.Endpoint, false);
-                XelsNodeRpc.AddNode(coreNode.Endpoint, false);
+                coreRpc.AddNode(xelsNode.Endpoint, false);
+                xelsNodeRpc.AddNode(coreNode.Endpoint, false);
 
                 coreRpc.Generate(1);
                 var cancellationToken = new CancellationTokenSource(TimeSpan.FromMinutes(1)).Token;
-                TestBase.WaitLoop(() => XelsNode.CreateRPCClient().GetBestBlockHash() == coreNode.CreateRPCClient().GetBestBlockHash(), cancellationToken: cancellationToken);
+                TestBase.WaitLoop(() => xelsNode.CreateRPCClient().GetBestBlockHash() == coreNode.CreateRPCClient().GetBestBlockHash(), cancellationToken: cancellationToken);
 
-                var consensusLoop = XelsNode.FullNode.NodeService<IConsensusRuleEngine>() as ConsensusRuleEngine;
-                ThresholdState[] segwitActiveState = consensusLoop.NodeDeployments.BIP9.GetStates(XelsNode.FullNode.ChainIndexer.GetHeader(1));
+                var consensusLoop = xelsNode.FullNode.NodeService<IConsensusRuleEngine>() as ConsensusRuleEngine;
+                ThresholdState[] segwitActiveState = consensusLoop.NodeDeployments.BIP9.GetStates(xelsNode.FullNode.ChainIndexer.GetHeader(1));
 
                 // Check that segwit got activated at genesis.
                 Assert.Equal(ThresholdState.Active, segwitActiveState.GetValue((int)BitcoinBIP9Deployments.Segwit));

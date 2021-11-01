@@ -67,8 +67,8 @@
 
         /// <summary>
         /// Communication between nodes with proven headers is possible after this version.
-        /// This is for Xels only. Temporary solution, refers to issue #2144
-        /// https://github.com/Xelsproject/XelsBitcoinFullNode/issues/2144
+        /// This is for xels only. Temporary solution, refers to issue #2144
+        /// https://github.com/xelsproject/XelsBitcoinFullNode/issues/2144
         /// </summary>
         PROVEN_HEADER_VERSION = 70012,
 

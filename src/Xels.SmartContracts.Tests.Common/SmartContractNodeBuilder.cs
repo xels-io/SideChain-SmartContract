@@ -47,7 +47,7 @@ namespace Xels.SmartContracts.Tests.Common
         public CoreNode CreateSmartContractPowNode()
         {
             Network network = new SmartContractsRegTest();
-            return CreateNode(new XelsSmartContractNode(this.GetNextDataFolderName(), network), "Xels.conf");
+            return CreateNode(new XelsSmartContractNode(this.GetNextDataFolderName(), network), "xels.conf");
         }
 
         public static SmartContractNodeBuilder Create(object caller, [CallerMemberName] string callingMethod = null)

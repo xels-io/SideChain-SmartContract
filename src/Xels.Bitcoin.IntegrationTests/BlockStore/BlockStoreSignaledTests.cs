@@ -81,21 +81,21 @@ namespace Xels.Bitcoin.IntegrationTests.BlockStore
         {
             using (NodeBuilder builder = NodeBuilder.Create(this))
             {
-                CoreNode XelsNodeSync = builder.CreateXelsPowNode(this.network, "bss-1-XelsNodeSync").WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10Miner).Start();
-                CoreNode XelsNode1 = builder.CreateXelsPowNode(this.network, "bss-1-XelsNode1").Start();
+                CoreNode xelsNodeSync = builder.CreateXelsPowNode(this.network, "bss-1-xelsNodeSync").WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10Miner).Start();
+                CoreNode xelsNode1 = builder.CreateXelsPowNode(this.network, "bss-1-xelsNode1").Start();
 
                 // Change the second node's list of default behaviours include the test behaviour in it.
                 // We leave the other behaviors alone for this test because we want to see what messages the node gets under normal operation.
-                IConnectionManager node1ConnectionManager = XelsNode1.FullNode.NodeService<IConnectionManager>();
+                IConnectionManager node1ConnectionManager = xelsNode1.FullNode.NodeService<IConnectionManager>();
                 node1ConnectionManager.Parameters.TemplateBehaviors.Add(new TestBehavior());
 
                 // Connect node1 to initial node.
-                TestHelper.Connect(XelsNode1, XelsNodeSync);
+                TestHelper.Connect(xelsNode1, xelsNodeSync);
 
-                INetworkPeer connectedPeer = node1ConnectionManager.ConnectedPeers.FindByEndpoint(XelsNodeSync.Endpoint);
+                INetworkPeer connectedPeer = node1ConnectionManager.ConnectedPeers.FindByEndpoint(xelsNodeSync.Endpoint);
                 TestBehavior testBehavior = connectedPeer.Behavior<TestBehavior>();
 
-                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(XelsNode1, XelsNodeSync));
+                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(xelsNode1, xelsNodeSync));
 
                 HashSet<uint256> advertised = new HashSet<uint256>();
 
@@ -107,12 +107,12 @@ namespace Xels.Bitcoin.IntegrationTests.BlockStore
                             advertised.Add(header.GetHash());
                 }
 
-                foreach (ChainedHeader chainedHeader in XelsNodeSync.FullNode.ChainIndexer.EnumerateToTip(this.network.GenesisHash))
+                foreach (ChainedHeader chainedHeader in xelsNodeSync.FullNode.ChainIndexer.EnumerateToTip(this.network.GenesisHash))
                     if ((!advertised.Contains(chainedHeader.HashBlock)) && (!(chainedHeader.HashBlock == this.network.GenesisHash)))
                         throw new Exception($"An expected block was not advertised to peer: {chainedHeader.HashBlock}");
 
                 // Check current state of announce queue
-                BlockStoreSignaled blockStoreSignaled = XelsNodeSync.FullNode.NodeService<BlockStoreSignaled>();
+                BlockStoreSignaled blockStoreSignaled = xelsNodeSync.FullNode.NodeService<BlockStoreSignaled>();
 
                 IAsyncQueue<ChainedHeader> blocksToAnnounce = (IAsyncQueue<ChainedHeader>)blockStoreSignaled.GetMemberValue("blocksToAnnounce");
                 Queue<ChainedHeader> queueItems = (Queue<ChainedHeader>)blocksToAnnounce.GetMemberValue("items");
@@ -126,42 +126,42 @@ namespace Xels.Bitcoin.IntegrationTests.BlockStore
         {
             using (NodeBuilder builder = NodeBuilder.Create(this))
             {
-                CoreNode XelsNodeSync = builder.CreateXelsPowNode(this.network, "bss-2-XelsNodeSync").WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10Miner).Start();
+                CoreNode xelsNodeSync = builder.CreateXelsPowNode(this.network, "bss-2-xelsNodeSync").WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10Miner).Start();
 
-                CoreNode XelsNode1 = builder.CreateXelsPowNode(this.network, "bss-2-XelsNode1").Start();
-                CoreNode XelsNode2 = builder.CreateXelsPowNode(this.network, "bss-2-XelsNode2").Start();
-                CoreNode XelsNode3 = builder.CreateXelsPowNode(this.network, "bss-2-XelsNode3").Start();
+                CoreNode xelsNode1 = builder.CreateXelsPowNode(this.network, "bss-2-xelsNode1").Start();
+                CoreNode xelsNode2 = builder.CreateXelsPowNode(this.network, "bss-2-xelsNode2").Start();
+                CoreNode xelsNode3 = builder.CreateXelsPowNode(this.network, "bss-2-xelsNode3").Start();
 
                 // Change the other nodes' lists of default behaviours include the test behaviour in it.
                 // We leave the other behaviors alone for this test because we want to see what messages the node gets under normal operation.
-                IConnectionManager node1ConnectionManager = XelsNode1.FullNode.NodeService<IConnectionManager>();
+                IConnectionManager node1ConnectionManager = xelsNode1.FullNode.NodeService<IConnectionManager>();
                 node1ConnectionManager.Parameters.TemplateBehaviors.Add(new TestBehavior());
 
-                IConnectionManager node2ConnectionManager = XelsNode2.FullNode.NodeService<IConnectionManager>();
+                IConnectionManager node2ConnectionManager = xelsNode2.FullNode.NodeService<IConnectionManager>();
                 node2ConnectionManager.Parameters.TemplateBehaviors.Add(new TestBehavior());
 
                 // Connect other nodes to initial node.
-                TestHelper.Connect(XelsNode1, XelsNodeSync);
-                TestHelper.Connect(XelsNode2, XelsNodeSync);
-                TestHelper.Connect(XelsNode3, XelsNodeSync);
+                TestHelper.Connect(xelsNode1, xelsNodeSync);
+                TestHelper.Connect(xelsNode2, xelsNodeSync);
+                TestHelper.Connect(xelsNode3, xelsNodeSync);
 
                 // Make node3 unable to respond to anything, effectively disconnecting it.
-                IConnectionManager node3ConnectionManager = XelsNode3.FullNode.NodeService<IConnectionManager>();
+                IConnectionManager node3ConnectionManager = xelsNode3.FullNode.NodeService<IConnectionManager>();
                 node3ConnectionManager.Parameters.TemplateBehaviors.Clear();
                 node3ConnectionManager.Parameters.TemplateBehaviors.Add(new TestBehavior());
 
-                INetworkPeer connectedPeer1 = node1ConnectionManager.ConnectedPeers.FindByEndpoint(XelsNodeSync.Endpoint);
+                INetworkPeer connectedPeer1 = node1ConnectionManager.ConnectedPeers.FindByEndpoint(xelsNodeSync.Endpoint);
                 TestBehavior testBehavior1 = connectedPeer1.Behavior<TestBehavior>();
 
-                INetworkPeer connectedPeer2 = node2ConnectionManager.ConnectedPeers.FindByEndpoint(XelsNodeSync.Endpoint);
+                INetworkPeer connectedPeer2 = node2ConnectionManager.ConnectedPeers.FindByEndpoint(xelsNodeSync.Endpoint);
                 TestBehavior testBehavior2 = connectedPeer2.Behavior<TestBehavior>();
 
-                INetworkPeer connectedPeer3 = node3ConnectionManager.ConnectedPeers.FindByEndpoint(XelsNodeSync.Endpoint);
+                INetworkPeer connectedPeer3 = node3ConnectionManager.ConnectedPeers.FindByEndpoint(xelsNodeSync.Endpoint);
                 TestBehavior testBehavior3 = connectedPeer3.Behavior<TestBehavior>();
 
                 // If the announce queue is not getting stalled, the other 2 nodes should sync properly.
-                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(XelsNode1, XelsNodeSync));
-                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(XelsNode2, XelsNodeSync));
+                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(xelsNode1, xelsNodeSync));
+                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(xelsNode2, xelsNodeSync));
 
                 HashSet<uint256> advertised = new HashSet<uint256>();
 
@@ -173,7 +173,7 @@ namespace Xels.Bitcoin.IntegrationTests.BlockStore
                             advertised.Add(header.GetHash());
                 }
 
-                foreach (ChainedHeader chainedHeader in XelsNodeSync.FullNode.ChainIndexer.EnumerateToTip(this.network.GenesisHash))
+                foreach (ChainedHeader chainedHeader in xelsNodeSync.FullNode.ChainIndexer.EnumerateToTip(this.network.GenesisHash))
                     if ((!advertised.Contains(chainedHeader.HashBlock)) && (!(chainedHeader.HashBlock == this.network.GenesisHash)))
                         throw new Exception($"An expected block was not advertised to peer 1: {chainedHeader.HashBlock}");
 
@@ -187,12 +187,12 @@ namespace Xels.Bitcoin.IntegrationTests.BlockStore
                             advertised.Add(header.GetHash());
                 }
 
-                foreach (ChainedHeader chainedHeader in XelsNodeSync.FullNode.ChainIndexer.EnumerateToTip(this.network.GenesisHash))
+                foreach (ChainedHeader chainedHeader in xelsNodeSync.FullNode.ChainIndexer.EnumerateToTip(this.network.GenesisHash))
                     if ((!advertised.Contains(chainedHeader.HashBlock)) && (!(chainedHeader.HashBlock == this.network.GenesisHash)))
                         throw new Exception($"An expected block was not advertised to peer 2: {chainedHeader.HashBlock}");
 
                 // Check current state of announce queue.
-                BlockStoreSignaled blockStoreSignaled = XelsNodeSync.FullNode.NodeService<BlockStoreSignaled>();
+                BlockStoreSignaled blockStoreSignaled = xelsNodeSync.FullNode.NodeService<BlockStoreSignaled>();
 
                 IAsyncQueue<ChainedHeader> blocksToAnnounce = (IAsyncQueue<ChainedHeader>)blockStoreSignaled.GetMemberValue("blocksToAnnounce");
                 Queue<ChainedHeader> queueItems = (Queue<ChainedHeader>)blocksToAnnounce.GetMemberValue("items");
@@ -207,8 +207,8 @@ namespace Xels.Bitcoin.IntegrationTests.BlockStore
         {
             using (NodeBuilder builder = NodeBuilder.Create(this))
             {
-                CoreNode XelsNodeSync = builder.CreateXelsPowNode(this.network, "bss-3-XelsNodeSync").WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10Miner).Start();
-                BlockStoreSignaled blockStoreSignaled = XelsNodeSync.FullNode.NodeService<BlockStoreSignaled>();
+                CoreNode xelsNodeSync = builder.CreateXelsPowNode(this.network, "bss-3-xelsNodeSync").WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10Miner).Start();
+                BlockStoreSignaled blockStoreSignaled = xelsNodeSync.FullNode.NodeService<BlockStoreSignaled>();
 
                 AsyncQueue<ChainedHeader> blocksToAnnounce = (AsyncQueue<ChainedHeader>)blockStoreSignaled.GetMemberValue("blocksToAnnounce");
 
@@ -225,13 +225,13 @@ namespace Xels.Bitcoin.IntegrationTests.BlockStore
         {
             using (NodeBuilder builder = NodeBuilder.Create(this))
             {
-                CoreNode XelsNodeSync = builder.CreateXelsPowNode(this.network, "bss-2-XelsNodeSync").WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10Miner).Start();
-                CoreNode XelsNode1 = builder.CreateXelsPowNode(this.network, "bss-2-XelsNode1").WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10Listener).Start();
-                CoreNode XelsNode2 = builder.CreateXelsPowNode(this.network, "bss-2-XelsNode2").WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10NoWallet).Start();
+                CoreNode xelsNodeSync = builder.CreateXelsPowNode(this.network, "bss-2-xelsNodeSync").WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10Miner).Start();
+                CoreNode xelsNode1 = builder.CreateXelsPowNode(this.network, "bss-2-xelsNode1").WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10Listener).Start();
+                CoreNode xelsNode2 = builder.CreateXelsPowNode(this.network, "bss-2-xelsNode2").WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10NoWallet).Start();
 
                 // Store block 1 of chain0 for later usage
                 ChainedHeader firstBlock = null;
-                foreach (ChainedHeader chainedHeader in XelsNodeSync.FullNode.ChainIndexer.EnumerateToTip(this.network.GenesisHash))
+                foreach (ChainedHeader chainedHeader in xelsNodeSync.FullNode.ChainIndexer.EnumerateToTip(this.network.GenesisHash))
                 {
                     if (chainedHeader.Height == 1)
                     {
@@ -242,35 +242,35 @@ namespace Xels.Bitcoin.IntegrationTests.BlockStore
                 Assert.NotNull(firstBlock);
 
                 // Mine longer chain1 using node1
-                TestHelper.MineBlocks(XelsNode1, 15);
+                TestHelper.MineBlocks(xelsNode1, 15);
 
-                IConnectionManager node1ConnectionManager = XelsNode1.FullNode.NodeService<IConnectionManager>();
+                IConnectionManager node1ConnectionManager = xelsNode1.FullNode.NodeService<IConnectionManager>();
                 node1ConnectionManager.Parameters.TemplateBehaviors.Add(new TestBehavior());
 
-                IConnectionManager node2ConnectionManager = XelsNode2.FullNode.NodeService<IConnectionManager>();
+                IConnectionManager node2ConnectionManager = xelsNode2.FullNode.NodeService<IConnectionManager>();
                 node2ConnectionManager.Parameters.TemplateBehaviors.Add(new TestBehavior());
 
                 // Connect node0 and node1
-                TestHelper.Connect(XelsNode1, XelsNodeSync);
+                TestHelper.Connect(xelsNode1, xelsNodeSync);
 
-                INetworkPeer connectedPeer = node1ConnectionManager.ConnectedPeers.FindByEndpoint(XelsNodeSync.Endpoint);
+                INetworkPeer connectedPeer = node1ConnectionManager.ConnectedPeers.FindByEndpoint(xelsNodeSync.Endpoint);
                 TestBehavior testBehavior = connectedPeer.Behavior<TestBehavior>();
 
                 // We expect that node0 will abandon the 10 block chain and use the 15 block chain from node1
-                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(XelsNode1, XelsNodeSync));
+                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(xelsNode1, xelsNodeSync));
 
                 // Connect all nodes together
-                TestHelper.Connect(XelsNode2, XelsNodeSync);
-                TestHelper.Connect(XelsNode1, XelsNode2);
+                TestHelper.Connect(xelsNode2, xelsNodeSync);
+                TestHelper.Connect(xelsNode1, xelsNode2);
 
-                INetworkPeer connectedPeer2 = node2ConnectionManager.ConnectedPeers.FindByEndpoint(XelsNodeSync.Endpoint);
+                INetworkPeer connectedPeer2 = node2ConnectionManager.ConnectedPeers.FindByEndpoint(xelsNodeSync.Endpoint);
                 TestBehavior testBehavior2 = connectedPeer2.Behavior<TestBehavior>();
 
                 // Wait for node2 to sync; it should have the 15 block chain
-                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(XelsNode2, XelsNodeSync));
+                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(xelsNode2, xelsNodeSync));
 
                 // Insert block 1 from chain0 into node1's announce queue
-                BlockStoreSignaled node1BlockStoreSignaled = XelsNode1.FullNode.NodeService<BlockStoreSignaled>();
+                BlockStoreSignaled node1BlockStoreSignaled = xelsNode1.FullNode.NodeService<BlockStoreSignaled>();
 
                 IAsyncQueue<ChainedHeader> node1BlocksToAnnounce = (IAsyncQueue<ChainedHeader>)node1BlockStoreSignaled.GetMemberValue("blocksToAnnounce");
 

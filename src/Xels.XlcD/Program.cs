@@ -9,6 +9,7 @@ using Xels.Bitcoin.Features.Api;
 using Xels.Bitcoin.Features.BlockStore;
 using Xels.Bitcoin.Features.ColdStaking;
 using Xels.Bitcoin.Features.Consensus;
+using Xels.Bitcoin.Features.ExternalApi;
 using Xels.Bitcoin.Features.MemoryPool;
 using Xels.Bitcoin.Features.Miner;
 using Xels.Bitcoin.Features.RPC;
@@ -32,7 +33,7 @@ namespace Xels.XlcD
                     MinProtocolVersion = ProtocolVersion.PROVEN_HEADER_VERSION
                 };
 
-                // Set the console window title to identify this as a Xlc full node (for clarity when running Xlc and CC on the same machine).
+                // Set the console window title to identify this as a Xlc full node (for clarity when running Xlc and Cc on the same machine).
                 Console.Title = $"Xlc Full Node {nodeSettings.Network.NetworkType}";
 
                 DbType dbType = nodeSettings.GetDbType();
@@ -52,7 +53,8 @@ namespace Xels.XlcD
                     {
                         DaemonConfiguration.ConfigureSignalRForXlc(options);
                     })
-                    .UseDiagnosticFeature();
+                    .UseDiagnosticFeature()
+                    .AddExternalApi();
 
                 IFullNode node = nodeBuilder.Build();
 

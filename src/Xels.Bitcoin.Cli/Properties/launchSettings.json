@@ -2,11 +2,11 @@
   "profiles": {
     "Xels.CLI Xels REST API": {
       "commandName": "Project",
-      "commandLineArgs": "Xels -testnet Wallet/files"
+      "commandLineArgs": "xels -testnet Wallet/files"
     },
     "Xels.CLI Xels RPC": {
       "commandName": "Project",
-      "commandLineArgs": "Xels -testnet -rpcuser=user -rpcpassword=password getinfo"
+      "commandLineArgs": "xels -testnet -rpcuser=user -rpcpassword=password getinfo"
     },
     "Xels.CLI Bitcoin RPC": {
       "commandName": "Project",

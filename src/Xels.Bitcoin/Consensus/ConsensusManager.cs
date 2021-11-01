@@ -14,6 +14,7 @@ using Xels.Bitcoin.Connection;
 using Xels.Bitcoin.Consensus.PerformanceCounters.ConsensusManager;
 using Xels.Bitcoin.Consensus.ValidationResults;
 using Xels.Bitcoin.Consensus.Validators;
+using Xels.Bitcoin.EventBus;
 using Xels.Bitcoin.EventBus.CoreEvents;
 using Xels.Bitcoin.Interfaces;
 using Xels.Bitcoin.P2P.Peer;
@@ -905,9 +906,12 @@ namespace Xels.Bitcoin.Consensus
             {
                 var badPeers = new List<int>();
 
-                lock (this.peerLock)
+                if (!validationContext.InsufficientHeaderInformation)
                 {
-                    badPeers = this.chainedHeaderTree.PartialOrFullValidationFailed(blockToConnect.ChainedHeader);
+                    lock (this.peerLock)
+                    {
+                        badPeers = this.chainedHeaderTree.PartialOrFullValidationFailed(blockToConnect.ChainedHeader);
+                    }
                 }
 
                 var failureResult = new ConnectBlocksResult(false)
@@ -1389,7 +1393,7 @@ namespace Xels.Bitcoin.Consensus
                     return;
                 }
 
-                // To fix issue https://github.com/Xelsproject/XelsBitcoinFullNode/issues/2294#issue-364513736
+                // To fix issue https://github.com/xelsproject/XelsBitcoinFullNode/issues/2294#issue-364513736
                 // if there are no samples, assume the worst scenario (you are going to download full blocks).
                 long avgSize = (long)this.blockPuller.GetAverageBlockSizeBytes();
                 if (avgSize == 0)
@@ -1478,7 +1482,9 @@ namespace Xels.Bitcoin.Consensus
         [NoTrace]
         private void AddBenchStats(StringBuilder benchLog)
         {
-            benchLog.AppendLine(this.performanceCounter.TakeSnapshot().ToString());
+            benchLog.Append(this.performanceCounter.TakeSnapshot().ToString());
+            benchLog.AppendLine();
+            benchLog.AppendLine(((InMemoryEventBus)this.signals).GetPerformanceCounter().TakeSnapshot().GetEventStats(typeof(BlockConnected)));
         }
 
         [NoTrace]

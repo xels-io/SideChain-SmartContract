@@ -51,22 +51,22 @@ namespace Xels.Bitcoin.IntegrationTests.Wallet
         {
             this.network = new XlcRegTest();
             this.builder = NodeBuilder.Create("WalletOperationsTests");
-            CoreNode XelsNode = this.builder.CreateXelsPosNode(this.network).WithReadyBlockchainData(ReadyBlockchain.XlcRegTest150Miner).Start();
+            CoreNode xelsNode = this.builder.CreateXelsPosNode(this.network).WithReadyBlockchainData(ReadyBlockchain.XlcRegTest150Miner).Start();
 
             // Stop the wallet sync manager to prevent it from rewinding the wallet.
-            XelsNode.FullNode.NodeService<IWalletSyncManager>().Stop();
+            xelsNode.FullNode.NodeService<IWalletSyncManager>().Stop();
 
             // Prevent wallet transactions with non-consensus blocks from being omitted.
-            ((WalletManager)XelsNode.FullNode.NodeService<IWalletManager>()).ExcludeTransactionsFromWalletImports = false;
+            ((WalletManager)xelsNode.FullNode.NodeService<IWalletManager>()).ExcludeTransactionsFromWalletImports = false;
 
             // Ask the server to load the wallet to its repository.
-            var result = $"http://localhost:{XelsNode.ApiPort}/api".AppendPathSegment("wallet/load").PostJsonAsync(new WalletLoadRequest
+            var result = $"http://localhost:{xelsNode.ApiPort}/api".AppendPathSegment("wallet/load").PostJsonAsync(new WalletLoadRequest
             {
                 Name = this.walletWithFundsName,
                 Password = this.walletWithFundsPassword
             }).Result;
 
-            this.Node = XelsNode;
+            this.Node = xelsNode;
         }
 
         /// <summary>

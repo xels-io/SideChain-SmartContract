@@ -182,7 +182,7 @@ namespace Xels.Bitcoin.Features.Consensus.Tests.Rules.CommonRules
             // Coinstake marker.
             coinstakeTransaction.Outputs.Add(new TxOut(Money.Zero, (IDestination)null));
 
-            // CC reward output
+            // Cc reward output
             coinstakeTransaction.Outputs.Add(new TxOut(this.network.Consensus.ProofOfStakeReward * XlcCoinviewRule.CcRewardPercentage / 100, XlcCoinstakeRule.CcRewardScript));
             
             // Normal pay to public key that belongs to the second miner with value that

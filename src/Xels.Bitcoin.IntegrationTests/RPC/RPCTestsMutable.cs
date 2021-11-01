@@ -421,7 +421,7 @@ namespace Xels.Bitcoin.IntegrationTests.RPC
         }
 
         [Fact]
-        public async Task TestScanRPCCapabilitiesONStratisNetworkAsync()
+        public async Task TestScanRPCCapabilitiesOnXelsNetworkAsync()
         {
             using (NodeBuilder builder = NodeBuilder.Create(this))
             {

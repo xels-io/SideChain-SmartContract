@@ -28,7 +28,7 @@ namespace Xels.CcDnsD
     public class Program
     {
         /// <summary>
-        /// The async entry point for the CC Dns process.
+        /// The async entry point for the Cc Dns process.
         /// </summary>
         /// <param name="args">Command line arguments.</param>
         /// <returns>A task used to await the operation.</returns>
@@ -85,7 +85,7 @@ namespace Xels.CcDnsD
                 .UsePoAConsensus(dbType)
                 .CheckCollateralCommitment()
 
-                // This needs to be set so that we can check the magic bytes during the Strat to Xlc changeover.
+                // This needs to be set so that we can check the magic bytes during the Xel to Xlc changeover.
                 // Perhaps we can introduce a block height check rather?
                 .SetCounterChainNetwork(XlcNetwork.MainChainNetworks[nodeSettings.Network.NetworkType]())
 

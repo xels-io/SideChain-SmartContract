@@ -731,7 +731,7 @@ namespace Xels.Bitcoin.P2P.Peer
         {
             // Note that this method gets called for outbound peers. When our peer is inbound we receive the initial version handshake from the initiating peer, and it is handled via this.ProcessMessageAsync() only.
 
-            // In XelsX, the equivalent functionality is contained in main.cpp, method ProcessMessage()
+            // In xelsX, the equivalent functionality is contained in main.cpp, method ProcessMessage()
 
             requirements = requirements ?? new NetworkPeerRequirement();
             NetworkPeerListener listener = null;

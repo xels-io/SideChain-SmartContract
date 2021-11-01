@@ -37,13 +37,13 @@ namespace Xels.Bitcoin.Features.SmartContracts.Models
         public List<OutpointRequest> Outpoints { get; set; }
 
         /// <summary>
-        /// The amount of STRAT (or the sidechain coin) to send to the smart contract address on creation.
+        /// The amount of XEL (or the sidechain coin) to send to the smart contract address on creation.
         /// </summary>
         [Required(ErrorMessage = "An amount is required.")]
         public string Amount { get; set; }
 
         /// <summary>
-        /// The fees in STRAT (or the sidechain coin) to cover the smart contract creation transaction.
+        /// The fees in XEL (or the sidechain coin) to cover the smart contract creation transaction.
         /// </summary>
         [MoneyFormat(isRequired: false, ErrorMessage = "The fee is not in the correct format.")]
         public string FeeAmount { get; set; }
@@ -92,7 +92,7 @@ namespace Xels.Bitcoin.Features.SmartContracts.Models
         /// An array of encoded strings containing the parameters (and their type) to pass to the smart contract
         /// constructor when it is called. More information on the
         /// format of a parameter string is available
-        /// <a target="_blank" href="https://academy.Xelsplatform.com/SmartContracts/working-with-contracts.html#parameter-serialization">here</a>.
+        /// <a target="_blank" href="https://academy.xelsplatform.com/SmartContracts/working-with-contracts.html#parameter-serialization">here</a>.
         /// </summary>
         public string[] Parameters { get; set; }
 

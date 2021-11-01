@@ -45,6 +45,8 @@ namespace Xels.Sidechains.Networks
 
             this.CcRewardDummyAddress = "CKe36GSqPx3EasYY9FevtLSnyx5nryojaN";
 
+            //this.ConversionTransactionFeeDistributionDummyAddress = "CXK1AhmK8XhmBWHUrCKRt5WMhz1CcYeguF";
+
             var consensusFactory = new SmartContractCollateralPoAConsensusFactory();
 
             // Create the genesis block.
@@ -84,6 +86,9 @@ namespace Xels.Sidechains.Networks
             // Register the new set of federation members.
             this.Federations.RegisterFederation(new Federation(xlcFederationTransactionSigningKeys));
 
+            // The height at which the following list of members apply.
+            //this.MultisigMinersApplicabilityHeight = 1413998;
+
             // Set the list of Xlc Era mining keys.
             this.XlcMiningMultisigMembers = new List<PubKey>()
             {
@@ -107,8 +112,11 @@ namespace Xels.Sidechains.Networks
             {
                 EnforceMinProtocolVersionAtBlockHeight = 0, // setting the value to zero makes the functionality inactive
                 EnforcedMinProtocolVersion = ProtocolVersion.CC_VERSION, // minimum protocol version which will be enforced at block height defined in EnforceMinProtocolVersionAtBlockHeight
-                FederationMemberActivationTime = Utils.DateTimeToUnixTime(new DateTimeOffset(2021, 09, 14, 0, 0, 0, TimeSpan.Zero)),//1605862800, // Friday, November 20, 2020 9:00:00 AM
-                VotingManagerV2ActivationHeight = 1 // Tuesday, 12 January 2021 9:00:00 AM (Estimated)
+                FederationMemberActivationTime = 1605862800, // Friday, November 20, 2020 9:00:00 AM
+                InterFluxV2MainChainActivationHeight = 1,
+                VotingManagerV2ActivationHeight = 1, // Tuesday, 12 January 2021 9:00:00 AM (Estimated)
+                Release1100ActivationHeight = 1,
+                PollExpiryBlocks = 50_000 // Roughly 9 days
             };
 
             var buriedDeployments = new BuriedDeploymentsArray
@@ -138,20 +146,20 @@ namespace Xels.Sidechains.Networks
                 maxMoney: Money.Coins(100_000_000),
                 coinbaseMaturity: 1,
                 premineHeight: 2,
-                premineReward: Money.Coins(1000000),
-                proofOfWorkReward: Money.Coins(50),
+                premineReward: Money.Coins(100_000_000),
+                proofOfWorkReward: Money.Coins(40),
                 powTargetTimespan: TimeSpan.FromDays(14), // two weeks
                 targetSpacing: TimeSpan.FromSeconds(160),
                 powAllowMinDifficultyBlocks: false,
-                posNoRetargeting: true,
+                posNoRetargeting: false,
                 powNoRetargeting: true,
                 powLimit: null,
                 minimumChainWork: null,
                 isProofOfStake: false,
-                lastPowBlock: 2,
+                lastPowBlock: 0,
                 proofOfStakeLimit: null,
                 proofOfStakeLimitV2: null,
-                proofOfStakeReward: Money.Coins(50)
+                proofOfStakeReward: Money.Zero
             );
 
             // Same as current smart contracts test networks to keep tests working
@@ -195,7 +203,7 @@ namespace Xels.Sidechains.Networks
                 new NetworkAddress(IPAddress.Parse("52.199.121.139"), this.DefaultPort ) // public node
             };
 
-            this.CollateralCommitmentActivationHeight = 25810;
+            //this.CollateralCommitmentActivationHeight = 25810;
 
             this.StandardScriptsRegistry = new PoAStandardScriptsRegistry();
 

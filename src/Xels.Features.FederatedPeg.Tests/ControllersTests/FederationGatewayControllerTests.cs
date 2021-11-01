@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -15,10 +16,10 @@ using Xels.Bitcoin.Configuration;
 using Xels.Bitcoin.Connection;
 using Xels.Bitcoin.Consensus;
 using Xels.Bitcoin.Features.BlockStore;
+using Xels.Bitcoin.Features.ExternalApi;
 using Xels.Bitcoin.Features.PoA;
 using Xels.Bitcoin.Features.PoA.Voting;
 using Xels.Bitcoin.Networks;
-using Xels.Bitcoin.Persistence.KeyValueStores;
 using Xels.Bitcoin.Primitives;
 using Xels.Bitcoin.Signals;
 using Xels.Bitcoin.Tests.Common;
@@ -28,7 +29,6 @@ using Xels.Features.FederatedPeg.Controllers;
 using Xels.Features.FederatedPeg.Interfaces;
 using Xels.Features.FederatedPeg.Models;
 using Xels.Features.FederatedPeg.SourceChain;
-using Xels.Features.FederatedPeg.TargetChain;
 using Xels.Sidechains.Networks;
 using Xunit;
 
@@ -56,8 +56,6 @@ namespace Xels.Features.FederatedPeg.Tests.ControllersTests
 
         private readonly ISignals signals;
 
-        private readonly ISignedMultisigTransactionBroadcaster signedMultisigTransactionBroadcaster;
-
         public FederationGatewayControllerTests()
         {
             this.network = CcNetwork.NetworksSelector.Regtest();
@@ -71,8 +69,6 @@ namespace Xels.Features.FederatedPeg.Tests.ControllersTests
             this.federatedPegSettings = Substitute.For<IFederatedPegSettings>();
             this.federationWalletManager = Substitute.For<IFederationWalletManager>();
             this.signals = new Signals(this.loggerFactory, null);
-
-            this.signedMultisigTransactionBroadcaster = Substitute.For<ISignedMultisigTransactionBroadcaster>();
         }
 
         private FederationGatewayController CreateController(IFederatedPegSettings federatedPegSettings)
@@ -110,11 +106,13 @@ namespace Xels.Features.FederatedPeg.Tests.ControllersTests
                 return blocks;
             });
 
+            IExternalApiPoller externalApiPoller = Substitute.For<IExternalApiPoller>();
+
             return new MaturedBlocksProvider(this.consensusManager, this.depositExtractor, federatedPegSettings);
         }
 
         [Fact]
-        public void GetMaturedBlockDeposits_Fails_When_Block_Height_Greater_Than_Minimum_Deposit_Confirmations_Async()
+        public async Task GetMaturedBlockDeposits_Fails_When_Block_Height_Greater_Than_Minimum_Deposit_Confirmations_Async()
         {
             ChainedHeader tip = ChainedHeadersHelper.CreateConsecutiveHeaders(5, null, true).Last();
             this.consensusManager.Tip.Returns(tip);
@@ -131,7 +129,7 @@ namespace Xels.Features.FederatedPeg.Tests.ControllersTests
             ChainedHeader earlierBlock = tip.GetAncestor(maturedHeight + 1);
 
             // Mature height = 2 (Chain header height (4) - Minimum deposit confirmations (2))
-            IActionResult result = controller.GetMaturedBlockDeposits(earlierBlock.Height);
+            IActionResult result = await controller.GetMaturedBlockDepositsAsync(earlierBlock.Height);
 
             // Block height (3) > Mature height (2) - returns error message
             var maturedBlockDepositsResult = (result as JsonResult).Value as SerializableResult<List<MaturedBlockDepositsModel>>;
@@ -141,7 +139,7 @@ namespace Xels.Features.FederatedPeg.Tests.ControllersTests
         }
 
         [Fact]
-        public void GetMaturedBlockDeposits_Gets_All_Matured_Block_Deposits()
+        public async Task GetMaturedBlockDeposits_Gets_All_Matured_Block_DepositsAsync()
         {
             ChainedHeader tip = ChainedHeadersHelper.CreateConsecutiveHeaders(10, null, true).Last();
             this.consensusManager.Tip.Returns(tip);
@@ -156,8 +154,8 @@ namespace Xels.Features.FederatedPeg.Tests.ControllersTests
             ChainedHeader earlierBlock = tip.GetAncestor(minConfirmations);
 
             int depositExtractorCallCount = 0;
-            this.depositExtractor.ExtractDepositsFromBlock(Arg.Any<Block>(), Arg.Any<int>(), Arg.Any<DepositRetrievalType[]>()).Returns(new List<IDeposit>());
-            this.depositExtractor.When(x => x.ExtractDepositsFromBlock(Arg.Any<Block>(), Arg.Any<int>(), Arg.Any<DepositRetrievalType[]>())).Do(info =>
+            this.depositExtractor.ExtractDepositsFromBlock(Arg.Any<Block>(), Arg.Any<int>(), Arg.Any<Dictionary<DepositRetrievalType, int>>()).Returns(new List<IDeposit>());
+            this.depositExtractor.When(x => x.ExtractDepositsFromBlock(Arg.Any<Block>(), Arg.Any<int>(), Arg.Any<Dictionary<DepositRetrievalType, int>>())).Do(info =>
             {
                 depositExtractorCallCount++;
             });
@@ -175,7 +173,7 @@ namespace Xels.Features.FederatedPeg.Tests.ControllersTests
                 return blocks;
             });
 
-            IActionResult result = controller.GetMaturedBlockDeposits(earlierBlock.Height);
+            IActionResult result = await controller.GetMaturedBlockDepositsAsync(earlierBlock.Height);
 
             result.Should().BeOfType<JsonResult>();
             var maturedBlockDepositsResult = (result as JsonResult).Value as SerializableResult<List<MaturedBlockDepositsModel>>;
@@ -229,7 +227,7 @@ namespace Xels.Features.FederatedPeg.Tests.ControllersTests
 
             var model = ((JsonResult)result).Value as FederationGatewayInfoModel;
             model.IsMainChain.Should().BeFalse();
-            model.FederationMiningPubKeys.Should().Equal(((PoAConsensusOptions)CcNetwork.NetworksSelector.Regtest().Consensus.Options).GenesisFederationMembers.Select(keys => keys.ToString()));
+            model.FederationMiningPubKeys.Should().Equal(this.federationManager.GetFederationMembers().Select(keys => keys.ToString()));
             model.MultiSigRedeemScript.Should().Be(redeemScript);
             string.Join(",", model.FederationNodeIpEndPoints).Should().Be(federationIps);
             model.IsActive.Should().BeTrue();
@@ -257,15 +255,13 @@ namespace Xels.Features.FederatedPeg.Tests.ControllersTests
         {
             var dbreezeSerializer = new DBreezeSerializer(this.network.Consensus.ConsensusFactory);
             var asyncProvider = new AsyncProvider(this.loggerFactory, this.signals);
-            var finalizedBlockRepo = new FinalizedBlockInfoRepository(new LevelDbKeyValueRepository(nodeSettings.DataFolder, dbreezeSerializer), asyncProvider);
-            finalizedBlockRepo.LoadFinalizedBlockInfoAsync(this.network).GetAwaiter().GetResult();
 
             var chainIndexerMock = new Mock<ChainIndexer>();
             var header = new BlockHeader();
             chainIndexerMock.Setup(x => x.Tip).Returns(new ChainedHeader(header, header.GetHash(), 0));
 
-            var votingManager = new VotingManager(this.federationManager, new Mock<IPollResultExecutor>().Object, new Mock<INodeStats>().Object, nodeSettings.DataFolder, dbreezeSerializer, this.signals, finalizedBlockRepo, this.network);
-            var federationHistory = new FederationHistory(this.federationManager, votingManager);
+            var votingManager = new VotingManager(this.federationManager, new Mock<IPollResultExecutor>().Object, new Mock<INodeStats>().Object, nodeSettings.DataFolder, dbreezeSerializer, this.signals, this.network, chainIndexerMock.Object);
+            var federationHistory = new FederationHistory(this.federationManager, this.network, votingManager);
             votingManager.Initialize(federationHistory);
 
             return votingManager;

@@ -6,7 +6,7 @@
     <AssemblyName>Xels.Bitcoin.Features.Api</AssemblyName>
     <OutputType>Library</OutputType>
     <PackageId>Xels.Features.Api</PackageId>
-    <Version>1.0.9.5</Version>
+    <Version>1.1.0.0</Version>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <ApplicationIcon />
     <OutputTypeEx>library</OutputTypeEx>

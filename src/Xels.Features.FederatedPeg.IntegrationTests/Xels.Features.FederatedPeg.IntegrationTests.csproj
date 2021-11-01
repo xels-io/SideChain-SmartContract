@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Xels.Bitcoin.Features.ExternalAPI\Xels.Bitcoin.Features.ExternalApi.csproj" />
     <ProjectReference Include="..\Xels.Bitcoin.Features.Interop\Xels.Bitcoin.Features.Interop.csproj" />
     <ProjectReference Include="..\Xels.Bitcoin.Features.PoA.IntegrationTests.Common\Xels.Bitcoin.Features.PoA.IntegrationTests.Common.csproj" />
     <ProjectReference Include="..\Xels.Bitcoin.IntegrationTests.Common\Xels.Bitcoin.IntegrationTests.Common.csproj" />

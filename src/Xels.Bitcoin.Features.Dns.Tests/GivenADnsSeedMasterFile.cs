@@ -33,7 +33,7 @@ namespace Xels.Bitcoin.Features.Dns.Tests
         public void WhenLoad_AndStreamContainsIPAddressResourceRecord_AndIsIPv4_ThenEntryIsPopulated()
         {
             // Arrange
-            var domain = new Domain("Xels.test.com");
+            var domain = new Domain("xels.test.com");
 
             var testResourceRecord = new IPAddressResourceRecord(domain, IPAddress.Parse("192.168.0.1"));
             var question = new Question(domain, RecordType.A);
@@ -56,7 +56,7 @@ namespace Xels.Bitcoin.Features.Dns.Tests
         public void WhenLoad_AndStreamContainsIPAddressResourceRecord_AndIsIPv6_ThenEntryIsPopulated()
         {
             // Arrange
-            var domain = new Domain("Xels.test.com");
+            var domain = new Domain("xels.test.com");
 
             var testResourceRecord = new IPAddressResourceRecord(domain, IPAddress.Parse("2001:db8:85a3:0:0:8a2e:370:7334"));
             var question = new Question(domain, RecordType.AAAA);
@@ -79,8 +79,8 @@ namespace Xels.Bitcoin.Features.Dns.Tests
         public void WhenLoad_AndStreamContainsCanonicalNameResourceRecord_ThenEntryIsPopulated()
         {
             // Arrange
-            var domain = new Domain("Xels.test.com");
-            var cNameDomain = new Domain("www.Xels.test.com");
+            var domain = new Domain("xels.test.com");
+            var cNameDomain = new Domain("www.xels.test.com");
 
             var testResourceRecord = new CanonicalNameResourceRecord(domain, cNameDomain);
             var question = new Question(domain, RecordType.CNAME);
@@ -103,8 +103,8 @@ namespace Xels.Bitcoin.Features.Dns.Tests
         public void WhenLoad_AndStreamContainsMailExchangeResourceRecord_ThenEntryIsPopulated()
         {
             // Arrange
-            var domain = new Domain("Xels.test.com");
-            var exchangeDomain = new Domain("mail.Xels.test.com");
+            var domain = new Domain("xels.test.com");
+            var exchangeDomain = new Domain("mail.xels.test.com");
             int preference = 10;
 
             var testResourceRecord = new MailExchangeResourceRecord(domain, preference, exchangeDomain);
@@ -130,7 +130,7 @@ namespace Xels.Bitcoin.Features.Dns.Tests
         public void WhenLoad_AndStreamContainsNameServerResourceRecord_ThenEntryIsPopulated()
         {
             // Arrange
-            var domain = new Domain("Xels.test.com");
+            var domain = new Domain("xels.test.com");
             var nsDomain = new Domain("ns");
 
             var testResourceRecord = new NameServerResourceRecord(domain, nsDomain);
@@ -155,7 +155,7 @@ namespace Xels.Bitcoin.Features.Dns.Tests
         public void WhenLoad_AndStreamContainsStartOfAuthorityResourceRecord_ThenEntryIsPopulated()
         {
             // Arrange
-            var domain = new Domain("Xels.test.com");
+            var domain = new Domain("xels.test.com");
             var masterDomain = new Domain("master.test.com");
             var responsibleDomain = new Domain("responsible.test.com");
             long serialNumber = 12121212;
@@ -203,7 +203,7 @@ namespace Xels.Bitcoin.Features.Dns.Tests
             // Arrange.
             using (var stream = new MemoryStream())
             {
-                string domainName = "Xels.test.com";
+                string domainName = "xels.test.com";
                 var masterFile = new DnsSeedMasterFile();
 
                 IList<IResourceRecord> testResourceRecords = new List<IResourceRecord>()
@@ -252,7 +252,7 @@ namespace Xels.Bitcoin.Features.Dns.Tests
         public void WhenSave_AndMasterListContainsIPAddressResourceRecord_AndIsIPv4_ThenEntryIsSaved()
         {
             // Arrange
-            var domain = new Domain("Xels.test.com");
+            var domain = new Domain("xels.test.com");
 
             var testResourceRecord = new IPAddressResourceRecord(domain, IPAddress.Parse("192.168.0.1"));
             var masterFile = new DnsSeedMasterFile(new List<IResourceRecord> { testResourceRecord });
@@ -281,7 +281,7 @@ namespace Xels.Bitcoin.Features.Dns.Tests
         public void WhenSave_AndMasterListContainsIPAddressResourceRecord_AndIsIPv6_ThenEntryIsSaved()
         {
             // Arrange
-            var domain = new Domain("Xels.test.com");
+            var domain = new Domain("xels.test.com");
 
             var testResourceRecord = new IPAddressResourceRecord(domain, IPAddress.Parse("2001:db8:85a3:0:0:8a2e:370:7334"));
             var masterFile = new DnsSeedMasterFile(new List<IResourceRecord> { testResourceRecord });
@@ -310,8 +310,8 @@ namespace Xels.Bitcoin.Features.Dns.Tests
         public void WhenSave_AndMasterListContainsCanonicalNameResourceRecord_ThenEntryIsSaved()
         {
             // Arrange
-            var domain = new Domain("Xels.test.com");
-            var cNameDomain = new Domain("www.Xels.test.com");
+            var domain = new Domain("xels.test.com");
+            var cNameDomain = new Domain("www.xels.test.com");
 
             var testResourceRecord = new CanonicalNameResourceRecord(domain, cNameDomain);
             var masterFile = new DnsSeedMasterFile(new List<IResourceRecord> { testResourceRecord });
@@ -340,8 +340,8 @@ namespace Xels.Bitcoin.Features.Dns.Tests
         public void WhenSave_AndMasterListContainsMailExchangeResourceRecord_ThenEntryIsSaved()
         {
             // Arrange
-            var domain = new Domain("Xels.test.com");
-            var exchangeDomain = new Domain("mail.Xels.test.com");
+            var domain = new Domain("xels.test.com");
+            var exchangeDomain = new Domain("mail.xels.test.com");
             int preference = 10;
 
             var testResourceRecord = new MailExchangeResourceRecord(domain, preference, exchangeDomain);
@@ -372,7 +372,7 @@ namespace Xels.Bitcoin.Features.Dns.Tests
         public void WhenSave_AndMasterListContainsNameServerResourceRecord_ThenEntryIsSaved()
         {
             // Arrange
-            var domain = new Domain("Xels.test.com");
+            var domain = new Domain("xels.test.com");
             var nsDomain = new Domain("ns");
 
             var testResourceRecord = new NameServerResourceRecord(domain, nsDomain);
@@ -402,7 +402,7 @@ namespace Xels.Bitcoin.Features.Dns.Tests
         public void WhenSave_AndMasterListContainsStartOfAuthorityResourceRecord_ThenEntryIsSaved()
         {
             // Arrange
-            var domain = new Domain("Xels.test.com");
+            var domain = new Domain("xels.test.com");
             var masterDomain = new Domain("master.test.com");
             var responsibleDomain = new Domain("responsible.test.com");
             long serialNumber = 12121212;
@@ -453,7 +453,7 @@ namespace Xels.Bitcoin.Features.Dns.Tests
         public void WhenSave_AndMasterListContainsEntries_ThenEntriesAreSaved()
         {
             // Arrange.
-            string domainName = "Xels.test.com";
+            string domainName = "xels.test.com";
 
             IList<IResourceRecord> testResourceRecords = new List<IResourceRecord>()
                 {

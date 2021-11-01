@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-
-using IWshRuntimeLibrary;
-
 using NBitcoin;
 using NBitcoin.Protocol;
-
 using Xels.Bitcoin;
 using Xels.Bitcoin.Builder;
 using Xels.Bitcoin.Configuration;
@@ -16,6 +11,7 @@ using Xels.Bitcoin.Consensus;
 using Xels.Bitcoin.Features.Api;
 using Xels.Bitcoin.Features.BlockStore;
 using Xels.Bitcoin.Features.Consensus;
+using Xels.Bitcoin.Features.ExternalApi;
 using Xels.Bitcoin.Features.Interop;
 using Xels.Bitcoin.Features.MemoryPool;
 using Xels.Bitcoin.Features.Miner;
@@ -49,9 +45,7 @@ namespace Xels.CcPegD
 
         private static void Main(string[] args)
         {
-            //args = new string[] { "-sidechain" };
             RunFederationGatewayAsync(args).Wait();
-            CreateShortCut();
         }
 
         private static async Task RunFederationGatewayAsync(string[] args)
@@ -68,8 +62,8 @@ namespace Xels.CcPegD
 
                 IFullNode node = isMainchainNode ? GetMainchainFullNode(args) : GetSidechainFullNode(args);
 
-                // set the console window title to identify which node this is (for clarity when running Xlc and CC on the same machine)
-                Console.Title = isMainchainNode ? $"Xlc Full Node {node.Network.NetworkType}" : $"CC Full Node {node.Network.NetworkType}";
+                // set the console window title to identify which node this is (for clarity when running Xlc and Cc on the same machine)
+                Console.Title = isMainchainNode ? $"Xlc Full Node {node.Network.NetworkType}" : $"Cc Full Node {node.Network.NetworkType}";
 
                 if (node != null)
                     await node.RunAsync();
@@ -141,33 +135,13 @@ namespace Xels.CcPegD
                     options.UseReflectionExecutor();
                     options.UsePoAWhitelistedContracts();
                 })
+                .AddExternalApi()
                 .AddInteroperability()
                 .UseSmartContractWallet()
                 .AddSQLiteWalletRepository()
                 .Build();
 
             return node;
-        }
-
-        public static void CreateShortCut()
-        {
-
-            string[] argumentList = { "-mainchain", "-sidechain" };
-
-            string destinationPath = Directory.GetCurrentDirectory();
-            //Console.WriteLine(distinationPath);
-            //Console.ReadLine();
-            foreach (var arg in argumentList)
-            {
-                object shDesktop = (object)"Desktop";
-                WshShell shell = new WshShell();
-                string shortcutAddress = (string)shell.SpecialFolders.Item(ref shDesktop) + @"\xels-app" + arg + ".lnk";
-                IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutAddress);
-
-                shortcut.Arguments = arg;
-                shortcut.TargetPath = destinationPath + @"\Xels.CcPegD.exe";
-                shortcut.Save();
-            }
         }
     }
 }

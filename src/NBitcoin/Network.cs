@@ -343,7 +343,7 @@ namespace NBitcoin
         public string CoinTicker { get; set; }
 
         /// <summary>
-        /// The name of the root folder containing blockchains operating with the same consensus rules (for now, this will be bitcoin or Xels).
+        /// The name of the root folder containing blockchains operating with the same consensus rules (for now, this will be bitcoin or xels).
         /// </summary>
         public string RootFolderName { get; protected set; }
 
@@ -455,6 +455,11 @@ namespace NBitcoin
         /// This is used for reward distribution transactions.
         /// </summary>
         public string CcRewardDummyAddress { get; protected set; }
+
+        /// <summary>
+        /// This is used for conversion transaction fee distribution transactions.
+        /// </summary>
+        public string ConversionTransactionFeeDistributionDummyAddress { get; protected set; }
 
         /// <summary>
         /// The height at which reward batching will be activated.

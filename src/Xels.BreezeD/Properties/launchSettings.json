@@ -2,7 +2,7 @@
   "profiles": {
     "Bitcoin Main": {
       "commandName": "Project",
-      "commandLineArgs": "Xels -testnet"
+      "commandLineArgs": "xels -testnet"
     },
     "Bitcoin Test": {
       "commandName": "Project",
@@ -10,11 +10,11 @@
     },
     "Xels Main": {
       "commandName": "Project",
-      "commandLineArgs": "Xels "
+      "commandLineArgs": "xels "
     },
     "Xels Test": {
       "commandName": "Project",
-      "commandLineArgs": "Xels -testnet -prune=2880"
+      "commandLineArgs": "xels -testnet -prune=2880"
     }
   }
 }

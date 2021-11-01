@@ -6,9 +6,9 @@ using Xels.Bitcoin.Features.Wallet.Interfaces;
 namespace Xels.Bitcoin.Features.LightWallet
 {
     /// <summary>
-    /// Light wallet fixed fee policy used for Xels network.
+    /// Light wallet fixed fee policy used for xels network.
     /// </summary>
-    /// <seealso cref="https://github.com/Xelsproject/XelsX/blob/master/src/wallet.cpp#L1437">XelsX fee calculation.</seealso>
+    /// <seealso cref="https://github.com/xelsproject/xelsX/blob/master/src/wallet.cpp#L1437">XelsX fee calculation.</seealso>
     public class LightWalletFixedFeePolicy : IWalletFeePolicy
     {
         /// <inheritdoc />

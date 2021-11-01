@@ -44,7 +44,7 @@ namespace Xels.Bitcoin.Api.Tests
         /// Tests that if no API settings are passed and we're on the Xels network, the defaults settings are used.
         /// </summary>
         [Fact]
-        public void GivenNoApiSettingsAreProvided_AndONStratisNetwork_ThenDefaultSettingAreUsed()
+        public void GivenNoApiSettingsAreProvided_AndOnXelsNetwork_ThenDefaultSettingAreUsed()
         {
             // Arrange.
             Network network = new XlcMain();
@@ -103,7 +103,7 @@ namespace Xels.Bitcoin.Api.Tests
         /// Tests that if a custom API URI is passed and we're on the Xels network, the bitcoin port is used in conjunction with the passed API URI.
         /// </summary>
         [Fact]
-        public void GivenApiUriIsProvided_AndGiveNStratisNetwork_ThenApiUriIsUsedWithDefaultXelsApiPort()
+        public void GivenApiUriIsProvided_AndGivenXelsNetwork_ThenApiUriIsUsedWithDefaultXelsApiPort()
         {
             // Arrange.
             string customApiUri = "http://0.0.0.0";
@@ -194,7 +194,7 @@ namespace Xels.Bitcoin.Api.Tests
         /// Tests that if we're on the Xels main network, the port used in the API is the right one.
         /// </summary>
         [Fact]
-        public void GiveNStratisMainnet_ThenUseTheCorrectPort()
+        public void GivenXelsMainnet_ThenUseTheCorrectPort()
         {
             // Arrange.
             NodeSettings nodeSettings = NodeSettings.Default(new XlcMain());
@@ -210,7 +210,7 @@ namespace Xels.Bitcoin.Api.Tests
         /// Tests that if we're on the Xels test network, the port used in the API is the right one.
         /// </summary>
         [Fact]
-        public void GiveNStratisTestnet_ThenUseTheCorrectPort()
+        public void GivenXelsTestnet_ThenUseTheCorrectPort()
         {
             // Arrange.
             NodeSettings nodeSettings = NodeSettings.Default(new XlcTest());

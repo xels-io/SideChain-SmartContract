@@ -25,8 +25,8 @@ namespace Xels.Bitcoin.IntegrationTests.Wallet
 
         private NodeBuilder builder;
         private Network network;
-        private CoreNode XelsSender;
-        private CoreNode XelsReceiver;
+        private CoreNode xelsSender;
+        private CoreNode xelsReceiver;
         private Transaction transaction;
         private MempoolValidationState mempoolValidationState;
         private HdAddress receivingAddress;
@@ -40,8 +40,8 @@ namespace Xels.Bitcoin.IntegrationTests.Wallet
             this.builder = NodeBuilder.Create(this);
             this.network = new BitcoinRegTest();
 
-            this.XelsSender = this.builder.CreateXelsPowNode(this.network).WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest100Miner).Start();
-            this.XelsReceiver = this.builder.CreateXelsPowNode(this.network).WithWallet().Start();
+            this.xelsSender = this.builder.CreateXelsPowNode(this.network).WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest100Miner).Start();
+            this.xelsReceiver = this.builder.CreateXelsPowNode(this.network).WithWallet().Start();
             this.mempoolValidationState = new MempoolValidationState(true);
         }
 
@@ -52,30 +52,30 @@ namespace Xels.Bitcoin.IntegrationTests.Wallet
 
         private void wallets_with_coins()
         {
-            var maturity = (int)this.XelsSender.FullNode.Network.Consensus.CoinbaseMaturity;
-            TestHelper.MineBlocks(this.XelsSender, 5);
+            var maturity = (int)this.xelsSender.FullNode.Network.Consensus.CoinbaseMaturity;
+            TestHelper.MineBlocks(this.xelsSender, 5);
 
-            var total = this.XelsSender.FullNode.WalletManager().GetSpendableTransactionsInWallet(Name).Sum(s => s.Transaction.Amount);
+            var total = this.xelsSender.FullNode.WalletManager().GetSpendableTransactionsInWallet(Name).Sum(s => s.Transaction.Amount);
             total.Should().Equals(Money.COIN * 6 * 50);
 
-            TestHelper.ConnectAndSync(this.XelsSender, this.XelsReceiver);
+            TestHelper.ConnectAndSync(this.xelsSender, this.xelsReceiver);
         }
 
         private void coins_first_sent_to_receiving_wallet()
         {
-            this.receivingAddress = this.XelsReceiver.FullNode.WalletManager().GetUnusedAddress(new WalletAccountReference(Name, AccountName));
+            this.receivingAddress = this.xelsReceiver.FullNode.WalletManager().GetUnusedAddress(new WalletAccountReference(Name, AccountName));
 
-            this.transaction = this.XelsSender.FullNode.WalletTransactionHandler().BuildTransaction(WalletTests.CreateContext(this.XelsSender.FullNode.Network,
+            this.transaction = this.xelsSender.FullNode.WalletTransactionHandler().BuildTransaction(WalletTests.CreateContext(this.xelsSender.FullNode.Network,
                 new WalletAccountReference(Name, AccountName), Password, this.receivingAddress.ScriptPubKey, Money.COIN * 100, FeeType.Medium, 101));
 
-            this.XelsSender.FullNode.NodeController<WalletController>().SendTransaction(new SendTransactionRequest(this.transaction.ToHex()));
+            this.xelsSender.FullNode.NodeController<WalletController>().SendTransaction(new SendTransactionRequest(this.transaction.ToHex()));
 
-            TestBase.WaitLoop(() => this.XelsReceiver.CreateRPCClient().GetRawMempool().Length > 0);
-            TestBase.WaitLoop(() => this.XelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(Name).Any());
+            TestBase.WaitLoop(() => this.xelsReceiver.CreateRPCClient().GetRawMempool().Length > 0);
+            TestBase.WaitLoop(() => this.xelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(Name).Any());
 
-            var receivetotal = this.XelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(Name).Sum(s => s.Transaction.Amount);
+            var receivetotal = this.xelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(Name).Sum(s => s.Transaction.Amount);
             receivetotal.Should().Equals(Money.COIN * 100);
-            this.XelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(Name).First().Transaction.BlockHeight.Should().BeNull();
+            this.xelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(Name).First().Transaction.BlockHeight.Should().BeNull();
         }
 
         private void txn_mempool_conflict_error_occurs()
@@ -85,27 +85,27 @@ namespace Xels.Bitcoin.IntegrationTests.Wallet
 
         private void receiving_node_attempts_to_double_spend_mempool_doesnotaccept()
         {
-            var unusedAddress = this.XelsReceiver.FullNode.WalletManager().GetUnusedAddress(new WalletAccountReference(Name, AccountName));
-            var transactionCloned = this.XelsReceiver.FullNode.Network.CreateTransaction(this.transaction.ToBytes());
+            var unusedAddress = this.xelsReceiver.FullNode.WalletManager().GetUnusedAddress(new WalletAccountReference(Name, AccountName));
+            var transactionCloned = this.xelsReceiver.FullNode.Network.CreateTransaction(this.transaction.ToBytes());
             transactionCloned.Outputs[1].ScriptPubKey = unusedAddress.ScriptPubKey;
-            this.XelsReceiver.FullNode.MempoolManager().Validator.AcceptToMemoryPool(this.mempoolValidationState, transactionCloned).Result.Should().BeFalse();
+            this.xelsReceiver.FullNode.MempoolManager().Validator.AcceptToMemoryPool(this.mempoolValidationState, transactionCloned).Result.Should().BeFalse();
         }
 
         private void trx_is_mined_into_a_block_and_removed_from_mempools()
         {
-            TestHelper.MineBlocks(this.XelsSender, 1);
-            TestHelper.WaitForNodeToSync(this.XelsSender, this.XelsReceiver);
+            TestHelper.MineBlocks(this.xelsSender, 1);
+            TestHelper.WaitForNodeToSync(this.xelsSender, this.xelsReceiver);
 
-            this.XelsSender.FullNode.MempoolManager().GetMempoolAsync().Result.Should().NotContain(this.transaction.GetHash());
-            this.XelsReceiver.FullNode.MempoolManager().GetMempoolAsync().Result.Should().NotContain(this.transaction.GetHash());
+            this.xelsSender.FullNode.MempoolManager().GetMempoolAsync().Result.Should().NotContain(this.transaction.GetHash());
+            this.xelsReceiver.FullNode.MempoolManager().GetMempoolAsync().Result.Should().NotContain(this.transaction.GetHash());
         }
 
         private void trx_is_propagated_across_sending_and_receiving_mempools()
         {
-            List<uint256> senderMempoolTransactions = this.XelsSender.FullNode.MempoolManager().GetMempoolAsync().Result;
+            List<uint256> senderMempoolTransactions = this.xelsSender.FullNode.MempoolManager().GetMempoolAsync().Result;
             senderMempoolTransactions.Should().Contain(this.transaction.GetHash());
 
-            List<uint256> receiverMempoolTransactions = this.XelsSender.FullNode.MempoolManager().GetMempoolAsync().Result;
+            List<uint256> receiverMempoolTransactions = this.xelsSender.FullNode.MempoolManager().GetMempoolAsync().Result;
             receiverMempoolTransactions.Should().Contain(this.transaction.GetHash());
         }
     }

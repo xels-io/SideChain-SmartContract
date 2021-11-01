@@ -34,7 +34,7 @@ namespace Xels.Features.FederatedPeg.IntegrationTests.Utils
 
         public override void BuildNode()
         {
-            var settings = new NodeSettings(this.Network, ProtocolVersion.PROVEN_HEADER_VERSION, args: new string[] { "-conf=Xels.conf", "-datadir=" + this.DataFolder });
+            var settings = new NodeSettings(this.Network, ProtocolVersion.PROVEN_HEADER_VERSION, args: new string[] { "-conf=xels.conf", "-datadir=" + this.DataFolder });
 
             this.FullNode = (FullNode)new FullNodeBuilder()
                 .UseNodeSettings(settings)
@@ -49,6 +49,7 @@ namespace Xels.Features.FederatedPeg.IntegrationTests.Utils
                 .UsePosConsensus()
                 .UseWallet()
                 .AddSQLiteWalletRepository()
+                // TODO: Change to true and fix tests
                 .AddPowPosMining(false)
                 .MockIBD()
                 .Build();

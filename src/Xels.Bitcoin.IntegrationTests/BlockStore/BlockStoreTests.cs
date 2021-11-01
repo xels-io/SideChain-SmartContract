@@ -76,23 +76,23 @@ namespace Xels.Bitcoin.IntegrationTests.BlockStore
         {
             using (NodeBuilder builder = NodeBuilder.Create(this))
             {
-                CoreNode XelsNodeSync = builder.CreateXelsPowNode(this.network, "bs-1-XelsNodeSync").WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10Miner).Start();
-                CoreNode XelsNode1 = builder.CreateXelsPowNode(this.network, "bs-1-XelsNode1").WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10NoWallet).Start();
-                CoreNode XelsNode2 = builder.CreateXelsPowNode(this.network, "bs-1-XelsNode2").WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10NoWallet).Start();
+                CoreNode xelsNodeSync = builder.CreateXelsPowNode(this.network, "bs-1-xelsNodeSync").WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10Miner).Start();
+                CoreNode xelsNode1 = builder.CreateXelsPowNode(this.network, "bs-1-xelsNode1").WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10NoWallet).Start();
+                CoreNode xelsNode2 = builder.CreateXelsPowNode(this.network, "bs-1-xelsNode2").WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10NoWallet).Start();
 
                 // Sync both nodes
-                TestHelper.ConnectAndSync(XelsNode1, XelsNodeSync);
-                TestHelper.ConnectAndSync(XelsNode2, XelsNodeSync);
+                TestHelper.ConnectAndSync(xelsNode1, xelsNodeSync);
+                TestHelper.ConnectAndSync(xelsNode2, xelsNodeSync);
 
                 // Set node2 to use inv (not headers).
-                XelsNode2.FullNode.ConnectionManager.ConnectedPeers.First().Behavior<BlockStoreBehavior>().PreferHeaders = false;
+                xelsNode2.FullNode.ConnectionManager.ConnectedPeers.First().Behavior<BlockStoreBehavior>().PreferHeaders = false;
 
                 // Generate two new blocks.
-                TestHelper.MineBlocks(XelsNodeSync, 2);
+                TestHelper.MineBlocks(xelsNodeSync, 2);
 
                 // Wait for the other nodes to pick up the newly generated blocks
-                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(XelsNode1, XelsNodeSync));
-                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(XelsNode2, XelsNodeSync));
+                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(xelsNode1, xelsNodeSync));
+                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(xelsNode2, xelsNodeSync));
             }
         }
 
@@ -101,15 +101,15 @@ namespace Xels.Bitcoin.IntegrationTests.BlockStore
         {
             using (NodeBuilder builder = NodeBuilder.Create(this))
             {
-                CoreNode XelsNodeSync = builder.CreateXelsPowNode(this.network, "bs-2-XelsNodeSync").WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10Miner).Start();
+                CoreNode xelsNodeSync = builder.CreateXelsPowNode(this.network, "bs-2-xelsNodeSync").WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10Miner).Start();
 
                 // Set the tip of the best chain to some blocks in the past.
-                XelsNodeSync.FullNode.ChainIndexer.SetTip(XelsNodeSync.FullNode.ChainIndexer.GetHeader(XelsNodeSync.FullNode.ChainIndexer.Height - 5));
+                xelsNodeSync.FullNode.ChainIndexer.SetTip(xelsNodeSync.FullNode.ChainIndexer.GetHeader(xelsNodeSync.FullNode.ChainIndexer.Height - 5));
 
                 // Stop the node to persist the chain with the reset tip.
-                XelsNodeSync.FullNode.Dispose();
+                xelsNodeSync.FullNode.Dispose();
 
-                CoreNode newNodeInstance = builder.CloneXelsNode(XelsNodeSync);
+                CoreNode newNodeInstance = builder.CloneXelsNode(xelsNodeSync);
 
                 // Start the node, this should hit the block store recover code.
                 newNodeInstance.Start();
@@ -124,36 +124,36 @@ namespace Xels.Bitcoin.IntegrationTests.BlockStore
         {
             using (NodeBuilder builder = NodeBuilder.Create(this))
             {
-                CoreNode XelsNodeSync = builder.CreateXelsPowNode(this.network, "bs-3-XelsNodeSync").WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10Miner).Start();
-                CoreNode XelsNode1 = builder.CreateXelsPowNode(this.network, "bs-3-XelsNode1").WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10Listener).Start();
-                CoreNode XelsNode2 = builder.CreateXelsPowNode(this.network, "bs-3-XelsNode2").WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10Listener).Start();
+                CoreNode xelsNodeSync = builder.CreateXelsPowNode(this.network, "bs-3-xelsNodeSync").WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10Miner).Start();
+                CoreNode xelsNode1 = builder.CreateXelsPowNode(this.network, "bs-3-xelsNode1").WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10Listener).Start();
+                CoreNode xelsNode2 = builder.CreateXelsPowNode(this.network, "bs-3-xelsNode2").WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10Listener).Start();
 
                 // Sync both nodes.
-                TestHelper.ConnectAndSync(XelsNodeSync, XelsNode1);
-                TestHelper.ConnectAndSync(XelsNodeSync, XelsNode2);
+                TestHelper.ConnectAndSync(xelsNodeSync, xelsNode1);
+                TestHelper.ConnectAndSync(xelsNodeSync, xelsNode2);
 
                 // Remove node 2.
-                TestHelper.Disconnect(XelsNodeSync, XelsNode2);
+                TestHelper.Disconnect(xelsNodeSync, xelsNode2);
 
                 // Mine some more with node 1
-                TestHelper.MineBlocks(XelsNode1, 10);
+                TestHelper.MineBlocks(xelsNode1, 10);
 
                 // Wait for node 1 to sync
-                TestBase.WaitLoop(() => XelsNode1.FullNode.GetBlockStoreTip().Height == 20);
-                TestBase.WaitLoop(() => XelsNode1.FullNode.GetBlockStoreTip().HashBlock == XelsNodeSync.FullNode.GetBlockStoreTip().HashBlock);
+                TestBase.WaitLoop(() => xelsNode1.FullNode.GetBlockStoreTip().Height == 20);
+                TestBase.WaitLoop(() => xelsNode1.FullNode.GetBlockStoreTip().HashBlock == xelsNodeSync.FullNode.GetBlockStoreTip().HashBlock);
 
                 // Remove node 1.
-                TestHelper.Disconnect(XelsNodeSync, XelsNode1);
+                TestHelper.Disconnect(xelsNodeSync, xelsNode1);
 
                 // Mine a higher chain with node 2.
-                TestHelper.MineBlocks(XelsNode2, 20);
-                TestBase.WaitLoop(() => XelsNode2.FullNode.GetBlockStoreTip().Height == 30);
+                TestHelper.MineBlocks(xelsNode2, 20);
+                TestBase.WaitLoop(() => xelsNode2.FullNode.GetBlockStoreTip().Height == 30);
 
                 // Add node 2.
-                TestHelper.Connect(XelsNodeSync, XelsNode2);
+                TestHelper.Connect(xelsNodeSync, xelsNode2);
 
                 // Node2 should be synced.
-                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(XelsNode2, XelsNodeSync));
+                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(xelsNode2, xelsNodeSync));
             }
         }
 
@@ -162,20 +162,20 @@ namespace Xels.Bitcoin.IntegrationTests.BlockStore
         {
             using (NodeBuilder builder = NodeBuilder.Create(this))
             {
-                CoreNode XelsNode1 = builder.CreateXelsPowNode(this.network, "bs-4-XelsNode1").WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10Miner).Start();
-                CoreNode XelsNode2 = builder.CreateXelsPowNode(this.network, "bs-4-XelsNode2").WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10NoWallet).Start();
+                CoreNode xelsNode1 = builder.CreateXelsPowNode(this.network, "bs-4-xelsNode1").WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10Miner).Start();
+                CoreNode xelsNode2 = builder.CreateXelsPowNode(this.network, "bs-4-xelsNode2").WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10NoWallet).Start();
 
                 // Sync both nodes.
-                TestHelper.ConnectAndSync(XelsNode1, XelsNode2);
+                TestHelper.ConnectAndSync(xelsNode1, xelsNode2);
 
-                TestBase.WaitLoop(() => XelsNode1.FullNode.GetBlockStoreTip().Height == 10);
-                TestBase.WaitLoop(() => XelsNode1.FullNode.GetBlockStoreTip().HashBlock == XelsNode2.FullNode.GetBlockStoreTip().HashBlock);
+                TestBase.WaitLoop(() => xelsNode1.FullNode.GetBlockStoreTip().Height == 10);
+                TestBase.WaitLoop(() => xelsNode1.FullNode.GetBlockStoreTip().HashBlock == xelsNode2.FullNode.GetBlockStoreTip().HashBlock);
 
-                Block bestBlock1 = XelsNode1.FullNode.BlockStore().GetBlock(XelsNode1.FullNode.ChainIndexer.Tip.HashBlock);
+                Block bestBlock1 = xelsNode1.FullNode.BlockStore().GetBlock(xelsNode1.FullNode.ChainIndexer.Tip.HashBlock);
                 Assert.NotNull(bestBlock1);
 
                 // Get the block coinbase trx.
-                Transaction trx = XelsNode2.FullNode.BlockStore().GetTransactionById(bestBlock1.Transactions.First().GetHash());
+                Transaction trx = xelsNode2.FullNode.BlockStore().GetTransactionById(bestBlock1.Transactions.First().GetHash());
                 Assert.NotNull(trx);
                 Assert.Equal(bestBlock1.Transactions.First().GetHash(), trx.GetHash());
             }

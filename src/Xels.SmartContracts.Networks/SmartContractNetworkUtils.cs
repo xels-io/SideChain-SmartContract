@@ -7,10 +7,10 @@ namespace Xels.SmartContracts.Networks
     public static class SmartContractNetworkUtils
     {
         /// <summary> The name of the root folder containing the different Xels blockchains (XelsMain, XelsTest, XelsRegTest). </summary>
-        public const string XelsRootFolderName = "Xels";
+        public const string XelsRootFolderName = "xels";
 
         /// <summary> The default name used for the Xels configuration file. </summary>
-        public const string XelsDefaultConfigFilename = "Xels.conf";
+        public const string XelsDefaultConfigFilename = "xels.conf";
 
         /// <summary> Bitcoin default value for the maximum tip age in seconds to consider the node in initial block download (24 hours). </summary>
         public const int BitcoinDefaultMaxTipAgeInSeconds = 24 * 60 * 60;

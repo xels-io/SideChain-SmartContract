@@ -35,7 +35,12 @@ namespace Xels.Bitcoin.Features.PoA
         /// </summary>
         public int CollateralCommitmentActivationHeight { get; set; }
 
-        /// <summary> The mining keys of the new multisig members to become active with the first Xlc-era CC collateral block mined.</summary>
+        /// <summary>
+        /// The height at which the XlcMiningMultisigMembers become applicable.
+        /// </summary>
+        public int? MultisigMinersApplicabilityHeight { get; set; }
+
+        /// <summary> The mining keys of the new multisig members to become active with the first Xlc-era Cc collateral block mined.</summary>
         public IList<PubKey> XlcMiningMultisigMembers { get; protected set; }
 
         public IList<Key> FederationKeys { get; set; }
@@ -102,7 +107,10 @@ namespace Xels.Bitcoin.Features.PoA
                 targetSpacingSeconds: 16,
                 votingEnabled: true,
                 autoKickIdleMembers: true
-            );
+            )
+            {
+                PollExpiryBlocks = 450
+            };
 
             var buriedDeployments = new BuriedDeploymentsArray
             {
@@ -267,7 +275,7 @@ namespace Xels.Bitcoin.Features.PoA
 
             Transaction txNew = consensusFactory.CreateTransaction();
             txNew.Version = 1;
-            // TODO: Removing the time field will affect the genesis block hash of the CC networks. Need to make a call about only developing CC via the SBFN project that still has nTime
+            // TODO: Removing the time field will affect the genesis block hash of the Cc networks. Need to make a call about only developing Cc via the SBFN project that still has nTime
             txNew.AddInput(new TxIn()
             {
                 ScriptSig = new Script(Op.GetPushOp(0), new Op()

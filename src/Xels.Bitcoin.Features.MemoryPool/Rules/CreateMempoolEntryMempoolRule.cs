@@ -233,7 +233,7 @@ namespace Xels.Bitcoin.Features.MemoryPool.Rules
                     // Get redeemScript from stack.
                     var redeemScript = new Script(ctx.Stack.Top(-1));
 
-                    // TODO: Move this into a network-specific rule so that it only applies to Xlc (the CC validator already allows non-standard transactions)
+                    // TODO: Move this into a network-specific rule so that it only applies to Xlc (the Cc validator already allows non-standard transactions)
                     if (redeemScript.GetSigOpCount(true, this.network) > MaxP2SHSigOps)
                     {
                         this.logger.LogTrace("(-)[SIG_OP_MAX]:false");

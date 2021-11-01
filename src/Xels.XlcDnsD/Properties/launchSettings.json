@@ -5,11 +5,11 @@
     },
     "Xels.XelsDnsD Test": {
       "commandName": "Project",
-      "commandLineArgs": "-testnet -dnslistenport=5399 -dnshostname=dns.Xelsplatform.com -dnsnameserver=ns1.dns.Xelsplatform.com -dnsmailbox=admin@Xelsplatform.com"
+      "commandLineArgs": "-testnet -dnslistenport=5399 -dnshostname=dns.xelsplatform.com -dnsnameserver=ns1.dns.xelsplatform.com -dnsmailbox=admin@xelsplatform.com"
     },
     "Xels.XelsDnsD FullNode Test": {
       "commandName": "Project",
-      "commandLineArgs": "-testnet -dnsfullnode -dnslistenport=5399 -dnshostname=dns.Xelsplatform.com -dnsnameserver=ns1.dns.Xelsplatform.com -dnsmailbox=admin@Xelsplatform.com"
+      "commandLineArgs": "-testnet -dnsfullnode -dnslistenport=5399 -dnshostname=dns.xelsplatform.com -dnsnameserver=ns1.dns.xelsplatform.com -dnsmailbox=admin@xelsplatform.com"
     }
   }
 }

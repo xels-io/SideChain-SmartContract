@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Xels.Bitcoin.Controllers;
 using Xels.Bitcoin.Features.Wallet.Models;
 
@@ -22,7 +23,7 @@ namespace Xels.Bitcoin.Features.Wallet.Controllers
         /// In a production/live scenario the sidechain and mainnet federation nodes should run on the same machine.
         /// </para>
         /// </summary>
-        public WalletClient(IHttpClientFactory httpClientFactory, string url, int port)
+        public WalletClient(ILoggerFactory loggerFactory, IHttpClientFactory httpClientFactory, string url, int port)
             : base(httpClientFactory, port, "Wallet", url)
         {
         }

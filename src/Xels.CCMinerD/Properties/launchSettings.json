@@ -2,7 +2,7 @@
   "profiles": {
     "Xels.CcMinerD": {
       "commandName": "Project",
-      "commandLineArgs": "-txindex=1"
+      "commandLineArgs": "-devmode=miner"
     },
     "Xels.CcMinerD TestNet": {
       "commandName": "Project",

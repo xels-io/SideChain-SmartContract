@@ -92,7 +92,7 @@ namespace Xels.Bitcoin.Tests.Common
             return blocks;
         }
 
-        /// <summary>Creates genesis header for Xels mainnet.</summary>
+        /// <summary>Creates genesis header for xels mainnet.</summary>
         public static ChainedHeader CreateGenesisChainedHeader(Network network = null)
         {
             if (network != null)

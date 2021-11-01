@@ -17,6 +17,7 @@ using Xels.Bitcoin.Features.MemoryPool;
 using Xels.Bitcoin.Features.Miner;
 using Xels.Bitcoin.Features.Notifications;
 using Xels.Bitcoin.Features.RPC;
+using Xels.Bitcoin.Features.SignalR;
 using Xels.Bitcoin.Features.SmartContracts;
 using Xels.Bitcoin.Features.SmartContracts.PoA;
 using Xels.Bitcoin.Features.SmartContracts.Wallet;
@@ -63,8 +64,8 @@ namespace Xels.CcMinerD
 
                     fullNode = isMainchainNode ? BuildXlcNode(args) : BuildCcMiningNode(args);
 
-                    // set the console window title to identify which node this is (for clarity when running Xlc and CC on the same machine)
-                    Console.Title = isMainchainNode ? $"Xlc Full Node {fullNode.Network.NetworkType}" : $"CC Full Node {fullNode.Network.NetworkType}";
+                    // set the console window title to identify which node this is (for clarity when running Xlc and Cc on the same machine)
+                    Console.Title = isMainchainNode ? $"Xlc Full Node {fullNode.Network.NetworkType}" : $"Cc Full Node {fullNode.Network.NetworkType}";
                 }
 
                 if (fullNode != null)
@@ -113,7 +114,7 @@ namespace Xels.CcMinerD
 
         private static IFullNode BuildDevCcMiningNode(string[] args)
         {
-            string[] devModeArgs = new[] { "-bootstrap=1", "-dbtype=rocksdb", "-defaultwalletname=ccdev", "-defaultwalletpassword=password" }.Concat(args).ToArray();
+            string[] devModeArgs = new[] { "-bootstrap=1", "-defaultwalletname=ccdev", "-defaultwalletpassword=password" }.Concat(args).ToArray();
             var network = new CcDev();
 
             var nodeSettings = new NodeSettings(network, protocolVersion: ProtocolVersion.CC_VERSION, args: devModeArgs)
@@ -141,6 +142,10 @@ namespace Xels.CcMinerD
                 })
                 .UseSmartContractWallet()
                 .AddSQLiteWalletRepository()
+                .AddSignalR(options =>
+                {
+                    DaemonConfiguration.ConfigureSignalRForCc(options);
+                })
                 .Build();
 
             return node;
@@ -157,9 +162,6 @@ namespace Xels.CcMinerD
             {
                 MinProtocolVersion = ProtocolVersion.ALT_PROTOCOL_VERSION
             };
-
-
-
 
             DbType dbType = nodeSettings.GetDbType();
 

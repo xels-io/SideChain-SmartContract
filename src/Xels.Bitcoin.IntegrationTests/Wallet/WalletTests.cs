@@ -37,50 +37,50 @@ namespace Xels.Bitcoin.IntegrationTests.Wallet
         {
             using (NodeBuilder builder = NodeBuilder.Create(this))
             {
-                CoreNode XelsSender = builder.CreateXelsPowNode(this.network).WithWallet().Start();
-                CoreNode XelsReceiver = builder.CreateXelsPowNode(this.network).WithWallet().Start();
+                CoreNode xelsSender = builder.CreateXelsPowNode(this.network).WithWallet().Start();
+                CoreNode xelsReceiver = builder.CreateXelsPowNode(this.network).WithWallet().Start();
 
-                int maturity = (int)XelsSender.FullNode.Network.Consensus.CoinbaseMaturity;
-                TestHelper.MineBlocks(XelsSender, maturity + 1 + 5);
+                int maturity = (int)xelsSender.FullNode.Network.Consensus.CoinbaseMaturity;
+                TestHelper.MineBlocks(xelsSender, maturity + 1 + 5);
 
                 // The mining should add coins to the wallet
-                long total = XelsSender.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Sum(s => s.Transaction.Amount);
+                long total = xelsSender.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Sum(s => s.Transaction.Amount);
                 Assert.Equal(Money.COIN * 6 * 50, total);
 
                 // Sync both nodes
-                TestHelper.ConnectAndSync(XelsSender, XelsReceiver);
+                TestHelper.ConnectAndSync(xelsSender, xelsReceiver);
 
                 // Send coins to the receiver
-                HdAddress sendto = XelsReceiver.FullNode.WalletManager().GetUnusedAddress(new WalletAccountReference(WalletName, Account));
-                Transaction trx = XelsSender.FullNode.WalletTransactionHandler().BuildTransaction(CreateContext(XelsSender.FullNode.Network,
+                HdAddress sendto = xelsReceiver.FullNode.WalletManager().GetUnusedAddress(new WalletAccountReference(WalletName, Account));
+                Transaction trx = xelsSender.FullNode.WalletTransactionHandler().BuildTransaction(CreateContext(xelsSender.FullNode.Network,
                     new WalletAccountReference(WalletName, Account), Password, sendto.ScriptPubKey, Money.COIN * 100, FeeType.Medium, 101));
 
                 // Broadcast to the other node
-                await XelsSender.FullNode.NodeController<WalletController>().SendTransaction(new SendTransactionRequest(trx.ToHex()));
+                await xelsSender.FullNode.NodeController<WalletController>().SendTransaction(new SendTransactionRequest(trx.ToHex()));
 
                 // Wait for the transaction to arrive
-                TestBase.WaitLoop(() => XelsReceiver.CreateRPCClient().GetRawMempool().Length > 0);
-                TestBase.WaitLoop(() => XelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Any());
+                TestBase.WaitLoop(() => xelsReceiver.CreateRPCClient().GetRawMempool().Length > 0);
+                TestBase.WaitLoop(() => xelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Any());
 
-                long receivetotal = XelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Sum(s => s.Transaction.Amount);
+                long receivetotal = xelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Sum(s => s.Transaction.Amount);
                 Assert.Equal(Money.COIN * 100, receivetotal);
 
                 // Check that on the sending node, the Spendable Balance includes unconfirmed transactions.
                 // The transaction will have consumed 3 outputs, leaving us 3, and will also return us some as change.
                 // Change is always the First output because Shuffle is false!
                 Money expectedSenderSpendableBalance = Money.COIN * 3 * 50 + trx.Outputs.First().Value;
-                AccountBalance senderBalance = XelsSender.FullNode.WalletManager().GetBalances(WalletName).First();
+                AccountBalance senderBalance = xelsSender.FullNode.WalletManager().GetBalances(WalletName).First();
                 Assert.Equal(expectedSenderSpendableBalance, senderBalance.SpendableAmount);
 
-                Assert.Null(XelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).First().Transaction.BlockHeight);
+                Assert.Null(xelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).First().Transaction.BlockHeight);
 
                 // Generate two new blocks so the transaction is confirmed
-                TestHelper.MineBlocks(XelsSender, 2);
+                TestHelper.MineBlocks(xelsSender, 2);
 
                 // Wait for block repo for block sync to work
-                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(XelsReceiver, XelsSender));
+                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(xelsReceiver, xelsSender));
 
-                Assert.Equal(Money.Coins(100), XelsReceiver.FullNode.WalletManager().GetBalances(WalletName, Account).Single().AmountConfirmed);
+                Assert.Equal(Money.Coins(100), xelsReceiver.FullNode.WalletManager().GetBalances(WalletName, Account).Single().AmountConfirmed);
             }
         }
 
@@ -89,65 +89,65 @@ namespace Xels.Bitcoin.IntegrationTests.Wallet
         {
             using (NodeBuilder builder = NodeBuilder.Create(this))
             {
-                CoreNode XelsSender = builder.CreateXelsPowNode(this.network).WithWallet().Start();
-                CoreNode XelsReceiver = builder.CreateXelsPowNode(this.network).WithWallet().Start();
+                CoreNode xelsSender = builder.CreateXelsPowNode(this.network).WithWallet().Start();
+                CoreNode xelsReceiver = builder.CreateXelsPowNode(this.network).WithWallet().Start();
 
-                int maturity = (int)XelsSender.FullNode.Network.Consensus.CoinbaseMaturity;
-                TestHelper.MineBlocks(XelsSender, maturity + 1 + 5);
+                int maturity = (int)xelsSender.FullNode.Network.Consensus.CoinbaseMaturity;
+                TestHelper.MineBlocks(xelsSender, maturity + 1 + 5);
 
                 // The mining should add coins to the wallet
-                long total = XelsSender.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Sum(s => s.Transaction.Amount);
+                long total = xelsSender.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Sum(s => s.Transaction.Amount);
                 Assert.Equal(Money.COIN * 6 * 50, total);
 
                 // Sync both nodes
-                TestHelper.ConnectAndSync(XelsSender, XelsReceiver);
+                TestHelper.ConnectAndSync(xelsSender, xelsReceiver);
 
                 // Send coins to the receiver
-                HdAddress sendto = XelsReceiver.FullNode.WalletManager().GetUnusedAddress(new WalletAccountReference(WalletName, Account));
-                Transaction trx = XelsSender.FullNode.WalletTransactionHandler().BuildTransaction(CreateContext(XelsSender.FullNode.Network,
+                HdAddress sendto = xelsReceiver.FullNode.WalletManager().GetUnusedAddress(new WalletAccountReference(WalletName, Account));
+                Transaction trx = xelsSender.FullNode.WalletTransactionHandler().BuildTransaction(CreateContext(xelsSender.FullNode.Network,
                     new WalletAccountReference(WalletName, Account), Password, sendto.ScriptPubKey, Money.COIN * 100, FeeType.Medium, 101));
 
                 // Broadcast to the other node
-                XelsSender.FullNode.NodeController<WalletController>().SendTransaction(new SendTransactionRequest(trx.ToHex()));
+                xelsSender.FullNode.NodeController<WalletController>().SendTransaction(new SendTransactionRequest(trx.ToHex()));
 
                 // Wait for the transaction to arrive
-                TestBase.WaitLoop(() => XelsReceiver.CreateRPCClient().GetRawMempool().Length > 0);
-                TestBase.WaitLoop(() => XelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Any());
+                TestBase.WaitLoop(() => xelsReceiver.CreateRPCClient().GetRawMempool().Length > 0);
+                TestBase.WaitLoop(() => xelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Any());
 
-                long receivetotal = XelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Sum(s => s.Transaction.Amount);
+                long receivetotal = xelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Sum(s => s.Transaction.Amount);
                 Assert.Equal(Money.COIN * 100, receivetotal);
 
                 // Generate two new blocks so the transaction is confirmed
-                TestHelper.MineBlocks(XelsSender, 2);
-                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(XelsReceiver, XelsSender));
+                TestHelper.MineBlocks(xelsSender, 2);
+                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(xelsReceiver, xelsSender));
 
 
                 // Send 1 transaction from the second node and let it get to the first.
-                sendto = XelsSender.FullNode.WalletManager().GetUnusedAddress(new WalletAccountReference(WalletName, Account));
-                Transaction testTx1 = XelsReceiver.FullNode.WalletTransactionHandler().BuildTransaction(CreateContext(XelsSender.FullNode.Network,
+                sendto = xelsSender.FullNode.WalletManager().GetUnusedAddress(new WalletAccountReference(WalletName, Account));
+                Transaction testTx1 = xelsReceiver.FullNode.WalletTransactionHandler().BuildTransaction(CreateContext(xelsSender.FullNode.Network,
                     new WalletAccountReference(WalletName, Account), Password, sendto.ScriptPubKey, Money.COIN * 10, FeeType.Medium, 0));
-                XelsReceiver.FullNode.NodeController<WalletController>().SendTransaction(new SendTransactionRequest(testTx1.ToHex()));
-                TestBase.WaitLoop(() => XelsSender.CreateRPCClient().GetRawMempool().Length > 0);
+                xelsReceiver.FullNode.NodeController<WalletController>().SendTransaction(new SendTransactionRequest(testTx1.ToHex()));
+                TestBase.WaitLoop(() => xelsSender.CreateRPCClient().GetRawMempool().Length > 0);
 
                 // Disconnect so the first node doesn't get any more transactions.
-                TestHelper.Disconnect(XelsReceiver, XelsSender);
+                TestHelper.Disconnect(xelsReceiver, xelsSender);
 
                 // Send a second unconfirmed transaction on the second node which consumes the first.
-                Transaction testTx2 = XelsReceiver.FullNode.WalletTransactionHandler().BuildTransaction(CreateContext(XelsSender.FullNode.Network,
+                Transaction testTx2 = xelsReceiver.FullNode.WalletTransactionHandler().BuildTransaction(CreateContext(xelsSender.FullNode.Network,
                     new WalletAccountReference(WalletName, Account), Password, sendto.ScriptPubKey, Money.COIN * 10, FeeType.Medium, 0));
-                XelsReceiver.FullNode.NodeService<IBroadcasterManager>().BroadcastTransactionAsync(testTx2);
+                xelsReceiver.FullNode.NodeService<IBroadcasterManager>().BroadcastTransactionAsync(testTx2);
 
                 // Now we can mine a block on the first node with only 1 of the transactions in it.
-                TestHelper.MineBlocks(XelsSender, 1);
+                TestHelper.MineBlocks(xelsSender, 1);
 
                 // Connect the nodes again. 
-                TestHelper.Connect(XelsSender, XelsReceiver);
+                TestHelper.Connect(xelsSender, xelsReceiver);
 
                 // Second node receives a block with only one transaction in it.
-                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(XelsReceiver, XelsSender, true));
+                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(xelsReceiver, xelsSender, true));
 
                 // Now lets see what is in the second node's wallet!
-                IEnumerable<UnspentOutputReference> spendableTxs = XelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName);
+                IEnumerable<UnspentOutputReference> spendableTxs = xelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName);
 
                 // There should be one spendable transaction. And it should be testTx2.
                 Assert.Single(spendableTxs);
@@ -163,29 +163,29 @@ namespace Xels.Bitcoin.IntegrationTests.Wallet
         {
             using (NodeBuilder builder = NodeBuilder.Create(this))
             {
-                CoreNode XelsSender = builder.CreateXelsPowNode(this.network).WithWallet().Start();
-                CoreNode XelsReceiver = builder.CreateXelsPowNode(this.network).WithWallet().Start();
+                CoreNode xelsSender = builder.CreateXelsPowNode(this.network).WithWallet().Start();
+                CoreNode xelsReceiver = builder.CreateXelsPowNode(this.network).WithWallet().Start();
 
-                int maturity = (int)XelsSender.FullNode.Network.Consensus.CoinbaseMaturity;
-                TestHelper.MineBlocks(XelsSender, maturity + 1 + 5);
+                int maturity = (int)xelsSender.FullNode.Network.Consensus.CoinbaseMaturity;
+                TestHelper.MineBlocks(xelsSender, maturity + 1 + 5);
 
                 // The mining should add coins to the wallet
-                long total = XelsSender.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Sum(s => s.Transaction.Amount);
+                long total = xelsSender.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Sum(s => s.Transaction.Amount);
                 Assert.Equal(Money.COIN * 6 * 50, total);
 
                 // Sync both nodes
-                TestHelper.ConnectAndSync(XelsSender, XelsReceiver);
+                TestHelper.ConnectAndSync(xelsSender, xelsReceiver);
 
                 // Build a transaction using the correct password.
-                HdAddress sendto = XelsReceiver.FullNode.WalletManager().GetUnusedAddress(new WalletAccountReference(WalletName, Account));
-                Transaction trx = XelsSender.FullNode.WalletTransactionHandler().BuildTransaction(CreateContext(XelsSender.FullNode.Network,
+                HdAddress sendto = xelsReceiver.FullNode.WalletManager().GetUnusedAddress(new WalletAccountReference(WalletName, Account));
+                Transaction trx = xelsSender.FullNode.WalletTransactionHandler().BuildTransaction(CreateContext(xelsSender.FullNode.Network,
                     new WalletAccountReference(WalletName, Account), Password, sendto.ScriptPubKey, Money.COIN * 100, FeeType.Medium, 101));
 
                 // Build a transaction using an incorrect password. It should throw an exception.
                 SecurityException exception = Assert.Throws<SecurityException>(() =>
                 {
-                    Transaction trx2 = XelsSender.FullNode.WalletTransactionHandler().BuildTransaction(CreateContext(
-                        XelsSender.FullNode.Network,
+                    Transaction trx2 = xelsSender.FullNode.WalletTransactionHandler().BuildTransaction(CreateContext(
+                        xelsSender.FullNode.Network,
                         new WalletAccountReference(WalletName, Account), "Wrong", sendto.ScriptPubKey, Money.COIN * 100,
                         FeeType.Medium, 101));
                 });
@@ -204,123 +204,123 @@ namespace Xels.Bitcoin.IntegrationTests.Wallet
             // Mine the second transaction back in to the main chain
             using (NodeBuilder builder = NodeBuilder.Create(this))
             {
-                CoreNode XelsSender = builder.CreateXelsPowNode(this.network).WithWallet().Start();
-                CoreNode XelsReceiver = builder.CreateXelsPowNode(this.network).WithWallet().Start();
-                CoreNode XelsReorg = builder.CreateXelsPowNode(this.network).WithWallet().Start();
+                CoreNode xelsSender = builder.CreateXelsPowNode(this.network).WithWallet().Start();
+                CoreNode xelsReceiver = builder.CreateXelsPowNode(this.network).WithWallet().Start();
+                CoreNode xelsReorg = builder.CreateXelsPowNode(this.network).WithWallet().Start();
 
-                int maturity = (int)XelsSender.FullNode.Network.Consensus.CoinbaseMaturity;
-                TestHelper.MineBlocks(XelsSender, maturity + 1 + 15);
+                int maturity = (int)xelsSender.FullNode.Network.Consensus.CoinbaseMaturity;
+                TestHelper.MineBlocks(xelsSender, maturity + 1 + 15);
 
                 int currentBestHeight = maturity + 1 + 15;
 
                 // The mining should add coins to the wallet.
-                long total = XelsSender.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Sum(s => s.Transaction.Amount);
+                long total = xelsSender.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Sum(s => s.Transaction.Amount);
                 Assert.Equal(Money.COIN * 16 * 50, total);
 
                 // Sync all nodes.
-                TestHelper.ConnectAndSync(XelsReceiver, XelsSender);
-                TestHelper.ConnectAndSync(XelsReceiver, XelsReorg);
-                TestHelper.ConnectAndSync(XelsSender, XelsReorg);
+                TestHelper.ConnectAndSync(xelsReceiver, xelsSender);
+                TestHelper.ConnectAndSync(xelsReceiver, xelsReorg);
+                TestHelper.ConnectAndSync(xelsSender, xelsReorg);
 
                 // Build Transaction 1.
                 // Send coins to the receiver.
-                HdAddress sendto = XelsReceiver.FullNode.WalletManager().GetUnusedAddress(new WalletAccountReference(WalletName, Account));
-                Transaction transaction1 = XelsSender.FullNode.WalletTransactionHandler().BuildTransaction(CreateContext(XelsSender.FullNode.Network, new WalletAccountReference(WalletName, Account), Password, sendto.ScriptPubKey, Money.COIN * 100, FeeType.Medium, 101));
+                HdAddress sendto = xelsReceiver.FullNode.WalletManager().GetUnusedAddress(new WalletAccountReference(WalletName, Account));
+                Transaction transaction1 = xelsSender.FullNode.WalletTransactionHandler().BuildTransaction(CreateContext(xelsSender.FullNode.Network, new WalletAccountReference(WalletName, Account), Password, sendto.ScriptPubKey, Money.COIN * 100, FeeType.Medium, 101));
 
                 // Broadcast to the other node.
-                XelsSender.FullNode.NodeController<WalletController>().SendTransaction(new SendTransactionRequest(transaction1.ToHex()));
+                xelsSender.FullNode.NodeController<WalletController>().SendTransaction(new SendTransactionRequest(transaction1.ToHex()));
 
                 // Wait for the transaction to arrive.
-                TestBase.WaitLoop(() => XelsReceiver.CreateRPCClient().GetRawMempool().Length > 0);
-                Assert.NotNull(XelsReceiver.CreateRPCClient().GetRawTransaction(transaction1.GetHash(), null, false));
-                TestBase.WaitLoop(() => XelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Any());
+                TestBase.WaitLoop(() => xelsReceiver.CreateRPCClient().GetRawMempool().Length > 0);
+                Assert.NotNull(xelsReceiver.CreateRPCClient().GetRawTransaction(transaction1.GetHash(), null, false));
+                TestBase.WaitLoop(() => xelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Any());
 
-                long receivetotal = XelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Sum(s => s.Transaction.Amount);
+                long receivetotal = xelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Sum(s => s.Transaction.Amount);
                 Assert.Equal(Money.COIN * 100, receivetotal);
-                Assert.Null(XelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).First().Transaction.BlockHeight);
+                Assert.Null(xelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).First().Transaction.BlockHeight);
 
                 // Generate two new blocks so the transaction is confirmed.
-                TestHelper.MineBlocks(XelsSender, 1);
+                TestHelper.MineBlocks(xelsSender, 1);
                 int transaction1MinedHeight = currentBestHeight + 1;
-                TestHelper.MineBlocks(XelsSender, 1);
+                TestHelper.MineBlocks(xelsSender, 1);
                 currentBestHeight = currentBestHeight + 2;
 
                 // Wait for block repo for block sync to work.
-                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(XelsReceiver, XelsSender));
-                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(XelsReceiver, XelsReorg));
-                Assert.Equal(currentBestHeight, XelsReceiver.FullNode.ChainIndexer.Tip.Height);
-                TestBase.WaitLoop(() => transaction1MinedHeight == XelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).First().Transaction.BlockHeight);
+                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(xelsReceiver, xelsSender));
+                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(xelsReceiver, xelsReorg));
+                Assert.Equal(currentBestHeight, xelsReceiver.FullNode.ChainIndexer.Tip.Height);
+                TestBase.WaitLoop(() => transaction1MinedHeight == xelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).First().Transaction.BlockHeight);
 
                 // Build Transaction 2.
                 // Remove the reorg node.
-                TestHelper.Disconnect(XelsReceiver, XelsReorg);
-                TestHelper.Disconnect(XelsSender, XelsReorg);
+                TestHelper.Disconnect(xelsReceiver, xelsReorg);
+                TestHelper.Disconnect(xelsSender, xelsReorg);
 
-                ChainedHeader forkblock = XelsReceiver.FullNode.ChainIndexer.Tip;
+                ChainedHeader forkblock = xelsReceiver.FullNode.ChainIndexer.Tip;
 
                 // Send more coins to the wallet
-                sendto = XelsReceiver.FullNode.WalletManager().GetUnusedAddress(new WalletAccountReference(WalletName, Account));
-                Transaction transaction2 = XelsSender.FullNode.WalletTransactionHandler().BuildTransaction(CreateContext(XelsSender.FullNode.Network, new WalletAccountReference(WalletName, Account), Password, sendto.ScriptPubKey, Money.COIN * 10, FeeType.Medium, 101));
-                XelsSender.FullNode.NodeController<WalletController>().SendTransaction(new SendTransactionRequest(transaction2.ToHex()));
+                sendto = xelsReceiver.FullNode.WalletManager().GetUnusedAddress(new WalletAccountReference(WalletName, Account));
+                Transaction transaction2 = xelsSender.FullNode.WalletTransactionHandler().BuildTransaction(CreateContext(xelsSender.FullNode.Network, new WalletAccountReference(WalletName, Account), Password, sendto.ScriptPubKey, Money.COIN * 10, FeeType.Medium, 101));
+                xelsSender.FullNode.NodeController<WalletController>().SendTransaction(new SendTransactionRequest(transaction2.ToHex()));
 
                 // Wait for the transaction to arrive
-                TestBase.WaitLoop(() => XelsReceiver.CreateRPCClient().GetRawMempool().Length > 0);
-                Assert.NotNull(XelsReceiver.CreateRPCClient().GetRawTransaction(transaction2.GetHash(), null, false));
-                TestBase.WaitLoop(() => XelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Any());
-                long newamount = XelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Sum(s => s.Transaction.Amount);
+                TestBase.WaitLoop(() => xelsReceiver.CreateRPCClient().GetRawMempool().Length > 0);
+                Assert.NotNull(xelsReceiver.CreateRPCClient().GetRawTransaction(transaction2.GetHash(), null, false));
+                TestBase.WaitLoop(() => xelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Any());
+                long newamount = xelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Sum(s => s.Transaction.Amount);
                 Assert.Equal(Money.COIN * 110, newamount);
-                Assert.Contains(XelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName), b => b.Transaction.BlockHeight == null);
+                Assert.Contains(xelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName), b => b.Transaction.BlockHeight == null);
 
                 // Mine more blocks so it gets included in the chain.
-                TestHelper.MineBlocks(XelsSender, 1);
+                TestHelper.MineBlocks(xelsSender, 1);
                 int transaction2MinedHeight = currentBestHeight + 1;
-                TestHelper.MineBlocks(XelsSender, 1);
+                TestHelper.MineBlocks(xelsSender, 1);
                 currentBestHeight = currentBestHeight + 2;
-                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(XelsReceiver, XelsSender));
-                Assert.Equal(currentBestHeight, XelsReceiver.FullNode.ChainIndexer.Tip.Height);
-                TestBase.WaitLoop(() => XelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Any(b => b.Transaction.BlockHeight == transaction2MinedHeight));
+                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(xelsReceiver, xelsSender));
+                Assert.Equal(currentBestHeight, xelsReceiver.FullNode.ChainIndexer.Tip.Height);
+                TestBase.WaitLoop(() => xelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Any(b => b.Transaction.BlockHeight == transaction2MinedHeight));
 
                 // Create a reorg by mining on two different chains.
                 // Advance both chains, one chain is longer.
-                TestHelper.MineBlocks(XelsSender, 2);
-                TestHelper.MineBlocks(XelsReorg, 10);
+                TestHelper.MineBlocks(xelsSender, 2);
+                TestHelper.MineBlocks(xelsReorg, 10);
                 currentBestHeight = forkblock.Height + 10;
 
                 // Connect the reorg chain.
-                TestHelper.Connect(XelsReceiver, XelsReorg);
-                TestHelper.Connect(XelsSender, XelsReorg);
+                TestHelper.Connect(xelsReceiver, xelsReorg);
+                TestHelper.Connect(xelsSender, xelsReorg);
 
                 // Wait for the chains to catch up.
-                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(XelsReceiver, XelsSender));
-                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(XelsReceiver, XelsReorg, true));
-                Assert.Equal(currentBestHeight, XelsReceiver.FullNode.ChainIndexer.Tip.Height);
+                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(xelsReceiver, xelsSender));
+                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(xelsReceiver, xelsReorg, true));
+                Assert.Equal(currentBestHeight, xelsReceiver.FullNode.ChainIndexer.Tip.Height);
 
                 // Ensure wallet reorg completes.
-                TestBase.WaitLoop(() => XelsReceiver.FullNode.WalletManager().WalletTipHash == XelsReorg.CreateRPCClient().GetBestBlockHash());
+                TestBase.WaitLoop(() => xelsReceiver.FullNode.WalletManager().WalletTipHash == xelsReorg.CreateRPCClient().GetBestBlockHash());
 
                 // Check the wallet amount was rolled back.
-                long newtotal = XelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Sum(s => s.Transaction.Amount);
+                long newtotal = xelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Sum(s => s.Transaction.Amount);
                 Assert.Equal(receivetotal, newtotal);
-                TestBase.WaitLoop(() => maturity + 1 + 16 == XelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).First().Transaction.BlockHeight);
+                TestBase.WaitLoop(() => maturity + 1 + 16 == xelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).First().Transaction.BlockHeight);
 
                 // ReBuild Transaction 2.
                 // After the reorg transaction2 was returned back to mempool.
-                XelsSender.FullNode.NodeController<WalletController>().SendTransaction(new SendTransactionRequest(transaction2.ToHex()));
-                TestBase.WaitLoop(() => XelsReceiver.CreateRPCClient().GetRawMempool().Length > 0);
+                xelsSender.FullNode.NodeController<WalletController>().SendTransaction(new SendTransactionRequest(transaction2.ToHex()));
+                TestBase.WaitLoop(() => xelsReceiver.CreateRPCClient().GetRawMempool().Length > 0);
 
                 // Mine the transaction again.
-                TestHelper.MineBlocks(XelsSender, 1);
+                TestHelper.MineBlocks(xelsSender, 1);
                 transaction2MinedHeight = currentBestHeight + 1;
-                TestHelper.MineBlocks(XelsSender, 1);
+                TestHelper.MineBlocks(xelsSender, 1);
                 currentBestHeight = currentBestHeight + 2;
 
-                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(XelsReceiver, XelsSender));
-                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(XelsReceiver, XelsReorg));
+                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(xelsReceiver, xelsSender));
+                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(xelsReceiver, xelsReorg));
 
-                Assert.Equal(currentBestHeight, XelsReceiver.FullNode.ChainIndexer.Tip.Height);
-                long newsecondamount = XelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Sum(s => s.Transaction.Amount);
+                Assert.Equal(currentBestHeight, xelsReceiver.FullNode.ChainIndexer.Tip.Height);
+                long newsecondamount = xelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Sum(s => s.Transaction.Amount);
                 Assert.Equal(newamount, newsecondamount);
-                TestBase.WaitLoop(() => XelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Any(b => b.Transaction.BlockHeight == transaction2MinedHeight));
+                TestBase.WaitLoop(() => xelsReceiver.FullNode.WalletManager().GetSpendableTransactionsInWallet(WalletName).Any(b => b.Transaction.BlockHeight == transaction2MinedHeight));
             }
         }
 
@@ -390,37 +390,37 @@ namespace Xels.Bitcoin.IntegrationTests.Wallet
         {
             using (NodeBuilder builder = NodeBuilder.Create(this))
             {
-                CoreNode XelsSender = builder.CreateXelsPowNode(this.network).WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10Miner).Start();
-                CoreNode XelsReceiver = builder.CreateXelsPowNode(this.network).Start();
-                CoreNode XelsReorg = builder.CreateXelsPowNode(this.network).WithWallet().Start();
+                CoreNode xelsSender = builder.CreateXelsPowNode(this.network).WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10Miner).Start();
+                CoreNode xelsReceiver = builder.CreateXelsPowNode(this.network).Start();
+                CoreNode xelsReorg = builder.CreateXelsPowNode(this.network).WithWallet().Start();
 
                 // Sync all nodes.
-                TestHelper.ConnectAndSync(XelsReceiver, XelsSender);
-                TestHelper.ConnectAndSync(XelsReceiver, XelsReorg);
-                TestHelper.ConnectAndSync(XelsSender, XelsReorg);
+                TestHelper.ConnectAndSync(xelsReceiver, xelsSender);
+                TestHelper.ConnectAndSync(xelsReceiver, xelsReorg);
+                TestHelper.ConnectAndSync(xelsSender, xelsReorg);
 
                 // Remove the reorg node.
-                TestHelper.Disconnect(XelsReceiver, XelsReorg);
-                TestHelper.Disconnect(XelsSender, XelsReorg);
+                TestHelper.Disconnect(xelsReceiver, xelsReorg);
+                TestHelper.Disconnect(xelsSender, xelsReorg);
 
                 // Create a reorg by mining on two different chains.
                 // Advance both chains, one chain is longer.
-                TestHelper.MineBlocks(XelsSender, 2);
-                TestHelper.MineBlocks(XelsReorg, 10);
+                TestHelper.MineBlocks(xelsSender, 2);
+                TestHelper.MineBlocks(xelsReorg, 10);
 
                 // Connect the reorg chain.
-                TestHelper.ConnectAndSync(XelsReceiver, XelsReorg);
-                TestHelper.ConnectAndSync(XelsSender, XelsReorg);
+                TestHelper.ConnectAndSync(xelsReceiver, xelsReorg);
+                TestHelper.ConnectAndSync(xelsSender, xelsReorg);
 
                 // Wait for the chains to catch up.
-                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(XelsReceiver, XelsSender));
-                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(XelsReceiver, XelsReorg));
-                Assert.Equal(20, XelsReceiver.FullNode.ChainIndexer.Tip.Height);
+                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(xelsReceiver, xelsSender));
+                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(xelsReceiver, xelsReorg));
+                Assert.Equal(20, xelsReceiver.FullNode.ChainIndexer.Tip.Height);
 
-                TestHelper.MineBlocks(XelsSender, 5);
+                TestHelper.MineBlocks(xelsSender, 5);
 
-                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(XelsReceiver, XelsSender));
-                Assert.Equal(25, XelsReceiver.FullNode.ChainIndexer.Tip.Height);
+                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(xelsReceiver, xelsSender));
+                Assert.Equal(25, xelsReceiver.FullNode.ChainIndexer.Tip.Height);
             }
         }
 
@@ -432,40 +432,40 @@ namespace Xels.Bitcoin.IntegrationTests.Wallet
         {
             using (NodeBuilder builder = NodeBuilder.Create(this))
             {
-                CoreNode XelsSender = builder.CreateXelsPowNode(this.network).WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10Miner).Start();
-                CoreNode XelsReceiver = builder.CreateXelsPowNode(this.network).Start();
-                CoreNode XelsReorg = builder.CreateXelsPowNode(this.network).WithDummyWallet().Start();
+                CoreNode xelsSender = builder.CreateXelsPowNode(this.network).WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10Miner).Start();
+                CoreNode xelsReceiver = builder.CreateXelsPowNode(this.network).Start();
+                CoreNode xelsReorg = builder.CreateXelsPowNode(this.network).WithDummyWallet().Start();
 
                 // Sync all nodes.
-                TestHelper.ConnectAndSync(XelsReceiver, XelsSender);
-                TestHelper.ConnectAndSync(XelsReceiver, XelsReorg);
-                TestHelper.ConnectAndSync(XelsSender, XelsReorg);
+                TestHelper.ConnectAndSync(xelsReceiver, xelsSender);
+                TestHelper.ConnectAndSync(xelsReceiver, xelsReorg);
+                TestHelper.ConnectAndSync(xelsSender, xelsReorg);
 
                 // Remove the reorg node and wait for node to be disconnected.
-                TestHelper.Disconnect(XelsReceiver, XelsReorg);
-                TestHelper.Disconnect(XelsSender, XelsReorg);
+                TestHelper.Disconnect(xelsReceiver, xelsReorg);
+                TestHelper.Disconnect(xelsSender, xelsReorg);
 
                 // Create a reorg by mining on two different chains.
                 // Advance both chains, one chain is longer.
-                TestHelper.MineBlocks(XelsSender, 2);
-                TestHelper.MineBlocks(XelsReorg, 10);
+                TestHelper.MineBlocks(xelsSender, 2);
+                TestHelper.MineBlocks(xelsReorg, 10);
 
                 // Connect the reorg chain.
-                TestHelper.ConnectAndSync(XelsReceiver, XelsReorg);
-                TestHelper.ConnectAndSync(XelsSender, XelsReorg);
+                TestHelper.ConnectAndSync(xelsReceiver, xelsReorg);
+                TestHelper.ConnectAndSync(xelsSender, xelsReorg);
 
                 // Wait for the chains to catch up.
-                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(XelsReceiver, XelsSender));
-                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(XelsReceiver, XelsReorg));
-                Assert.Equal(20, XelsReceiver.FullNode.ChainIndexer.Tip.Height);
+                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(xelsReceiver, xelsSender));
+                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(xelsReceiver, xelsReorg));
+                Assert.Equal(20, xelsReceiver.FullNode.ChainIndexer.Tip.Height);
 
-                // Rewind the wallet in the XelsReceiver node.
-                (XelsReceiver.FullNode.NodeService<IWalletSyncManager>() as WalletSyncManager).SyncFromHeight(10);
+                // Rewind the wallet in the xelsReceiver node.
+                (xelsReceiver.FullNode.NodeService<IWalletSyncManager>() as WalletSyncManager).SyncFromHeight(10);
 
-                TestHelper.MineBlocks(XelsSender, 5);
+                TestHelper.MineBlocks(xelsSender, 5);
 
-                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(XelsReceiver, XelsSender));
-                Assert.Equal(25, XelsReceiver.FullNode.ChainIndexer.Tip.Height);
+                TestBase.WaitLoop(() => TestHelper.AreNodesSynced(xelsReceiver, xelsSender));
+                Assert.Equal(25, xelsReceiver.FullNode.ChainIndexer.Tip.Height);
             }
         }
 
@@ -474,12 +474,12 @@ namespace Xels.Bitcoin.IntegrationTests.Wallet
         {
             using (NodeBuilder builder = NodeBuilder.Create(this))
             {
-                CoreNode Xelsminer = builder.CreateXelsPowNode(this.network).WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10Miner).Start();
+                CoreNode xelsminer = builder.CreateXelsPowNode(this.network).WithReadyBlockchainData(ReadyBlockchain.BitcoinRegTest10Miner).Start();
 
                 // Push the wallet back.
-                Xelsminer.FullNode.NodeService<IWalletSyncManager>().SyncFromHeight(5);
+                xelsminer.FullNode.NodeService<IWalletSyncManager>().SyncFromHeight(5);
 
-                TestHelper.MineBlocks(Xelsminer, 5);
+                TestHelper.MineBlocks(xelsminer, 5);
             }
         }
 
@@ -488,17 +488,17 @@ namespace Xels.Bitcoin.IntegrationTests.Wallet
         {
             using (NodeBuilder builder = NodeBuilder.Create(this))
             {
-                CoreNode XelsNodeSync = builder.CreateXelsPowNode(this.network).WithWallet().Start();
+                CoreNode xelsNodeSync = builder.CreateXelsPowNode(this.network).WithWallet().Start();
 
-                TestHelper.MineBlocks(XelsNodeSync, 10);
+                TestHelper.MineBlocks(xelsNodeSync, 10);
 
                 // Set the tip of best chain some blocks in the past
-                XelsNodeSync.FullNode.ChainIndexer.SetTip(XelsNodeSync.FullNode.ChainIndexer.GetHeader(XelsNodeSync.FullNode.ChainIndexer.Height - 5));
+                xelsNodeSync.FullNode.ChainIndexer.SetTip(xelsNodeSync.FullNode.ChainIndexer.GetHeader(xelsNodeSync.FullNode.ChainIndexer.Height - 5));
 
                 // Stop the node (it will persist the chain with the reset tip)
-                XelsNodeSync.FullNode.Dispose();
+                xelsNodeSync.FullNode.Dispose();
 
-                CoreNode newNodeInstance = builder.CloneXelsNode(XelsNodeSync);
+                CoreNode newNodeInstance = builder.CloneXelsNode(xelsNodeSync);
 
                 // Load the node, this should hit the block store recover code
                 newNodeInstance.Start();

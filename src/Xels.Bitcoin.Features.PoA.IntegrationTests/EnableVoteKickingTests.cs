@@ -17,7 +17,7 @@ namespace Xels.Bitcoin.Features.PoA.IntegrationTests
             {
                 const int idleTimeSeconds = 10 * 60;
 
-                // Have a network that mimics CC where voting is on and kicking is off.
+                // Have a network that mimics Cc where voting is on and kicking is off.
                 var votingNetwork1 = new TestPoANetwork("VoteNetwork1");
                 var votingNetwork2 = new TestPoANetwork("VoteNetwork2");
 

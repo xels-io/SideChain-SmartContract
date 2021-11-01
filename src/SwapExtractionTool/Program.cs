@@ -9,7 +9,7 @@ namespace SwapExtractionTool
     {
         static async Task Main(string[] args)
         {
-            int XelsNetworkApiPort;
+            int xelsNetworkApiPort;
             int startBlock = 0;
             Network xlcNetwork;
             string blockExplorerBaseUrl;
@@ -18,17 +18,17 @@ namespace SwapExtractionTool
             {
                 startBlock = 1528858;
 
-                XelsNetworkApiPort = 38221;
+                xelsNetworkApiPort = 38221;
                 xlcNetwork = new XlcTest();
-                blockExplorerBaseUrl = "https://Xelstestindexer1.azurewebsites.net/api/v1/";
+                blockExplorerBaseUrl = "https://xelstestindexer1.azurewebsites.net/api/v1/";
             }
             else
             {
                 startBlock = 1975500;
 
-                XelsNetworkApiPort = 37221;
+                xelsNetworkApiPort = 37221;
                 xlcNetwork = new XlcMain();
-                blockExplorerBaseUrl = "https://Xelsmainindexer1.azurewebsites.net/api/v1/";
+                blockExplorerBaseUrl = "https://xelsmainindexer1.azurewebsites.net/api/v1/";
             }
 
             var arg = args.FirstOrDefault(a => a.StartsWith("-startfrom"));
@@ -37,14 +37,14 @@ namespace SwapExtractionTool
 
             if (args.Contains("-swap"))
             {
-                var service = new SwapExtractionService(XelsNetworkApiPort, xlcNetwork);
+                var service = new SwapExtractionService(xelsNetworkApiPort, xlcNetwork);
                 await service.RunAsync(startBlock, true, false);
             }
 
             if (args.Contains("-swapvote") || args.Contains("-collateralvote"))
             {
                 var blockExplorerClient = new BlockExplorerClient(blockExplorerBaseUrl);
-                var service = new VoteExtractionService(XelsNetworkApiPort, xlcNetwork, blockExplorerClient);
+                var service = new VoteExtractionService(xelsNetworkApiPort, xlcNetwork, blockExplorerClient);
 
                 if (args.Contains("-collateralvote"))
                     await service.RunAsync(VoteType.CollateralVote, startBlock);

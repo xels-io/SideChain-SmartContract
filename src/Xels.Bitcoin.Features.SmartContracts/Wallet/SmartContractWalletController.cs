@@ -116,7 +116,7 @@ namespace Xels.Bitcoin.Features.SmartContracts.Wallet
         }
 
         /// <summary>
-        /// Gets the balance at a specific wallet address in STRAT (or the sidechain coin).
+        /// Gets the balance at a specific wallet address in XEL (or the sidechain coin).
         /// This method gets the UTXOs at the address that the wallet can spend.
         /// The function can be used to query the balance at a smart contract account address
         /// supplied by /api/SmartContractWallet/account-addresses.
@@ -124,7 +124,7 @@ namespace Xels.Bitcoin.Features.SmartContracts.Wallet
         ///
         /// <param name="walletName">The address at which to retrieve the balance.</param>
         /// 
-        /// <returns>The balance at a specific wallet address in STRAT (or the sidechain coin).</returns>
+        /// <returns>The balance at a specific wallet address in XEL (or the sidechain coin).</returns>
         /// <response code="200">Returns address balance</response>
         [Route("address-balance")]
         [HttpGet]

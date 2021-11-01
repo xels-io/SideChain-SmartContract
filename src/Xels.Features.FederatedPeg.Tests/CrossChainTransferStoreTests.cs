@@ -11,10 +11,13 @@ using Xels.Bitcoin;
 using Xels.Bitcoin.Configuration;
 using Xels.Bitcoin.Consensus;
 using Xels.Bitcoin.Controllers;
+using Xels.Bitcoin.Features.ExternalApi;
 using Xels.Bitcoin.Features.MemoryPool;
 using Xels.Bitcoin.Features.Wallet;
 using Xels.Bitcoin.Features.Wallet.Models;
 using Xels.Bitcoin.Tests.Common;
+using Xels.Features.Collateral.CounterChain;
+using Xels.Features.FederatedPeg.Conversion;
 using Xels.Features.FederatedPeg.Events;
 using Xels.Features.FederatedPeg.Interfaces;
 using Xels.Features.FederatedPeg.Models;
@@ -583,7 +586,7 @@ namespace Xels.Features.FederatedPeg.Tests
         }
 
         [Fact(Skip = "Requires main chain user to be running.")]
-        public void DoTest()
+        public async Task DoTest()
         {
             var transactionRequest = new BuildTransactionRequest()
             {
@@ -603,10 +606,10 @@ namespace Xels.Features.FederatedPeg.Tests
                 "http://127.0.0.1:38221/api/wallet/build-transaction", transactionRequest);
 
             var transaction = new PosTransaction(model.Hex);
-
-            var reader = new OpReturnDataReader(CcNetwork.NetworksSelector.Testnet());
-            var extractor = new DepositExtractor(this.federatedPegSettings, this.network, this.opReturnDataReader);
-            IDeposit deposit = extractor.ExtractDepositFromTransaction(transaction, 2, 1);
+            var counterChainNetwork = new CounterChainNetworkWrapper(CcNetwork.NetworksSelector.Testnet());
+            var reader = new OpReturnDataReader(counterChainNetwork.CounterChainNetwork);
+            var extractor = new DepositExtractor(Substitute.For<IConversionRequestRepository>(), this.federatedPegSettings, this.network, reader);
+            IDeposit deposit = await extractor.ExtractDepositFromTransaction(transaction, 2, 1);
 
             Assert.NotNull(deposit);
             Assert.Equal(transaction.GetHash(), deposit.Id);

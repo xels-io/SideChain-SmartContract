@@ -80,7 +80,7 @@ namespace Xels.Bitcoin.Features.MemoryPool
         /// </summary>
         private async Task RemoveInvalidTransactionsAsync(Block block)
         {
-            // TODO: This was initially implemented only to fix a known issue on CC.
+            // TODO: This was initially implemented only to fix a known issue on Cc.
             // There may be other things to validate mempool txs for when reorging:
             // - Do we need to check if coinstakes are being spent too?
             // - Are maturity requirements of transactions still met, in case the forked chain is shorter?

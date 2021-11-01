@@ -8,7 +8,7 @@ import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v3.3.0/contr
 contract WrappedXlcToken is ERC20, Ownable {
     mapping (address => string) public withdrawalAddresses;
     
-    constructor(uint256 initialSupply) public ERC20("WrappedXlc", "WXLC") {
+    constructor(uint256 initialSupply) public ERC20("WrappedXlc", "WSTRAX") {
         _mint(msg.sender, initialSupply);
     }
     

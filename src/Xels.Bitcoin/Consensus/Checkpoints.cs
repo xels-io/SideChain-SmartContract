@@ -66,7 +66,7 @@ namespace Xels.Bitcoin.Consensus
         /// <summary>
         /// Initializes a new instance of the object.
         /// </summary>
-        /// <param name="network">Specification of the network the node runs on - regtest/testnet/mainnet/Xels test/main.</param>
+        /// <param name="network">Specification of the network the node runs on - regtest/testnet/mainnet/xels test/main.</param>
         /// <param name="consensusSettings">Consensus settings for node - used to see if checkpoints have been disabled or not.</param>
         public Checkpoints(Network network, ConsensusSettings consensusSettings)
         {

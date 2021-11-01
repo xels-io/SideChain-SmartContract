@@ -22,10 +22,10 @@ namespace Xels.Bitcoin.Networks
         public const int XelsDefaultMaxTipAgeInSeconds = 2 * 60 * 60;
 
         /// <summary> The name of the root folder containing the different Xels blockchains (XelsMain, XelsTest, XelsRegTest). </summary>
-        public const string XelsRootFolderName = "Xels";
+        public const string XelsRootFolderName = "xels";
 
         /// <summary> The default name used for the Xels configuration file. </summary>
-        public const string XelsDefaultConfigFilename = "Xels.conf";
+        public const string XelsDefaultConfigFilename = "xels.conf";
 
         public XelsMain()
         {
@@ -55,7 +55,7 @@ namespace Xels.Bitcoin.Networks
             this.RootFolderName = XelsRootFolderName;
             this.DefaultConfigFilename = XelsDefaultConfigFilename;
             this.MaxTimeOffsetSeconds = 25 * 60;
-            this.CoinTicker = "XELS";
+            this.CoinTicker = "XEL";
             this.DefaultBanTimeSeconds = 16000; // 500 (MaxReorg) * 64 (TargetSpacing) / 2 = 4 hours, 26 minutes and 40 seconds
 
             var consensusFactory = new PosConsensusFactory();
@@ -167,7 +167,7 @@ namespace Xels.Bitcoin.Networks
             };
 
             this.Bech32Encoders = new Bech32Encoder[2];
-            var encoder = new Bech32Encoder("xels");
+            var encoder = new Bech32Encoder("xel");
             this.Bech32Encoders[(int)Bech32Type.WITNESS_PUBKEY_ADDRESS] = encoder;
             this.Bech32Encoders[(int)Bech32Type.WITNESS_SCRIPT_ADDRESS] = encoder;
 

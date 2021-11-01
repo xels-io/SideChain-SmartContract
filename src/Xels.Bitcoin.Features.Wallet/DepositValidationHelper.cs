@@ -10,6 +10,9 @@ namespace Xels.Bitcoin.Features.Wallet
 {
     public static class DepositValidationHelper
     {
+        /// <summary> Conversion transaction deposits smaller than this threshold will be ignored. Denominated in XLC.</summary>
+        public static readonly Money ConversionTransactionMinimum = Money.Coins(1000);
+
         /// <summary>
         /// This deposit extractor implementation only looks for a very specific deposit format.
         /// Deposits will have 2 outputs when there is no change.
@@ -49,7 +52,7 @@ namespace Xels.Bitcoin.Features.Wallet
             conversion = false;
             targetChain = 0 /* DestinationChain.XLC */;
 
-            // First check cross chain transfers from the XLC to CC network or vice versa.
+            // First check cross chain transfers from the XLC to Cc network or vice versa.
             if (!opReturnDataReader.TryGetTargetAddress(transaction, out targetAddress))
             {
                 // Else try and validate the destination adress by the destination chain.
@@ -88,13 +91,13 @@ namespace Xels.Bitcoin.Features.Wallet
 
             Network targetNetwork = null;
 
-            if (network.Name.StartsWith("CC"))
+            if (network.Name.StartsWith("Cc"))
             {
                 targetNetwork = XlcNetwork.MainChainNetworks[network.NetworkType]();
             }
             else if (network.Name.StartsWith("Xlc"))
             {
-                targetNetwork = new CcAddressValidationNetwork(network.Name.Replace("Xlc", "CC"));
+                targetNetwork = new CcAddressValidationNetwork(network.Name.Replace("Xlc", "Cc"));
             }
             else
             {
@@ -114,7 +117,7 @@ namespace Xels.Bitcoin.Features.Wallet
 
 
     /// <summary>
-    /// When running on Xlc its difficult to get the correct CC network class due to circular references.
+    /// When running on Xlc its difficult to get the correct Cc network class due to circular references.
     /// This is a bare-minimum network class for the sole purpose of address validation.
     /// </summary>
     public class CcAddressValidationNetwork : Network

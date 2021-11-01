@@ -30,7 +30,7 @@ namespace SwapExtractionTool
         private List<DistributedSwapTransaction> distributedSwapTransactions;
         private List<SwapTransaction> swapTransactions;
 
-        public SwapExtractionService(int XelsNetworkApiPort, Network xlcNetwork) : base(XelsNetworkApiPort, xlcNetwork)
+        public SwapExtractionService(int xelsNetworkApiPort, Network xlcNetwork) : base(xelsNetworkApiPort, xlcNetwork)
         {
             this.distributedSwapTransactions = new List<DistributedSwapTransaction>();
             this.swapTransactions = new List<SwapTransaction>();
@@ -111,7 +111,7 @@ namespace SwapExtractionTool
             }
 
             Console.WriteLine($"{this.swapTransactions.Count} swap transactions to process.");
-            Console.WriteLine($"{Money.Satoshis(this.swapTransactions.Sum(s => s.SenderAmount)).ToUnit(MoneyUnit.BTC)} STRAT swapped.");
+            Console.WriteLine($"{Money.Satoshis(this.swapTransactions.Sum(s => s.SenderAmount)).ToUnit(MoneyUnit.BTC)} XEL swapped.");
 
             using (var writer = new StreamWriter(Path.Combine(this.swapFilePath, "swaps.csv")))
             using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))

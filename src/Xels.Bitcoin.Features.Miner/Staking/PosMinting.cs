@@ -146,7 +146,7 @@ namespace Xels.Bitcoin.Features.Miner.Staking
         /// <summary>
         /// We don't stake coins that are smaller than 0.1 in order to save on CPU as these have a very small chance to be used
         /// to generate a block anyway.
-        /// <seealso cref="https://github.com/Xelsproject/XelsBitcoinFullNode/issues/1180"/>
+        /// <seealso cref="https://github.com/xelsproject/XelsBitcoinFullNode/issues/1180"/>
         /// </summary>
         public readonly ulong MinimumStakingCoinValue;
 

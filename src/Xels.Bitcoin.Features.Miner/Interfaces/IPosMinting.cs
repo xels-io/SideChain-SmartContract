@@ -41,7 +41,7 @@ namespace Xels.Bitcoin.Features.Miner.Interfaces
         /// <returns>Staking difficulty.</returns>
         /// <remarks>
         /// The actual idea behind the calculation is a mystery. It was simply ported from
-        /// <see cref="https://github.com/Xelsproject/XelsX/blob/47851b7337f528f52ec20e86dca7dcead8191cf5/src/rpcblockchain.cpp#L16"/>.
+        /// <see cref="https://github.com/xelsproject/xelsX/blob/47851b7337f528f52ec20e86dca7dcead8191cf5/src/rpcblockchain.cpp#L16"/>.
         /// </remarks>
         double GetDifficulty(ChainedHeader block);
 
@@ -70,7 +70,7 @@ namespace Xels.Bitcoin.Features.Miner.Interfaces
         /// presented on the network to generate each block.
         /// <para>
         /// The method was ported from
-        /// <see cref="https://github.com/Xelsproject/XelsX/blob/47851b7337f528f52ec20e86dca7dcead8191cf5/src/rpcblockchain.cpp#L74"/>.
+        /// <see cref="https://github.com/xelsproject/xelsX/blob/47851b7337f528f52ec20e86dca7dcead8191cf5/src/rpcblockchain.cpp#L74"/>.
         /// </para>
         /// </remarks>
         double GetNetworkWeight();

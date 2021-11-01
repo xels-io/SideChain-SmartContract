@@ -27,7 +27,7 @@ namespace Xels.SmartContracts.Tests.Common
 
         public override void BuildNode()
         {
-            var settings = new NodeSettings(this.Network, args: new string[] { "-conf=Xels.conf", "-datadir=" + this.DataFolder, "-displayextendednodestats=true" });
+            var settings = new NodeSettings(this.Network, args: new string[] { "-conf=xels.conf", "-datadir=" + this.DataFolder, "-displayextendednodestats=true" });
 
             IFullNodeBuilder builder = new FullNodeBuilder()
                             .UseNodeSettings(settings)

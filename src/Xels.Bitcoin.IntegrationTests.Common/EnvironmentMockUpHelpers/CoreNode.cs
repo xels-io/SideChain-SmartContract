@@ -108,7 +108,7 @@ namespace Xels.Bitcoin.IntegrationTests.Common.EnvironmentMockUpHelpers
             CreateConfigFile(this.ConfigParameters);
         }
 
-        /// <summary>Get Xels full node if possible.</summary>
+        /// <summary>Get xels full node if possible.</summary>
         public FullNode FullNode => this.runner.FullNode;
 
         public CoreNodeState State { get; private set; }
@@ -409,7 +409,7 @@ namespace Xels.Bitcoin.IntegrationTests.Common.EnvironmentMockUpHelpers
         }
 
         /// <summary>
-        /// Used with precompiled bitcoind and Xelsd node
+        /// Used with precompiled bitcoind and xelsd node
         /// executables, not SBFN runners.
         /// </summary>
         private void WaitForExternalNodeStartup()

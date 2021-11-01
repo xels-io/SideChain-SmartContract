@@ -10,11 +10,11 @@ namespace NBitcoin.Tests
 {
     public class Pos_hash_tests
     {
-        private readonly Network XelsMain;
+        private readonly Network xelsMain;
 
         public Pos_hash_tests()
         {
-            this.XelsMain = KnownNetworks.XlcMain;
+            this.xelsMain = KnownNetworks.XlcMain;
         }
 
         [Fact]
@@ -133,7 +133,7 @@ namespace NBitcoin.Tests
         [Trait("UnitTest", "UnitTest")]
         public void hash256()
         {
-            Assert.Equal(uint256.Parse("0xebe158d09325c470276619ebc5f7f87c98c0ed4b211c46a17a6457655811d082"), this.XelsMain.GetGenesis().GetHash());
+            Assert.Equal(uint256.Parse("0xebe158d09325c470276619ebc5f7f87c98c0ed4b211c46a17a6457655811d082"), this.xelsMain.GetGenesis().GetHash());
         }
 
         [Fact]

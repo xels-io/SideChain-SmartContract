@@ -4,6 +4,7 @@ using Xels.Bitcoin.Builder;
 using Xels.Bitcoin.Configuration;
 using Xels.Bitcoin.Features.Api;
 using Xels.Bitcoin.Features.BlockStore;
+using Xels.Bitcoin.Features.ExternalApi;
 using Xels.Bitcoin.Features.Interop;
 using Xels.Bitcoin.Features.MemoryPool;
 using Xels.Bitcoin.Features.Notifications;
@@ -59,6 +60,7 @@ namespace Xels.Features.FederatedPeg.IntegrationTests.Utils
                 .UseApi()
                 .UseMempool()
                 .AddRPC()
+                .AddExternalApi()
                 .AddSmartContracts(options =>
                 {
                     options.UseReflectionExecutor();

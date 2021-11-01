@@ -38,7 +38,7 @@ namespace Xels.Bitcoin.Utilities
         public static bool IsBitcoin(this Network network)
         {
             // TODO: Need a more elegant way of determining this
-            return !network.Name.ToLowerInvariant().Contains("Xels");
+            return !network.Name.ToLowerInvariant().Contains("xels");
         }
     }
 }

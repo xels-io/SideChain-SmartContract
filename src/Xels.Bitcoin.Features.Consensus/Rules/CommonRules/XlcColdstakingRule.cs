@@ -98,7 +98,7 @@ namespace Xels.Bitcoin.Features.Consensus.Rules.CommonRules
             {
                 if (scriptPubKey != coinstakeTransaction.Outputs[i].ScriptPubKey)
                 {
-                    // We have to make allowance for the fact that one of the cold stake outputs will be the CC reward payment script.
+                    // We have to make allowance for the fact that one of the cold stake outputs will be the Cc reward payment script.
                     // So do not throw a consensus error for those unless more than one appears in the transaction.
                     // We do not need to check the reward amount, because that is done elsewhere.
                     if (coinstakeTransaction.Outputs[i].ScriptPubKey == XlcCoinstakeRule.CcRewardScript && !ccScriptFlagSeen)

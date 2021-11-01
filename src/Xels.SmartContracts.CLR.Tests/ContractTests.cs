@@ -363,7 +363,7 @@ namespace Xels.SmartContracts.CLR.Tests
             IContractInvocationResult result = this.contract.Invoke(methodCall);
 
             Assert.False(result.IsSuccess);
-            Assert.Equal(ContractInvocationErrorType.MethodDoesNotExist, result.InvocationErrorType);
+            Assert.Equal(ContractInvocationErrorType.ParameterTypesDontMatch, result.InvocationErrorType);
         }
 
         [Fact]

@@ -71,7 +71,7 @@ namespace Xels.Bitcoin.Tests.P2P
 
             // Mimic external client
             const int portNumber = 80;
-            var client = new TcpClient("www.Xelsplatform.com", portNumber);
+            var client = new TcpClient("www.xelsplatform.com", portNumber);
 
             string ip = string.Empty;
             var ipandport = client.Client.RemoteEndPoint.ToString();

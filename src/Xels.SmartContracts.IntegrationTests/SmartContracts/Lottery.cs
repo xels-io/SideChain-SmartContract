@@ -67,7 +67,7 @@ public class Lottery : SmartContract
 
     public void Join()
     {
-        Assert(Message.Value == 100_000_000); // 1 STRAT entry
+        Assert(Message.Value == 100_000_000); // 1 XEL entry
         Assert(!IsPlayerAdded(Message.Sender));
         Assert(!Decided);
         Assert(PlayerCount < DesiredPlayers);

@@ -100,7 +100,7 @@ namespace Xels.Bitcoin.Features.SmartContracts.Rules
             if (height == this.network.Consensus.PremineHeight)
                 return this.network.Consensus.PremineReward;
 
-            return this.GetCalculatedRewardFromHeight(height);
+            return this.network.Consensus.ProofOfWorkReward;
         }
 
         /// <summary>

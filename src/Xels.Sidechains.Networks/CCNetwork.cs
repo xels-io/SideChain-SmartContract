@@ -23,7 +23,7 @@ namespace Xels.Sidechains.Networks
         public static Block CreateGenesis(SmartContractCollateralPoAConsensusFactory consensusFactory, uint genesisTime, uint nonce, uint bits, int version, Money reward, string coinbaseText)
         {
             Transaction genesisTransaction = consensusFactory.CreateTransaction();
-            // TODO: Remove CC networks from this solution?
+            // TODO: Remove Cc networks from this solution?
             //genesisTransaction.Time = genesisTime;
             genesisTransaction.Version = 1;
             genesisTransaction.AddInput(new TxIn()

@@ -156,6 +156,11 @@ namespace Xels.Bitcoin.Features.Wallet.Models
 
     public class WalletTransactionCountRequest : RequestModel
     {
+        public WalletTransactionCountRequest()
+        {
+            this.AccountName = WalletManager.DefaultAccount;
+        }
+
         /// <summary>
         /// The name of the wallet to query transaction count for.
         /// </summary>
@@ -243,7 +248,7 @@ namespace Xels.Bitcoin.Features.Wallet.Models
         public string AccountName { get; set; }
 
         /// <summary>
-        /// For CC we need to get Balances By Address
+        /// For Cc we need to get Balances By Address
         /// </summary>
         public bool IncludeBalanceByAddress { get; set; }
     }
@@ -330,7 +335,7 @@ namespace Xels.Bitcoin.Features.Wallet.Models
 
         /// <summary>
         /// A list of transaction recipients. For each recipient, specify the Pubkey script and the amount the
-        /// recipient will receive in STRAT (or a sidechain coin). If the transaction was realized,
+        /// recipient will receive in XEL (or a sidechain coin). If the transaction was realized,
         /// both the values would be used to create the UTXOs for the transaction recipients.
         /// </summary> 
         [MinLength(1)]
@@ -342,7 +347,7 @@ namespace Xels.Bitcoin.Features.Wallet.Models
         public string OpReturnData { get; set; }
 
         /// <summary>
-        /// The funds in STRAT (or a sidechain coin) to include with the OP_RETURN output. Currently, specifying
+        /// The funds in XEL (or a sidechain coin) to include with the OP_RETURN output. Currently, specifying
         /// some funds helps OP_RETURN outputs be relayed around the network.
         /// </summary>   
         [MoneyFormat(isRequired: false, ErrorMessage = "The op return amount is not in the correct format.")]
@@ -426,7 +431,7 @@ namespace Xels.Bitcoin.Features.Wallet.Models
     public class BuildTransactionRequest : TxFeeEstimateRequest, IValidatableObject
     {
         /// <summary>
-        /// The fee for the transaction in STRAT (or a sidechain coin).
+        /// The fee for the transaction in XEL (or a sidechain coin).
         /// </summary>
         [MoneyFormat(isRequired: false, ErrorMessage = "The fee is not in the correct format.")]
         public string FeeAmount { get; set; }
@@ -920,6 +925,12 @@ namespace Xels.Bitcoin.Features.Wallet.Models
 
         [Required(ErrorMessage = "A password is required.")]
         public string WalletPassword { get; set; }
+
+        /// <summary>
+        /// If this is set, only one address will be distributed to. The address has to be present in the wallet.
+        /// <remarks>Takes precedence over the <see cref="ReuseAddresses"/> and <see cref="UseChangeAddresses"/> settings. Cannot be used with <see cref="UseUniqueAddressPerUtxo"/>.</remarks>
+        /// </summary>
+        public string SingleDestinationAddress { get; set; }
 
         [DefaultValue(false)]
         public bool UseUniqueAddressPerUtxo { get; set; }

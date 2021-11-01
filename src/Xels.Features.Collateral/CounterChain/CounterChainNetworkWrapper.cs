@@ -9,7 +9,7 @@ namespace Xels.Features.Collateral.CounterChain
     {
         /// <summary>
         /// The "other" network that we are connecting to from this node.
-        /// E.g. if this is a CC sidechain gateway node, the counter-chain would be Xels and vice versa.
+        /// E.g. if this is a Cc sidechain gateway node, the counter-chain would be Xels and vice versa.
         /// </summary>
         public Network CounterChainNetwork { get; }
 

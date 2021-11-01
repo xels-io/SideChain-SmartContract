@@ -5,7 +5,7 @@
         /*
          * TODO: Consider importing to FN.
 
-        public static bool noClient = !Process.GetProcesses().Any(p => p.ProcessName.Contains("Xels"));
+        public static bool noClient = !Process.GetProcesses().Any(p => p.ProcessName.Contains("xels"));
 
         [Fact]
         [Trait("UnitTest", "UnitTest")]

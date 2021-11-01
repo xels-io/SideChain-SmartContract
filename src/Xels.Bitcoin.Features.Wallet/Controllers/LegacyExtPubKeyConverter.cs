@@ -22,10 +22,10 @@ namespace Xels.Bitcoin.Features.Wallet.Controllers
         /// or the corrected extended public key if the version bytes was the Xels X one.</returns>
         public static string ConvertIfInLegacyXelsFormat(string extPubKey, Network network)
         {
-            byte[] XelsVersionBytes = network.GetVersionBytes(Base58Type.EXT_PUBLIC_KEY, true);
+            byte[] xelsVersionBytes = network.GetVersionBytes(Base58Type.EXT_PUBLIC_KEY, true);
             byte[] extPubKeyBytes = Encoders.Base58Check.DecodeData(extPubKey);
 
-            if (IsXelsExtPubKey(extPubKeyBytes, XelsVersionBytes))
+            if (IsXelsExtPubKey(extPubKeyBytes, xelsVersionBytes))
             {
                 return extPubKey;
             }
@@ -38,10 +38,10 @@ namespace Xels.Bitcoin.Features.Wallet.Controllers
             throw new FormatException($"ExtPubKey {extPubKey} could not be parsed.");
         }
 
-        private static bool IsXelsExtPubKey(byte[] extPubKey, byte[] XelsVersionBytes)
+        private static bool IsXelsExtPubKey(byte[] extPubKey, byte[] xelsVersionBytes)
         {
             byte[] version = extPubKey.Take(4).ToArray();
-            return version.SequenceEqual(XelsVersionBytes);
+            return version.SequenceEqual(xelsVersionBytes);
         }
 
         private static bool IsLegacyXelsExtpubKey(byte[] extPubKey)

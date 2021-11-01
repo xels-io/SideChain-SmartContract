@@ -6,6 +6,7 @@ using Xels.Bitcoin.Builder.Feature;
 using Xels.Bitcoin.Features.Collateral.MempoolRules;
 using Xels.Bitcoin.Features.PoA;
 using Xels.Bitcoin.Utilities;
+using Xels.Features.Collateral.ConsensusRules;
 using Xels.Features.Collateral.CounterChain;
 using Xels.Features.PoA.Voting;
 
@@ -31,7 +32,7 @@ namespace Xels.Features.Collateral
             if (options.VotingEnabled)
             {
                 if (options.AutoKickIdleMembers)
-                    await this.joinFederationRequestMonitor.InitializeAsync();
+                    await this.joinFederationRequestMonitor.InitializeAsync().ConfigureAwait(false);
             }
         }
 
@@ -45,10 +46,13 @@ namespace Xels.Features.Collateral
     /// </summary>
     public static class FullNodeBuilderDynamicMembershipFeatureExtension
     {
-        // Both CC Peg and CC Miner calls this.
+        // Both Cc Peg and Cc Miner calls this.
         public static IFullNodeBuilder AddDynamicMemberhip(this IFullNodeBuilder fullNodeBuilder)
         {
             Guard.Assert(fullNodeBuilder.Network.Consensus.ConsensusFactory is CollateralPoAConsensusFactory);
+
+            if (!fullNodeBuilder.Network.Consensus.ConsensusRules.FullValidationRules.Contains(typeof(VotingRequestFullValidationRule)))
+                fullNodeBuilder.Network.Consensus.ConsensusRules.FullValidationRules.Add(typeof(VotingRequestFullValidationRule));
 
             if (!fullNodeBuilder.Network.Consensus.MempoolRules.Contains(typeof(VotingRequestValidationRule)))
                 fullNodeBuilder.Network.Consensus.MempoolRules.Add(typeof(VotingRequestValidationRule));

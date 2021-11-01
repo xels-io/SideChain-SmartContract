@@ -24,21 +24,21 @@ namespace Xels.Bitcoin.IntegrationTests.BlockStore
                     { "-addressindex", "1" }
                 };
 
-                CoreNode XelsNode1 = builder.CreateXelsPowNode(network, "ai-1-XelsNode1", configParameters: nodeConfig).WithDummyWallet().Start();
-                CoreNode XelsNode2 = builder.CreateXelsPowNode(network, "ai-1-XelsNode2", configParameters: nodeConfig).WithDummyWallet().Start();
-                CoreNode XelsNode3 = builder.CreateXelsPowNode(network, "ai-1-XelsNode3", configParameters: nodeConfig).WithDummyWallet().Start();
+                CoreNode xelsNode1 = builder.CreateXelsPowNode(network, "ai-1-xelsNode1", configParameters: nodeConfig).WithDummyWallet().Start();
+                CoreNode xelsNode2 = builder.CreateXelsPowNode(network, "ai-1-xelsNode2", configParameters: nodeConfig).WithDummyWallet().Start();
+                CoreNode xelsNode3 = builder.CreateXelsPowNode(network, "ai-1-xelsNode3", configParameters: nodeConfig).WithDummyWallet().Start();
 
                 // Connect all the nodes.
-                TestHelper.Connect(XelsNode1, XelsNode2);
-                TestHelper.Connect(XelsNode1, XelsNode3);
-                TestHelper.Connect(XelsNode2, XelsNode3);
+                TestHelper.Connect(xelsNode1, xelsNode2);
+                TestHelper.Connect(xelsNode1, xelsNode3);
+                TestHelper.Connect(xelsNode2, xelsNode3);
 
                 // Mine up to a height of 100.
-                TestHelper.MineBlocks(XelsNode1, 100);
+                TestHelper.MineBlocks(xelsNode1, 100);
 
-                TestBase.WaitLoop(() => XelsNode1.FullNode.NodeService<IAddressIndexer>().IndexerTip.Height == 100);
-                TestBase.WaitLoop(() => XelsNode2.FullNode.NodeService<IAddressIndexer>().IndexerTip.Height == 100);
-                TestBase.WaitLoop(() => XelsNode3.FullNode.NodeService<IAddressIndexer>().IndexerTip.Height == 100);
+                TestBase.WaitLoop(() => xelsNode1.FullNode.NodeService<IAddressIndexer>().IndexerTip.Height == 100);
+                TestBase.WaitLoop(() => xelsNode2.FullNode.NodeService<IAddressIndexer>().IndexerTip.Height == 100);
+                TestBase.WaitLoop(() => xelsNode3.FullNode.NodeService<IAddressIndexer>().IndexerTip.Height == 100);
             }
         }
 
@@ -158,7 +158,7 @@ namespace Xels.Bitcoin.IntegrationTests.BlockStore
                 TestBase.WaitLoop(() => TestHelper.IsNodeSyncedAtHeight(minerB, 20));
                 TestBase.WaitLoop(() => TestHelper.IsNodeSyncedAtHeight(syncer, 25));
 
-                // Spend some coins on minerA by sending 10 STRAT to syncer.
+                // Spend some coins on minerA by sending 10 XEL to syncer.
                 TestHelper.SendCoins(minerA, minerA, new[] { syncer }, Money.Coins(10));
 
                 // Miner A mines the transaction and advances onto 35.

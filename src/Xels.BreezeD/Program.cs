@@ -22,7 +22,7 @@ namespace Xels.BreezeD
         {
             try
             {
-                bool isXels = args.Contains("Xels");
+                bool isXels = args.Contains("xels");
 
                 NodeSettings nodeSettings;
 

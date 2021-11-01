@@ -86,7 +86,7 @@
         getmempoolinfo,
         getrawmempool,
         getblockhash,
-        getblock, // Note that XelsX also has a 'getblockbynumber' which is not present in bitcoind at all
+        getblock, // Note that xelsX also has a 'getblockbynumber' which is not present in bitcoind at all
         gettxoutsetinfo,
         gettxout,
         verifychain,

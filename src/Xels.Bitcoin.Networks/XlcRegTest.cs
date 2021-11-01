@@ -34,7 +34,11 @@ namespace Xels.Bitcoin.Networks
             this.CoinTicker = "TXLC";
             this.DefaultBanTimeSeconds = 11250; // 500 (MaxReorg) * 45 (TargetSpacing) / 2 = 3 hours, 7 minutes and 30 seconds
 
-            this.CcRewardDummyAddress = "PDpvfcpPm9cjQEoxWzQUL699N8dPaf8qML"; // CC test address
+            this.RewardClaimerBatchActivationHeight = 0;
+            this.RewardClaimerBlockInterval = 100;
+            this.CcRewardDummyAddress = "PDpvfcpPm9cjQEoxWzQUL699N8dPaf8qML"; // Cc test address
+
+            this.ConversionTransactionFeeDistributionDummyAddress = "PTCPsLQoF3WNoH1qXMy5PouquiXQKp7WBV";
 
             var powLimit = new Target(new uint256("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"));
 
@@ -79,7 +83,7 @@ namespace Xels.Bitcoin.Networks
             // To successfully process the OP_FEDERATION opcode the federations should be known.
             this.Federations = new Federations();
 
-            // CC federation.
+            // Cc federation.
             var ccFederationMnemonics = new[] {
                 "ensure feel swift crucial bridge charge cloud tell hobby twenty people mandate",
                 "quiz sunset vote alley draw turkey hill scrap lumber game differ fiction",
