@@ -38,7 +38,7 @@ namespace Xels.CcMinerD
 
         public static void Main(string[] args)
         {
-            //args = new string[] { "-sidechain" };
+            //args = new string[] { "-mainchain" };
             MainAsync(args).Wait();
             CreateShortCut();
         }
@@ -198,7 +198,7 @@ namespace Xels.CcMinerD
                 WshShell shell = new WshShell();
 
                 string shortcutAddress = (string)shell.SpecialFolders.Item(ref shDesktop) + @"\xels-miner" + arg + ".lnk";
-                if (!System.IO.File.Exists(shortcutAddress))
+                //if (!System.IO.File.Exists(shortcutAddress))
                 {
                     IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutAddress);
 
