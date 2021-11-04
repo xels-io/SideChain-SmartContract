@@ -38,7 +38,7 @@ namespace Xels.Bitcoin.Networks
             this.RewardClaimerBatchActivationHeight = 1; // Tuesday, 12 January 2021 9:00:00 AM (Estimated)
             this.RewardClaimerBlockInterval = 1;
 
-            //this.ConversionTransactionFeeDistributionDummyAddress = "CXK1AhmK8XhmBWHUrCKRt5WMhz1CcYeguF";
+            this.ConversionTransactionFeeDistributionDummyAddress = "CKe36GSqPx3EasYY9FevtLSnyx5nryojaN";
 
             // To successfully process the OP_FEDERATION opcode the federations should be known.
             this.Federations = new Federations();

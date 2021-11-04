@@ -45,7 +45,7 @@ namespace Xels.Sidechains.Networks
 
             this.CcRewardDummyAddress = "CKe36GSqPx3EasYY9FevtLSnyx5nryojaN";
 
-            //this.ConversionTransactionFeeDistributionDummyAddress = "CXK1AhmK8XhmBWHUrCKRt5WMhz1CcYeguF";
+            this.ConversionTransactionFeeDistributionDummyAddress = "CKe36GSqPx3EasYY9FevtLSnyx5nryojaN";
 
             var consensusFactory = new SmartContractCollateralPoAConsensusFactory();
 
