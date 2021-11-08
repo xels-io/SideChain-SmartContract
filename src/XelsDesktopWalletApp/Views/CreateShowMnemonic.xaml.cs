@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Views.Pages;
+using XelsDesktopWalletApp.Views.Pages.Modals;
 
 namespace XelsDesktopWalletApp.Views
 {
@@ -64,7 +65,10 @@ namespace XelsDesktopWalletApp.Views
         private void copyClipboardButton_Click(object sender, RoutedEventArgs e)
         {
             Clipboard.SetText(this.copyMnemonicText);
-            MessageBox.Show("Copied successfully.");
+
+            this.Mnemonic_Copy.Children.Add(new DisplayMessageUserControl("Copied successfully."));
+
+            //MessageBox.Show("Copied successfully.");
         }
 
         private void continueButton_Click(object sender, RoutedEventArgs e)

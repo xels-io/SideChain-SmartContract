@@ -15,6 +15,7 @@ using XelsDesktopWalletApp.Models.SmartContractModels;
 using XelsDesktopWalletApp.Views;
 using XelsDesktopWalletApp.Views.layout;
 using XelsDesktopWalletApp.Views.Pages;
+using XelsDesktopWalletApp.Views.Pages.Modals;
 
 namespace XelsDesktopWalletApp
 {
@@ -208,7 +209,10 @@ namespace XelsDesktopWalletApp
                     {
                         LoginError loginError = new LoginError();
                         loginError = JsonConvert.DeserializeObject<LoginError>(content);
-                        MessageBox.Show($"{loginError.errors[0].message}");
+
+                        this.Log_in_Window.Children.Add(new DisplayErrorMessageUserControl($"{loginError.errors[0].message}"));
+
+                       // MessageBox.Show($"{loginError.errors[0].message}");
                         this.preLoader.Visibility = Visibility.Collapsed;
                         this.IsEnabled = true;
                     }

@@ -102,7 +102,7 @@
 
 
     </StackPanel>-->
-    <Grid>
+    <Grid x:Name="Log_in_Window">
 
         <Border Background="White" BorderBrush="#FFBBBBBB" BorderThickness="1,1,1,1" CornerRadius="10,10,10,10">
 
