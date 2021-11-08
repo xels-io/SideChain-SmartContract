@@ -7,7 +7,7 @@
              mc:Ignorable="d">
     <Grid >
         <Rectangle Fill="White" Opacity=".7" MouseDown="Rectangle_MouseDown" />
-        <Border CornerRadius ="10" Background="#f5857d" Height="100" Width="350" BorderBrush="Green" BorderThickness="5" >
+        <Border CornerRadius ="10" Background="#f5857d" Height="100" Width="350" BorderBrush="Green" BorderThickness="1" >
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
@@ -17,9 +17,9 @@
 
                 <!--<Label Grid.Row="0" Background="Silver" Content="Error Message"  FontSize="20" FontWeight="Bold" Padding=" 5 0 0 3" Width="350" HorizontalContentAlignment="Left" Foreground="Red"  />-->
 
-                <TextBlock Grid.Row="1" x:Name="Message_Modal" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" FontWeight="Bold" Foreground="White"   TextWrapping="Wrap" />
+                <TextBlock Grid.Row="0" x:Name="Message_Modal" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" FontWeight="Bold" Foreground="White"   TextWrapping="Wrap" />
 
-                <Button Grid.Row="2" HorizontalAlignment="Right" Name="Close_Modal" Background="White" Foreground="Black" Height="20" Width="25" FontSize="10" Padding=" 0 3" Margin="15 5"
+                <Button Grid.Row="1" HorizontalAlignment="Right" Name="Close_Modal" Background="White" Foreground="Black" Height="20" Width="25" FontSize="10" Padding=" 0 3" Margin="15 5"
                         Click="Button_Close_Modal">X</Button>
             </Grid>
         </Border>

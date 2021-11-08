@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
+using XelsDesktopWalletApp.Views.Pages.Modals;
 
 namespace XelsDesktopWalletApp.Views.Pages
 {
@@ -144,7 +145,8 @@ namespace XelsDesktopWalletApp.Views.Pages
 
                         foreach (var error in errors.Errors)
                         {
-                            MessageBox.Show(error.Message);
+                            this.Restore_Account.Children.Add(new DisplayErrorMessageUserControl(error.Message));
+                            //MessageBox.Show(error.Message);
                         }
 
                     }
