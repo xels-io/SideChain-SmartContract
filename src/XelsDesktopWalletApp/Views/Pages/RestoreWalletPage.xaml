@@ -19,7 +19,7 @@
                        FontSize="20" FontWeight="Bold"
                     FontFamily="Microsoft YaHei Light" />
         </Border>
-      
+                  
         <StackPanel>
 
             <!---  wallet name  -->

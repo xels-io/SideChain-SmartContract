@@ -10,11 +10,11 @@
       Title="CreateWalletPage">
 
 
-    <Border Margin="10,10,10,10" Background="White" BorderBrush="Green" BorderThickness="3" CornerRadius="10">
+    <Border Margin="10,10,10,10" Background="White" BorderBrush="Green" BorderThickness="2" CornerRadius="10">
     <StackPanel Background="White" Margin="20 10">
 
         <Border Margin="20 5" Background="Green" CornerRadius="5">
-            <Label  Content="Create a wallet" HorizontalAlignment="Center" Margin="5 0" FontSize="28" FontWeight="DemiBold" />
+            <Label  Content="Create a wallet" HorizontalAlignment="Center" Margin="5 0" FontSize="28" FontWeight="DemiBold" Foreground="White" />
         </Border>
 
         <Border Margin="200 05">

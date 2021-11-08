@@ -34,6 +34,7 @@
     <None Remove="icon.ico" />
     <None Remove="Token\TokenFile.txt" />
     <None Remove="Views\home-xels-logo-01.png" />
+    <None Remove="Views\Pages\back-arrow.gif" />
     <None Remove="Views\Pages\loading-3.gif" />
   </ItemGroup>
 
@@ -54,6 +55,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Token\TokenFile.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Pages\back-arrow.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

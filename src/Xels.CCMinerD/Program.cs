@@ -38,7 +38,7 @@ namespace Xels.CcMinerD
 
         public static void Main(string[] args)
         {
-            //args = new string[] { "-mainchain" };
+            args = new string[] { "-mainchain" };
             MainAsync(args).Wait();
             CreateShortCut();
         }
