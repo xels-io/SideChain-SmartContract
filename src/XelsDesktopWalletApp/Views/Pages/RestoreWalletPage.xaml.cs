@@ -1,8 +1,10 @@
-﻿using System.Net.Http;
+﻿using System.Linq;
+using System.Net.Http;
 using System.Windows;
 using System.Windows.Controls;
 
 using Newtonsoft.Json;
+
 using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
@@ -20,45 +22,91 @@ namespace XelsDesktopWalletApp.Views.Pages
         }
 
         string baseURL = URLConfiguration.BaseURL;
-                
+
 
         public bool isValid()
         {
             if (string.IsNullOrWhiteSpace(this.name.Text))
             {
-                MessageBox.Show("Name is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.walletName_ErrorMessage.Visibility = Visibility.Visible;
+                this.walletName_ErrorMessage.Content = "Name is required";
                 return false;
             }
             if (string.IsNullOrWhiteSpace(this.mnemonic.Text))
             {
-                MessageBox.Show("Field is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.mnemonic_ErrorMessage.Visibility = Visibility.Visible;
+                this.mnemonic_ErrorMessage.Content = "Field is required!";
                 return false;
             }
             if (string.IsNullOrWhiteSpace(this.creationDate.Text))
             {
-                MessageBox.Show("Date is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.date_ErrorMessage.Visibility = Visibility.Visible;
+                this.date_ErrorMessage.Content = "Date is required!";
                 return false;
             }
             if (string.IsNullOrWhiteSpace(this.password.Password))
             {
-                MessageBox.Show("Password is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.password_ErrorMessage.Visibility = Visibility.Visible;
+
+                this.password_ErrorMessage.Content = "Password is required!";               
+                    
                 return false;
             }
-            if (string.IsNullOrWhiteSpace(this.passphrase.Password))
-            {
-                MessageBox.Show("Passphrase is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
+
+            //if (this.password.Password.Length < 8)
+            //{
+            //    this.password_ErrorMessage.Visibility = Visibility.Visible;
+            //    this.password_ErrorMessage.Content = "A Password must contain at least one uppercase letter, one losercase letter, one number and one special character. A Password must be at least 8 characters long.";
+            //}
+
+
+            //if (string.IsNullOrWhiteSpace(this.passphrase.Password))
+            //{
+            //    MessageBox.Show("Passphrase is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+            //    return false;
+            //}
             return true;
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-           CreateOrRestore createOrRestore =  new CreateOrRestore();
+            CreateOrRestore createOrRestore = new CreateOrRestore();
 
             createOrRestore.Visibility = Visibility.Visible;
             Window win = (Window)this.Parent;
             win.Close();
+        }
+
+        public void Textbox_Null_check_OnKeyPress(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(this.name.Text))
+            {
+                this.walletName_ErrorMessage.Visibility = Visibility.Hidden;
+            }
+
+            if (!string.IsNullOrWhiteSpace(this.creationDate.Text))
+            {
+                this.date_ErrorMessage.Visibility = Visibility.Hidden;
+            }
+
+            if (!string.IsNullOrWhiteSpace(this.mnemonic.Text))
+            {
+                this.mnemonic_ErrorMessage.Visibility = Visibility.Hidden;
+            }
+
+            if (!string.IsNullOrWhiteSpace(this.password.Password))
+            {
+                if (this.password.Password.Length < 8)
+                {
+                    this.password_ErrorMessage.Visibility = Visibility.Visible;
+                    this.password_ErrorMessage.Content = "A Password must contain at least one uppercase letter, one losercase letter, one number and one special character. A Password must be at least 8 characters long.";
+                }
+                else
+                {
+                    this.password_ErrorMessage.Visibility = Visibility.Hidden;
+                }
+                
+            }
         }
 
         private async void RestoreButton_Click(object sender, RoutedEventArgs e)
@@ -110,7 +158,7 @@ namespace XelsDesktopWalletApp.Views.Pages
             {
                 GlobalExceptionHandler.SendErrorToText(es);
             }
-           
+
         }
     }
 }
