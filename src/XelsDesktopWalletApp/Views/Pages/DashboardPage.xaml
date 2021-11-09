@@ -413,7 +413,24 @@
                                                         FontWeight="DemiBold" />
                                         </Border>
 
-                                        <Border Grid.Row="1" Background="WhiteSmoke" CornerRadius="8" >
+                                        <Border Grid.Row="1" Background="WhiteSmoke" CornerRadius="5" >
+
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Effect">
+                                                                <Setter.Value>
+                                                                    <DropShadowEffect ShadowDepth="2" Opacity="0.4" BlurRadius="20" Color="ForestGreen" />
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+
+
+
                                             <TextBlock  Name="ConfirmedBalanceTxt"  Text="0" FontSize="20" 
                                                 HorizontalAlignment="Center" 
                                    FontFamily="Microsoft YaHei" Foreground="Green"/>
@@ -441,7 +458,23 @@
                                         </Grid.RowDefinitions>
 
                                         <Border Background="WhiteSmoke" Grid.Row="0" Margin=" 0 5" 
-                                                CornerRadius="8">
+                                                CornerRadius="5">
+
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Effect">
+                                                                <Setter.Value>
+                                                                    <DropShadowEffect ShadowDepth="2" Opacity="0.4" BlurRadius="20" Color="ForestGreen" />
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+
+
                                             <TextBlock  Name="SelsCoinTxt" HorizontalAlignment="Center" 
                                                         FontFamily="Microsoft YaHei Light" Foreground="Green" 
                                                         FontSize="15" FontWeight="DemiBold" >
@@ -449,7 +482,22 @@
                                         </Border>
 
                                         <Border Background="WhiteSmoke" Grid.Row="1" Margin=" 0 5" 
-                                                CornerRadius="8">
+                                                CornerRadius="5">
+
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Effect">
+                                                                <Setter.Value>
+                                                                    <DropShadowEffect ShadowDepth="2" Opacity="0.4" BlurRadius="20" Color="ForestGreen" />
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+
                                             <TextBlock  Name="BelsCoinTxt" HorizontalAlignment="Center" 
                                                         FontFamily="Microsoft YaHei Light" Foreground="Green" 
                                                         FontSize="15" FontWeight="DemiBold" >
@@ -510,8 +558,8 @@
 
                         <!--- pow/pos minning -->
                         <Border Grid.Column="2" Padding="0" Margin=" 0 5 5 0 " Background="#ffffff" BorderBrush="WhiteSmoke" BorderThickness="1" CornerRadius="10"  >
-                            
-                            
+
+
                             <!--<Border.Effect>
                                 <DropShadowEffect  Direction="-75" ShadowDepth="2" Opacity="0.8" BlurRadius="10" Color="Black" />
                             </Border.Effect>-->
