@@ -24,7 +24,7 @@
                 Text="Are you sure you want to logout?"/>
 
                         <TextBlock Text="Be aware that this will also Stop the staking process."  FontSize="15"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        <Button x:Name="closeBtn" Click="closeBtn_Click"  Background="Red" Foreground="White"
+                        <!--<Button x:Name="closeBtn" Click="closeBtn_Click"  Background="Red" Foreground="White"
                                 VerticalAlignment="Top" HorizontalAlignment="Right" Content="X"  Height="15" Width="20" FontSize="10" Padding="7 0" HorizontalContentAlignment="Left" >
 
                             <Button.Resources>
@@ -32,7 +32,7 @@
                                     <Setter Property="CornerRadius" Value="50"/>
                                 </Style>
                             </Button.Resources>
-                        </Button>
+                        </Button>-->
                     </Grid>
                 </Border>
                 <Border Grid.Row="01">
