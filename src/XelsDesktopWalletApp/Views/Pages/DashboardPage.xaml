@@ -225,11 +225,32 @@
 
                         <!--- hybrid minning -->
 
-                        <Border x:Name="HybridMiningInfoBorder" Grid.Column="0" Padding="5" Margin="5 5 0 0" Background="#ffffff" BorderBrush="Black" BorderThickness="1" CornerRadius="10"  >
+                        <Border x:Name="HybridMiningInfoBorder" Grid.Column="0" Padding="5" Margin="5 5 0 0" Background="#ffffff" BorderBrush="WhiteSmoke" BorderThickness="1" CornerRadius="10"  >
 
-                            <Border.Effect>
+                            <!--<Border.Effect>
                                 <DropShadowEffect  Direction="-75" ShadowDepth="2" Opacity="0.8" BlurRadius="10" Color="Black" />
-                            </Border.Effect>
+                            </Border.Effect>-->
+
+                            <!-- Connection info with hover-->
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Effect">
+                                        <Setter.Value>
+                                            <DropShadowEffect  Direction="-75" ShadowDepth="2" Opacity="0.8" BlurRadius="10" Color="Black" />
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Effect">
+                                                <Setter.Value>
+                                                    <DropShadowEffect  Direction="-75" ShadowDepth="2" Opacity="0.8" BlurRadius="20" Color="Black" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <!-- Connection info with hover end-->
 
                             <Grid>
 
@@ -488,12 +509,32 @@
                         </Border>
 
                         <!--- pow/pos minning -->
-                        <Border Grid.Column="2" Padding="0" Margin=" 0 5 5 0 " Background="#ffffff" BorderBrush="Black" BorderThickness="1" CornerRadius="10"  >
-
-                            <Border.Effect>
+                        <Border Grid.Column="2" Padding="0" Margin=" 0 5 5 0 " Background="#ffffff" BorderBrush="WhiteSmoke" BorderThickness="1" CornerRadius="10"  >
+                            
+                            
+                            <!--<Border.Effect>
                                 <DropShadowEffect  Direction="-75" ShadowDepth="2" Opacity="0.8" BlurRadius="10" Color="Black" />
-                            </Border.Effect>
-
+                            </Border.Effect>-->
+                            <!-- Connection info with hover-->
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Effect">
+                                        <Setter.Value>
+                                            <DropShadowEffect  Direction="-75" ShadowDepth="2" Opacity="0.8" BlurRadius="10" Color="Black" />
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Effect">
+                                                <Setter.Value>
+                                                    <DropShadowEffect  Direction="-75" ShadowDepth="2" Opacity="0.8" BlurRadius="20" Color="Black" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <!-- Connection info with hover end-->
                             <StackPanel >
                                 <Grid>
                                     <Grid.RowDefinitions>
