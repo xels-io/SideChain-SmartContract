@@ -29,8 +29,12 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Label Grid.Column="0" Margin="10 10 10 50" Content="IMPORT ADDRESS" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" FontWeight="DemiBold"  />
-                        <Button Click="HidePopup_Click" Background="Black" Foreground="White"
-                                VerticalAlignment="Top" HorizontalAlignment="Right" Content="X" >
+                        <Button Click="HidePopup_Click" Background="Red" Foreground="White"
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Right" 
+                                Content="X" Height="15" Width="20"
+                                FontSize="10" Padding="7 0"
+                                HorizontalContentAlignment="Left">
 
                             <Button.Resources>
                                 <Style TargetType="{x:Type Border}">

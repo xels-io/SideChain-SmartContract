@@ -18,8 +18,8 @@
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Margin="0,1" Width="313" Height="163" FontSize="20" HorizontalAlignment="Center" FontFamily="Microsoft YaHei Light" Opacity="0.7"><Run/><LineBreak/><Run/><LineBreak/><Run/><LineBreak/><Run/><LineBreak/><Run Text="Are you sure you want to logout?"/></TextBlock>
                 <TextBlock Text="Be aware that this will also Stop the stacking process."  FontSize="15"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <Button x:Name="closeBtn" Click="closeBtn_Click"  Background="Black" Foreground="White"
-                                VerticalAlignment="Top" HorizontalAlignment="Left" Content="X" Height="32" Margin="639,6,0,0" Width="41" >
+                <Button x:Name="closeBtn" Click="closeBtn_Click"  Background="Red" Foreground="White"
+                                VerticalAlignment="Top" HorizontalAlignment="Right" Content="X"  Height="15" Width="20" FontSize="10" Padding="7 0" HorizontalContentAlignment="Left" >
 
                     <Button.Resources>
                         <Style TargetType="{x:Type Border}">

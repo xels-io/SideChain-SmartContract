@@ -19,8 +19,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" Content="Send" HorizontalAlignment="Center"  FontSize="20" FontWeight="DemiBold" RenderTransformOrigin="0.515,-0.184" Width="54" Margin="0,-10,0,10" />
-                <Button Click="HidePopup_Click" Background="Black" Foreground="White"
-                                VerticalAlignment="Top" HorizontalAlignment="Right" Content="X" >
+                <Button Click="HidePopup_Click" Background="Red" Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Right" Content="X" Height="15" Width="20"           FontSize="10" Padding="7 0" HorizontalContentAlignment="Left">
 
                     <Button.Resources>
                         <Style TargetType="{x:Type Border}">
