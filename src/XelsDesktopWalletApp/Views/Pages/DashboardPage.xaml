@@ -547,7 +547,7 @@
                                             </Grid.ColumnDefinitions>
 
                                             <TextBlock Grid.Column="0" TextWrapping="Wrap" Text="Connection Status:" Padding="0" Margin="0"/>
-                                            <TextBlock Grid.Column="1" FontSize="9" Foreground="Green" x:Name="ConnectionStatusTxt" TextWrapping="Wrap" Width="72"/>
+                                            <TextBlock Grid.Column="1" FontSize="11" Foreground="Green" x:Name="ConnectionStatusTxt" TextWrapping="Wrap" Width="72"/>
                                         </Grid>
                                     </Border>
 
