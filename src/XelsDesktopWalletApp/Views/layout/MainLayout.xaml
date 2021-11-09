@@ -98,7 +98,7 @@
 
         <Grid Grid.Column="1" Grid.Row="1" Background="#FFCFCFCF">
             <ScrollViewer>
-                <Frame x:Name="PageContent" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="560" Width="880" NavigationUIVisibility="Hidden"></Frame>
+                <Frame x:Name="PageContent" Height="547" Width="865" NavigationUIVisibility="Hidden"/>
             </ScrollViewer>
         </Grid>
 
