@@ -182,12 +182,12 @@
                         <materialDesign:PackIcon Kind="Settings" Foreground="White" />
                     </materialDesign:PopupBox.ToggleContent>
 
-                    <StackPanel Width="160">
-                        <Button Content="ADDRESS BOOK" FontWeight="Bold" Click="AddressBookButton_Click" />
+                    <StackPanel Width="110">
+                        <Button Content="ADDRESS BOOK" FontWeight="Bold" Click="AddressBookButton_Click" FontSize="10" Margin="0 -10"/>
+                        <Separator />
+                        <Button Content="ADVANCE" FontWeight="Bold" Click="AdvancedButton_Click" FontSize="10" Margin="0 -12" />
                         <Separator/>
-                        <Button Content="ADVANCE" FontWeight="Bold" Click="AdvancedButton_Click" />
-                        <Separator/>
-                        <Button  Content="LOGOUT" FontWeight="Bold"  Click="LogOut_Button"/>
+                        <Button  Content="LOGOUT" FontWeight="Bold"  Click="LogOut_Button" FontSize="10" Margin="0 -10" />
                     </StackPanel>
                 </materialDesign:PopupBox>
 
