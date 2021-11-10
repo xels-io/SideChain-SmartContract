@@ -45,15 +45,30 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
                 this.SELSPrivateKeyTxt.IsEnabled = false;
                 this.BELSPrivateKeyTxt.IsEnabled = false;
             }
+            this.DataContext = this;
         }
 
         public bool isValid()
         {
             if (this.MnemonicTxt.Text == string.Empty)
             {
-                MessageBox.Show("Mnemonic is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+              this.Import_Sels_Bels.Children.Add(new DisplayErrorMessageUserControl("Mnemonic is required!"));
                 this.MnemonicTxt.Focus();
                 return false;
+            }
+
+            if (!string.IsNullOrWhiteSpace(this.MnemonicTxt.Text))
+            {
+                string[] mnemonic = this.MnemonicTxt.Text.Trim().Split(' ');
+                
+                if(mnemonic.Length != 12)
+                {
+                    //MessageBox.Show("You entered wrong number of Mnemonics!");
+
+                    this.Import_Sels_Bels.Children.Add(new DisplayErrorMessageUserControl("You entered wrong number of Mnemonics!"));
+                    this.Import_Sels_Bels.Visibility = Visibility.Visible;
+                    return false;
+                }
             }
 
             return true;
@@ -97,7 +112,7 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
             return hashvalue;
         }
 
-        private void TransactionIDCopyButton_Click(object sender, RoutedEventArgs e)
+        private void ImportSelsBelsButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -171,6 +186,21 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
         {
             this.Visibility = Visibility.Collapsed;
         }
-        
+
+        private void Mnemonic_null_check_onchange(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace( this.MnemonicTxt.Text))
+            {
+                this.ImportSelsBelsButton.IsEnabled = true;
+                this.MnemonicTxt.Focus();
+                 
+            }
+            else
+            {
+                this.ImportSelsBelsButton.IsEnabled = false;
+            }
+        }
+
+
     }
 }

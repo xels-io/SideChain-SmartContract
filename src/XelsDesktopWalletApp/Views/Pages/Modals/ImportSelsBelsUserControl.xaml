@@ -8,11 +8,11 @@
              d:HorizontalAlignment="Stretch" d:VerticalAlignment="Stretch" >
  
 
-    <Grid Background="White">
+    <Grid Background="White" >
         <Rectangle Fill="AliceBlue" Opacity=".8" MouseDown="Rectangle_MouseDown" /> 
         
         <Border Margin="20" CornerRadius="10"  Background="White" BorderBrush="Green" BorderThickness="2" Height="500" Width="600">
-            <Grid Margin=" 5 5 5 5">
+            <Grid Margin=" 5 5 5 5" x:Name="Import_Sels_Bels" >
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
@@ -55,7 +55,8 @@
                         </Grid.RowDefinitions>
 
                         <Label Grid.Row="0" Content="Your Wallet(Xels) Mnemonic:" BorderBrush="Green" />
-                        <TextBox Grid.Row="1" Name="MnemonicTxt" BorderBrush="Green"  materialDesign:HintAssist.Hint="Xels Wallet Mnemonic"  materialDesign:HintAssist.IsFloating="False" />
+                        <TextBox Grid.Row="1" Name="MnemonicTxt" BorderBrush="Green"  materialDesign:HintAssist.Hint="Xels Wallet Mnemonic"  materialDesign:HintAssist.IsFloating="False"
+                                 TextChanged="Mnemonic_null_check_onchange"/>
                         <!--<PasswordBox  Grid.Row="2" x:Name="Password" />-->
 
                     </Grid>
@@ -112,9 +113,11 @@
                             <ColumnDefinition Width="*"/>
                            
                         </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0" x:Name="TransactionIDCopyButton"   Click="TransactionIDCopyButton_Click" 
+                        <Button Grid.Column="0" x:Name="ImportSelsBelsButton"   Click="ImportSelsBelsButton_Click" 
                             Content="Import Now"  
-                            Background="White" Foreground="Green"    BorderBrush="Green" RenderTransformOrigin="0.5,0.5">
+                            Background="White" 
+                                IsEnabled="False"
+                                Foreground="Green"    BorderBrush="Green" RenderTransformOrigin="0.5,0.5">
                             <Button.Resources>
                                 <Style TargetType="{x:Type Border}">
                                     <Setter Property="CornerRadius" Value="2"/>
