@@ -278,7 +278,7 @@ namespace XelsDesktopWalletApp.Views.Pages
 
                     if (!this.walletGeneralInfoModel.IsChainSynced)
                     {
-                        this.ConnectionPercentTxt.Text = this.ParcentSyncedTxt.Text = "syncing...".ToString();
+                        this.ConnectionPercentTxt.Text = this.ParcentSyncedTxt.Text = "syncing".ToString();
 
                     }
                     else
