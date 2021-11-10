@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
+using XelsDesktopWalletApp.Views.Pages.Modals;
 
 namespace XelsDesktopWalletApp.Views
 {
@@ -128,7 +129,7 @@ namespace XelsDesktopWalletApp.Views
             }
             else
             {
-                MessageBox.Show("Secret words do not match!");
+                this.Confirm_Account_Creation.Children.Add(new DisplayErrorMessageUserControl("Secret words do not match!"));
             }
         }
 
@@ -155,6 +156,9 @@ namespace XelsDesktopWalletApp.Views
                     if (response.IsSuccessStatusCode)
                     {
                         MessageBox.Show($"Successfully created wallet with Name: {this.Walletcreateconfirm.Name}");
+
+                        //this.Confirm_Account_Creation.Children.Add(new DisplayMessageUserControl( $"Successfully created wallet with Name: {this.Walletcreateconfirm.Name}"));
+
                         CreateOrRestore parentWindow = (CreateOrRestore)Window.GetWindow(this);
                         parentWindow.Visibility = Visibility.Collapsed;
                         MainWindow mw = new MainWindow();
