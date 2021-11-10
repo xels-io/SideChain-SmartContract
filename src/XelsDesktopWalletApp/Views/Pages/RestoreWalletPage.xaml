@@ -11,7 +11,7 @@
       Title="RestoreWalletPage">
 
     <Grid x:Name="Restore_Account">
-        <Border Margin="5,5,5,0" BorderBrush="Green" Background="White" BorderThickness="2" CornerRadius="10">
+        <Border Margin="10,10,10,10" BorderBrush="Green" Background="White" BorderThickness="2" CornerRadius="10">
             <StackPanel  Background="White" Margin="10,10,10,0">
 
 

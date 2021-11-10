@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:XelsDesktopWalletApp.Views.Pages.Modals"
              mc:Ignorable="d">
     <Grid >
-        <Rectangle Fill="White" Opacity=".7" MouseDown="Rectangle_MouseDown" />
+        <Rectangle Fill="#FF5B5858" Opacity=".7" MouseDown="Rectangle_MouseDown" />
         <Border CornerRadius ="10" Background="#f5857d" Height="100" Width="250" BorderBrush="ForestGreen" BorderThickness="1.5" >
             <Grid>
                 <Grid.RowDefinitions>
