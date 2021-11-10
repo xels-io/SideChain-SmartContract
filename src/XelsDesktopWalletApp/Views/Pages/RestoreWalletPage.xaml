@@ -16,7 +16,7 @@
 
 
                 <Border Margin="20 15" Width="731" Background="Green" CornerRadius="5">
-                    <Label  Content="Restore a wallet" 
+                    <Label Foreground="White"  Content="Restore a wallet" 
                        HorizontalAlignment="Center"  
                        FontSize="20" FontWeight="Bold"
                     FontFamily="Microsoft YaHei Light" />
