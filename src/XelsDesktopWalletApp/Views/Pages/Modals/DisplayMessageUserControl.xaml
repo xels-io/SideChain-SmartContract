@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:XelsDesktopWalletApp.Views.Pages.Modals"
              mc:Ignorable="d" BorderThickness="1"   >
     <!--d:DesignHeight="450" d:DesignWidth="800"-->
-    <Grid>
+    <Grid x:Name="Success_Message">
         <Rectangle Fill="White" Opacity=".7" MouseDown="Rectangle_MouseDown" />
         <Border CornerRadius ="10" Background="LightGreen" Height="100" Width="350" BorderBrush="Green" BorderThickness="6">
             <Grid>

@@ -27,7 +27,7 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
         private string[] walletHashArray;
         private string walletHash;
         private bool isCheckBoxChecked = false;
- 
+
         public ImportSelsBelsUserControl()
         {
             InitializeComponent();
@@ -36,7 +36,7 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
         public ImportSelsBelsUserControl(string walletname)
         {
             InitializeComponent();
-            this.DataContext = this;             
+            this.DataContext = this;
 
             if (!(bool)this.CheckboxPkey.IsChecked)
             {
@@ -52,23 +52,9 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
         {
             if (this.MnemonicTxt.Text == string.Empty)
             {
-              this.Import_Sels_Bels.Children.Add(new DisplayErrorMessageUserControl("Mnemonic is required!"));
+                this.Import_Sels_Bels.Children.Add(new DisplayErrorMessageUserControl("Mnemonic is required!"));
                 this.MnemonicTxt.Focus();
                 return false;
-            }
-
-            if (!string.IsNullOrWhiteSpace(this.MnemonicTxt.Text))
-            {
-                string[] mnemonic = this.MnemonicTxt.Text.Trim().Split(' ');
-                
-                if(mnemonic.Length != 12)
-                {
-                    //MessageBox.Show("You entered wrong number of Mnemonics!");
-
-                    this.Import_Sels_Bels.Children.Add(new DisplayErrorMessageUserControl("You entered wrong number of Mnemonics!"));
-                    this.Import_Sels_Bels.Visibility = Visibility.Visible;
-                    return false;
-                }
             }
 
             return true;
@@ -134,7 +120,10 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
 
                                 this.createWallet.StoreLocally(this.sWallet, this.walletName, "SELS", this.walletHash);
                                 this.createWallet.StoreLocally(this.bWallet, this.walletName, "BELS", this.walletHash);
-                                MessageBox.Show("Import Done!");
+
+                                MessageBox.Show("Import Done");
+                                this.Visibility = Visibility.Collapsed;
+                                this.IsEnabled = false;
                             }
                         }
                     }
@@ -145,11 +134,14 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
 
                         this.createWallet.StoreLocally(this.wallet, this.walletName, "SELS", this.walletHash);
                         this.createWallet.StoreLocally(this.wallet, this.walletName, "BELS", this.walletHash);
-                        MessageBox.Show("Import Done!");
+
+                         //this.Import_Sels_Bels.Children.Add(new DisplayMessageUserControl("Import Done!"));
+
+                        MessageBox.Show("Import Done");
+                        this.Visibility = Visibility.Collapsed;
+                        this.IsEnabled = false;
                     }
-                  
-                    this.Visibility = Visibility.Collapsed;
-                    this.IsEnabled = false;
+                     
                 }
             }
             catch (Exception ex)
@@ -157,7 +149,7 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
                 GlobalExceptionHandler.SendErrorToText(ex);
                 this.IsEnabled = false;
             }
- 
+
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
@@ -167,7 +159,7 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
             this.SELSPrivateKeyTxt.IsEnabled = false;
             this.BELSPrivateKeyTxt.IsEnabled = false;
         }
-      
+
         private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             this.CheckboxPkey.IsChecked = false;
@@ -176,7 +168,7 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
             this.BELSPrivateKeyTxt.IsEnabled = true;
 
         }
-                
+
         private void HidePopup_Click(object sender, RoutedEventArgs e)
         {
             this.Visibility = Visibility.Collapsed;
@@ -189,11 +181,23 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
 
         private void Mnemonic_null_check_onchange(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace( this.MnemonicTxt.Text))
+            if (!string.IsNullOrWhiteSpace(this.MnemonicTxt.Text))
             {
-                this.ImportSelsBelsButton.IsEnabled = true;
-                this.MnemonicTxt.Focus();
-                 
+                string[] mnemonic = this.MnemonicTxt.Text.Trim().Split(' ');
+
+                if (mnemonic.Length != 12)
+                {
+                    this.mnemonic_error.Visibility = Visibility.Visible;
+                    this.mnemonic_error.Content = "You entered wrong number of Mnemonics!";
+                    this.ImportSelsBelsButton.IsEnabled = false;
+                }
+                else
+                {
+                    this.ImportSelsBelsButton.IsEnabled = true;
+                    this.mnemonic_error.Visibility = Visibility.Hidden;
+                    this.MnemonicTxt.Focus();
+                }
+
             }
             else
             {

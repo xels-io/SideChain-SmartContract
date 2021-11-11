@@ -4,21 +4,19 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:XelsDesktopWalletApp.Views.Pages.Modals"
-             mc:Ignorable="d" 
-             d:HorizontalAlignment="Stretch" d:VerticalAlignment="Stretch" >
- 
+             mc:Ignorable="d" >
 
-    <Grid Background="White" >
-        <Rectangle Fill="AliceBlue" Opacity=".8" MouseDown="Rectangle_MouseDown" /> 
-        
+    <Grid Background="White" x:Name="Import_Sels_Bels" >
+        <Rectangle Fill="AliceBlue" Opacity=".8" MouseDown="Rectangle_MouseDown" />
+
         <Border Margin="20" CornerRadius="10"  Background="White" BorderBrush="Green" BorderThickness="2" Height="500" Width="600">
-            <Grid Margin=" 5 5 5 5" x:Name="Import_Sels_Bels" >
+            <Grid Margin=" 5 5 5 5"  >
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height=".5*" />
                     <RowDefinition Height=".4*" />
-                    <RowDefinition Height="*" />                
+                    <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
@@ -43,7 +41,7 @@
                             </Button.Resources>
                         </Button>
                     </Grid>
-                    
+
                 </Border>
 
                 <Border Grid.Row="01" Margin="40,0,40,0">
@@ -51,13 +49,13 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
-                            <!--<RowDefinition Height="*"/>-->
+                            <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
-                        <Label Grid.Row="0" Content="Your Wallet(Xels) Mnemonic:" BorderBrush="Green" />
-                        <TextBox Grid.Row="1" Name="MnemonicTxt" BorderBrush="Green"  materialDesign:HintAssist.Hint="Xels Wallet Mnemonic"  materialDesign:HintAssist.IsFloating="False"
-                                 TextChanged="Mnemonic_null_check_onchange"/>
-                        <!--<PasswordBox  Grid.Row="2" x:Name="Password" />-->
+                        <Label Grid.Row="0" Content="Your Wallet(Xels) Mnemonic:" Padding="0" BorderBrush="Green" />
+                        <TextBox Grid.Row="1" Padding="0" Name="MnemonicTxt" BorderBrush="Green"  materialDesign:HintAssist.Hint="Xels Wallet Mnemonic"  materialDesign:HintAssist.IsFloating="False"
+       TextChanged="Mnemonic_null_check_onchange"/>
+                        <Label x:Name="mnemonic_error" Grid.Row="2" Foreground="Red" Visibility="Hidden" Padding="0" />
 
                     </Grid>
                 </Border>
@@ -65,11 +63,12 @@
                 <Border Grid.Row="02"  Margin="40,0,40,0" >
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="139*"/>
+                            <ColumnDefinition Width="367*"/>
                         </Grid.ColumnDefinitions>
-                        <CheckBox Grid.Column="0" x:Name="CheckboxPkey"  Content="Token address generate from the Mnemonics" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                        <CheckBox Grid.Column="0" x:Name="CheckboxPkey"  Content="Token address generate from the Mnemonics" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" Grid.ColumnSpan="2"/>
                     </Grid>
-                    
+
                 </Border>
 
                 <Border Grid.Row="3" x:Name="SelsBelsBorder"  Margin="40,0,40,0">
@@ -111,7 +110,7 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                           
+
                         </Grid.ColumnDefinitions>
                         <Button Grid.Column="0" x:Name="ImportSelsBelsButton"   Click="ImportSelsBelsButton_Click" 
                             Content="Import Now"  
@@ -132,7 +131,7 @@
                                 </TransformGroup>
                             </Button.RenderTransform>
                         </Button>
-                       
+
 
                     </Grid>
                 </Border>
