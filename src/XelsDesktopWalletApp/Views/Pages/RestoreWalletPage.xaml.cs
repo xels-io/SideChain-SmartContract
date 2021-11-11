@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -101,6 +102,11 @@ namespace XelsDesktopWalletApp.Views.Pages
                 {
                     this.password_ErrorMessage.Visibility = Visibility.Visible;
                     this.password_ErrorMessage.Content = "A Password must contain at least one uppercase letter, one losercase letter, one number and one special character. A Password must be at least 8 characters long.";
+                }
+                else if (!Regex.IsMatch(this.password.Password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!#$%&'()*+,-./:;<=>?@[\]^_`{|}~])[A-Za-z\d!#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{8,}$"))
+                {
+                    this.password_ErrorMessage.Visibility = Visibility.Visible;
+                    this.password_ErrorMessage.Content = "A Password must contain at least one uppercase letter, one losercase letter, one number and one special character.";
                 }
                 else
                 {
