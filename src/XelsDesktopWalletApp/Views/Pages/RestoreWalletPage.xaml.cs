@@ -101,7 +101,7 @@ namespace XelsDesktopWalletApp.Views.Pages
                 if (this.password.Password.Length < 8)
                 {
                     this.password_ErrorMessage.Visibility = Visibility.Visible;
-                    this.password_ErrorMessage.Content = "A Password must contain at least one uppercase letter, one losercase letter, one number and one special character. A Password must be at least 8 characters long.";
+                    this.password_ErrorMessage.Content = "A Password must be at least 8 characters long.";
                 }
                 else if (!Regex.IsMatch(this.password.Password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!#$%&'()*+,-./:;<=>?@[\]^_`{|}~])[A-Za-z\d!#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{8,}$"))
                 {
@@ -111,6 +111,7 @@ namespace XelsDesktopWalletApp.Views.Pages
                 else
                 {
                     this.password_ErrorMessage.Visibility = Visibility.Hidden;
+                    this.restoreButton.IsEnabled = true;
                 }
                 
             }
@@ -120,7 +121,7 @@ namespace XelsDesktopWalletApp.Views.Pages
         {
             try
             {
-                this.IsEnabled = false;
+               
                 if (isValid())
                 {
                     string postUrl = this.baseURL + "/Wallet/recover";
@@ -156,11 +157,7 @@ namespace XelsDesktopWalletApp.Views.Pages
                         }
 
                     }
-                }
-                else
-                {
-                    this.IsEnabled = true;
-                }
+                }                 
             }
             catch (System.Exception es)
             {
@@ -168,5 +165,7 @@ namespace XelsDesktopWalletApp.Views.Pages
             }
 
         }
+   
+    
     }
 }

@@ -157,7 +157,7 @@
                         TextBlock.FontFamily="Microsoft YaHei 
                         Light" Background="Green"
                         Foreground="White" 
-                        BorderThickness="0,0,0,0"                         
+                        BorderThickness="0,0,0,0"                         IsEnabled="False"
                         FontSize="14">
                                 <Button.Resources>
                                     <Style TargetType="Border">
