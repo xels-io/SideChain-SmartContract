@@ -101,8 +101,7 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
         private void ImportSelsBelsButton_Click(object sender, RoutedEventArgs e)
         {
             try
-            {
-                this.IsEnabled = false;
+            {            
                 if (isValid())
                 {
                     this.walletHash = MnemonicToHash(this.MnemonicTxt.Text);
@@ -121,9 +120,7 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
                                 this.createWallet.StoreLocally(this.sWallet, this.walletName, "SELS", this.walletHash);
                                 this.createWallet.StoreLocally(this.bWallet, this.walletName, "BELS", this.walletHash);
 
-                                MessageBox.Show("Import Done");
-                                this.Visibility = Visibility.Collapsed;
-                                this.IsEnabled = false;
+                                this.Import_Sels_Bels.Children.Add(new DisplayMessageUserControl("Import Done!"));
                             }
                         }
                     }
@@ -135,11 +132,11 @@ namespace XelsDesktopWalletApp.Views.Pages.Modals
                         this.createWallet.StoreLocally(this.wallet, this.walletName, "SELS", this.walletHash);
                         this.createWallet.StoreLocally(this.wallet, this.walletName, "BELS", this.walletHash);
 
-                         //this.Import_Sels_Bels.Children.Add(new DisplayMessageUserControl("Import Done!"));
+                        this.Import_Sels_Bels.Children.Add(new DisplayMessageUserControl("Import Done!"));
 
-                        MessageBox.Show("Import Done");
-                        this.Visibility = Visibility.Collapsed;
-                        this.IsEnabled = false;
+                       // MessageBox.Show("Import Done");
+                        //this.Visibility = Visibility.Collapsed;
+                        
                     }
                      
                 }
