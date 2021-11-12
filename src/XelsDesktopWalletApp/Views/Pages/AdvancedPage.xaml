@@ -228,15 +228,14 @@
                         <StackPanel Orientation="Vertical" Margin="50,110,50,272"  HorizontalAlignment="Left" Background="LightGreen" >
                             <Label Foreground="Green"  
                                    FontFamily="Microsoft YaHei" FontSize="12" Padding="20" RenderTransformOrigin="0.502,0.463" >
-                                <TextBlock>
-                                Rescanning your wallet will temporarily clear the transactions in your wallet and rescan the blockchain. Select a
-                                <LineBreak/>
+                                <TextBlock TextAlignment="Justify" TextWrapping="WrapWithOverflow">
+                                Rescanning your wallet will temporarily clear the transactions in your wallet and rescan the blockchain. Select 
                                 date from where you wish to rescan and click the button below.
                                 </TextBlock>
                             </Label>
 
                         </StackPanel>
-                        <StackPanel Orientation="Vertical" Margin="50,190,50,0"  HorizontalAlignment="Left"  >
+                        <StackPanel Orientation="Vertical" Margin="50,220,50,0"  HorizontalAlignment="Left"  >
                             <Label Content="Rescan from:" Height="30"  Foreground="Black"
                                 FontFamily="Microsoft YaHei" FontSize="14" Padding="0" RenderTransformOrigin="0.502,0.463"  />
                         </StackPanel>

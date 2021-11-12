@@ -9,8 +9,28 @@
     <Grid>
         <Rectangle Fill="#e9eeeb" Opacity=".8" MouseDown="Rectangle_MouseDown" />
 
-        <Border CornerRadius="10"  Background="White" Height="200" Width="700">
-            <Grid>
+        <Border CornerRadius="10"  Background="White" Height="200" Width="700" >
+
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Effect">
+                        <Setter.Value>
+                            <DropShadowEffect ShadowDepth="2" Opacity="0.8" BlurRadius="10" Color="Black" />
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect ShadowDepth="2" Opacity="0.8" BlurRadius="20" Color="Black" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+
+            <Grid TextOptions.TextFormattingMode="Ideal">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
