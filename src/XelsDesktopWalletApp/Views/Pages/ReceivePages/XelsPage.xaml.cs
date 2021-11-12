@@ -24,6 +24,7 @@ using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 using XelsDesktopWalletApp.Models.SmartContractModels;
+using XelsDesktopWalletApp.Views.Pages.Modals;
 
 namespace XelsDesktopWalletApp.Views.Pages.ReceivePages
 {
@@ -84,7 +85,7 @@ namespace XelsDesktopWalletApp.Views.Pages.ReceivePages
             }
             else
             {
-                MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                this.Xels_Receive_Page.Children.Add(new DisplayErrorMessageUserControl("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase));
             }
 
             return content;
@@ -151,14 +152,14 @@ namespace XelsDesktopWalletApp.Views.Pages.ReceivePages
         private void SingleAddress_Copy_Button_Click(object sender, RoutedEventArgs e)
         {
             Clipboard.SetText(this.textBoxTextToQr.Text);
-            MessageBox.Show("Address Copied Successfully :- " + this.textBoxTextToQr.Text.ToString());
+            this.Xels_Receive_Page.Children.Add(new DisplayMessageUserControl("Address Copied Successfully :- " + this.textBoxTextToQr.Text.ToString()));
         }
 
         private void Address_Copy_Button_Click(object sender, RoutedEventArgs e)
         {
             ReceiveWalletStatus item = (ReceiveWalletStatus)((sender as Button)?.Tag as ListViewItem)?.DataContext;
             Clipboard.SetText(item.Address.ToString());
-            MessageBox.Show("Address Copied Successfully :- " + item.Address.ToString());
+            this.Xels_Receive_Page.Children.Add(new DisplayMessageUserControl("Address Copied Successfully :- " + item.Address.ToString()));
 
         }
 
