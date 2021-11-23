@@ -17,6 +17,7 @@ using XelsDesktopWalletApp.Common;
 using XelsDesktopWalletApp.Models;
 using XelsDesktopWalletApp.Models.CommonModels;
 using XelsDesktopWalletApp.Models.SmartContractModels;
+using XelsDesktopWalletApp.Views.Pages.Cross_chain_Transfer;
 using XelsDesktopWalletApp.Views.Pages.Modals;
 
 namespace XelsDesktopWalletApp.Views.Pages
@@ -691,6 +692,10 @@ namespace XelsDesktopWalletApp.Views.Pages
             this.NavigationService.Navigate(new HistoryPage());
         }
 
+        private void CrossChainTransferButton_Click(object sender, RoutedEventArgs e)
+        {           
+            this.Dashboard.Children.Add(new CrosschainUserControl());
+        }
         #endregion
 
         private void Page_Loaded(object sender, RoutedEventArgs e)

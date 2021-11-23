@@ -527,30 +527,77 @@
 
                                 <Border Grid.Row="2">
                                     <Grid Margin="10 30 10 0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
+                                        
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
 
-                                        <Button Grid.Column="0" x:Name="receiveButton" Click="ReceiveButton_Click"  Padding="2" FontWeight="Bold" Background="Green" FontFamily="Microsoft YaHei Light" BorderThickness="0,0,0,0" Foreground="White"
-                                                Style="{DynamicResource MaterialDesignRaisedButton}" materialDesign:ShadowAssist.ShadowDepth="Depth3">
-                                            <Grid Width="150">
-                                                <materialDesign:PackIcon Kind="InboxArrowDown" VerticalAlignment="Center" Height="20" Width="25"/>
-                                                <TextBlock HorizontalAlignment="Center" Text="RECEIVE" FontFamily="Champagne &amp; Limousines"/>
-                                            </Grid>
-                                        </Button>
-                                        <Button Grid.Column="1" x:Name="sendButton" Click="SendButton_Click"  Padding="2" Background="Green" FontFamily="Microsoft YaHei Light" BorderThickness="0,0,0,0" Foreground="White" FontWeight="Bold" Margin="10,0,0,0"  
-                                                Style="{DynamicResource MaterialDesignRaisedButton}" materialDesign:ShadowAssist.ShadowDepth="Depth3">
-                                            <Grid Width="150">
-                                                <materialDesign:PackIcon Kind="Send" VerticalAlignment="Center" Height="20" Width="25"/>
-                                                <TextBlock HorizontalAlignment="Center" Text="SEND" FontFamily="Champagne &amp; Limousines"/>
-                                            </Grid>
-                                            <Button.Resources>
-                                                <Style TargetType="Border">
-                                                    <Setter Property="CornerRadius" Value="5"/>
-                                                </Style>
-                                            </Button.Resources>
-                                        </Button>
+                                        <Grid Grid.Row="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Button Grid.Column="0" x:Name="receiveButton" 
+                                                Click="ReceiveButton_Click"  Padding="2" FontWeight="Bold" 
+                                                Background="Green" FontFamily="Microsoft YaHei Light" 
+                                                BorderThickness="0,0,0,0" Foreground="White"
+                                                Style="{DynamicResource MaterialDesignRaisedButton}" 
+                                                materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                                                <Grid Width="150">
+                                                    <materialDesign:PackIcon Kind="InboxArrowDown" 
+                                                                         VerticalAlignment="Center" 
+                                                                         Height="20" Width="25"/>
+                                                    <TextBlock HorizontalAlignment="Center" Text="RECEIVE" 
+                                  Padding="2"                         FontFamily="Champagne &amp; Limousines"/>
+                                                </Grid>
+                                            </Button>
+                                            <Button Grid.Column="1" x:Name="sendButton" Click="SendButton_Click"
+                                                Padding="2" Background="Green" 
+                                                FontFamily="Microsoft YaHei Light" BorderThickness="0,0,0,0"
+                                                Foreground="White" FontWeight="Bold" Margin="10,0,0,0"  
+                                                Style="{DynamicResource MaterialDesignRaisedButton}" 
+                                                materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                                                <Grid Width="150">
+                                                    <materialDesign:PackIcon Kind="Send" 
+                                                                         VerticalAlignment="Center" 
+                                                                         Height="20" Width="25"/>
+                                                    <TextBlock HorizontalAlignment="Center" Text="SEND" 
+                                        Padding="2"                    FontFamily="Champagne &amp; Limousines"/>
+                                                </Grid>
+                                                <Button.Resources>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="CornerRadius" Value="5"/>
+                                                    </Style>
+                                                </Button.Resources>
+                                            </Button>
+
+                                        </Grid>
+                                        
+                                        <!--cross chain transfer button-->
+                                        <Grid Grid.Row="1" Margin="0 5">
+                                            <Button Grid.Row="0" x:Name="CrossChainTransferButton" 
+                                                Click="CrossChainTransferButton_Click"
+                                                Padding="2" Background="Green" 
+                                                FontFamily="Microsoft YaHei Light" BorderThickness="0,0,0,0"
+                                                Foreground="White" FontWeight="Bold" Margin="0,0,0,0"  
+                                                Style="{DynamicResource MaterialDesignRaisedButton}" 
+                                                materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                                                <Grid Width="250">
+                                                    <materialDesign:PackIcon Kind="Transfer" 
+                                                                         VerticalAlignment="Center" 
+                                                                         Height="20" Width="25"/>
+                                                    <TextBlock HorizontalAlignment="Center" 
+                           Padding="2"                                 Text="CROSS-CHAIN TRANSFER" 
+                                                           FontFamily="Champagne &amp; Limousines"/>
+                                                </Grid>
+                                                <Button.Resources>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="CornerRadius" Value="5"/>
+                                                    </Style>
+                                                </Button.Resources>
+                                            </Button>
+                                        </Grid> 
 
                                     </Grid>
                                 </Border>
