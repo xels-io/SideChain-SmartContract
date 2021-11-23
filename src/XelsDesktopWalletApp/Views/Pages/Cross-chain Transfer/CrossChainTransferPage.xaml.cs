@@ -306,7 +306,7 @@ namespace XelsDesktopWalletApp.Views.Pages.Cross_chain_Transfer
             {
                 if (validationCheck())
                 {
-                    string postUrl = this.baseURL + $"/wallet/build-transaction";
+                    string postUrl = this.baseURL + $"/wallet/build-transaction"; // base url need to change 
                     var content = "";
 
                     this.TransactionBuilding.WalletName = this.walletName;
