@@ -195,6 +195,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xels.SmartContracts.Standar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XelsDesktopWalletApp", "XelsDesktopWalletApp\XelsDesktopWalletApp.csproj", "{61857175-0741-4BAC-AE8D-D414CC63D59B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xels.PchD", "..\..\..\SiliconeProject-Test\SideChain-SmartContract\src\Xels.PchD\Xels.PchD.csproj", "{B943A74D-1DB2-43DF-97D4-9C16FEB9225F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xels.PchDnsD", "..\..\..\SiliconeProject-Test\SideChain-SmartContract\src\Xels.PchDnsD\Xels.PchDnsD.csproj", "{6EA16500-2513-4965-968E-B854F2B6EB7C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -517,6 +521,14 @@ Global
 		{61857175-0741-4BAC-AE8D-D414CC63D59B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61857175-0741-4BAC-AE8D-D414CC63D59B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61857175-0741-4BAC-AE8D-D414CC63D59B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B943A74D-1DB2-43DF-97D4-9C16FEB9225F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B943A74D-1DB2-43DF-97D4-9C16FEB9225F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B943A74D-1DB2-43DF-97D4-9C16FEB9225F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B943A74D-1DB2-43DF-97D4-9C16FEB9225F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EA16500-2513-4965-968E-B854F2B6EB7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EA16500-2513-4965-968E-B854F2B6EB7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EA16500-2513-4965-968E-B854F2B6EB7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EA16500-2513-4965-968E-B854F2B6EB7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
