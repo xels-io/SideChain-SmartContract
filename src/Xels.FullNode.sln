@@ -195,9 +195,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xels.SmartContracts.Standar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XelsDesktopWalletApp", "XelsDesktopWalletApp\XelsDesktopWalletApp.csproj", "{61857175-0741-4BAC-AE8D-D414CC63D59B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xels.PchD", "..\..\..\SiliconeProject-Test\SideChain-SmartContract\src\Xels.PchD\Xels.PchD.csproj", "{B943A74D-1DB2-43DF-97D4-9C16FEB9225F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xels.PchD", "Xels.PchD\Xels.PchD.csproj", "{21D8E270-FB74-45F4-ADD3-AE8A30BCDC00}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xels.PchDnsD", "..\..\..\SiliconeProject-Test\SideChain-SmartContract\src\Xels.PchDnsD\Xels.PchDnsD.csproj", "{6EA16500-2513-4965-968E-B854F2B6EB7C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xels.PchDnsD", "Xels.PchDnsD\Xels.PchDnsD.csproj", "{6B8924C4-33A1-4313-ADEE-95127ED012FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -521,14 +521,14 @@ Global
 		{61857175-0741-4BAC-AE8D-D414CC63D59B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61857175-0741-4BAC-AE8D-D414CC63D59B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61857175-0741-4BAC-AE8D-D414CC63D59B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B943A74D-1DB2-43DF-97D4-9C16FEB9225F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B943A74D-1DB2-43DF-97D4-9C16FEB9225F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B943A74D-1DB2-43DF-97D4-9C16FEB9225F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B943A74D-1DB2-43DF-97D4-9C16FEB9225F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6EA16500-2513-4965-968E-B854F2B6EB7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6EA16500-2513-4965-968E-B854F2B6EB7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6EA16500-2513-4965-968E-B854F2B6EB7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6EA16500-2513-4965-968E-B854F2B6EB7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21D8E270-FB74-45F4-ADD3-AE8A30BCDC00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21D8E270-FB74-45F4-ADD3-AE8A30BCDC00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21D8E270-FB74-45F4-ADD3-AE8A30BCDC00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21D8E270-FB74-45F4-ADD3-AE8A30BCDC00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B8924C4-33A1-4313-ADEE-95127ED012FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B8924C4-33A1-4313-ADEE-95127ED012FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B8924C4-33A1-4313-ADEE-95127ED012FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B8924C4-33A1-4313-ADEE-95127ED012FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
