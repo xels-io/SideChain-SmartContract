@@ -40,12 +40,13 @@ namespace XelsDesktopWalletApp
     {
         private const string MainchainArgument = "-mainchain";
         private const string SidechainArgument = "-sidechain";
+        private const string PchchainArgument = "-pchchain";
 
         [STAThread]
         public static void Main(string[] args)
         {
             //args = new string[] { "-sidechain" };
-           
+
             App app = new App();
             CreateShortCut();
 
@@ -65,6 +66,7 @@ namespace XelsDesktopWalletApp
             {
                 bool isMainchainNode = args.FirstOrDefault(a => a.ToLower() == MainchainArgument) != null;
                 bool isSidechainNode = args.FirstOrDefault(a => a.ToLower() == SidechainArgument) != null;
+                bool isPchchainNode = args.FirstOrDefault(a => a.ToLower() == PchchainArgument) != null;
                 bool startInDevMode = args.Any(a => a.ToLower().Contains($"-{NodeSettings.DevModeParam}"));
 
                 IFullNode fullNode = null;
@@ -73,11 +75,16 @@ namespace XelsDesktopWalletApp
                 {
                     fullNode = BuildDevCCMiningNode(args);
                 }
+                if(isPchchainNode)
+                {
+                    fullNode = BuildPchNode(args);
+                }
                 else
                 {
-                    if (isSidechainNode == isMainchainNode)
+                    if (isSidechainNode == isMainchainNode )
                         throw new ArgumentException($"Gateway node needs to be started specifying either a {SidechainArgument} or a {MainchainArgument} argument");
 
+                    //fullNode = isMainchainNode ? BuildXlcNode(args) : isSidechainNode? BuildCCMiningNode(args): isPchchainNode? BuildPchNode(args) : BuildCCMiningNode(args);
                     fullNode = isMainchainNode ? BuildXlcNode(args) : BuildCCMiningNode(args);
 
                     // set the console window title to identify which node this is (for clarity when running Xlc and CC on the same machine)
@@ -183,6 +190,40 @@ namespace XelsDesktopWalletApp
             // TODO: Hardcode -addressindex for better user experience
 
             var nodeSettings = new NodeSettings(networksSelector: Networks.Xlc, protocolVersion: ProtocolVersion.PROVEN_HEADER_VERSION, args: args)
+            {
+                MinProtocolVersion = ProtocolVersion.ALT_PROTOCOL_VERSION
+            };
+
+            DbType dbType = nodeSettings.GetDbType();
+
+            IFullNode node = new FullNodeBuilder()
+                .UseNodeSettings(nodeSettings, dbType)
+                .UseBlockStore(dbType)
+                .UseTransactionNotification()
+                .UseBlockNotification()
+                .UseApi()
+                .UseMempool()
+                .AddRPC()
+                .UsePosConsensus(dbType)
+                .UseWallet()
+                .AddSQLiteWalletRepository()
+                .AddPowPosMining(true)
+                .Build();
+
+            return node;
+        }
+
+        private static IFullNode BuildPchNode(string[] args)
+        {
+
+            URLConfiguration.Chain = args[0];
+            // TODO: Hardcode -addressindex for better user experience
+            URLConfiguration.BaseURL = "http://localhost:38221/api";//Main Chain Url
+
+
+            // TODO: Hardcode -addressindex for better user experience
+
+            var nodeSettings = new NodeSettings(networksSelector: Networks.Pch, protocolVersion: ProtocolVersion.PROVEN_HEADER_VERSION, args: args)
             {
                 MinProtocolVersion = ProtocolVersion.ALT_PROTOCOL_VERSION
             };
