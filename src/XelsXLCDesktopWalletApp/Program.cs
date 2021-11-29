@@ -63,7 +63,7 @@ namespace XelsXLCDesktopWalletApp
 
             URLConfiguration.Chain = args[0];
             // TODO: Hardcode -addressindex for better user experience
-            URLConfiguration.BaseURL = "http://localhost:38221/api";//Main Chain Url
+            URLConfiguration.BaseURL = "http://localhost:37221/api";//Main Chain Url
 
 
             // TODO: Hardcode -addressindex for better user experience
