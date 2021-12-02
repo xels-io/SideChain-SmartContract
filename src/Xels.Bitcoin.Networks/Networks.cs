@@ -27,5 +27,12 @@ namespace Xels.Bitcoin.Networks
                 return new NetworksSelector(() => new XlcMain(), () => new XlcTest(), () => new XlcRegTest());
             }
         }
+        public static NetworksSelector Pch
+        {
+            get
+            {
+                return new NetworksSelector(() => new PchMain(), () => new PchTest(), () => new PchRegTest());
+            }
+        }
     }
 }

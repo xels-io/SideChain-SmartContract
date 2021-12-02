@@ -8,7 +8,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="XelsPage">
 
-    <StackPanel Background="White" Margin="0,0,0,0" >
+    <StackPanel Background="White" Margin="0,0,0,0" x:Name="Xels_Receive_Page" >
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
