@@ -51,11 +51,11 @@ namespace Xels.Bitcoin.Features.Dns
             TextFileConfiguration config = nodeSettings.ConfigReader;
 
             this.DnsListenPort = config.GetOrDefault<int>("dnslistenport", DefaultDnsListenPort, this.logger);
-            this.DnsFullNode = config.GetOrDefault<bool>("dnsfullnode", false, this.logger);
+            this.DnsFullNode = config.GetOrDefault<bool>("dnsfullnode", true, this.logger);
             this.DnsPeerBlacklistThresholdInSeconds = config.GetOrDefault("dnspeerblacklistthresholdinseconds", DefaultDnsPeerBlacklistThresholdInSeconds, this.logger);
-            this.DnsHostName = config.GetOrDefault<string>("dnshostname", null, this.logger);
-            this.DnsNameServer = config.GetOrDefault<string>("dnsnameserver", null, this.logger);
-            this.DnsMailBox = config.GetOrDefault<string>("dnsmailbox", null, this.logger);
+            this.DnsHostName = config.GetOrDefault<string>("dnshostname", "api.xels.io", this.logger);
+            this.DnsNameServer = config.GetOrDefault<string>("dnsnameserver", "api.xels.io", this.logger);
+            this.DnsMailBox = config.GetOrDefault<string>("dnsmailbox", "mail.xels.io", this.logger);
         }
 
         /// <summary>Prints the help information on how to configure the DNS settings to the logger.</summary>

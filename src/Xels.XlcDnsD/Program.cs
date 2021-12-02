@@ -53,13 +53,13 @@ namespace Xels.XlcDnsD
                     node = new FullNodeBuilder()
                         .UseNodeSettings(nodeSettings, dbType)
                         .UseBlockStore(dbType)
-                        .UsePosConsensus(dbType)
+                        .UseApi()
                         .UseMempool()
+                        .AddRPC()
+                        .UsePosConsensus(dbType)
                         .UseWallet()
                         .AddSQLiteWalletRepository()
                         .AddPowPosMining(true)
-                        .UseApi()
-                        .AddRPC()
                         .UseDns()
                         .Build();
                 }

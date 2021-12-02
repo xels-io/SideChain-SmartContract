@@ -123,7 +123,7 @@ namespace Xels.Bitcoin.Networks
                 lastPowBlock: int.MaxValue - 100,
                 proofOfStakeLimit: new BigInteger(uint256.Parse("00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff").ToBytes(false)),
                 proofOfStakeLimitV2: new BigInteger(uint256.Parse("000000000000ffffffffffffffffffffffffffffffffffffffffffffffffffff").ToBytes(false)),
-                proofOfStakeReward: Money.Coins(50)
+                proofOfStakeReward: Money.Coins(100)
             );
 
             this.Consensus.PosEmptyCoinbase = false;

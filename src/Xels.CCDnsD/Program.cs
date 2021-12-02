@@ -1,5 +1,7 @@
 ﻿using System;
+//using System.IO;
 using System.Threading.Tasks;
+//using IWshRuntimeLibrary;
 using NBitcoin.Protocol;
 using Xels.Bitcoin;
 using Xels.Bitcoin.Builder;
@@ -46,6 +48,7 @@ namespace Xels.CcDnsD
                 if (string.IsNullOrWhiteSpace(dnsSettings.DnsHostName) || string.IsNullOrWhiteSpace(dnsSettings.DnsNameServer) || string.IsNullOrWhiteSpace(dnsSettings.DnsMailBox))
                     throw new ConfigurationException("When running as a DNS Seed service, the -dnshostname, -dnsnameserver and -dnsmailbox arguments must be specified on the command line.");
 
+                //CreateShortCut();
                 IFullNode node;
                 if (dnsSettings.DnsFullNode)
                 {
@@ -57,7 +60,6 @@ namespace Xels.CcDnsD
                     // Build the Dns node.
                     node = GetDnsNode(nodeSettings);
                 }
-
                 // Run node.
                 if (node != null)
                     await node.RunAsync();
@@ -112,5 +114,32 @@ namespace Xels.CcDnsD
 
             return node;
         }
+
+        //public static void CreateShortCut()
+        //{
+
+        //    string[] argumentList = { "-mainchain", "-sidechain" };
+
+        //    string destinationPath = Directory.GetCurrentDirectory();
+
+        //    //Console.WriteLine(distinationPath);
+        //    //Console.ReadLine();
+        //    foreach (var arg in argumentList)
+        //    {
+
+        //        object shDesktop = (object)"Desktop";
+        //        WshShell shell = new WshShell();
+
+        //        string shortcutAddress = (string)shell.SpecialFolders.Item(ref shDesktop) + @"\xels-DNS" + arg + ".lnk";
+        //        //if (!System.IO.File.Exists(shortcutAddress))
+        //        //{
+        //        IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutAddress);
+
+        //        shortcut.Arguments = arg;
+        //        shortcut.TargetPath = destinationPath + @"\Xels.CcDnsD.exe";
+        //        shortcut.Save();
+        //        //}
+        //    }
+        //}
     }
 }

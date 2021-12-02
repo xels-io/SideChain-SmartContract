@@ -222,14 +222,14 @@ namespace XelsDesktopWalletApp
                 WshShell shell = new WshShell();
 
                 string shortcutAddress = (string)shell.SpecialFolders.Item(ref shDesktop) + @"\xels-app" + arg + ".lnk";
-                if (!System.IO.File.Exists(shortcutAddress))
-                {
+                //if (!System.IO.File.Exists(shortcutAddress))
+                //{
                     IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutAddress);
 
                     shortcut.Arguments = arg;
                     shortcut.TargetPath = destinationPath + @"\XelsDesktopWalletApp.exe";
                     shortcut.Save();
-                }                
+                //}                
             }
         }
     }

@@ -166,13 +166,13 @@ namespace Xels.CcPegD
 
                 string shortcutAddress = (string)shell.SpecialFolders.Item(ref shDesktop) + @"\xels-app" + arg + ".lnk";
                 //if (!System.IO.File.Exists(shortcutAddress))
-                {
+                //{
                     IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutAddress);
 
                     shortcut.Arguments = arg;
                     shortcut.TargetPath = destinationPath + @"\Xels.CcPegD.exe";
                     shortcut.Save();
-                }
+                //}
             }
         }
 

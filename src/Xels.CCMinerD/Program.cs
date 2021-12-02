@@ -38,7 +38,7 @@ namespace Xels.CcMinerD
 
         public static void Main(string[] args)
         {
-            args = new string[] { "-mainchain" };
+            //args = new string[] { "-mainchain" };
             MainAsync(args).Wait();
             CreateShortCut();
         }
@@ -199,13 +199,13 @@ namespace Xels.CcMinerD
 
                 string shortcutAddress = (string)shell.SpecialFolders.Item(ref shDesktop) + @"\xels-miner" + arg + ".lnk";
                 //if (!System.IO.File.Exists(shortcutAddress))
-                {
+                //{
                     IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutAddress);
 
                     shortcut.Arguments = arg;
                     shortcut.TargetPath = destinationPath + @"\Xels.CcMinerD.exe";
                     shortcut.Save();
-                }
+                //}
             }
         }
     }
