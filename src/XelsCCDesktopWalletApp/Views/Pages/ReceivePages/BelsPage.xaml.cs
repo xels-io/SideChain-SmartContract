@@ -18,6 +18,7 @@ using XelsCCDesktopWalletApp.Common;
 using XelsCCDesktopWalletApp.Models;
 using XelsCCDesktopWalletApp.Models.CommonModels;
 using XelsCCDesktopWalletApp.Models.SmartContractModels;
+using XelsCCDesktopWalletApp.Views.Pages.Modals;
 
 namespace XelsCCDesktopWalletApp.Views.Pages.ReceivePages
 {
@@ -69,11 +70,13 @@ namespace XelsCCDesktopWalletApp.Views.Pages.ReceivePages
             if (addressString !="")
             {
                 Clipboard.SetText(addressString);
-                MessageBox.Show("Address Copied Successfully :- " + addressString);
+                //MessageBox.Show("Address Copied Successfully :- " + addressString);
+                this.Bels_Receive_Page.Children.Add(new DisplayMessageUserControl("Address Copied Successfully : " + this.textBoxTextToQr.Text.ToString()));
             }
             else
             {
-                MessageBox.Show("Data Not Found!.");
+                //MessageBox.Show("Data Not Found!.");
+               this.Bels_Receive_Page.Children.Add(new DisplayErrorMessageUserControl("Data Not Found!."));
             }
         }
          
@@ -94,7 +97,8 @@ namespace XelsCCDesktopWalletApp.Views.Pages.ReceivePages
                 }
                 else
                 {
-                    MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                    //MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                    this.Bels_Receive_Page.Children.Add(new DisplayErrorMessageUserControl("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase));
                 }
 
                 return content;
