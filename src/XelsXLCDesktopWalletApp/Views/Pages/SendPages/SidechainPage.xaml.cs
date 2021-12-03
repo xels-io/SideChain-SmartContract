@@ -13,6 +13,7 @@ using XelsXLCDesktopWalletApp.Models;
 using XelsXLCDesktopWalletApp.Models.CommonModels;
 using XelsXLCDesktopWalletApp.Models.SmartContractModels;
 using XelsXLCDesktopWalletApp.Views.layout;
+using XelsXLCDesktopWalletApp.Views.Pages.Modals;
 
 namespace XelsXLCDesktopWalletApp.Views.Pages.SendPages
 {
@@ -52,14 +53,16 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.SendPages
 
             if (this.SidechainDestinationAddressText.Text == string.Empty)
             {
-                MessageBox.Show("An address is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBox.Show("An address is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Sidechain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("An address is required."));
                 this.SidechainDestinationAddressText.Focus();
                 return false;
             }
 
             if (this.SidechainDestinationAddressText.Text.Length < 26)
             {
-                MessageBox.Show("An address is at least 26 characters long.");
+                //MessageBox.Show("An address is at least 26 characters long.");
+                this.Sidechain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("An address is at least 26 characters long."));
                 this.SidechainDestinationAddressText.Focus();
                 return false;
             }
@@ -74,14 +77,16 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.SendPages
 
                 if (this.TransactionFeeText.Text == "")
                 {
-                    MessageBox.Show("Transaction Fee is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                    //MessageBox.Show("Transaction Fee is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                    this.Sidechain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Transaction Fee is required."));
                     this.TransactionFeeText.Focus();
                     return false;
                 }
 
                 if (this.password.Password == "")
                 {
-                    MessageBox.Show("Your password is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                    //MessageBox.Show("Your password is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                    this.Sidechain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Your password is required."));
                     this.password.Focus();
                     return false;
                 }
@@ -183,7 +188,8 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.SendPages
                     }
                     else
                     {
-                        MessageBox.Show("Invalid Address.");
+                        //MessageBox.Show("Invalid Address.");
+                        this.Sidechain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Invalid Address."));
                     }
                 }
             }
@@ -203,32 +209,37 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.SendPages
                 var rex = Regex.IsMatch(amt, "[^0-9]+");
                 if (rex)
                 {
-                    MessageBox.Show("Data is not valid");
+                    //MessageBox.Show("Data is not valid");
+                    this.Sidechain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Data is not valid"));
                     this.SendAmountText.Focus();
                     return false;
                 }
             }
             if (this.SendAmountText.Text.Trim() == string.Empty)
             {
-                MessageBox.Show("Amount is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBox.Show("Amount is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Sidechain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Amount is required!"));
                 this.SendAmountText.Focus();
                 return false;
             }
             if (this.SidechainDestinationAddressText.Text.ToString().Trim() == "")
             {
-                MessageBox.Show("SideChain Address is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBox.Show("SideChain Address is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Sidechain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("SideChain Address is required!"));
                 this.SidechainDestinationAddressText.Focus();
                 return false;
             }
             if (this.MainchainFederationAddressText.Text.ToString().Trim() == "")
             {
-                MessageBox.Show("MainChain Federation Address is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBox.Show("MainChain Federation Address is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Sidechain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("MainChain Federation Address is required!"));
                 this.MainchainFederationAddressText.Focus();
                 return false;
             }
             if (this.password.Password.ToString().Trim() == "")
             {
-                MessageBox.Show("Password is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBox.Show("Password is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Sidechain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Password is required!"));
                 this.password.Focus();
                 return false;
             }
@@ -336,21 +347,22 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.SendPages
             //}
             if (!Regex.IsMatch(this.SendAmountText.Text.Trim(), @"^([0-9]+)?(\.[0-9]{0,8})?$") || this.SendAmountText.Text.Trim() == string.Empty)
             {
-                MessageBox.Show("Enter a valid transaction amount. Only positive numbers and no more than 8 doubles are allowed.");
+                //MessageBox.Show("Enter a valid transaction amount. Only positive numbers and no more than 8 doubles are allowed.");
+                this.Sidechain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Enter a valid transaction amount. Only positive numbers and no more than 8 doubles are allowed."));
             }
             else
             {
                
                 if (Convert.ToDouble(sendingAmount) < 0.00001)
                 {
-                    MessageBox.Show("The amount has to be more or equal to 1.");
-
+                    //MessageBox.Show("The amount has to be more or equal to 1.");
+                    this.Sidechain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("The amount has to be more or equal to 1."));
                 }
 
                 if (Convert.ToDouble(sendingAmount) > ((this.WalletBalance.AmountConfirmed - this.estimatedSidechainFee) / 100000000))
                 {
-                    MessageBox.Show("The total transaction amount exceeds your spendable balance.");
-
+                    //MessageBox.Show("The total transaction amount exceeds your spendable balance.");
+                    this.Sidechain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("The total transaction amount exceeds your spendable balance."));
                 }
 
                

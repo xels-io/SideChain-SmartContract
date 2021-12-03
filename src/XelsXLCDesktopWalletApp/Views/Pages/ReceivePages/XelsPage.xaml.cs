@@ -51,8 +51,7 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.ReceivePages
             this.ReceiveWalletStatus.UsedAddresses = new List<ReceiveWalletStatus>();
             this.ReceiveWalletStatus.UnusedAddresses = new List<ReceiveWalletStatus>();
             this.ReceiveWalletStatus.ChangedAddresses = new List<ReceiveWalletStatus>();
-              
-            DataContext = this;
+            this.DataContext = this;
              
             LoadCreate();
             GenerateQRCode();
@@ -152,15 +151,15 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.ReceivePages
         private void SingleAddress_Copy_Button_Click(object sender, RoutedEventArgs e)
         {
             Clipboard.SetText(this.textBoxTextToQr.Text);
-            this.Xels_Receive_Page.Children.Add(new DisplayMessageUserControl("Address Copied Successfully :- " + this.textBoxTextToQr.Text.ToString()));
+            this.Xels_Receive_Page.Children.Add(new DisplayMessageUserControl("Address Copied Successfully : " + this.textBoxTextToQr.Text.ToString()));
         }
 
         private void Address_Copy_Button_Click(object sender, RoutedEventArgs e)
         {
             ReceiveWalletStatus item = (ReceiveWalletStatus)((sender as Button)?.Tag as ListViewItem)?.DataContext;
             Clipboard.SetText(item.Address.ToString());
-            this.Xels_Receive_Page.Children.Add(new DisplayMessageUserControl("Address Copied Successfully :- " + item.Address.ToString()));
-
+            //this.Xels_Receive_Page.Children.Add(new DisplayMessageUserControl("Address Copied Successfully :- " + item.Address.ToString()));
+  
         }
 
         //private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
