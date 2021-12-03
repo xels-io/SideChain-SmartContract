@@ -8,7 +8,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="MainchainPage">
 
-    <StackPanel Background="White">
+    <Grid Background="White" x:Name="Mainchain_Send_Page">
 
         <Grid Margin="100 5">
             <Grid.RowDefinitions>
@@ -144,6 +144,6 @@
         </Grid>
 
 
-    </StackPanel>
+    </Grid>
 
 </Page>

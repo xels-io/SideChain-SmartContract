@@ -8,7 +8,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="SelsPage">
 
-    <StackPanel Background="White" >
+    <Grid Background="White" x:Name="Sels_Receive_Page">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
@@ -46,5 +46,5 @@
             </Border>
 
         </Grid>
-    </StackPanel>
+    </Grid>
 </Page>
