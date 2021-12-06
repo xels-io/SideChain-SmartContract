@@ -155,14 +155,14 @@ namespace XelsXLCDesktopWalletApp.Views
 
                     if (response.IsSuccessStatusCode)
                     {
-                        MessageBox.Show($"Successfully created wallet with Name: {this.Walletcreateconfirm.Name}");
+                        //MessageBox.Show($"Successfully created wallet with Name: {this.Walletcreateconfirm.Name}");
 
-                        //this.Confirm_Account_Creation.Children.Add(new DisplayMessageUserControl( $"Successfully created wallet with Name: {this.Walletcreateconfirm.Name}"));
+                        this.Confirm_Account_Creation.Children.Add(new AccountCreatedUserControl($"Successfully created wallet with Name: {this.Walletcreateconfirm.Name}"));
 
-                        CreateOrRestore parentWindow = (CreateOrRestore)Window.GetWindow(this);
-                        parentWindow.Visibility = Visibility.Collapsed;
-                        MainWindow mw = new MainWindow();
-                        mw.Show();
+                        //CreateOrRestore parentWindow = (CreateOrRestore)Window.GetWindow(this);
+                        //parentWindow.Visibility = Visibility.Collapsed;
+                        //MainWindow mw = new MainWindow();
+                        //mw.Show();
                     }
                 }
             }
