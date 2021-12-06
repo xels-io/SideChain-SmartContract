@@ -10,7 +10,7 @@
     
 
 
-        <Grid Background="White">
+        <Grid Background="White" x:Name="Sidechain_Send_Page">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />

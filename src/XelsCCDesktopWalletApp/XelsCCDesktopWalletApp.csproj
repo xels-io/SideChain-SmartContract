@@ -101,6 +101,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\Pages\Modals\AccountCreatedUserControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
     <Page Update="MainWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
@@ -162,13 +168,19 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\Pages\Modals\AccountCreatedUserControl.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\Pages\Modals\DisplayErrorMessageUserControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\Pages\Modals\DisplayMessageUserControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\Pages\Modals\ImportSelsBelsUserControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
@@ -181,6 +193,7 @@
     <Page Update="Views\Pages\Modals\ReceiveUserControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\Pages\Modals\SendUserControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
@@ -189,14 +202,17 @@
     <Page Update="Views\Pages\ReceivePages\BelsPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\Pages\ReceivePages\SelsPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\Pages\ReceivePages\XelsPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\Pages\RestoreWalletPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
@@ -205,18 +221,22 @@
     <Page Update="Views\Pages\SendPages\BelsPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\Pages\SendPages\MainchainPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\Pages\SendPages\SelsPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\Pages\SendPages\SidechainPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\Pages\SendPages\XelsPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>

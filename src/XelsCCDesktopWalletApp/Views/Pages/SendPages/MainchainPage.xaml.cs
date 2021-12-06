@@ -61,28 +61,32 @@ namespace XelsCCDesktopWalletApp.Views.Pages.SendPages
         {
             if (this.DestinationAddressText.Text == string.Empty)
             {
-                MessageBox.Show("An address is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBox.Show("An address is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("An address is required."));
                 this.DestinationAddressText.Focus();
                 return false;
             }
 
             if (this.DestinationAddressText.Text.Length < 26)
             {
-                MessageBox.Show("An address is at least 26 characters long.");
+                //MessageBox.Show("An address is at least 26 characters long.");
+                this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("An address is at least 26 characters long."));
                 this.DestinationAddressText.Focus();
                 return false;
             }
 
             if (this.SendAmountText.Text == string.Empty)
             {
-                MessageBox.Show("An amount is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBox.Show("An amount is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("An amount is required."));
                 this.SendAmountText.Focus();
                 return false;
             }
 
             if (this.SendAmountText.Text.Length < 0.00001)
             {
-                MessageBox.Show("The amount has to be more or equal to 1.");
+                //MessageBox.Show("The amount has to be more or equal to 1.");
+                this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("The amount has to be more or equal to 1."));
                 this.SendAmountText.Focus();
                 return false;
             }           
@@ -97,14 +101,16 @@ namespace XelsCCDesktopWalletApp.Views.Pages.SendPages
 
                 if (this.TransactionFeeText.Text == "")
                 {
-                    MessageBox.Show("Transaction Fee is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                    //MessageBox.Show("Transaction Fee is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                    this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Transaction Fee is required."));
                     this.TransactionFeeText.Focus();
                     return false;
                 }
 
                 if (this.password.Password == "")
                 {
-                    MessageBox.Show("Your password is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                    //MessageBox.Show("Your password is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                    this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Your password is required."));
                     this.password.Focus();
                     return false;
                 }
@@ -193,7 +199,8 @@ namespace XelsCCDesktopWalletApp.Views.Pages.SendPages
                     else
                     {
 
-                        MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                        //MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                        this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase));
                         this.DestinationAddressText.Text = "";
                     }
                 }
@@ -212,27 +219,31 @@ namespace XelsCCDesktopWalletApp.Views.Pages.SendPages
                 var rex = Regex.IsMatch(amt, "[^0-9]+");
                 if (rex)
                 {
-                    MessageBox.Show("Data is not valid");
+                    //MessageBox.Show("Data is not valid");
+                    this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Data is not valid"));
                     this.SendAmountText.Focus();
                     return false;
                 }
             }
             if (this.SendAmountText.Text.Trim() == string.Empty)
             {
-                MessageBox.Show("Amount is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBox.Show("Amount is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Amount is required!"));
                 this.SendAmountText.Focus();
                 return false;
             }
             if (this.DestinationAddressText.Text.ToString().Trim() == "")
             {
-                MessageBox.Show(" Address is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBox.Show(" Address is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Address is required!"));
                 this.DestinationAddressText.Focus();
                 return false;
             }
            
             if (this.password.Password.ToString().Trim() == "")
             {
-                MessageBox.Show("Password is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBox.Show("Password is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Password is required!"));
                 this.password.Focus();
                 return false;
             }
@@ -283,7 +294,8 @@ namespace XelsCCDesktopWalletApp.Views.Pages.SendPages
 
                             foreach (var error in errors.Errors)
                             {
-                                MessageBox.Show(error.Message);
+                                //MessageBox.Show(error.Message);
+                                this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl(error.Message));
                                 break;
                                 //MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
                             }
@@ -336,7 +348,8 @@ namespace XelsCCDesktopWalletApp.Views.Pages.SendPages
 
                         foreach (var error in errors.Errors)
                         {
-                            MessageBox.Show(error.Message);
+                            //MessageBox.Show(error.Message);
+                            this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl(error.Message));
                             break;
                             //MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
                         }
@@ -360,13 +373,15 @@ namespace XelsCCDesktopWalletApp.Views.Pages.SendPages
             {
                 if (!Regex.IsMatch(this.SendAmountText.Text, @"^([0-9]+)?(\.[0-9]{0,8})?$"))
                 {
-                    MessageBox.Show("Enter a valid transaction amount. Only positive numbers and no more than 8 decimals are allowed.");
+                    //MessageBox.Show("Enter a valid transaction amount. Only positive numbers and no more than 8 decimals are allowed.");
+                    this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Enter a valid transaction amount. Only positive numbers and no more than 8 decimals are allowed."));
                 }
                 else
                 {
                     if (Convert.ToDouble(sendingAmount) > ((this.WalletBalance.MaxSpendableAmount - this.WalletBalance.Fee) / 100000000))
                     {
-                        MessageBox.Show("The total transaction amount exceeds your spendable balance.");
+                        //MessageBox.Show("The total transaction amount exceeds your spendable balance.");
+                        this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("The total transaction amount exceeds your spendable balance."));
                     }
                     if (this.DestinationAddressText.Text != "" && this.SendAmountText.Text != "")
                     {

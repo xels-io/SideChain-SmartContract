@@ -94,6 +94,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\Pages\Modals\AccountCreatedUserControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
     <Page Update="App.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
@@ -142,6 +148,10 @@
     <Page Update="Views\Pages\HistoryPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
+    <Page Update="Views\Pages\Modals\AccountCreatedUserControl.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\Pages\Modals\DisplayErrorMessageUserControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
@@ -162,27 +172,34 @@
     </Page>
     <Page Update="Views\Pages\ReceivePages\BelsPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\Pages\ReceivePages\SelsPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\Pages\ReceivePages\XelsPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\Pages\RestoreWalletPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
     <Page Update="Views\Pages\SendPages\BelsPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\Pages\SendPages\MainchainPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\Pages\SendPages\SelsPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\Pages\SendPages\SidechainPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\Pages\SendPages\XelsPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>

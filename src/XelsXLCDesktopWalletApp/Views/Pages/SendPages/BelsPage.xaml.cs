@@ -14,6 +14,7 @@ using XelsXLCDesktopWalletApp.Common;
 using Nethereum.RPC.Eth.DTOs;
 using System;
 using XelsXLCDesktopWalletApp.Models.SmartContractModels;
+using XelsXLCDesktopWalletApp.Views.Pages.Modals;
 
 namespace XelsXLCDesktopWalletApp.Views.Pages.SendPages
 {
@@ -39,7 +40,8 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.SendPages
         {
             if (this.textToAddress.Text.ToString().Trim() == "")
             {
-                MessageBox.Show("Address To is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBox.Show("Address To is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Bels_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Address To is required!"));
                 this.textToAddress.Focus();
                 return false;
             }
@@ -49,14 +51,16 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.SendPages
                 var rex = Regex.IsMatch(amt, "[^0-9]+");
                 if (rex)
                 {
-                    MessageBox.Show("Data is not valid");
+                    //MessageBox.Show("Data is not valid");
+                    this.Bels_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Data is not valid"));
                     this.textAmount.Focus();
                     return false;
                 }
             }
             if (this.textAmount.Text.Trim() == string.Empty)
             {
-                MessageBox.Show("Amount is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBox.Show("Amount is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Bels_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Amount is required!"));
                 this.textAmount.Focus();
                 return false;
             }
@@ -95,16 +99,19 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.SendPages
                         {
                             string tranID = sendResult.Item1.TransactionHash.ToString();
                             string message = this.textAmount.Text + " Token successfully send to " + toAddress + "and Transaction Id: " + tranID;
-                            MessageBox.Show(message, "SUCCESS", MessageBoxButton.OK, MessageBoxImage.Information);
+                            //MessageBox.Show(message, "SUCCESS", MessageBoxButton.OK, MessageBoxImage.Information);
+                            this.Bels_Send_Page.Children.Add(new DisplayErrorMessageUserControl(message));
                         }
                         else
                         {
-                            MessageBox.Show(sendResult.Item2, "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                            //MessageBox.Show(sendResult.Item2, "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                            this.Bels_Send_Page.Children.Add(new DisplayErrorMessageUserControl(sendResult.Item2));
                         }
                     }
                     else
                     {
-                        MessageBox.Show("You have not imported yet!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                        //MessageBox.Show("You have not imported yet!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                        this.Bels_Send_Page.Children.Add(new DisplayErrorMessageUserControl("You have not imported yet!"));
                     }
                 }
             }

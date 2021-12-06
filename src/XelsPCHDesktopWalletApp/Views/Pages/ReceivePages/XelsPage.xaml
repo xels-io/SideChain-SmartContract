@@ -8,7 +8,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="XelsPage">
 
-    <StackPanel Background="White" Margin="0,0,0,0" x:Name="Xels_Receive_Page" >
+    <Grid Background="White" Margin="0,0,0,0" x:Name="Xels_Receive_Page">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
@@ -44,7 +44,7 @@
             </Border>
 
             <!-- address list -->
-            <Border Grid.Row="1" Margin="0,0,0,0" >
+            <Border Grid.Row="2" Margin="0,0,0,0" >
 
                 <Grid Margin="0,0,0,0">
                     <Grid.RowDefinitions>
@@ -146,14 +146,14 @@
             <!---  show all addresses button  -->
             <Border Grid.Row="03" >
                 <Border x:Name="BackShowAllAddressButton" Margin="0 2">
-                    <Button x:Name="showall" Click="ShowAllAddressButton_Click"                                HorizontalAlignment="Center" 
+                    <Button x:Name="showall" Click="ShowAllAddressButton_Click" HorizontalAlignment="Center" 
                          FontSize="10" Content="Show All Addresses"
                            RenderTransformOrigin="0.51,0.144">
                     </Button>
                 </Border>
             </Border>
-            
+
         </Grid>
-    </StackPanel>
+    </Grid>
 
 </Page>
