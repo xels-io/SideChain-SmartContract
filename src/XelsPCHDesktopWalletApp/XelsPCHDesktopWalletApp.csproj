@@ -102,6 +102,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\Pages\Modals\AccountCreatedUserControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
     <Page Update="MainWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
@@ -176,6 +182,10 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\Pages\Modals\AccountCreatedUserControl.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Pages\Modals\DisplayErrorMessageUserControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
