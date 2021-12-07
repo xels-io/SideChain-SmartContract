@@ -33,6 +33,7 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.Cross_chain_Transfer
 
         private TransactionSending TransactionSending = new TransactionSending();
         private TransactionBuilding TransactionBuilding = new TransactionBuilding();
+        //private PchTransactionBuilding TransactionBuilding = new PchTransactionBuilding();
         private WalletBalance WalletBalance = new WalletBalance();
 
         private BuildTransaction BuildTransaction = new BuildTransaction();
@@ -146,7 +147,7 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.Cross_chain_Transfer
             //}
             List<Recipient> list = new List<Recipient>() {
 
-               new Recipient{ DestinationAddress = "XWMrW4fjYahBV7b2ftXCpFgZBFaY8Tr7jC", //static address
+               new Recipient{ DestinationAddress = "XFYeZjeneU4VamUEZ31hknMxsVDmRbg5Mh", //static address
                //this.DestinationAddressText.Text.Trim(),
                Amount = this.SendAmountText.Text}
             };
@@ -394,12 +395,14 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.Cross_chain_Transfer
             {
                 if (validationCheck())
                 {
-                    string postUrl = "http://54.238.248.117:38221/api" + $"/wallet/build-transaction";
+                    //string postUrl = "http://54.238.248.117:38221/api" + $"/wallet/build-transaction";
+                    string postUrl = "https://api.xels.io:2332/PostAPIResponse/38221/";
                     var content = "";
 
-                    this.TransactionBuilding.WalletName = this.walletName;
+                    this.TransactionBuilding.URL = "/api/wallet/build-transaction";
+                    this.TransactionBuilding.WalletName = "pch";
                     this.TransactionBuilding.AccountName = "account 0";
-                    this.TransactionBuilding.Password = this.password.Password;
+                    this.TransactionBuilding.Password = "Asdf1234!";
                     this.TransactionBuilding.Recipients = GetRecipientForPch();
                     this.TransactionBuilding.FeeAmount = this.estimatedFee;
                     this.TransactionBuilding.AllowUnconfirmed = true;
@@ -499,7 +502,8 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.Cross_chain_Transfer
             {
                 if (isValid())
                 {
-                    string postUrl = "http://54.238.248.117:38221/api" + $"/wallet/send-transaction";
+                    //string postUrl = "http://54.238.248.117:38221/api" + $"/wallet/send-transaction";
+                    string postUrl = "https://api.xels.io:2332/PostAPIResponse/38221/" + $"/api/wallet/send-transaction";
                     var content = "";
 
                     HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(tranSending), Encoding.UTF8, "application/json"));

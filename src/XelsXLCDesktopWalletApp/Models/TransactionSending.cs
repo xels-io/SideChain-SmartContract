@@ -24,6 +24,7 @@ namespace XelsXLCDesktopWalletApp.Models
 
     public class TransactionBuilding
     {
+        public string URL { get; set; }
         public string WalletName { get; set; }
         public string AccountName { get; set; }
         public string Password { get; set; }
@@ -33,6 +34,26 @@ namespace XelsXLCDesktopWalletApp.Models
         //public string destinationAddress { get; set; }
         //public string amount { get; set; }
         
+        public double FeeAmount { get; set; }
+        public bool AllowUnconfirmed { get; set; }
+        public bool ShuffleOutputs { get; set; }
+
+        //public string opReturnData { get; set; }
+        //public string opReturnAmount { get; set; }
+    }
+
+    public class PchTransactionBuilding
+    {
+        public string URL { get; set; }
+        public string WalletName { get; set; }
+        public string AccountName { get; set; }
+        public string Password { get; set; }
+
+        public List<Recipient> Recipients { get; set; }
+
+        //public string destinationAddress { get; set; }
+        //public string amount { get; set; }
+
         public double FeeAmount { get; set; }
         public bool AllowUnconfirmed { get; set; }
         public bool ShuffleOutputs { get; set; }
