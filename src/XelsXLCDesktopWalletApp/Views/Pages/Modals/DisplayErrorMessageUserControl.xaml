@@ -7,7 +7,7 @@
              mc:Ignorable="d"  BorderThickness="1">
     <Grid >
         <Rectangle Fill="DarkGray" Opacity=".7" MouseDown="Rectangle_MouseDown" />
-        <Border CornerRadius ="8" Background="White" Height="100" Width="350" BorderBrush="Red" BorderThickness="1.5" >
+        <Border CornerRadius ="8" Background="White" Height="100" Width="350" BorderBrush="Green" BorderThickness="1.5" >
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
@@ -19,7 +19,7 @@
 
                 <TextBlock Grid.Row="0" x:Name="Message_Modal" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" Foreground="#FF251F1F"  TextWrapping="Wrap" />
 
-                <Button Grid.Row="1" HorizontalAlignment="Center" Name="Close_Modal" Background="Red" Foreground="White" Height="20" Width="51" FontSize="10" Padding=" 0 3"
+                <Button Grid.Row="1" HorizontalAlignment="Center" Name="Close_Modal" Background="White" Foreground="Black" BorderBrush="Green" Height="20" Width="51" FontSize="10" Padding=" 0 3"
                         Click="Button_Close_Modal">Ok</Button>
             </Grid>
         </Border>
