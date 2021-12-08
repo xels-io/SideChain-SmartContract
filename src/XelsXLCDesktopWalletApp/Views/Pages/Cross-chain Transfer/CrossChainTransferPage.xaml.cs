@@ -461,6 +461,7 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.Cross_chain_Transfer
                     string postUrl = this.baseURL + $"/wallet/send-transaction";
                     var content = "";
 
+                    tranSending.URL = "";
                     HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(tranSending), Encoding.UTF8, "application/json"));
 
                     content = await response.Content.ReadAsStringAsync();
@@ -503,9 +504,10 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.Cross_chain_Transfer
                 if (isValid())
                 {
                     //string postUrl = "http://54.238.248.117:38221/api" + $"/wallet/send-transaction";
-                    string postUrl = "https://api.xels.io:2332/PostAPIResponse/38221/" + $"/api/wallet/send-transaction";
+                    string postUrl = "https://api.xels.io:2332/PostAPIResponse/38221/";
                     var content = "";
 
+                    tranSending.URL = $"/api/wallet/send-transaction";
                     HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(tranSending), Encoding.UTF8, "application/json"));
 
                     content = await response.Content.ReadAsStringAsync();
