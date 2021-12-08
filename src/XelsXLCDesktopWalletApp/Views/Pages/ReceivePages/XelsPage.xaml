@@ -148,7 +148,7 @@
                 <Border x:Name="BackShowAllAddressButton" Margin="0 2">
                     <Button x:Name="showall" Click="ShowAllAddressButton_Click" HorizontalAlignment="Center" 
                          FontSize="10" Content="Show All Addresses"
-                           RenderTransformOrigin="0.51,0.144">
+                           RenderTransformOrigin="0.51,0.144" Background="Green">
                     </Button>
                 </Border>
             </Border>
