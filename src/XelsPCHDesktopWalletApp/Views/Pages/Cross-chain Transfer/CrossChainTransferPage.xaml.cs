@@ -158,7 +158,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.Cross_chain_Transfer
         {
             List<Recipient> list = new List<Recipient>() {
 
-               new Recipient{ DestinationAddress = "XXSpYXLBuith12SGaciYbaD2Pr2ZFdhP3E", //static address
+               new Recipient{ DestinationAddress = "XFFeZFEFDhsneU3RTevGmmXDKVjih3z6G1", //static address
                //this.DestinationAddressText.Text.Trim(),
                Amount = this.SendAmountText.Text}
             };
@@ -269,7 +269,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.Cross_chain_Transfer
                 if (validationCheck())
                 {
                     //string postUrl = "http://54.238.248.117:37221/api" + $"/wallet/build-transaction";
-                    string postUrl = "https://api.xels.io:2332/PostAPIResponse/38221/";
+                    string postUrl = "https://api.xels.io:2332/PostAPIResponse/37221/";
                     var content = "";
 
                     this.TransactionBuilding.URL = "/api/wallet/build-transaction";
@@ -459,7 +459,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.Cross_chain_Transfer
                 {
                     string postUrl = this.baseURL + $"/wallet/send-transaction";
                     var content = "";
-
+                    tranSending.URL = "";
                     HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(tranSending), Encoding.UTF8, "application/json"));
 
                     content = await response.Content.ReadAsStringAsync();
@@ -501,9 +501,10 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.Cross_chain_Transfer
                 if (isValid())
                 {
                     //string postUrl = "http://54.238.248.117:37221/api" + $"/wallet/send-transaction";
-                    string postUrl = "https://api.xels.io:2332/PostAPIResponse/38221/" + $"/api/wallet/send-transaction";
+                    string postUrl = "https://api.xels.io:2332/PostAPIResponse/37221/";
                     var content = "";
 
+                    tranSending.URL = $"/api/wallet/send-transaction";
                     HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(tranSending), Encoding.UTF8, "application/json"));
 
                     content = await response.Content.ReadAsStringAsync();
