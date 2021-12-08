@@ -140,6 +140,7 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.ReceivePages
             this.BackSingleAddressButton.Visibility = Visibility.Visible;
             this.SingleAddress.Visibility = Visibility.Hidden;
             this.BackShowAllAddressButton.Visibility = Visibility.Hidden;
+            this.showall.Visibility = Visibility.Collapsed;
         }
 
 
@@ -171,10 +172,11 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.ReceivePages
 
         private void BackSingleAddressButton_Click(object sender, RoutedEventArgs e)
         {
-            this.AllAddressList.Visibility = Visibility.Hidden;
+            this.AllAddressList.Visibility = Visibility.Collapsed;
             this.SingleAddress.Visibility = Visibility.Visible;
-            this.BackSingleAddressButton.Visibility = Visibility.Hidden;
+            this.BackSingleAddressButton.Visibility = Visibility.Collapsed;
             this.BackShowAllAddressButton.Visibility = Visibility.Visible;
+            this.showall.Visibility = Visibility.Visible;
         }
 
     }

@@ -17,7 +17,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <!--- image -->
-            <Border Grid.Row="0" Height="80">
+            <Border Grid.Row="0" Height="100">
                 <Image x:Name="image" />
             </Border>
             <!-- signle address and copy button  -->
