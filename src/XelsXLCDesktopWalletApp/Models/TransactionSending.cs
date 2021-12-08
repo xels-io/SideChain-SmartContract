@@ -7,6 +7,7 @@ namespace XelsXLCDesktopWalletApp.Models
 {
     public class TransactionSending
     {
+        public string URL { get; set; }
         public string Hex { get; set; }
     }
 
