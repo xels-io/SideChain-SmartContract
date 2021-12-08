@@ -475,7 +475,8 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.Cross_chain_Transfer
                         sendConfirmation.Cointype = this.cointype;
                         this.successTransaction = true;
 
-                        this.NavigationService.Navigate(new SendConfirmationMainChain(sendConfirmation, this.walletName));                        
+                        //this.NavigationService.Navigate(new SendConfirmationMainChain(sendConfirmation, this.walletName));
+                        this.Cross_Chain_Trans.Children.Add(new SendConfirmationMainChain(sendConfirmation, this.walletName));
                     }
                     else
                     {
@@ -521,7 +522,7 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.Cross_chain_Transfer
                         sendConfirmation.Cointype = this.cointype;
                         this.successTransaction = true;
 
-                        this.NavigationService.Navigate(new SendConfirmationMainChain(sendConfirmation, this.walletName));                        
+                        //this.NavigationService.Navigate(new SendConfirmationMainChain(sendConfirmation, this.walletName));                        
                     }
                     else
                     {
