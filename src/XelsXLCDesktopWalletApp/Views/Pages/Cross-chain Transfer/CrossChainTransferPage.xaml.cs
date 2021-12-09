@@ -43,28 +43,32 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.Cross_chain_Transfer
         {
             if (this.DestinationAddressText.Text == string.Empty)
             {
-                MessageBox.Show("An address is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBox.Show("An address is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Cross_Chain_Trans.Children.Add(new DisplayErrorMessageUserControl("An address is required."));
                 this.DestinationAddressText.Focus();
                 return false;
             }
 
             if (this.DestinationAddressText.Text.Length < 26)
             {
-                MessageBox.Show("An address is at least 26 characters long.");
+                //MessageBox.Show("An address is at least 26 characters long.");
+                this.Cross_Chain_Trans.Children.Add(new DisplayErrorMessageUserControl("An address is at least 26 characters long."));
                 this.DestinationAddressText.Focus();
                 return false;
             }
 
             if (this.SendAmountText.Text == string.Empty)
             {
-                MessageBox.Show("An amount is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBox.Show("An amount is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Cross_Chain_Trans.Children.Add(new DisplayErrorMessageUserControl("An amount is required."));
                 this.SendAmountText.Focus();
                 return false;
             }
 
             if (this.SendAmountText.Text.Length < 0.00001)
             {
-                MessageBox.Show("The amount has to be more or equal to 1.");
+                //MessageBox.Show("The amount has to be more or equal to 1.");
+                this.Cross_Chain_Trans.Children.Add(new DisplayErrorMessageUserControl("The amount has to be more or equal to 1."));
                 this.SendAmountText.Focus();
                 return false;
             }
@@ -79,7 +83,8 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.Cross_chain_Transfer
 
                 if (this.TransactionFeeText.Text == "")
                 {
-                    MessageBox.Show("Transaction Fee is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                    //MessageBox.Show("Transaction Fee is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                    this.Cross_Chain_Trans.Children.Add(new DisplayErrorMessageUserControl("Transaction Fee is required."));
                     this.TransactionFeeText.Focus();
                     return false;
                 }
@@ -104,20 +109,23 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.Cross_chain_Transfer
                 var rex = Regex.IsMatch(amt, "[^0-9]+");
                 if (rex)
                 {
-                    MessageBox.Show("Data is not valid");
+                    //MessageBox.Show("Data is not valid");
+                    this.Cross_Chain_Trans.Children.Add(new DisplayErrorMessageUserControl("Data is not valid."));
                     this.SendAmountText.Focus();
                     return false;
                 }
             }
             if (this.SendAmountText.Text.Trim() == string.Empty)
             {
-                MessageBox.Show("Amount is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBox.Show("Amount is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Cross_Chain_Trans.Children.Add(new DisplayErrorMessageUserControl("Amount is required!"));
                 this.SendAmountText.Focus();
                 return false;
             }
             if (this.DestinationAddressText.Text.ToString().Trim() == "")
             {
-                MessageBox.Show(" Address is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBox.Show(" Address is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Cross_Chain_Trans.Children.Add(new DisplayMessageUserControl("Address is required!"));
                 this.DestinationAddressText.Focus();
                 return false;
             }
