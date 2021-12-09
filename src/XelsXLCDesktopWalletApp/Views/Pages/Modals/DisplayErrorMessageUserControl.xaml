@@ -10,8 +10,8 @@
         <Border CornerRadius ="8" Background="White" Height="100" Width="350" BorderBrush="Green" BorderThickness="1.5" >
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="70" />
+                    <RowDefinition Height="Auto" />
                     <!--<RowDefinition Height="*" />-->
                 </Grid.RowDefinitions>
 
@@ -20,7 +20,7 @@
                 <TextBlock Grid.Row="0" x:Name="Message_Modal" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" Foreground="#FF251F1F"  TextWrapping="Wrap" />
 
                 <Button Grid.Row="1" HorizontalAlignment="Center" Name="Close_Modal" Background="White" Foreground="Black" BorderBrush="Green" Height="20" Width="51" FontSize="10" Padding=" 0 3"
-                        Click="Button_Close_Modal">Ok</Button>
+                        Click="Button_Close_Modal" Margin="0,0,0,14">Ok</Button>
             </Grid>
         </Border>
 
