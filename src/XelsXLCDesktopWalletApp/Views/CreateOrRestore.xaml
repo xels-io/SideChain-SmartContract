@@ -47,7 +47,7 @@
                     <Hyperlink.Style>
                     <Style TargetType="{x:Type Hyperlink}"
                             BasedOn="{StaticResource {x:Type Hyperlink}}">
-                        <Setter Property="Foreground" Value="Blue"/>
+                        <Setter Property="Foreground" Value="Green"/>
                     </Style>
                     </Hyperlink.Style><Run Text="BACK " FontSize="15" FontWeight="SemiBold" />
                 </Hyperlink>
