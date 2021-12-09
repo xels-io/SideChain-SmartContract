@@ -84,12 +84,12 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.Cross_chain_Transfer
                     return false;
                 }
 
-                if (this.password.Password == "")
-                {
-                    MessageBox.Show("Your password is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                    this.password.Focus();
-                    return false;
-                }
+                //if (this.password.Password == "")
+                //{
+                //    MessageBox.Show("Your password is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                //    this.password.Focus();
+                //    return false;
+                //}
             }
 
             return true;
@@ -122,12 +122,12 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.Cross_chain_Transfer
                 return false;
             }
 
-            if (this.password.Password.ToString().Trim() == "")
-            {
-                MessageBox.Show("Password is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                this.password.Focus();
-                return false;
-            }
+            //if (this.password.Password.ToString().Trim() == "")
+            //{
+            //    MessageBox.Show("Password is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+            //    this.password.Focus();
+            //    return false;
+            //}
             return true;
         }
 
