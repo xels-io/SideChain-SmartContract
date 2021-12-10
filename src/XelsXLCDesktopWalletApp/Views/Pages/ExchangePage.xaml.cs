@@ -16,6 +16,7 @@ using XelsXLCDesktopWalletApp.Common;
 using XelsXLCDesktopWalletApp.Models;
 using XelsXLCDesktopWalletApp.Models.CommonModels;
 using XelsXLCDesktopWalletApp.Models.SmartContractModels;
+using XelsXLCDesktopWalletApp.Views.Pages.Modals;
 
 namespace XelsXLCDesktopWalletApp.Views.Pages
 {
@@ -129,14 +130,16 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
         {
             if (this.Combobox.SelectedItem == null)
             {
-                MessageBox.Show("Deposit From is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBox.Show("Deposit From is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Exchange.Children.Add(new DisplayErrorMessageUserControl("Deposit From is required!"));
                 this.Combobox.Focus();
                 return false;
             }
 
             if (this.AmountTxt.Text == string.Empty)
             {
-                MessageBox.Show("Deposit Amount is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBox.Show("Deposit Amount is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Exchange.Children.Add(new DisplayErrorMessageUserControl("Deposit Amount is required!"));
                 this.AmountTxt.Focus();
                 return false;
             }
@@ -397,7 +400,8 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
 
                     if (exchangedata.id == null)
                     {
-                        MessageBox.Show($"Your provided Order Id: {orderId} is not found!");
+                        //MessageBox.Show($"Your provided Order Id: {orderId} is not found!");
+                        this.Exchange.Children.Add(new DisplayErrorMessageUserControl($"Your provided Order Id: {orderId} is not found!"));
                     }
                     else
                     {
@@ -432,13 +436,15 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
                     var result = await GetOrderAsync(item.excid);
                     if (result.Item1 != null && result.Item2.ToString() == "SUCCESS")
                     {
-                        MessageBox.Show("Token has been sent Successfully.");
+                        //MessageBox.Show("Token has been sent Successfully.");
+                        this.Exchange.Children.Add(new DisplayErrorMessageUserControl("Token has been sent Successfully."));
                         await UpdateExchangeListAsync();
                         this.IsEnabled = true;
                     }
                     else
                     {
-                        MessageBox.Show(result.Item2.ToString());
+                        //MessageBox.Show(result.Item2.ToString());
+                        this.Exchange.Children.Add(new DisplayErrorMessageUserControl(result.Item2.ToString()));
                         await UpdateExchangeListAsync();
                         this.IsEnabled = true;
                     }
@@ -446,7 +452,8 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
                 }
                 else
                 {
-                    MessageBox.Show("Value Must be required!.");
+                    //MessageBox.Show("Value Must be required!.");
+                    this.Exchange.Children.Add(new DisplayErrorMessageUserControl("Value Must be required!."));
                 }
             }
             catch (Exception df)
@@ -468,7 +475,8 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
 
                     if (this.mywallet == null || this.mywallet.PrivateKey == null)
                     {
-                        MessageBox.Show($"Your ethereum address is not imported properly. Please import your address again");
+                        //MessageBox.Show($"Your ethereum address is not imported properly. Please import your address again");
+                        this.Exchange.Children.Add(new DisplayErrorMessageUserControl($"Your ethereum address is not imported properly. Please import your address again"));
                     }
                     else
                     {
@@ -481,13 +489,15 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
                         var result = await NewOrderAsync(exchangeOrder);
                         if (result.Item1 != null && result.Item2.ToString() == "SUCCESS")
                         {
-                            MessageBox.Show("Token has been sent Successfully.");
+                            //MessageBox.Show("Token has been sent Successfully.");
+                            this.Exchange.Children.Add(new DisplayErrorMessageUserControl("Token has been sent Successfully."));
                             await UpdateExchangeListAsync();
                             this.exchangeSubmit.IsEnabled = true;
                         }
                         else
                         {
-                            MessageBox.Show(result.Item2.ToString());
+                            //MessageBox.Show(result.Item2.ToString());
+                            this.Exchange.Children.Add(new DisplayErrorMessageUserControl(result.Item2.ToString()));
                             await UpdateExchangeListAsync();
                             this.exchangeSubmit.IsEnabled = true;
                         }
@@ -520,7 +530,8 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
                     }
                     else
                     {
-                        MessageBox.Show("Data is not valid");
+                        //MessageBox.Show("Data is not valid");
+                        this.Exchange.Children.Add(new DisplayErrorMessageUserControl("Data is not valid"));
                         this.AmountTxt.Text = "";
                     }
                 }

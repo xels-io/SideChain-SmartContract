@@ -117,13 +117,13 @@
                 <DropShadowEffect BlurRadius="20" Color="#FFDEDEDE" RenderingBias="Quality" ShadowDepth="1"/>
             </Grid.Effect>
 
-            <Grid Background="LightGray" Margin="0,0,0,29">
+            <Grid Background="#FF41A43C" Margin="0,0,0,29">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="107*"/>
                     <ColumnDefinition Width="93*"/>
                 </Grid.ColumnDefinitions>
                 <!--<TextBlock Text="DASHBOARD" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="WS Simple Gallifreyan" Foreground="White" FontSize="16"/>-->
-                <Image Height="50" Source="/Assets/Images/home-xels-logo-01.png"   HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Margin="20,20,80,30" Grid.ColumnSpan="2" />
+                <Image Height="50" Source="/Assets/Images/home-xels-logo-01.png"   HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Margin="50,20,80,30" Grid.ColumnSpan="2" />
             </Grid>
 
             <StackPanel Grid.Row="1">

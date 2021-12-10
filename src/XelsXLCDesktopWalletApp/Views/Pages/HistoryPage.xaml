@@ -19,7 +19,7 @@
             <TextBlock Margin="20 0 0 0" FontSize="15" FontWeight="DemiBold" Padding="2" Background="WhiteSmoke">Transaction History</TextBlock>
         </Border>
 
-        <Border Grid.Row="1"  CornerRadius="5" Background="#ffffff" BorderBrush="Black" BorderThickness="1" Margin="10 0 10 10">
+        <Border Grid.Row="1"  CornerRadius="5" Background="#ffffff" BorderBrush="#FF41A43C" BorderThickness="1" Margin="10 0 10 10">
             <Border.Effect>
                 <DropShadowEffect  Direction="-75" ShadowDepth="2" Opacity="0.8" BlurRadius="25" Color="Black" />
             </Border.Effect>

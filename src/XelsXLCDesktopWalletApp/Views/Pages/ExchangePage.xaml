@@ -8,7 +8,7 @@
       d:DesignHeight="560" d:DesignWidth="880"
       Title="ExchangePage">
 
-    <Grid Height="560" Margin="0, 0, 0, 0" Background="#FFCFCFCF" Width="880">
+    <Grid Height="560" Margin="0, 0, 0, 0" Background="#FFCFCFCF" Width="880" x:Name="Exchange">
         <Grid.RowDefinitions>
             <RowDefinition Height="71*"/>
             <RowDefinition Height="194*"/>
