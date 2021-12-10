@@ -64,14 +64,16 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.Modals
         {
             if (this.SELSPrivateKeyTxt.Text == string.Empty)
             {
-                MessageBox.Show("SELS Private Key is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBox.Show("SELS Private Key is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Import_Sels_Bels.Children.Add(new DisplayErrorMessageUserControl("SELS Private Key is required!"));
                 this.SELSPrivateKeyTxt.Focus();
                 return false;
             }
 
             if (this.BELSPrivateKeyTxt.Text == string.Empty)
             {
-                MessageBox.Show("BELS Private Key is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBox.Show("BELS Private Key is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Import_Sels_Bels.Children.Add(new DisplayErrorMessageUserControl("BELS Private Key is required!!"));
                 this.BELSPrivateKeyTxt.Focus();
                 return false;
             }
