@@ -37,8 +37,8 @@
                 </Grid.ColumnDefinitions>
  
                 <Image Grid.Column="0" Margin=" 0 5 0 0" Source="/Views/Pages/back-arrow.gif" 
-                       HorizontalAlignment="Center"   Width="35"
-                   RenderTransformOrigin="0.51,0.144" Height="21" />
+                       HorizontalAlignment="Center"   Width="20"
+                   RenderTransformOrigin="0.51,0.144" Height="20" />
         
                 <TextBlock Grid.Column="1"
                            Background="White" Margin="0 10 10 0"   Width="46"
@@ -47,7 +47,7 @@
                     <Hyperlink.Style>
                     <Style TargetType="{x:Type Hyperlink}"
                             BasedOn="{StaticResource {x:Type Hyperlink}}">
-                        <Setter Property="Foreground" Value="Blue"/>
+                        <Setter Property="Foreground" Value="Green"/>
                     </Style>
                     </Hyperlink.Style><Run Text="BACK " FontSize="15" FontWeight="SemiBold" />
                 </Hyperlink>

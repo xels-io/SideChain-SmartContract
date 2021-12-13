@@ -33,36 +33,42 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.Cross_chain_Transfer
 
         private TransactionSending TransactionSending = new TransactionSending();
         private TransactionBuilding TransactionBuilding = new TransactionBuilding();
+        //private PchTransactionBuilding TransactionBuilding = new PchTransactionBuilding();
         private WalletBalance WalletBalance = new WalletBalance();
 
         private BuildTransaction BuildTransaction = new BuildTransaction();
+        private BuildTransaction BuildTransactionForPCH = new BuildTransaction();
 
         public bool IsAddressAndAmountValid()
         {
             if (this.DestinationAddressText.Text == string.Empty)
             {
-                MessageBox.Show("An address is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBox.Show("An address is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Cross_Chain_Trans.Children.Add(new DisplayErrorMessageUserControl("An address is required."));
                 this.DestinationAddressText.Focus();
                 return false;
             }
 
             if (this.DestinationAddressText.Text.Length < 26)
             {
-                MessageBox.Show("An address is at least 26 characters long.");
+                //MessageBox.Show("An address is at least 26 characters long.");
+                this.Cross_Chain_Trans.Children.Add(new DisplayErrorMessageUserControl("An address is at least 26 characters long."));
                 this.DestinationAddressText.Focus();
                 return false;
             }
 
             if (this.SendAmountText.Text == string.Empty)
             {
-                MessageBox.Show("An amount is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBox.Show("An amount is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Cross_Chain_Trans.Children.Add(new DisplayErrorMessageUserControl("An amount is required."));
                 this.SendAmountText.Focus();
                 return false;
             }
 
             if (this.SendAmountText.Text.Length < 0.00001)
             {
-                MessageBox.Show("The amount has to be more or equal to 1.");
+                //MessageBox.Show("The amount has to be more or equal to 1.");
+                this.Cross_Chain_Trans.Children.Add(new DisplayErrorMessageUserControl("The amount has to be more or equal to 1."));
                 this.SendAmountText.Focus();
                 return false;
             }
@@ -77,17 +83,18 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.Cross_chain_Transfer
 
                 if (this.TransactionFeeText.Text == "")
                 {
-                    MessageBox.Show("Transaction Fee is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                    //MessageBox.Show("Transaction Fee is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                    this.Cross_Chain_Trans.Children.Add(new DisplayErrorMessageUserControl("Transaction Fee is required."));
                     this.TransactionFeeText.Focus();
                     return false;
                 }
 
-                if (this.password.Password == "")
-                {
-                    MessageBox.Show("Your password is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                    this.password.Focus();
-                    return false;
-                }
+                //if (this.password.Password == "")
+                //{
+                //    MessageBox.Show("Your password is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                //    this.password.Focus();
+                //    return false;
+                //}
             }
 
             return true;
@@ -102,30 +109,33 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.Cross_chain_Transfer
                 var rex = Regex.IsMatch(amt, "[^0-9]+");
                 if (rex)
                 {
-                    MessageBox.Show("Data is not valid");
+                    //MessageBox.Show("Data is not valid");
+                    this.Cross_Chain_Trans.Children.Add(new DisplayErrorMessageUserControl("Data is not valid."));
                     this.SendAmountText.Focus();
                     return false;
                 }
             }
             if (this.SendAmountText.Text.Trim() == string.Empty)
             {
-                MessageBox.Show("Amount is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBox.Show("Amount is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Cross_Chain_Trans.Children.Add(new DisplayErrorMessageUserControl("Amount is required!"));
                 this.SendAmountText.Focus();
                 return false;
             }
             if (this.DestinationAddressText.Text.ToString().Trim() == "")
             {
-                MessageBox.Show(" Address is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBox.Show(" Address is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Cross_Chain_Trans.Children.Add(new DisplayMessageUserControl("Address is required!"));
                 this.DestinationAddressText.Focus();
                 return false;
             }
 
-            if (this.password.Password.ToString().Trim() == "")
-            {
-                MessageBox.Show("Password is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                this.password.Focus();
-                return false;
-            }
+            //if (this.password.Password.ToString().Trim() == "")
+            //{
+            //    MessageBox.Show("Password is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+            //    this.password.Focus();
+            //    return false;
+            //}
             return true;
         }
 
@@ -145,7 +155,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.Cross_chain_Transfer
             //}
             List<Recipient> list = new List<Recipient>() {
 
-               new Recipient{ DestinationAddress = this.DestinationAddressText.Text.Trim(), //static address
+               new Recipient{ DestinationAddress = "XFYeZjeneU4VamUEZ31hknMxsVDmRbg5Mh", //static address
                //this.DestinationAddressText.Text.Trim(),
                Amount = this.SendAmountText.Text}
             };
@@ -157,7 +167,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.Cross_chain_Transfer
         {
             List<Recipient> list = new List<Recipient>() {
 
-               new Recipient{ DestinationAddress = "XFpHjy23YUEDboUZSmmv8BXU9w2vjBFawM", //static address
+               new Recipient{ DestinationAddress = this.DestinationAddressText.Text.Trim(), //static address
                //this.DestinationAddressText.Text.Trim(),
                Amount = this.SendAmountText.Text}
             };
@@ -267,7 +277,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.Cross_chain_Transfer
             {
                 if (validationCheck())
                 {
-                    string postUrl = "http://54.238.248.117:37221/api" + $"/wallet/build-transaction";
+                    string postUrl = this.baseURL + $"/wallet/build-transaction";
                     var content = "";
 
                     this.TransactionBuilding.WalletName = this.walletName;
@@ -291,9 +301,9 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.Cross_chain_Transfer
 
                         if (this.isSending)
                         {
-                            _ = SendTransactionForXLCAsync(this.TransactionSending);
+                            _ = SendTransactionAsync(this.TransactionSending);
+                            this.successTransaction = true;
                         }
-
                     }
                     else
                     {
@@ -317,6 +327,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.Cross_chain_Transfer
                     }
                 }
             }
+            
             catch (Exception e)
             {
                 GlobalExceptionHandler.SendErrorToText(e);
@@ -392,31 +403,32 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.Cross_chain_Transfer
             {
                 if (validationCheck())
                 {
-                    string postUrl = this.baseURL + $"/wallet/build-transaction";
+                    //string postUrl = "http://54.238.248.117:38221/api" + $"/wallet/build-transaction";
+                    string postUrl = "https://api.xels.io:2332/PostAPIResponse/38221/";
                     var content = "";
 
-                    this.TransactionBuilding.WalletName = this.walletName;
+                    this.TransactionBuilding.URL = "/api/wallet/build-transaction";
+                    this.TransactionBuilding.WalletName = "pch";
                     this.TransactionBuilding.AccountName = "account 0";
-                    this.TransactionBuilding.Password = this.password.Password;
+                    this.TransactionBuilding.Password = "Asdf1234!";
                     this.TransactionBuilding.Recipients = GetRecipientForPch();
                     this.TransactionBuilding.FeeAmount = this.estimatedFee;
                     this.TransactionBuilding.AllowUnconfirmed = true;
                     this.TransactionBuilding.ShuffleOutputs = false;
-
 
                     HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(this.TransactionBuilding), Encoding.UTF8, "application/json"));
 
                     content = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
                     {
-                        this.BuildTransaction = JsonConvert.DeserializeObject<BuildTransaction>(content);
+                        this.BuildTransactionForPCH = JsonConvert.DeserializeObject<BuildTransaction>(content);
 
-                        this.estimatedFee = this.BuildTransaction.Fee;
-                        this.TransactionSending.Hex = this.BuildTransaction.Hex;
+                        this.estimatedFee = this.BuildTransactionForPCH.Fee;
+                        this.TransactionSending.Hex = this.BuildTransactionForPCH.Hex;
 
                         if (this.isSending)
                         {
-                            _ = SendTransactionAsync(this.TransactionSending);
+                            _ = SendTransactionForPchAsync(this.TransactionSending);
                         }
 
                     }
@@ -457,6 +469,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.Cross_chain_Transfer
                     string postUrl = this.baseURL + $"/wallet/send-transaction";
                     var content = "";
 
+                    tranSending.URL = "";
                     HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(tranSending), Encoding.UTF8, "application/json"));
 
                     content = await response.Content.ReadAsStringAsync();
@@ -470,7 +483,8 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.Cross_chain_Transfer
                         sendConfirmation.Cointype = this.cointype;
                         this.successTransaction = true;
 
-                        //this.NavigationService.Navigate(new SendConfirmationMainChain(sendConfirmation, this.walletName));                        
+                        //this.NavigationService.Navigate(new SendConfirmationMainChain(sendConfirmation, this.walletName));
+                        this.Cross_Chain_Trans.Children.Add(new SendConfirmationMainChain(sendConfirmation, this.walletName));
                     }
                     else
                     {
@@ -491,15 +505,18 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.Cross_chain_Transfer
                 GlobalExceptionHandler.SendErrorToText(e);
             }
         }
-        private async Task SendTransactionForXLCAsync(TransactionSending tranSending)
+
+        private async Task SendTransactionForPchAsync(TransactionSending tranSending)
         {
             try
             {
                 if (isValid())
                 {
-                    string postUrl = "http://54.238.248.117:37221/api" + $"/wallet/send-transaction";
+                    //string postUrl = "http://54.238.248.117:38221/api" + $"/wallet/send-transaction";
+                    string postUrl = "https://api.xels.io:2332/PostAPIResponse/38221/";
                     var content = "";
 
+                    tranSending.URL = $"/api/wallet/send-transaction";
                     HttpResponseMessage response = await URLConfiguration.Client.PostAsync(postUrl, new StringContent(JsonConvert.SerializeObject(tranSending), Encoding.UTF8, "application/json"));
 
                     content = await response.Content.ReadAsStringAsync();
@@ -543,19 +560,22 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.Cross_chain_Transfer
         {
             this.isSending = true;
             //if (this.DestinationAddressText.Text.Trim().StartsWith("X"))
-
-            PchBuildTransactionAsync();
-            BuildTransactionAsync();
-
-
-            //else
             //{
-            //    _ = BuildTransactionAsync();
-
+            //    _ = PchBuildTransactionAsync();
             //    if (this.successTransaction)
             //    {
-            //        _ = CarbonCreditBuildTransactionAsync();
+            //        _ = BuildTransactionAsync();
             //    }
+            //}
+            //else
+            //{
+            //BuildTransactionAsync();
+            //if (this.successTransaction)
+            //{
+            //    _ = PchBuildTransactionAsync();
+            //}
+            BuildTransactionAsync();
+            PchBuildTransactionAsync();
             //}
 
         }

@@ -27,7 +27,7 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Label Grid.Column="0" Margin="10 10 10 50" Content="IMPORT ADDRESS" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" FontWeight="DemiBold"  />
-                        <Button Click="HidePopup_Click" Background="Red" Foreground="White"
+                        <!--<Button Click="HidePopup_Click" Background="Red" Foreground="White"
                                 VerticalAlignment="Top"
                                 HorizontalAlignment="Right" 
                                 Content="X" Height="15" Width="20"
@@ -39,6 +39,14 @@
                                     <Setter Property="CornerRadius" Value="50"/>
                                 </Style>
                             </Button.Resources>
+                        </Button>-->
+                        <Button Click="HidePopup_Click" 
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Right"
+                        HorizontalContentAlignment="Left"
+                        Background="White" BorderBrush="White">
+
+                            <materialDesign:PackIcon Kind="CloseBold" Foreground="Green" />
                         </Button>
                     </Grid>
 

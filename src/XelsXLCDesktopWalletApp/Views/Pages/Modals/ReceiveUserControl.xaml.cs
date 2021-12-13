@@ -30,10 +30,10 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.Modals
             this.DataContext = this;
         }
 
-        private void restoreButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Visibility = Visibility.Collapsed;
-        }
+        //private void restoreButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    this.Visibility = Visibility.Collapsed;
+        //}
 
         private void XelsButton_Click(object sender, RoutedEventArgs e)
         {

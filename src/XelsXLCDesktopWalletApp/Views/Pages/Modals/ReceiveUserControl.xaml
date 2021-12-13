@@ -76,10 +76,10 @@
                 </Button>
                 <Frame  Grid.Row="2" Grid.RowSpan="4" x:Name="ReceiveContent" NavigationUIVisibility="Hidden" Margin="10,10,5,10" />
 
-                <Button Grid.Row="7" x:Name="restoreButton" Click="restoreButton_Click" Content="OK"
+                <!--<Button Grid.Row="7" x:Name="restoreButton" Click="restoreButton_Click" Content="OK"
                         Background="Green"
                         Foreground="White" Margin="10,24,10,25" >
-                </Button>
+                </Button>-->
             </Grid>
         </Border>
     </Grid>
