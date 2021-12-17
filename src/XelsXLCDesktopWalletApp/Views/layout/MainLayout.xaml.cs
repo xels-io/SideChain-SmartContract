@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Net.Http;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 
 using Microsoft.CodeAnalysis;
-
+using Newtonsoft.Json;
+using XelsXLCDesktopWalletApp.Common;
 using XelsXLCDesktopWalletApp.Models;
 using XelsXLCDesktopWalletApp.Models.CommonModels;
 using XelsXLCDesktopWalletApp.Models.SmartContractModels;
@@ -25,6 +28,13 @@ namespace XelsXLCDesktopWalletApp.Views.layout
         private string baseURL = URLConfiguration.BaseURL;
         private readonly WalletInfo walletInfo = new WalletInfo();
         private string walletName;
+
+        private WalletGeneralInfoModel walletGeneralInfoModel = new WalletGeneralInfoModel();
+        private string processedText;
+        private double percentSyncedNumber = 0;
+
+        public bool sidechainEnabled = false;
+        public bool stakingEnabled = false;
         public string WalletName
         {
             get
@@ -53,6 +63,14 @@ namespace XelsXLCDesktopWalletApp.Views.layout
             this.DataContext = this;
             this.labWalletName.Content = this.walletName;
             this.labCheckChainMessage.Content = GlobalPropertyModel.ChainCheckMessage;
+            _ = GetGeneralWalletInfoAsync();
+
+            if (GlobalPropertyModel.StakingStart == true)
+            {
+                this.StakingInfo.Content = "Staking";
+                this.thumbsup.Visibility = Visibility.Visible;
+                this.thumbDown.Visibility = Visibility.Collapsed;
+            }
             //GetGeneralInfoAsync();
             //LoadLoginAsync();
             //GetHistoryAsync();
@@ -196,6 +214,64 @@ namespace XelsXLCDesktopWalletApp.Views.layout
         //            break;
         //    }
         //}
+        private async Task GetGeneralWalletInfoAsync()
+        {
+            try
+            {
+                string getUrl = this.baseURL + $"/wallet/general-info?Name={this.walletName}";
+                var content = "";
 
+                HttpResponseMessage response = await URLConfiguration.Client.GetAsync(getUrl);
+                content = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+
+                    this.walletGeneralInfoModel = JsonConvert.DeserializeObject<WalletGeneralInfoModel>(content);
+
+
+                    //this.processedText = $"Processed { this.walletGeneralInfoModel.LastBlockSyncedHeight ?? 0} out of { this.walletGeneralInfoModel.ChainTip} blocks.";
+
+                    //this.blockChainStatus = $"Synchronizing.  { this.processedText}";
+
+                    //this.ConnectionStatusTxt.Text = $"{ this.walletGeneralInfoModel.ConnectedNodes} connection";
+                    this.ConnectedCountTxt.Text = this.walletGeneralInfoModel.ConnectedNodes.ToString();
+
+                    if (!this.walletGeneralInfoModel.IsChainSynced)
+                    {
+                        this.ConnectionPercentTxt.Text = "syncing".ToString();
+
+                    }
+                    else
+                    {
+                        this.percentSyncedNumber = ((this.walletGeneralInfoModel.LastBlockSyncedHeight / this.walletGeneralInfoModel.ChainTip) * 100) ?? 0;
+
+                        if (Math.Round(this.percentSyncedNumber) == 100 && this.walletGeneralInfoModel.LastBlockSyncedHeight != this.walletGeneralInfoModel.ChainTip)
+                        {
+                            this.ConnectionPercentTxt.Text = "99 %";
+                        }
+                        else
+                        {
+                            this.ConnectionPercentTxt.Text = "100 %";
+                        }
+                    }
+
+
+                    if (!GlobalPropertyModel.StakingStart && !this.sidechainEnabled)
+                    {
+                        this.StakingInfo.Content = "Not Staking";
+                    }
+                    else if (this.stakingEnabled && !this.sidechainEnabled)
+                    {
+                        this.StakingInfo.Content = "Staking";
+                    }
+                }
+
+            }
+            catch (Exception q)
+            {
+                GlobalExceptionHandler.SendErrorToText(q);
+            }
+
+        }
     }
 }
