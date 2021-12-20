@@ -9,8 +9,8 @@ namespace Xels.External.Masternodes
     {
         static async Task Main(string[] args)
         {
-            Console.WriteLine("Welcome to the Xels Masternode Registration application.");
-            Console.WriteLine("Please press any key to start.");
+            //Console.WriteLine("Welcome to the Xels Masternode Registration application.");
+            //Console.WriteLine("Please press any key to start.");
             Console.ReadKey();
 
             var service = new RegistrationService();

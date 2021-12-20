@@ -101,7 +101,7 @@ namespace Xels.Bitcoin.Cli
                     builder.AppendLine("dotnet run xels -testnet GET Wallet/history WalletName=testwallet - Lists all the historical transactions of the wallet called 'testwallet' on the xels test network.");
                     builder.AppendLine("dotnet run xels -rpcuser=xelstestuser -rpcpassword=xelstestpassword -rpcconnect=127.0.0.3 -rpcport=26174 getinfo - Displays general information about the Xels node on the 127.0.0.3:26174, authenticating with the RPC specified user.");
                     builder.AppendLine("dotnet run bitcoin -rpcuser=btctestuser -rpcpassword=btctestpass getbalance - Displays the current balance of the opened wallet on the 127.0.0.1:8332 node, authenticating with the RPC specified user.");
-                    Console.WriteLine(builder);
+                    //Console.WriteLine(builder);
                     return;
                 }
 
@@ -160,21 +160,21 @@ namespace Xels.Bitcoin.Cli
                         rpcSettings.RpcUser = options.GetValueOf("-rpcuser") ?? rpcSettings.RpcUser;
                         rpcSettings.RpcPassword = options.GetValueOf("-rpcpassword") ?? rpcSettings.RpcPassword;
 
-                        Console.WriteLine($"Connecting to the following RPC node: http://{rpcSettings.RpcUser}:{rpcSettings.RpcPassword}@{rpcUri.Authority}.");
+                        //Console.WriteLine($"Connecting to the following RPC node: http://{rpcSettings.RpcUser}:{rpcSettings.RpcPassword}@{rpcUri.Authority}.");
 
                         // Initialize the RPC client with the configured or passed userid, password and endpoint.
                         var rpcClient = new RPCClient($"{rpcSettings.RpcUser}:{rpcSettings.RpcPassword}", rpcUri, network);
 
                         // Execute the RPC command
-                        Console.WriteLine($"Sending RPC command '{command} {string.Join(" ", commandArgList)}' to '{rpcUri}'.");
+                        //Console.WriteLine($"Sending RPC command '{command} {string.Join(" ", commandArgList)}' to '{rpcUri}'.");
                         RPCResponse response = rpcClient.SendCommand(command, commandArgList.ToArray());
 
                         // Return the result as a string to the console.
-                        Console.WriteLine(response.ResultString);
+                        //Console.WriteLine(response.ResultString);
                     }
                     catch (Exception err)
                     {
-                        Console.WriteLine(err.Message);
+                        //Console.WriteLine(err.Message);
                     }
                 }
                 else
@@ -212,13 +212,13 @@ namespace Xels.Bitcoin.Cli
                     var response = httpResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
                     // Format and return the result as a string to the console.
-                    Console.WriteLine(JsonConvert.SerializeObject(JsonConvert.DeserializeObject<object>(response), Formatting.Indented));
+                    //Console.WriteLine(JsonConvert.SerializeObject(JsonConvert.DeserializeObject<object>(response), Formatting.Indented));
                 }
             }
             catch (Exception err)
             {
                 // Report any errors to the console.
-                Console.WriteLine(ExceptionToString(err));
+                //Console.WriteLine(ExceptionToString(err));
             }
         }
 
@@ -240,7 +240,7 @@ namespace Xels.Bitcoin.Cli
             string urlWithArgs = url.SetQueryParams(commandArgObj);
 
             // Get the response.
-            Console.WriteLine($"Sending API 'GET' command to {urlWithArgs}.");
+            //Console.WriteLine($"Sending API 'GET' command to {urlWithArgs}.");
             return urlWithArgs.GetAsync().GetAwaiter().GetResult().ResponseMessage;
         }
 
@@ -248,7 +248,7 @@ namespace Xels.Bitcoin.Cli
         {
             string json = JObject.FromObject(commandArgObj).ToString();
 
-            Console.WriteLine($"Sending API 'POST' command to {url}. Post body is '{json}'.");
+            //Console.WriteLine($"Sending API 'POST' command to {url}. Post body is '{json}'.");
             return url.PostJsonAsync(commandArgObj).GetAwaiter().GetResult().ResponseMessage;
         }
 
@@ -257,7 +257,7 @@ namespace Xels.Bitcoin.Cli
             string urlWithArgs = url.SetQueryParams(commandArgObj);
 
             // Get the response.
-            Console.WriteLine($"Sending API 'DELETE' command to {urlWithArgs}.");
+            //Console.WriteLine($"Sending API 'DELETE' command to {urlWithArgs}.");
             return urlWithArgs.DeleteAsync().GetAwaiter().GetResult().ResponseMessage;
         }
 

@@ -59,14 +59,14 @@ namespace FederationSetup
                         args = null;
                     }
 
-                    Console.WriteLine();
+                    //Console.WriteLine();
 
                     SwitchCommand(args, command, userInput);
                 }
                 catch (Exception ex)
                 {
                     FederationSetup.OutputErrorLine($"An error occurred: {ex.Message}");
-                    Console.WriteLine();
+                    //Console.WriteLine();
                     FederationSetup.OutputMenu();
                 }
             }
@@ -128,7 +128,7 @@ namespace FederationSetup
             if (string.IsNullOrEmpty(text))
                 throw new ArgumentException("Please specify the text to be included in the genesis block.");
 
-            Console.WriteLine(new GenesisMiner().MineGenesisBlocks(new SmartContractPoAConsensusFactory(), text));
+            //Console.WriteLine(new GenesisMiner().MineGenesisBlocks(new SmartContractPoAConsensusFactory(), text));
             FederationSetup.OutputSuccess();
         }
 
@@ -187,7 +187,7 @@ namespace FederationSetup
 
             new TextFileConfiguration(missing.Select(d => $"{d.Key}={d.Value}").ToArray()).MergeInto(config);
 
-            Console.WriteLine();
+            //Console.WriteLine();
         }
 
         private static void HandleSwitchGenerateMultiSigAddressesCommand(string[] args)
@@ -198,8 +198,8 @@ namespace FederationSetup
 
             (_, Network sideChain, Network targetMainChain) = GetMainAndSideChainNetworksFromArguments();
 
-            Console.WriteLine($"Creating multisig addresses for {targetMainChain.Name} and {sideChain.Name}.");
-            Console.WriteLine(new MultisigAddressCreator().CreateMultisigAddresses(targetMainChain, sideChain));
+            //Console.WriteLine($"Creating multisig addresses for {targetMainChain.Name} and {sideChain.Name}.");
+            //Console.WriteLine(new MultisigAddressCreator().CreateMultisigAddresses(targetMainChain, sideChain));
         }
 
         private static void GeneratePublicPrivateKeys(string passphrase, string keyPath, bool isMultiSigOutput = true)
@@ -217,35 +217,31 @@ namespace FederationSetup
             tool.SavePrivateKey(key);
             PubKey miningPubKey = key.PubKey;
 
-            Console.WriteLine($"Your Masternode Public Key: {Encoders.Hex.EncodeData(miningPubKey.ToBytes(false))}");
-            Console.WriteLine($"-----------------------------------------------------------------------------");
+            //Console.WriteLine($"Your Masternode Public Key: {Encoders.Hex.EncodeData(miningPubKey.ToBytes(false))}");
+            //Console.WriteLine($"-----------------------------------------------------------------------------");
 
             if (isMultiSigOutput)
             {
-                Console.WriteLine(
-                    $"Your Masternode Signing Key: {Encoders.Hex.EncodeData(signingPubKey.ToBytes(false))}");
-                Console.WriteLine(Environment.NewLine);
-                Console.WriteLine(
-                    $"------------------------------------------------------------------------------------------");
-                Console.WriteLine(
-                    $"-- Please keep the following 12 words for yourself and note them down in a secure place --");
-                Console.WriteLine(
-                    $"------------------------------------------------------------------------------------------");
-                Console.WriteLine($"Your signing mnemonic: {string.Join(" ", mnemonicForSigningKey.Words)}");
+                //Console.WriteLine($"Your Masternode Signing Key: {Encoders.Hex.EncodeData(signingPubKey.ToBytes(false))}");
+                //Console.WriteLine(Environment.NewLine);
+                //Console.WriteLine($"------------------------------------------------------------------------------------------");
+                //Console.WriteLine($"-- Please keep the following 12 words for yourself and note them down in a secure place --");
+                //Console.WriteLine($"------------------------------------------------------------------------------------------");
+                //Console.WriteLine($"Your signing mnemonic: {string.Join(" ", mnemonicForSigningKey.Words)}");
             }
 
             if (passphrase != null)
             {
-                Console.WriteLine(Environment.NewLine);
-                Console.WriteLine($"Your passphrase: {passphrase}");
+                //Console.WriteLine(Environment.NewLine);
+                //Console.WriteLine($"Your passphrase: {passphrase}");
             }
 
-            Console.WriteLine(Environment.NewLine);
-            Console.WriteLine($"------------------------------------------------------------------------------------------------------------");
-            Console.WriteLine($"-- Please save the following file in a secure place, you'll need it when the federation has been created. --");
-            Console.WriteLine($"------------------------------------------------------------------------------------------------------------");
-            Console.WriteLine($"File path: {savePath}");
-            Console.WriteLine(Environment.NewLine);
+            //Console.WriteLine(Environment.NewLine);
+            //Console.WriteLine($"------------------------------------------------------------------------------------------------------------");
+            //Console.WriteLine($"-- Please save the following file in a secure place, you'll need it when the federation has been created. --");
+            //Console.WriteLine($"------------------------------------------------------------------------------------------------------------");
+            //Console.WriteLine($"File path: {savePath}");
+            //Console.WriteLine(Environment.NewLine);
         }
 
         private static (Network mainChain, Network sideChain, Network targetMainChain) GetMainAndSideChainNetworksFromArguments()

@@ -48,7 +48,7 @@ namespace Xels.Bitcoin.IntegrationTests
 
             foreach (KeyValuePair<MethodInfo, (Type, Exception)> item in executed)
             {
-                Console.WriteLine(item.Value.Item2 == null ? "+" : "-  " + item.Value.Item1.Name + " " + item.Key.Name);
+                //Console.WriteLine(item.Value.Item2 == null ? "+" : "-  " + item.Value.Item1.Name + " " + item.Key.Name);
             }
         }
     }

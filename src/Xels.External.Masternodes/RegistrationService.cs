@@ -91,8 +91,8 @@ namespace Xels.External.Masternodes
                 return;
 
             Console.Clear();
-            Console.WriteLine("SUCCESS: XLC Blockchain and Cc Blockchain are now fully synchronised.");
-            Console.WriteLine("Assessing Masternode Requirements...");
+            //Console.WriteLine("SUCCESS: XLC Blockchain and Cc Blockchain are now fully synchronised.");
+            //Console.WriteLine("Assessing Masternode Requirements...");
 
             // Check main chain collateral wallet and balace
             if (!await CheckWalletRequirementsAsync(NodeType.MainChain, this.mainchainNetwork.DefaultAPIPort))
@@ -128,8 +128,8 @@ namespace Xels.External.Masternodes
             if (networkType == NetworkType.Regtest)
                 argumentBuilder.Append("-regtest");
 
-            Console.WriteLine($"Starting the {nodeType} node on {networkType}.");
-            Console.WriteLine($"Start up arguments: {argumentBuilder}");
+            //Console.WriteLine($"Starting the {nodeType} node on {networkType}.");
+            //Console.WriteLine($"Start up arguments: {argumentBuilder}");
 
             var startInfo = new ProcessStartInfo
             {
@@ -143,18 +143,18 @@ namespace Xels.External.Masternodes
 
             if (process.HasExited)
             {
-                Console.WriteLine($"{nodeType} node process failed to start, exiting...");
+                //Console.WriteLine($"{nodeType} node process failed to start, exiting...");
                 return false;
             }
 
-            Console.WriteLine($"{nodeType} node started.");
+            //Console.WriteLine($"{nodeType} node started.");
 
             return true;
         }
 
         private async Task<bool> EnsureNodeIsInitializedAsync(NodeType nodeType, int apiPort)
         {
-            Console.WriteLine($"Waiting for the {nodeType} node to initialize...");
+            //Console.WriteLine($"Waiting for the {nodeType} node to initialize...");
 
             bool initialized = false;
 
@@ -164,7 +164,7 @@ namespace Xels.External.Masternodes
             {
                 if (cancellationTokenSource.IsCancellationRequested)
                 {
-                    Console.WriteLine($"{nodeType} node failed to initialized in 60 seconds...");
+                    //Console.WriteLine($"{nodeType} node failed to initialized in 60 seconds...");
                     break;
                 }
 
@@ -172,7 +172,7 @@ namespace Xels.External.Masternodes
                 if (blockModel.State == FullNodeState.Started.ToString())
                 {
                     initialized = true;
-                    Console.WriteLine($"{nodeType} node initialized.");
+                    //Console.WriteLine($"{nodeType} node initialized.");
                     break;
                 }
 
@@ -183,7 +183,7 @@ namespace Xels.External.Masternodes
 
         private async Task<bool> EnsureNodeIsSyncedAsync(NodeType nodeType, int apiPort)
         {
-            Console.WriteLine($"Waiting for the {nodeType} node to sync with the network...");
+            //Console.WriteLine($"Waiting for the {nodeType} node to sync with the network...");
 
             bool result;
 
@@ -193,12 +193,12 @@ namespace Xels.External.Masternodes
                 StatusModel blockModel = await $"http://localhost:{apiPort}/api".AppendPathSegment("node/status").GetJsonAsync<StatusModel>();
                 if (blockModel.InIbd.HasValue && !blockModel.InIbd.Value)
                 {
-                    Console.WriteLine($"{nodeType} node is synced at height {blockModel.ConsensusHeight}.");
+                    //Console.WriteLine($"{nodeType} node is synced at height {blockModel.ConsensusHeight}.");
                     result = true;
                     break;
                 }
 
-                Console.WriteLine($"{nodeType} node syncing, current height {blockModel.ConsensusHeight}...");
+                //Console.WriteLine($"{nodeType} node syncing, current height {blockModel.ConsensusHeight}...");
                 await Task.Delay(TimeSpan.FromSeconds(3));
             } while (true);
 
@@ -207,7 +207,7 @@ namespace Xels.External.Masternodes
 
         private async Task<bool> EnsureMainChainNodeAddressIndexerIsSyncedAsync()
         {
-            Console.WriteLine("Waiting for the main chain node to sync it's address indexer...");
+            //Console.WriteLine("Waiting for the main chain node to sync it's address indexer...");
 
             bool result;
 
@@ -217,12 +217,12 @@ namespace Xels.External.Masternodes
                 AddressIndexerTipModel addressIndexerModel = await $"http://localhost:{this.mainchainNetwork.DefaultAPIPort}/api".AppendPathSegment("blockstore/addressindexertip").GetJsonAsync<AddressIndexerTipModel>();
                 if (addressIndexerModel.TipHeight > (blockModel.ConsensusHeight - 50))
                 {
-                    Console.WriteLine($"Main chain address indexer synced.");
+                    //Console.WriteLine($"Main chain address indexer synced.");
                     result = true;
                     break;
                 }
 
-                Console.WriteLine($"Main chain node address indexer is syncing, current height {addressIndexerModel.TipHeight}...");
+                //Console.WriteLine($"Main chain node address indexer is syncing, current height {addressIndexerModel.TipHeight}...");
                 await Task.Delay(TimeSpan.FromSeconds(3));
             } while (true);
 
@@ -235,7 +235,7 @@ namespace Xels.External.Masternodes
             var amountToCheck = nodeType == NodeType.MainChain ? CollateralRequirement : FeeRequirement;
             var chainTicker = nodeType == NodeType.MainChain ? this.mainchainNetwork.CoinTicker : this.sidechainNetwork.CoinTicker;
 
-            Console.WriteLine($"Please enter the name of the {chainName} wallet that contains the required collateral of {amountToCheck} {chainTicker}:");
+            //Console.WriteLine($"Please enter the name of the {chainName} wallet that contains the required collateral of {amountToCheck} {chainTicker}:");
 
             var walletName = Console.ReadLine();
 
@@ -243,16 +243,16 @@ namespace Xels.External.Masternodes
 
             if (walletInfoModel.WalletNames.Contains(walletName))
             {
-                Console.WriteLine($"SUCCESS: Wallet with name '{chainName}' found.");
+                //Console.WriteLine($"SUCCESS: Wallet with name '{chainName}' found.");
             }
             else
             {
-                Console.WriteLine($"{chainName} wallet with name '{walletName}' does not exist.");
+                //Console.WriteLine($"{chainName} wallet with name '{walletName}' does not exist.");
 
                 ConsoleKeyInfo key;
                 do
                 {
-                    Console.WriteLine($"Would you like to restore you {chainName} wallet that holds the required amount of {amountToCheck} {chainTicker} now? Enter (Y) to continue or (N) to exit.");
+                    //Console.WriteLine($"Would you like to restore you {chainName} wallet that holds the required amount of {amountToCheck} {chainTicker} now? Enter (Y) to continue or (N) to exit.");
                     key = Console.ReadKey();
                     if (key.Key == ConsoleKey.Y || key.Key == ConsoleKey.N)
                         break;
@@ -260,7 +260,7 @@ namespace Xels.External.Masternodes
 
                 if (key.Key == ConsoleKey.N)
                 {
-                    Console.WriteLine($"You have chosen to exit the registration script.");
+                    //Console.WriteLine($"You have chosen to exit the registration script.");
                     return false;
                 }
 
@@ -277,11 +277,11 @@ namespace Xels.External.Masternodes
 
                 if (walletInfo.LastBlockSyncedHeight > (blockModel.ConsensusHeight - 50))
                 {
-                    Console.WriteLine($"{chainName} wallet is synced.");
+                    //Console.WriteLine($"{chainName} wallet is synced.");
                     break;
                 }
 
-                Console.WriteLine($"Syncing {chainName} wallet, current height {walletInfo.LastBlockSyncedHeight}...");
+                //Console.WriteLine($"Syncing {chainName} wallet, current height {walletInfo.LastBlockSyncedHeight}...");
                 await Task.Delay(TimeSpan.FromSeconds(3));
             } while (true);
 
@@ -296,16 +296,16 @@ namespace Xels.External.Masternodes
 
                 if (walletBalanceModel.AccountsBalances[0].SpendableAmount / 100000000 > amountToCheck)
                 {
-                    Console.WriteLine($"SUCCESS: The {chainName} wallet contains the required amount of {amountToCheck} {chainTicker}.");
+                    //Console.WriteLine($"SUCCESS: The {chainName} wallet contains the required amount of {amountToCheck} {chainTicker}.");
                     return true;
                 }
 
-                Console.WriteLine($"ERROR: The {chainName} wallet does not contain the required amount of {amountToCheck} {chainTicker}.");
+                //Console.WriteLine($"ERROR: The {chainName} wallet does not contain the required amount of {amountToCheck} {chainTicker}.");
 
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"ERROR: An exception occurred trying to check the wallet balance: {ex}");
+                //Console.WriteLine($"ERROR: An exception occurred trying to check the wallet balance: {ex}");
             }
 
             return false;
@@ -313,7 +313,7 @@ namespace Xels.External.Masternodes
 
         private async Task<bool> RestoreWalletAsync(int apiPort, string chainName, string walletName)
         {
-            Console.WriteLine($"You have chosen to restore your {chainName} wallet.");
+            //Console.WriteLine($"You have chosen to restore your {chainName} wallet.");
 
             string mnemonic;
             string passphrase;
@@ -321,17 +321,17 @@ namespace Xels.External.Masternodes
 
             do
             {
-                Console.WriteLine($"Please enter your 12-Words used to recover your wallet:");
+                //Console.WriteLine($"Please enter your 12-Words used to recover your wallet:");
                 mnemonic = Console.ReadLine();
-                Console.WriteLine("Please enter your wallet passphrase:");
+                //Console.WriteLine("Please enter your wallet passphrase:");
                 passphrase = Console.ReadLine();
-                Console.WriteLine("Please enter the wallet password used to encrypt the wallet:");
+                //Console.WriteLine("Please enter the wallet password used to encrypt the wallet:");
                 password = Console.ReadLine();
 
                 if (!string.IsNullOrEmpty(mnemonic) && !string.IsNullOrEmpty(passphrase) && !string.IsNullOrEmpty(password))
                     break;
 
-                Console.WriteLine("ERROR: Please ensure that you enter all the wallet details.");
+                //Console.WriteLine("ERROR: Please ensure that you enter all the wallet details.");
 
             } while (true);
 
@@ -350,24 +350,24 @@ namespace Xels.External.Masternodes
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"ERROR: An exception occurred trying to recover your {chainName} wallet: {ex}");
+                //Console.WriteLine($"ERROR: An exception occurred trying to recover your {chainName} wallet: {ex}");
                 return false;
             }
 
             WalletInfoModel walletInfoModel = await $"http://localhost:{apiPort}/api".AppendPathSegment("Wallet/list-wallets").GetJsonAsync<WalletInfoModel>();
             if (walletInfoModel.WalletNames.Contains(walletName))
             {
-                Console.WriteLine($"SUCCESS: {chainName} wallet has been restored.");
+                //Console.WriteLine($"SUCCESS: {chainName} wallet has been restored.");
             }
             else
             {
-                Console.WriteLine($"ERROR: {chainName} wallet failed to be restored, exiting the registration process.");
+                //Console.WriteLine($"ERROR: {chainName} wallet failed to be restored, exiting the registration process.");
                 return false;
             }
 
             try
             {
-                Console.WriteLine($"Your {chainName} wallet will now be resynced, please be patient...");
+                //Console.WriteLine($"Your {chainName} wallet will now be resynced, please be patient...");
                 var walletSyncRequest = new WalletSyncRequest()
                 {
                     All = true,
@@ -378,7 +378,7 @@ namespace Xels.External.Masternodes
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"ERROR: An exception occurred trying to resync your {chainName} wallet: {ex}");
+                //Console.WriteLine($"ERROR: An exception occurred trying to resync your {chainName} wallet: {ex}");
                 return false;
             }
 
@@ -391,24 +391,24 @@ namespace Xels.External.Masternodes
 
             if (File.Exists(keyFilePath))
             {
-                Console.WriteLine($"Your masternode public key file already exists.");
+                //Console.WriteLine($"Your masternode public key file already exists.");
                 return true;
             }
 
             Console.Clear();
-            Console.WriteLine($"Your masternode public key will now be generated.");
+            //Console.WriteLine($"Your masternode public key will now be generated.");
 
             string publicKeyPassphrase;
 
             do
             {
-                Console.WriteLine($"Please enter a passphrase (this can be anything, but please write it down):");
+                //Console.WriteLine($"Please enter a passphrase (this can be anything, but please write it down):");
                 publicKeyPassphrase = Console.ReadLine();
 
                 if (!string.IsNullOrEmpty(publicKeyPassphrase))
                     break;
 
-                Console.WriteLine("ERROR: Please ensure that you enter a valid passphrase.");
+                //Console.WriteLine("ERROR: Please ensure that you enter a valid passphrase.");
 
             } while (true);
 
@@ -423,25 +423,25 @@ namespace Xels.External.Masternodes
             tool.SavePrivateKey(key);
             PubKey miningPubKey = key.PubKey;
 
-            Console.WriteLine($"Your Masternode Public Key (PubKey) is: {Encoders.Hex.EncodeData(miningPubKey.ToBytes(false))}");
+            //Console.WriteLine($"Your Masternode Public Key (PubKey) is: {Encoders.Hex.EncodeData(miningPubKey.ToBytes(false))}");
 
             if (publicKeyPassphrase != null)
             {
-                Console.WriteLine(Environment.NewLine);
-                Console.WriteLine($"Your passphrase: {publicKeyPassphrase}");
+                //Console.WriteLine(Environment.NewLine);
+                //Console.WriteLine($"Your passphrase: {publicKeyPassphrase}");
             }
 
-            Console.WriteLine(Environment.NewLine);
-            Console.WriteLine($"It has been saved in the root Cc data folder: {savePath}");
-            Console.WriteLine($"Please ensure that you take a backup of this file.");
+            //Console.WriteLine(Environment.NewLine);
+            //Console.WriteLine($"It has been saved in the root Cc data folder: {savePath}");
+            //Console.WriteLine($"Please ensure that you take a backup of this file.");
             return true;
         }
 
         private async Task<bool> CallJoinFederationRequestAsync()
         {
             Console.Clear();
-            Console.WriteLine($"The relevant masternode registration wallets has now been setup and verified.");
-            Console.WriteLine($"Press any key to continue (this will deduct the registation fee from your Cc wallet)");
+            //Console.WriteLine($"The relevant masternode registration wallets has now been setup and verified.");
+            //Console.WriteLine($"Press any key to continue (this will deduct the registation fee from your Cc wallet)");
             Console.ReadKey();
 
             string collateralWallet;
@@ -452,23 +452,23 @@ namespace Xels.External.Masternodes
 
             do
             {
-                Console.WriteLine($"[Xlc] Please enter the collateral wallet name:");
+                //Console.WriteLine($"[Xlc] Please enter the collateral wallet name:");
                 collateralWallet = Console.ReadLine();
-                Console.WriteLine($"[Xlc] Please enter the collateral wallet password:");
+                //Console.WriteLine($"[Xlc] Please enter the collateral wallet password:");
                 collateralPassword = Console.ReadLine();
-                Console.WriteLine($"[Xlc] Please enter the collateral address in which the collateral amount of {CollateralRequirement} {this.mainchainNetwork.CoinTicker} is held:");
+                //Console.WriteLine($"[Xlc] Please enter the collateral address in which the collateral amount of {CollateralRequirement} {this.mainchainNetwork.CoinTicker} is held:");
                 collateralAddress = Console.ReadLine();
 
-                Console.WriteLine($"[Cc] Please enter the wallet name which holds the registration fee of {FeeRequirement} {this.sidechainNetwork.CoinTicker}:");
+                //Console.WriteLine($"[Cc] Please enter the wallet name which holds the registration fee of {FeeRequirement} {this.sidechainNetwork.CoinTicker}:");
                 ccWalletName = Console.ReadLine();
-                Console.WriteLine($"[Cc] Please enter the above wallet's password:");
+                //Console.WriteLine($"[Cc] Please enter the above wallet's password:");
                 ccWalletPassword = Console.ReadLine();
 
                 if (!string.IsNullOrEmpty(collateralWallet) && !string.IsNullOrEmpty(collateralPassword) && !string.IsNullOrEmpty(collateralAddress) &&
                     !string.IsNullOrEmpty(ccWalletName) && !string.IsNullOrEmpty(ccWalletPassword))
                     break;
 
-                Console.WriteLine("ERROR: Please ensure that you enter the relevant details correctly.");
+                //Console.WriteLine("ERROR: Please ensure that you enter the relevant details correctly.");
 
             } while (true);
 
@@ -485,12 +485,12 @@ namespace Xels.External.Masternodes
             try
             {
                 await $"http://localhost:{this.sidechainNetwork.DefaultAPIPort}/api".AppendPathSegment("collateral/joinfederation").PostJsonAsync(request);
-                Console.WriteLine($"SUCCESS: The masternode request has now been submitted to the network,please press any key to view its progress.");
+                //Console.WriteLine($"SUCCESS: The masternode request has now been submitted to the network,please press any key to view its progress.");
                 return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"ERROR: An exception occurred trying to registre your masternode: {ex}");
+                //Console.WriteLine($"ERROR: An exception occurred trying to registre your masternode: {ex}");
                 return false;
             }
         }
@@ -504,13 +504,13 @@ namespace Xels.External.Masternodes
                 StatusModel blockModel = await $"http://localhost:{this.sidechainNetwork.DefaultAPIPort}/api".AppendPathSegment("node/status").GetJsonAsync<StatusModel>();
 
                 Console.Clear();
-                Console.WriteLine($">> Registration Progress");
-                Console.WriteLine($"PubKey".PadRight(30) + $": {memberInfo.PubKey}");
-                Console.WriteLine($"Current Height".PadRight(30) + $": {blockModel.ConsensusHeight}");
-                Console.WriteLine($"Mining will start at height".PadRight(30) + $": {memberInfo.MemberWillStartMiningAtBlockHeight}");
-                Console.WriteLine($"Rewards will start at height".PadRight(30) + $": {memberInfo.MemberWillStartEarningRewardsEstimateHeight}");
-                Console.WriteLine();
-                Console.WriteLine($"Press CRTL-C to exit...");
+                //Console.WriteLine($">> Registration Progress");
+                //Console.WriteLine($"PubKey".PadRight(30) + $": {memberInfo.PubKey}");
+                //Console.WriteLine($"Current Height".PadRight(30) + $": {blockModel.ConsensusHeight}");
+                //Console.WriteLine($"Mining will start at height".PadRight(30) + $": {memberInfo.MemberWillStartMiningAtBlockHeight}");
+                //Console.WriteLine($"Rewards will start at height".PadRight(30) + $": {memberInfo.MemberWillStartEarningRewardsEstimateHeight}");
+                //Console.WriteLine();
+                //Console.WriteLine($"Press CRTL-C to exit...");
                 await Task.Delay(TimeSpan.FromSeconds(5));
             } while (true);
         }

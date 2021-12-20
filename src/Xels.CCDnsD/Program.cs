@@ -66,7 +66,7 @@ namespace Xels.CcDnsD
             }
             catch (Exception ex)
             {
-                Console.WriteLine("There was a problem initializing the node. Details: '{0}'", ex.ToString());
+                //Console.WriteLine("There was a problem initializing the node. Details: '{0}'", ex.ToString());
             }
         }
 
@@ -122,7 +122,7 @@ namespace Xels.CcDnsD
 
         //    string destinationPath = Directory.GetCurrentDirectory();
 
-        //    //Console.WriteLine(distinationPath);
+        //    Console.WriteLine(distinationPath);
         //    //Console.ReadLine();
         //    foreach (var arg in argumentList)
         //    {

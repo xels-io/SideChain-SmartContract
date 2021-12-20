@@ -14,8 +14,8 @@ namespace FederationSetup
         {
             var output = new StringBuilder();
 
-            Console.WriteLine("Looking for genesis blocks for the 3 networks, this might take a while.");
-            Console.WriteLine(Environment.NewLine);
+            //Console.WriteLine("Looking for genesis blocks for the 3 networks, this might take a while.");
+            //Console.WriteLine(Environment.NewLine);
 
             var targets = new Dictionary<uint256, string>
             {

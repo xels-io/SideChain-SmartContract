@@ -60,7 +60,7 @@ namespace XelsPCHDesktopWalletApp
             catch (Exception ex)
             {
                 GlobalExceptionHandler.SendErrorToText(ex);
-                Console.WriteLine("There was a problem initializing the node. Details: '{0}'", ex.Message);
+                //Console.WriteLine("There was a problem initializing the node. Details: '{0}'", ex.Message);
             }
         }
 

@@ -17,7 +17,7 @@ namespace FederationSetup
             builder.AppendLine($"Xels Federation Set up v{Assembly.GetEntryAssembly().GetName().Version}");
             builder.AppendLine("Copyright (c) 2020 Xels Group Limited");
 
-            Console.WriteLine(builder);
+            //Console.WriteLine(builder);
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace FederationSetup
             builder.AppendLine("menu    Show this menu.");
             builder.AppendLine("exit    Close the utility.");
 
-            Console.WriteLine(builder);
+            //Console.WriteLine(builder);
         }
 
         /// <summary>
@@ -57,8 +57,8 @@ namespace FederationSetup
         /// </summary>
         public static void OutputSuccess()
         {
-            Console.WriteLine("Done!");
-            Console.WriteLine();
+            //Console.WriteLine("Done!");
+            //Console.WriteLine();
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace FederationSetup
         {
             ConsoleColor colorSaved = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(message);
+            //Console.WriteLine(message);
             Console.ForegroundColor = colorSaved;
         }
     }

@@ -134,7 +134,7 @@ namespace Xels.Bitcoin.Features.SignalR
                                 }
                                 else
                                 {
-                                    Console.WriteLine($"Warning {Broadcaster.Name} is not of type {typeof(IClientEventBroadcaster).Name}");
+                                    //Console.WriteLine($"Warning {Broadcaster.Name} is not of type {typeof(IClientEventBroadcaster).Name}");
                                 }
                             }
                         }

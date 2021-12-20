@@ -51,7 +51,7 @@ namespace SwapExtractionTool
 
         private async Task LoadAlreadyDistributedSwapTransactionsAsync()
         {
-            Console.WriteLine($"Loading already distributed swap transactions...");
+            //Console.WriteLine($"Loading already distributed swap transactions...");
 
             if (File.Exists(Path.Combine(this.swapFilePath, distributedSwapTransactionsFile)))
             {
@@ -73,7 +73,7 @@ namespace SwapExtractionTool
 
         private async Task LoadSwapTransactionFileAsync()
         {
-            Console.WriteLine($"Loading swap transaction file...");
+            //Console.WriteLine($"Loading swap transaction file...");
 
             // First check if the swap file has been created.
             if (File.Exists(Path.Combine(this.swapFilePath, "swaps.csv")))
@@ -87,11 +87,11 @@ namespace SwapExtractionTool
             }
             else
             {
-                Console.WriteLine("A swap distribution file has not been created, is this correct? (y/n)");
+                //Console.WriteLine("A swap distribution file has not been created, is this correct? (y/n)");
                 int result = Console.Read();
                 if (result != 121 && result != 89)
                 {
-                    Console.WriteLine("Exiting...");
+                    //Console.WriteLine("Exiting...");
                     return;
                 }
             }
@@ -99,7 +99,7 @@ namespace SwapExtractionTool
 
         private async Task ScanForSwapTransactionsAsync(int startBlock)
         {
-            Console.WriteLine($"Scanning for swap transactions...");
+            //Console.WriteLine($"Scanning for swap transactions...");
 
             for (int height = startBlock; height < EndHeight; height++)
             {
@@ -110,8 +110,8 @@ namespace SwapExtractionTool
                 ProcessBlockForSwapTransactions(block, height);
             }
 
-            Console.WriteLine($"{this.swapTransactions.Count} swap transactions to process.");
-            Console.WriteLine($"{Money.Satoshis(this.swapTransactions.Sum(s => s.SenderAmount)).ToUnit(MoneyUnit.BTC)} XEL swapped.");
+            //Console.WriteLine($"{this.swapTransactions.Count} swap transactions to process.");
+            //Console.WriteLine($"{Money.Satoshis(this.swapTransactions.Sum(s => s.SenderAmount)).ToUnit(MoneyUnit.BTC)} XEL swapped.");
 
             using (var writer = new StreamWriter(Path.Combine(this.swapFilePath, "swaps.csv")))
             using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
@@ -134,10 +134,10 @@ namespace SwapExtractionTool
                     {
                         // Verify the sender address is a valid Xlc address
                         var validXlcAddress = BitcoinAddress.Create(potentialXlcAddress, this.XlcNetwork);
-                        Console.WriteLine($"Swap address found: {validXlcAddress}:{output.Value}");
+                        //Console.WriteLine($"Swap address found: {validXlcAddress}:{output.Value}");
 
                         if (this.swapTransactions.Any(s => s.TransactionHash == transaction.Hash))
-                            Console.WriteLine($"Swap transaction already exists: {validXlcAddress}:{output.Value}");
+                            //Console.WriteLine($"Swap transaction already exists: {validXlcAddress}:{output.Value}");
                         else
                         {
                             var swapTransaction = new SwapTransaction()
@@ -150,13 +150,13 @@ namespace SwapExtractionTool
 
                             this.swapTransactions.Add(swapTransaction);
 
-                            Console.WriteLine($"Swap address added to file: {validXlcAddress}:{output.Value}");
+                            //Console.WriteLine($"Swap address added to file: {validXlcAddress}:{output.Value}");
                         }
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"Swap address invalid: {potentialXlcAddress}:{output.Value}");
-                        Console.WriteLine($"Error: {ex.Message}");
+                        //Console.WriteLine($"Swap address invalid: {potentialXlcAddress}:{output.Value}");
+                        //Console.WriteLine($"Error: {ex.Message}");
                     }
                 }
             }
@@ -189,7 +189,7 @@ namespace SwapExtractionTool
             {
                 if (this.distributedSwapTransactions.Any(d => d.TransactionHash == swapTransaction.TransactionHash))
                 {
-                    Console.WriteLine($"Swap already distributed: {swapTransaction.XlcAddress}:{Money.Satoshis(swapTransaction.SenderAmount).ToUnit(MoneyUnit.BTC)}");
+                    //Console.WriteLine($"Swap already distributed: {swapTransaction.XlcAddress}:{Money.Satoshis(swapTransaction.SenderAmount).ToUnit(MoneyUnit.BTC)}");
                     continue;
                 }
 
@@ -217,7 +217,7 @@ namespace SwapExtractionTool
                     }
                     catch (Exception)
                     {
-                        Console.WriteLine($"An error occurred processing swap {distributedSwapTransaction.TransactionHash}");
+                        //Console.WriteLine($"An error occurred processing swap {distributedSwapTransaction.TransactionHash}");
                         break;
                     }
 
@@ -234,7 +234,7 @@ namespace SwapExtractionTool
                     distributedSwapTransaction.TransactionSent = true;
                     distributedSwapTransaction.TransactionSentHash = sendActionResult.TransactionId.ToString();
 
-                    Console.WriteLine($"Swap transaction built and sent to {distributedSwapTransaction.XlcAddress}:{Money.Satoshis(distributedSwapTransaction.SenderAmount).ToUnit(MoneyUnit.BTC)}");
+                    //Console.WriteLine($"Swap transaction built and sent to {distributedSwapTransaction.XlcAddress}:{Money.Satoshis(distributedSwapTransaction.SenderAmount).ToUnit(MoneyUnit.BTC)}");
 
                     // Append to the file.
                     using (FileStream stream = File.Open(Path.Combine(this.swapFilePath, distributedSwapTransactionsFile), FileMode.Append))
@@ -251,7 +251,7 @@ namespace SwapExtractionTool
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    //Console.WriteLine(ex.Message);
                     break;
                 }
                 finally

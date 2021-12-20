@@ -25,14 +25,14 @@ namespace Xels.Bitcoin.Utilities
                 {
                     if (!cts.IsCancellationRequested)
                     {
-                        Console.WriteLine("Application is shutting down...");
+                        //Console.WriteLine("Application is shutting down...");
                         try
                         {
                             cts.Cancel();
                         }
                         catch (ObjectDisposedException exception)
                         {
-                            Console.WriteLine(exception.Message);
+                            //Console.WriteLine(exception.Message);
                         }
                     }
 
@@ -83,23 +83,23 @@ namespace Xels.Bitcoin.Utilities
                 tcs.TrySetResult(null);
             }, waitForStop);
 
-            Console.WriteLine();
-            Console.WriteLine("Application starting, press Ctrl+C to cancel.");
-            Console.WriteLine();
+            //Console.WriteLine();
+            //Console.WriteLine("Application starting, press Ctrl+C to cancel.");
+            //Console.WriteLine();
 
             node.Start();
 
-            Console.WriteLine();
-            Console.WriteLine("Application started, press Ctrl+C to stop.");
-            Console.WriteLine();
+            //Console.WriteLine();
+            //Console.WriteLine("Application started, press Ctrl+C to stop.");
+            //Console.WriteLine();
 
             await waitForStop.Task.ConfigureAwait(false);
 
             node.Dispose();
 
-            Console.WriteLine();
-            Console.WriteLine("Application stopped.");
-            Console.WriteLine();
+            //Console.WriteLine();
+            //Console.WriteLine("Application stopped.");
+            //Console.WriteLine();
         }
     }
 }

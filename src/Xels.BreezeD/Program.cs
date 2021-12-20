@@ -69,7 +69,7 @@ namespace Xels.BreezeD
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"There was a problem initializing the node: '{ex}'");
+                //Console.WriteLine($"There was a problem initializing the node: '{ex}'");
             }
         }
     }

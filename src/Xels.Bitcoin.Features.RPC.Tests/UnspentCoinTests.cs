@@ -68,7 +68,7 @@ namespace NBitcoin.Tests
             JObject testData = JObject.Parse(testJson);
             var unspentCoin = new UnspentCoin(testData, KnownNetworks.TestNet);
 
-            Console.WriteLine("Redeem Script: {0}", unspentCoin.RedeemScript);
+            //Console.WriteLine("Redeem Script: {0}", unspentCoin.RedeemScript);
             Assert.NotNull(unspentCoin.RedeemScript);
         }
 

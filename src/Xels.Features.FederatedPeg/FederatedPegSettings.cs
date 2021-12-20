@@ -78,7 +78,7 @@ namespace Xels.Features.FederatedPeg
                 throw new ConfigurationException("Either -mainchain or -sidechain must be specified");
 
             string redeemScriptRaw = configReader.GetOrDefault<string>(RedeemScriptParam, null);
-            Console.WriteLine(redeemScriptRaw);
+            //Console.WriteLine(redeemScriptRaw);
 
             PayToMultiSigTemplateParameters para = null;
 

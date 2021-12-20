@@ -25,7 +25,7 @@ namespace SwapExtractionTool
 
         public async Task RunAsync(VoteType voteType, int startBlock)
         {
-            Console.WriteLine($"Scanning for {voteType} votes...");
+            //Console.WriteLine($"Scanning for {voteType} votes...");
 
             for (int height = startBlock; height < EndHeight; height++)
             {
@@ -58,16 +58,16 @@ namespace SwapExtractionTool
             var dWeight = Money.Satoshis(votes.Where(v => v.Selection == "D").Sum(v => v.Balance)).ToUnit(MoneyUnit.BTC);
             var eWeight = Money.Satoshis(votes.Where(v => v.Selection == "E").Sum(v => v.Balance)).ToUnit(MoneyUnit.BTC);
 
-            Console.WriteLine($"Total Weight: {totalWeight} XEL");
+            //Console.WriteLine($"Total Weight: {totalWeight} XEL");
 
             if (totalWeight == 0)
                 return;
 
-            Console.WriteLine($"Total A Weight: {(aWeight / totalWeight * 100).ToString("F")}% [{aWeight}]");
-            Console.WriteLine($"Total B Weight: {(bWeight / totalWeight * 100).ToString("F")}% [{bWeight}]");
-            Console.WriteLine($"Total C Weight: {(cWeight / totalWeight * 100).ToString("F")}% [{cWeight}]");
-            Console.WriteLine($"Total D Weight: {(dWeight / totalWeight * 100).ToString("F")}% [{dWeight}]");
-            Console.WriteLine($"Total E Weight: {(eWeight / totalWeight * 100).ToString("F")}% [{eWeight}]");
+            //Console.WriteLine($"Total A Weight: {(aWeight / totalWeight * 100).ToString("F")}% [{aWeight}]");
+            //Console.WriteLine($"Total B Weight: {(bWeight / totalWeight * 100).ToString("F")}% [{bWeight}]");
+            //Console.WriteLine($"Total C Weight: {(cWeight / totalWeight * 100).ToString("F")}% [{cWeight}]");
+            //Console.WriteLine($"Total D Weight: {(dWeight / totalWeight * 100).ToString("F")}% [{dWeight}]");
+            //Console.WriteLine($"Total E Weight: {(eWeight / totalWeight * 100).ToString("F")}% [{eWeight}]");
         }
 
         private void CountSwapVotes()
@@ -84,9 +84,9 @@ namespace SwapExtractionTool
             var noWeight = Money.Satoshis(votes.Where(v => !v.InFavour).Sum(v => v.Balance)).ToUnit(MoneyUnit.BTC);
             var yesWeight = Money.Satoshis(votes.Where(v => v.InFavour).Sum(v => v.Balance)).ToUnit(MoneyUnit.BTC);
 
-            Console.WriteLine($"Total Weight: {totalWeight} XEL");
-            Console.WriteLine($"Total No Weight: {(noWeight / totalWeight * 100).ToString("F")}% [{noWeight}]");
-            Console.WriteLine($"Total Yes Weight: {(yesWeight / totalWeight * 100).ToString("F")}% [{yesWeight}]");
+            //Console.WriteLine($"Total Weight: {totalWeight} XEL");
+            //Console.WriteLine($"Total No Weight: {(noWeight / totalWeight * 100).ToString("F")}% [{noWeight}]");
+            //Console.WriteLine($"Total Yes Weight: {(yesWeight / totalWeight * 100).ToString("F")}% [{yesWeight}]");
         }
 
         private async Task ProcessBlockForCollateralVoteTransactionsAsync(BlockTransactionDetailsModel block, int blockHeight)
@@ -135,7 +135,7 @@ namespace SwapExtractionTool
                                         .SetQueryParams(new { addresses = input.hash, minConfirmations = 0 })
                                         .GetJsonAsync<AddressBalancesResult>();
 
-                                    Console.WriteLine($"Reset balance for '{input.hash}' to {balance.Balances[0].Balance} due to burn transaction {transaction.TxId} at height {blockHeight}");
+                                    //Console.WriteLine($"Reset balance for '{input.hash}' to {balance.Balances[0].Balance} due to burn transaction {transaction.TxId} at height {blockHeight}");
 
                                     this.collateralVotes[input.hash].Balance = balance.Balances[0].Balance;
                                 }
@@ -148,7 +148,7 @@ namespace SwapExtractionTool
                         this.collateralVotes[address].BlockHeight = blockHeight;
                         this.collateralVotes[address].Balance = Money.Coins(opReturnOutput.Value);
 
-                        Console.WriteLine($"Detected that address '{address}' burnt {opReturnOutput.Value} via transaction {transaction.TxId} at height {blockHeight}");
+                        //Console.WriteLine($"Detected that address '{address}' burnt {opReturnOutput.Value} via transaction {transaction.TxId} at height {blockHeight}");
 
                         // We can now skip checking if this output was a vote.
                         continue;
@@ -170,7 +170,7 @@ namespace SwapExtractionTool
                     var collateralVote = potentialVote.Substring(2, 1);
                     if (!new[] { "A", "B", "C", "D", "E" }.Contains(collateralVote))
                     {
-                        Console.WriteLine($"Invalid vote found '{collateralVote}'; height {blockHeight}.");
+                        //Console.WriteLine($"Invalid vote found '{collateralVote}'; height {blockHeight}.");
                         continue;
                     }
 
@@ -183,7 +183,7 @@ namespace SwapExtractionTool
 
                     if (!validateResult.IsValid)
                     {
-                        Console.WriteLine($"Invalid XEL address: '{potentialStratAddress}'");
+                        //Console.WriteLine($"Invalid XEL address: '{potentialStratAddress}'");
                         continue;
                     }
 
@@ -196,13 +196,13 @@ namespace SwapExtractionTool
 
                     if (!this.collateralVotes.ContainsKey(potentialStratAddress))
                     {
-                        Console.WriteLine($"Collateral vote found for {potentialStratAddress} at height {blockHeight}; Selection '{collateralVote}'; Balance {determinedBalance}");
+                        //Console.WriteLine($"Collateral vote found for {potentialStratAddress} at height {blockHeight}; Selection '{collateralVote}'; Balance {determinedBalance}");
                         
                         this.collateralVotes.Add(potentialStratAddress, new CollateralVote() { Address = potentialStratAddress, Balance = determinedBalance, Selection = collateralVote, BlockHeight = blockHeight });
                     }
                     else
                     {
-                        Console.WriteLine($"Updating existing vote for {potentialStratAddress} at height {blockHeight}; Selection '{collateralVote}'; Balance {determinedBalance}");
+                        //Console.WriteLine($"Updating existing vote for {potentialStratAddress} at height {blockHeight}; Selection '{collateralVote}'; Balance {determinedBalance}");
                         
                         this.collateralVotes[potentialStratAddress] = new CollateralVote() { Address = potentialStratAddress, Balance = determinedBalance, Selection = collateralVote, BlockHeight = blockHeight };
                     }
@@ -243,7 +243,7 @@ namespace SwapExtractionTool
 
                         if (!validateResult.IsValid)
                         {
-                            Console.WriteLine($"Invalid XEL address: '{potentialStratAddress}'");
+                            //Console.WriteLine($"Invalid XEL address: '{potentialStratAddress}'");
                             continue;
                         }
 
@@ -255,13 +255,13 @@ namespace SwapExtractionTool
                         if (isVoteValue == "0")
                         {
                             this.castVotes.Add(new CastVote() { Address = potentialStratAddress, Balance = balance.Balances[0].Balance, InFavour = false, BlockHeight = blockHeight });
-                            Console.WriteLine($"'No' vote found at height {blockHeight}.");
+                            //Console.WriteLine($"'No' vote found at height {blockHeight}.");
                         }
 
                         if (isVoteValue == "1")
                         {
                             this.castVotes.Add(new CastVote() { Address = potentialStratAddress, Balance = balance.Balances[0].Balance, InFavour = true, BlockHeight = blockHeight });
-                            Console.WriteLine($"'Yes' vote found at height {blockHeight}.");
+                            //Console.WriteLine($"'Yes' vote found at height {blockHeight}.");
                         }
                     }
                 }
