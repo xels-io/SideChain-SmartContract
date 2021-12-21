@@ -137,7 +137,9 @@ namespace SwapExtractionTool
                         //Console.WriteLine($"Swap address found: {validXlcAddress}:{output.Value}");
 
                         if (this.swapTransactions.Any(s => s.TransactionHash == transaction.Hash))
+                        {
                             //Console.WriteLine($"Swap transaction already exists: {validXlcAddress}:{output.Value}");
+                        }
                         else
                         {
                             var swapTransaction = new SwapTransaction()

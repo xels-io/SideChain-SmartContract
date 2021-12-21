@@ -176,7 +176,7 @@
         </Grid>
 
         <Grid x:Name="GridBarraTitulo" Grid.ColumnSpan="2" Background="#FF41A43C" MouseDown="GridBarraTitulo_MouseDown">
-            <Label x:Name="labCheckChainMessage" Width="200" FontSize="14" Foreground="AliceBlue" HorizontalContentAlignment="Left" HorizontalAlignment="Left" Margin="15,0,0,0"/>
+            <Label x:Name="labCheckChainMessage" Width="250" FontSize="14" Foreground="AliceBlue" HorizontalContentAlignment="Left" HorizontalAlignment="Left" Margin="15,0,0,0"/>
             <Border Grid.Row="1" CornerRadius="7" HorizontalAlignment="Center" Background="White">
                 <Grid Margin="5">
                     <Grid.ColumnDefinitions>
