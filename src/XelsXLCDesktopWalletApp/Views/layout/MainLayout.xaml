@@ -177,8 +177,8 @@
 
         <Grid x:Name="GridBarraTitulo" Grid.ColumnSpan="2" Background="#FF41A43C" MouseDown="GridBarraTitulo_MouseDown">
             <Label x:Name="labCheckChainMessage" Width="250" FontSize="14" Foreground="AliceBlue" HorizontalContentAlignment="Left" HorizontalAlignment="Left" Margin="15,0,0,0"/>
-            <Border Grid.Row="1" CornerRadius="7" HorizontalAlignment="Center" Background="White">
-                <Grid Margin="5">
+            <Border Padding="2.5 0 0 0" Grid.Row="1" CornerRadius="7" HorizontalAlignment="Right" Height="25" Background="White" Loaded="StackingBarLoaded" Margin="0,0,170,0">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -187,15 +187,15 @@
                     <!--<materialDesign:PackIcon Kind="Autorenew" Height="13" Width="13" Margin="2,3,0,0" Foreground="Orange"/>-->
                     <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}" Value="0" IsIndeterminate="True" Height="13" Width="13" Margin="-25,1,0,0" Foreground="Orange" />
                     <TextBlock Text="syncing" Grid.Column="0" Name="ConnectionPercentTxt"
-                                                    FontFamily="Microsoft YaHei" FontSize="12" Foreground="Orange" Grid.ColumnSpan="2" Margin="15,0,145,0" Height="20" VerticalAlignment="Top">
+                                                    FontFamily="Microsoft YaHei" FontSize="12" Foreground="Orange" Grid.ColumnSpan="2" Margin="15,0,145,0" Height="20">
 
                     </TextBlock>
-                    <materialDesign:PackIcon Kind="People" Grid.Column="1" Height="13" Width="13" Margin="27,2,0,0" Foreground="Green"/>
-                    <TextBlock Text="0"  Grid.Column="1" Name="ConnectedCountTxt" FontSize="12" Foreground="Green" Margin="40,0,10,0" Padding="3,0,0,0" ></TextBlock>
-                    <Label x:Name="StakingInfo" Content="Not Stacking"  FontSize="12" Grid.Column="1" Foreground="Green" Margin="50,-4,0,0"></Label>
+                    <materialDesign:PackIcon Kind="People" Grid.Column="1" Height="13" Width="13" Margin="27,6,0,0" Foreground="Green"/>
+                    <TextBlock Text="0"  Grid.Column="1" Name="ConnectedCountTxt" FontSize="12" Foreground="Green" Margin="44,4,10,0"  ></TextBlock>
+                    <Label x:Name="StakingInfo" Content="Not Stacking"  FontSize="12" Grid.Column="1" Foreground="Green" Margin="55,0,0,0"></Label>
                     <!--<Image Grid.Column="2"  x:Name="thumbDown" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Width="24" Source="/Assets/Images/thumbsdown.png" Margin="-40,0,0,0" />-->
-                    <materialDesign:PackIcon Kind="DislikeOutline" Grid.Column="2"  x:Name="thumbDown" Height="15" Width="30" Margin="-40,0,0,0" Foreground="Red" VerticalAlignment="Center"/>
-                    <materialDesign:PackIcon Kind="LikeOutline" Visibility="Collapsed" Grid.Column="2"  x:Name="thumbsup" Height="15" Width="30" Margin="-20,0,0,0" Foreground="Green" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                    <materialDesign:PackIcon Kind="DislikeOutline" Grid.Column="2"  x:Name="thumbDown" Height="15" Width="30" Margin="-35,1.5,0,0" Foreground="Red" VerticalAlignment="Center"/>
+                    <materialDesign:PackIcon Kind="LikeOutline" Visibility="Collapsed" Grid.Column="2"  x:Name="thumbsup" Height="15" Width="30" Margin="-35,0,0,0" Foreground="Green" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                     <!--<Image Grid.Column="2" Visibility="Collapsed"  x:Name="thumbsup" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Width="24" Source="/Assets/Images/thumbsup.png" Margin="-20,0,0,0" />-->
                 </Grid>
             </Border>

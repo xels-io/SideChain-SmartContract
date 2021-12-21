@@ -71,6 +71,12 @@ namespace XelsXLCDesktopWalletApp.Views.layout
                 this.thumbsup.Visibility = Visibility.Visible;
                 this.thumbDown.Visibility = Visibility.Collapsed;
             }
+
+            if (URLConfiguration.Chain == "-sidechain")// (!this.sidechainEnabled)
+            {
+                this.thumbDown.Visibility = Visibility.Collapsed;
+                this.thumbsup.Visibility = Visibility.Collapsed;
+            }
             //GetGeneralInfoAsync();
             //LoadLoginAsync();
             //GetHistoryAsync();
@@ -272,6 +278,35 @@ namespace XelsXLCDesktopWalletApp.Views.layout
                 GlobalExceptionHandler.SendErrorToText(q);
             }
 
+        }
+
+        private void StackingBarLoaded(object sender, RoutedEventArgs e)
+        {
+            DispatcherTimer dispatcherTimer = new DispatcherTimer();
+            URLConfiguration.Pagenavigation = false;
+            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 10);
+            dispatcherTimer.Start();
+        }
+        private void dispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                //this.DataContext = this;
+                //this.walletInfo.WalletName = this.walletName;
+                _ = GetGeneralWalletInfoAsync();
+
+                if (GlobalPropertyModel.StakingStart == true)
+                {
+                    this.StakingInfo.Content = "Staking";
+                    this.thumbsup.Visibility = Visibility.Visible;
+                    this.thumbDown.Visibility = Visibility.Collapsed;
+                }
+            }
+            catch (Exception a)
+            {
+                GlobalExceptionHandler.SendErrorToText(a);
+            }
         }
     }
 }
