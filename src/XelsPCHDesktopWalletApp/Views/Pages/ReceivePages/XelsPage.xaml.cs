@@ -52,7 +52,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.ReceivePages
             this.ReceiveWalletStatus.UnusedAddresses = new List<ReceiveWalletStatus>();
             this.ReceiveWalletStatus.ChangedAddresses = new List<ReceiveWalletStatus>();
             this.DataContext = this;
-             
+
             LoadCreate();
             GenerateQRCode();
         }
@@ -130,16 +130,17 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.ReceivePages
                     GlobalExceptionHandler.SendErrorToText(e);
                 }
             }
-            
+
         }
 
-        private  void ShowAllAddressButton_Click(object sender, RoutedEventArgs e)
+        private void ShowAllAddressButton_Click(object sender, RoutedEventArgs e)
         {
             GetAllAddresses();
             this.AllAddressList.Visibility = Visibility.Visible;
             this.BackSingleAddressButton.Visibility = Visibility.Visible;
             this.SingleAddress.Visibility = Visibility.Hidden;
             this.BackShowAllAddressButton.Visibility = Visibility.Hidden;
+            this.showall.Visibility = Visibility.Collapsed;
         }
 
 
@@ -159,7 +160,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.ReceivePages
             ReceiveWalletStatus item = (ReceiveWalletStatus)((sender as Button)?.Tag as ListViewItem)?.DataContext;
             Clipboard.SetText(item.Address.ToString());
             //this.Xels_Receive_Page.Children.Add(new DisplayMessageUserControl("Address Copied Successfully :- " + item.Address.ToString()));
-  
+
         }
 
         //private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
@@ -171,10 +172,11 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.ReceivePages
 
         private void BackSingleAddressButton_Click(object sender, RoutedEventArgs e)
         {
-            this.AllAddressList.Visibility = Visibility.Hidden;
+            this.AllAddressList.Visibility = Visibility.Collapsed;
             this.SingleAddress.Visibility = Visibility.Visible;
-            this.BackSingleAddressButton.Visibility = Visibility.Hidden;
+            this.BackSingleAddressButton.Visibility = Visibility.Collapsed;
             this.BackShowAllAddressButton.Visibility = Visibility.Visible;
+            this.showall.Visibility = Visibility.Visible;
         }
 
     }

@@ -8,16 +8,16 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="XelsPage">
 
-    <Grid Background="White" Margin="0,0,0,0" x:Name="Xels_Receive_Page">
+    <Grid Background="White" Margin="0,7,0,0" x:Name="Xels_Receive_Page">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <!--- image -->
-            <Border Grid.Row="0" Height="80">
+            <Border Grid.Row="0" Height="150">
                 <Image x:Name="image" />
             </Border>
             <!-- signle address and copy button  -->
@@ -43,40 +43,32 @@
                 </Grid>
             </Border>
 
-            <!-- address list -->
-            <Border Grid.Row="2" Margin="0,0,0,0" >
+            <!---  show all addresses button  -->
+            <Border Grid.Row="2" >
+                <Border x:Name="BackShowAllAddressButton" Margin="0 10">
+                    <Button x:Name="showall" Click="ShowAllAddressButton_Click" HorizontalAlignment="Center" 
+                         FontSize="10" Content="Show All Addresses"
+                           RenderTransformOrigin="0.51,0.144" Background="Green">
+                    </Button>
+                </Border>
+            </Border>
 
-                <Grid Margin="0,0,0,0">
+            <!-- address list -->
+            <Border Grid.Row="3" Margin="0,-70,0,0" >
+
+                <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <Border x:Name="BackSingleAddressButton" Grid.Row="0" Visibility="Hidden"   
-                            HorizontalAlignment="Left" Margin="120,0,0,0" 
-                          >
-                        <Button  x:Name="backButton" 
-                                 Click="BackSingleAddressButton_Click" Content="Back"
-                      Margin=" 5 0" Background="White" BorderThickness="1" 
-                                 Foreground="Green" 
-                    BorderBrush="Green" >
-                            <Button.Resources>
-                                <Style TargetType="Border">
-                                    <Setter Property="CornerRadius" Value="5"/>
-                                </Style>
-                            </Button.Resources>
-                        </Button>
-                    </Border>
-                    <Border x:Name="AllAddressList" Grid.Row="1"  Visibility="Hidden"
-                            Margin="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"  >
-                        <!--/Visibility="Hidden"-->
-
+                    <Border x:Name="AllAddressList" Grid.Row="0"  Visibility="Hidden" VerticalAlignment="Center" HorizontalAlignment="Center"  BorderBrush="Green" BorderThickness="0.5" CornerRadius="3">
                         <TabControl>
                             <TabItem Header="Unused Addresses">
 
                                 <ListView Margin="2,2,2,2" x:Name="UnusedAddressList" 
                                               VerticalContentAlignment="Top"  
-                                             ScrollViewer.VerticalScrollBarVisibility="Visible" MaxHeight="200"   
+                                             ScrollViewer.VerticalScrollBarVisibility="Visible" MaxHeight="180"   
                                               ScrollViewer.CanContentScroll="False">
                                     <ListView.View>
                                         <GridView x:Name="tablist">
@@ -140,18 +132,26 @@
                         </TabControl>
 
                     </Border>
+
+                    <Border Width="100" x:Name="BackSingleAddressButton" Grid.Row="1" Visibility="Hidden"   
+                            HorizontalAlignment="Center" Margin="0,5,0,0" 
+                          >
+                        <Button  x:Name="backButton" 
+                                 Click="BackSingleAddressButton_Click" Content="Back" 
+                                 Background="White" BorderThickness="1" 
+                                 Foreground="Green" 
+                                 BorderBrush="Green" >
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="5"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </Border>
                 </Grid>
             </Border>
 
-            <!---  show all addresses button  -->
-            <Border Grid.Row="03" >
-                <Border x:Name="BackShowAllAddressButton" Margin="0 2">
-                    <Button x:Name="showall" Click="ShowAllAddressButton_Click" HorizontalAlignment="Center" 
-                         FontSize="10" Content="Show All Addresses"
-                           RenderTransformOrigin="0.51,0.144">
-                    </Button>
-                </Border>
-            </Border>
+
 
         </Grid>
     </Grid>

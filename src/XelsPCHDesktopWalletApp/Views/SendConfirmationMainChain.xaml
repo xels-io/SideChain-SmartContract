@@ -4,15 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:XelsPCHDesktopWalletApp.Views"
-        mc:Ignorable="d"
-             d:HorizontalAlignment="Stretch" d:VerticalAlignment="Stretch" >
-    <!--Height="450" Width="800"-->
-    <StackPanel Background="White">
-
-        <Rectangle Fill="AliceBlue" Opacity=".8" MouseDown="Rectangle_MouseDown" />
-
-        <Border CornerRadius="10"  Background="White" Height="350" Width="500">
-            <Grid Margin="100 30" >
+        mc:Ignorable="d">
+    <!--Height="450" Width="800" d:HorizontalAlignment="Stretch" d:VerticalAlignment="Stretch"-->
+    <Grid>
+        <Rectangle Fill="DarkGray" Opacity=".7" MouseDown="Rectangle_MouseDown" />
+        <Border CornerRadius="5" Background="White" Height="310" Width="400" BorderBrush="Green" BorderThickness="1.5">
+            <Grid Margin="20 10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
@@ -29,11 +26,11 @@
                 <Border Grid.Row="1">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Content="Amount sent:"   FontFamily="Microsoft YaHei Light" FontSize="14"/>
+                        <Label Grid.Column="0" Content="Amount sent:" FontSize="14"/>
                         <Label Grid.Column="1" Name="AmountSent"   FontFamily="Microsoft YaHei Light" FontSize="12"/>
                         <Label Grid.Column="2" Name="AmountSentType"    FontFamily="Microsoft YaHei Light" FontSize="14"/>
                     </Grid>
@@ -42,11 +39,11 @@
                 <Border Grid.Row="2">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <Label Grid.Column="0" Content="Fee:"  FontFamily="Microsoft YaHei Light" FontSize="14"/>
+                        <Label Grid.Column="0" Content="Fee:" FontSize="14"/>
                         <Label Grid.Column="1" Name="Fee"  FontFamily="Microsoft YaHei Light" FontSize="12"/>
                         <Label Grid.Column="2" x:Name="FeeType"  FontFamily="Microsoft YaHei Light" FontSize="14"/>
                     </Grid>
@@ -56,25 +53,25 @@
                 <Border Grid.Row="3">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
                         <Label Grid.Column="0" Content="Total:"   FontSize="14"/>
-                        <Label Grid.Column="1" x:Name="Total"  FontSize="12"/>
-                        <Label Grid.Column="2" x:Name="TotalType"    FontSize="14"/>
+                        <Label Grid.Column="1" x:Name="Total" FontFamily="Microsoft YaHei Light"  FontSize="12"/>
+                        <Label Grid.Column="2" x:Name="TotalType"  FontFamily="Microsoft YaHei Light"  FontSize="14"/>
                     </Grid>
                 </Border>
 
                 <Border Grid.Row="4">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
                         <Label Grid.Column="0" Content="Destination:"  FontSize="14"/>
-                        <Label Grid.Column="1" Name="Destination"  FontSize="14"/>
+                        <Label Grid.Column="1" Name="Destination" FontFamily="Microsoft YaHei Light" FontSize="14"/>
                     </Grid>
                 </Border>
                 <Border Grid.Row="5">
@@ -94,10 +91,7 @@
 
                     </Grid>
                 </Border>
-
-
-
             </Grid>
         </Border>
-    </StackPanel>
+    </Grid>
 </UserControl>

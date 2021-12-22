@@ -63,13 +63,19 @@ namespace XelsPCHDesktopWalletApp.Views.layout
             this.DataContext = this;
             this.labWalletName.Content = this.walletName;
             this.labCheckChainMessage.Content = GlobalPropertyModel.ChainCheckMessage;
-
             _ = GetGeneralWalletInfoAsync();
+
             if (GlobalPropertyModel.StakingStart == true)
             {
                 this.StakingInfo.Content = "Staking";
                 this.thumbsup.Visibility = Visibility.Visible;
                 this.thumbDown.Visibility = Visibility.Collapsed;
+            }
+
+            if (URLConfiguration.Chain == "-sidechain")// (!this.sidechainEnabled)
+            {
+                this.thumbDown.Visibility = Visibility.Collapsed;
+                this.thumbsup.Visibility = Visibility.Collapsed;
             }
             //GetGeneralInfoAsync();
             //LoadLoginAsync();
@@ -101,11 +107,11 @@ namespace XelsPCHDesktopWalletApp.Views.layout
         {
             DragMove();
         }
-            
+
         private void btnDashboard_Click(object sender, RoutedEventArgs e)
         {
             this.PageContent.Content = new DashboardPage(this.walletName);
- 
+
             this.btnDashboard.Focus();
         }
 
@@ -132,7 +138,7 @@ namespace XelsPCHDesktopWalletApp.Views.layout
             //LogoutConfirm lc = new LogoutConfirm(this.walletName);
             //lc.Show();
             //this.Close();
-            this.PageContent.Content= new LogoutConfirmUserControl(this.walletName);
+            this.PageContent.Content = new LogoutConfirmUserControl(this.walletName);
         }
 
         private void AddressBookButton_Click(object sender, RoutedEventArgs e)
@@ -149,10 +155,10 @@ namespace XelsPCHDesktopWalletApp.Views.layout
         }
 
         private void Window_Initialized(object sender, System.EventArgs e)
-        {            
+        {
             this.PageContent.Content = new DashboardPage(this.walletName);
 
-           
+
         }
 
         private void windowMin_Click(object sender, RoutedEventArgs e)
@@ -214,7 +220,6 @@ namespace XelsPCHDesktopWalletApp.Views.layout
         //            break;
         //    }
         //}
-
         private async Task GetGeneralWalletInfoAsync()
         {
             try
@@ -275,5 +280,33 @@ namespace XelsPCHDesktopWalletApp.Views.layout
 
         }
 
+        private void StackingBarLoaded(object sender, RoutedEventArgs e)
+        {
+            DispatcherTimer dispatcherTimer = new DispatcherTimer();
+            URLConfiguration.Pagenavigation = false;
+            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 10);
+            dispatcherTimer.Start();
+        }
+        private void dispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                //this.DataContext = this;
+                //this.walletInfo.WalletName = this.walletName;
+                _ = GetGeneralWalletInfoAsync();
+
+                if (GlobalPropertyModel.StakingStart == true)
+                {
+                    this.StakingInfo.Content = "Staking";
+                    this.thumbsup.Visibility = Visibility.Visible;
+                    this.thumbDown.Visibility = Visibility.Collapsed;
+                }
+            }
+            catch (Exception a)
+            {
+                GlobalExceptionHandler.SendErrorToText(a);
+            }
+        }
     }
 }

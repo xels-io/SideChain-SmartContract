@@ -10,8 +10,8 @@
              HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Initialized="UserControl_Initialized" >
 
     <Grid>
-        <Rectangle Fill="WhiteSmoke" Opacity=".5" MouseDown="Rectangle_MouseDown" />
-        <Border CornerRadius="10" BorderThickness="2" BorderBrush="Green"  Background="White" Height="550" Width="700">
+        <Rectangle Fill="Gray" Opacity=".5" MouseDown="Rectangle_MouseDown" />
+        <Border CornerRadius="10" BorderThickness="2" BorderBrush="Green"  Background="White" Height="500" Width="700">
             <Grid Margin="5,5,5,5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"  />
@@ -76,10 +76,10 @@
                 </Button>
                 <Frame  Grid.Row="2" Grid.RowSpan="4" x:Name="ReceiveContent" NavigationUIVisibility="Hidden" Margin="10,10,5,10" />
 
-                <Button Grid.Row="7" x:Name="restoreButton" Click="restoreButton_Click" Content="OK"
+                <!--<Button Grid.Row="7" x:Name="restoreButton" Click="restoreButton_Click" Content="OK"
                         Background="Green"
                         Foreground="White" Margin="10,24,10,25" >
-                </Button>
+                </Button>-->
             </Grid>
         </Border>
     </Grid>

@@ -22,7 +22,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.Modals
     /// Interaction logic for ReceiveUserControl.xaml
     /// </summary>
     public partial class ReceiveUserControl : UserControl
-    {    
+    {
 
         public ReceiveUserControl()
         {
@@ -30,10 +30,10 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.Modals
             this.DataContext = this;
         }
 
-        private void restoreButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Visibility = Visibility.Collapsed;
-        }
+        //private void restoreButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    this.Visibility = Visibility.Collapsed;
+        //}
 
         private void XelsButton_Click(object sender, RoutedEventArgs e)
         {
@@ -59,7 +59,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.Modals
         private void UserControl_Initialized(object sender, EventArgs e)
         {
             this.ReceiveContent.Content = new XelsPage();
-                this.XelsButton.Focus();
+            this.XelsButton.Focus();
         }
 
         private void XelsButton_Initialized(object sender, EventArgs e)
