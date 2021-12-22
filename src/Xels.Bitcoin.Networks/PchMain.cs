@@ -58,7 +58,7 @@ namespace Xels.Bitcoin.Networks
             this.GenesisVersion = 536870912; // 'Empty' BIP9 deployments as they are all activated from genesis already
             this.GenesisReward = Money.Zero;
 
-            Block genesisBlock = XlcNetwork.CreateGenesisBlock(consensusFactory, this.GenesisTime, this.GenesisNonce, this.GenesisBits, this.GenesisVersion, this.GenesisReward, "There is hope yet! We all need to work together. WE GOT THIS!!!");
+            Block genesisBlock = PchNetwork.CreateGenesisBlock(consensusFactory, this.GenesisTime, this.GenesisNonce, this.GenesisBits, this.GenesisVersion, this.GenesisReward, "There is hope yet! We all need to work together. WE GOT THIS!!!");
 
             this.Genesis = genesisBlock;
 
