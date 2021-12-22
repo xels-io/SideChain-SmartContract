@@ -54,39 +54,21 @@
             </Border>
 
             <!-- address list -->
-            <Border Grid.Row="3" Margin="0,0,0,0" >
+            <Border Grid.Row="3" Margin="0,-70,0,0" >
 
-                <Grid Margin="0,0,0,0">
+                <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <Border x:Name="BackSingleAddressButton" Grid.Row="0" Visibility="Hidden"   
-                            HorizontalAlignment="Left" Margin="114,0,0,0" 
-                          >
-                        <Button  x:Name="backButton" 
-                                 Click="BackSingleAddressButton_Click" Content="Back"
-                      Margin=" 5 0" Background="White" BorderThickness="1" 
-                                 Foreground="Green" 
-                    BorderBrush="Green" >
-                            <Button.Resources>
-                                <Style TargetType="Border">
-                                    <Setter Property="CornerRadius" Value="5"/>
-                                </Style>
-                            </Button.Resources>
-                        </Button>
-                    </Border>
-                    <Border x:Name="AllAddressList" Grid.Row="1"  Visibility="Hidden"
-                            Margin="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"  BorderBrush="Green" BorderThickness="0.5" CornerRadius="3">
-                        <!--/Visibility="Hidden"-->
-
+                    <Border x:Name="AllAddressList" Grid.Row="0"  Visibility="Hidden" VerticalAlignment="Center" HorizontalAlignment="Center"  BorderBrush="Green" BorderThickness="0.5" CornerRadius="3">
                         <TabControl>
                             <TabItem Header="Unused Addresses">
 
                                 <ListView Margin="2,2,2,2" x:Name="UnusedAddressList" 
                                               VerticalContentAlignment="Top"  
-                                             ScrollViewer.VerticalScrollBarVisibility="Visible" MaxHeight="170"   
+                                             ScrollViewer.VerticalScrollBarVisibility="Visible" MaxHeight="180"   
                                               ScrollViewer.CanContentScroll="False">
                                     <ListView.View>
                                         <GridView x:Name="tablist">
@@ -149,6 +131,22 @@
                             </TabItem>
                         </TabControl>
 
+                    </Border>
+
+                    <Border Width="100" x:Name="BackSingleAddressButton" Grid.Row="1" Visibility="Hidden"   
+                            HorizontalAlignment="Center" Margin="0,5,0,0" 
+                          >
+                        <Button  x:Name="backButton" 
+                                 Click="BackSingleAddressButton_Click" Content="Back" 
+                                 Background="White" BorderThickness="1" 
+                                 Foreground="Green" 
+                                 BorderBrush="Green" >
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="5"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
                     </Border>
                 </Grid>
             </Border>
