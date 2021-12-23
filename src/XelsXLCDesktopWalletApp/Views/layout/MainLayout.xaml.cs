@@ -245,7 +245,6 @@ namespace XelsXLCDesktopWalletApp.Views.layout
                     if (!this.walletGeneralInfoModel.IsChainSynced)
                     {
                         this.ConnectionPercentTxt.Text = "syncing".ToString();
-
                     }
                     else
                     {
@@ -258,6 +257,8 @@ namespace XelsXLCDesktopWalletApp.Views.layout
                         else
                         {
                             this.ConnectionPercentTxt.Text = "100 %";
+                            this.syncingIcon.Visibility = Visibility.Collapsed;
+                            this.syncCompleteIcon.Visibility = Visibility.Visible;
                         }
                     }
 

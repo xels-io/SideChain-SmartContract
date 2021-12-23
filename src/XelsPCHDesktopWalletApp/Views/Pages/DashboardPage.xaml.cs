@@ -293,6 +293,8 @@ namespace XelsPCHDesktopWalletApp.Views.Pages
                         else
                         {
                             this.ParcentSyncedTxt.Text = this.ConnectionPercentTxt.Text = "100 %";
+                            this.syncingIcon.Visibility = Visibility.Collapsed;
+                            this.syncCompleteIcon.Visibility = Visibility.Visible;
                         }
                     }
 

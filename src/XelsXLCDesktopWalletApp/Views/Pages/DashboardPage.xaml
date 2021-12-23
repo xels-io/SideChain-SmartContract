@@ -664,7 +664,8 @@
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
                                             <!--<materialDesign:PackIcon Kind="Autorenew" Height="13" Width="13" Margin="2,3,0,0" Foreground="Orange"/>-->
-                                            <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}" Value="0" IsIndeterminate="True" Height="13" Width="13" Margin="-25,1,0,0" Foreground="Orange" />
+                                            <materialDesign:PackIcon x:Name="syncCompleteIcon" Kind="CheckBold" Visibility="Collapsed" Height="13" Width="13" Margin="0,5,0,0" Foreground="Orange"/>
+                                            <ProgressBar x:Name="syncingIcon" Style="{StaticResource MaterialDesignCircularProgressBar}" Value="0" IsIndeterminate="True" Height="13" Width="13" Margin="-25,1,0,0" Foreground="Orange" />
                                             <TextBlock Text="syncing" Grid.Column="0" Name="ConnectionPercentTxt"
                                                     FontFamily="Microsoft YaHei" FontSize="12" Foreground="Orange" Grid.ColumnSpan="2" Margin="15,0,145,0" Height="20" VerticalAlignment="Top">
 
