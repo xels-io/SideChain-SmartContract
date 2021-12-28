@@ -14,7 +14,9 @@ namespace XelsPCHDesktopWalletApp.Models.CommonModels
 
         public static string BaseURL;//value assagin from program.cs
 
-        public static HttpClient Client = new HttpClient();
+        //public static HttpClient Client = new HttpClient();
+        static IHttpClientFactory ClientFactory = new Xels.Bitcoin.Controllers.HttpClientFactory();
+        public static HttpClient Client = ClientFactory.CreateClient();
 
         public static string Chain;
 
