@@ -90,7 +90,7 @@
                             </TabItem>
                             <TabItem Header="Used Addresses">
                                 <ListView Margin="2,2,2,2" x:Name="UsedAddressList" VerticalContentAlignment="Top"  
-                                        ScrollViewer.VerticalScrollBarVisibility="Visible" MaxHeight="200"   ScrollViewer.CanContentScroll="False" >
+                                        ScrollViewer.VerticalScrollBarVisibility="Visible" MaxHeight="180"   ScrollViewer.CanContentScroll="False" >
                                     <ListView.View>
                                         <GridView>
                                             <GridViewColumn Width="300" DisplayMemberBinding="{Binding Path=Address}"  />
@@ -111,7 +111,7 @@
 
                             <TabItem Header="Changed Addresses">
                                 <ListView Margin="2,2,2,2" x:Name="ChangedAddressList" VerticalContentAlignment="Top"  
-                                    ScrollViewer.VerticalScrollBarVisibility="Visible" MaxHeight="200"   ScrollViewer.CanContentScroll="False" >
+                                    ScrollViewer.VerticalScrollBarVisibility="Visible" MaxHeight="180"   ScrollViewer.CanContentScroll="False" >
                                     <ListView.View>
                                         <GridView>
                                             <GridViewColumn Width="300" DisplayMemberBinding="{Binding Path= Address}"  />
