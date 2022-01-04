@@ -28,7 +28,7 @@ namespace XelsPCHDesktopWalletApp.Views.SmartContractView
     public partial class CallContract : UserControl
     {
         #region Base
-        static HttpClient client = new HttpClient();
+        static HttpClient client = URLConfiguration.Client;
         string baseURL = URLConfiguration.BaseURL;// Common Url
 
         long gasCallLimitMinimum = 10000;
