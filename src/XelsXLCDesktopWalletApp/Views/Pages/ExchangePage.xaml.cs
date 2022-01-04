@@ -198,7 +198,7 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
 
                     var content = "";
                     ExchangeResponse exchangedata = new ExchangeResponse();
-                    HttpClient client = new HttpClient();
+                    HttpClient client = URLConfiguration.Client;
                     client.DefaultRequestHeaders.Add("Authorization", "1234567890");
 
                     HttpResponseMessage response = await client.PostAsJsonAsync(postUrl, order);

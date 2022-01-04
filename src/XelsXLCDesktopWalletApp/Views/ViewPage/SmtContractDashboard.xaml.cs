@@ -29,7 +29,7 @@ namespace XelsXLCDesktopWalletApp.Views.ViewPage
         private List<SmartContractTransactionItem> SmthistoryList = new List<SmartContractTransactionItem>();
 
         #region Base
-        static HttpClient client = new HttpClient();
+        static HttpClient client = URLConfiguration.Client;
         string baseURL = URLConfiguration.BaseURL;// Common Url
         #endregion
 
