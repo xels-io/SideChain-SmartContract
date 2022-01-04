@@ -10,36 +10,33 @@
     <Border Margin="10,10,10,10" BorderBrush="Green" BorderThickness="3" CornerRadius="10">
         <!--Border Padding="10"-->
         <StackPanel>
-            <StackPanel>
-                <Border Height="109" Margin="5,5,5,5" Background="Green" CornerRadius="5">
-                    <Grid Background="Green" Margin="10" Height="100">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
+            <Border Height="109" Margin="5,5,5,5" Background="Green" CornerRadius="5">
+                <Grid Background="Green" Margin="10" Height="100">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
-                        <Border HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" Height="70" Background="Transparent" BorderBrush="WhiteSmoke" 
+                    <Border HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" Height="70" Background="Transparent" BorderBrush="WhiteSmoke" 
               BorderThickness="3" Margin="-2" CornerRadius="10" Padding="5">
-                            <Border.Effect>
-                                <DropShadowEffect ShadowDepth="0" BlurRadius="10" Opacity="50"/>
-                            </Border.Effect>
-                            <Image Source="/Assets/Images/home-xels-logo-01.png" >
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="0" BlurRadius="10" Opacity="50"/>
+                        </Border.Effect>
+                        <Image Source="/Assets/Images/home-xels-logo-01.png" >
 
-                            </Image>
-                        </Border>
-                    </Grid>
-                </Border>
-            </StackPanel>
-
+                        </Image>
+                    </Border>
+                </Grid>
+            </Border>
             <Grid Margin="485 0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="2*" />
                 </Grid.ColumnDefinitions>
- 
+
                 <Image Grid.Column="0" Margin=" 0 5 0 0" Source="/Views/Pages/back-arrow.gif" 
-                       HorizontalAlignment="Center"   Width="20"
-                   RenderTransformOrigin="0.51,0.144" Height="20" />
-        
+                       HorizontalAlignment="Center"   Width="35"
+                   RenderTransformOrigin="0.51,0.144" Height="21" />
+
                 <TextBlock Grid.Column="1"
                            Background="White" Margin="0 10 10 0"   Width="46"
                  RenderTransformOrigin="0.51,0.144" Height="27">
@@ -54,11 +51,11 @@
                 </TextBlock>
 
             </Grid>
-            
-            
-            
 
-            <TextBlock Margin="0,10,0,0"    Text="Welcome" FontWeight="ExtraBold"  FontSize="24" Padding="5 15 "                   HorizontalAlignment="Center" FontFamily="Microsoft YaHei Light"/>
+
+
+
+            <Label Margin="0,10,0,0"  Content="Welcome" FontWeight="ExtraBold"  FontSize="24" Padding="5 15 " HorizontalAlignment="Center" FontFamily="Microsoft YaHei Light"/>
 
             <TextBlock Width="462" FontSize="14" HorizontalAlignment="Center" Opacity="0.7" TextWrapping="Wrap">
                 If you would like to create a new wallet, please click <Bold>Create</Bold>.If you have used the wallet before, please select <Bold>Restore</Bold> to recover your old wallet.</TextBlock>
@@ -87,9 +84,9 @@
                 </Button>
 
             </Grid>
-            <Grid>
+            <Canvas>
                 <Frame x:Name="PageContent" />
-            </Grid>
+            </Canvas>
         </StackPanel>
 
     </Border>
