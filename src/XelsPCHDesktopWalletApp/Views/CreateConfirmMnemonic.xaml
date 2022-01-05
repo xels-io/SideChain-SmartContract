@@ -10,33 +10,39 @@
         <Border Margin="10,10,10,10" Background="White" BorderBrush="Green" BorderThickness="3" CornerRadius="10">
 
             <StackPanel>
+                <Border Margin="20 5" Height="109" Background="Green" CornerRadius="5">
+                    <!--<Grid Background="Green" Margin="10,10,10,-1" Height="100" Width="724">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
 
-                <StackPanel>
-                    <Border Margin="20 5" Height="109" Background="Green" CornerRadius="5">
-                        <Grid Background="Green" Margin="10,10,10,-1" Height="100" Width="724">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-
-                            <Border HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" Height="70" Background="Transparent" BorderBrush="WhiteSmoke" 
+                        <Border HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" Height="70" Background="Transparent" BorderBrush="WhiteSmoke" 
               BorderThickness="3" Margin="-2" CornerRadius="10" Padding="5">
-                                <Border.Effect>
-                                    <DropShadowEffect ShadowDepth="0" BlurRadius="10" Opacity="50"/>
-                                </Border.Effect>
-                                <Image Source="/Assets/Images/home-xels-logo-01.png" >
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="0" BlurRadius="10" Opacity="50"/>
+                            </Border.Effect>
+                            <Image Source="/Assets/Images/home-xels-logo-01.png" >
 
-                                </Image>
-                            </Border>
-                        </Grid>
+                            </Image>
+                        </Border>
+                    </Grid>-->
+                    <Border HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" Height="70" BorderBrush="WhiteSmoke" BorderThickness="3"  CornerRadius="10" Padding="5">
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="0" BlurRadius="10" Opacity="50"/>
+                        </Border.Effect>
+                        <Image Source="/Assets/Images/home-xels-logo-01.png" >
+                        </Image>
                     </Border>
-                </StackPanel>
+                </Border>
 
-                <Border>
-                    <Label Margin="0,10,0,0" Content="Confirm words" HorizontalAlignment="Center"  FontSize="28" FontWeight="DemiBold" />
+
+
+                <Border HorizontalAlignment="Center">
+                    <Label Margin="0,10,0,0" Content="Confirm words"  FontSize="28" FontWeight="DemiBold" />
                 </Border>
 
                 <Border Margin="250 2.5">
-                    <Grid>
+                    <!--<Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
@@ -45,11 +51,15 @@
                         <Label Grid.Row="0" Name="wordone" Margin="5 0" Content="{Binding ElementName=Valueone, Path=wordone}"/>
 
                         <TextBox Grid.Row="1" Name="word1" Padding="5" Margin="0 5" AutomationProperties.HelpText="Enter a wallet name." />
-                    </Grid>
+                    </Grid>-->
+                    <StackPanel>
+                        <Label Name="wordone" Margin="5 0" Content="{Binding ElementName=Valueone, Path=wordone}"/>
+                        <TextBox Name="word1" Padding="5" Margin="0 5" AutomationProperties.HelpText="Enter a wallet name." />
+                    </StackPanel>
                 </Border>
 
                 <Border Margin="250 2.5">
-                    <Grid>
+                    <!--<Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
@@ -57,11 +67,15 @@
 
                         <Label Grid.Row="0" Name="wordtwo" Margin="5 0" Content="{Binding ElementName=Valuetwo, Path=wordtwo}"  />
                         <TextBox Grid.Row="1" Name="word2" Margin="0 5" Padding="5" />
-                    </Grid>
+                    </Grid>-->
+                    <StackPanel>
+                        <Label Name="wordtwo" Margin="5 0" Content="{Binding ElementName=Valuetwo, Path=wordtwo}"  />
+                        <TextBox Name="word2" Margin="0 5" Padding="5" />
+                    </StackPanel>
                 </Border>
 
                 <Border Margin="250 2.5">
-                    <Grid>
+                    <!--<Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
@@ -69,12 +83,16 @@
 
                         <Label Grid.Row="0" Name="wordthree" Margin="5 0"  Content="{Binding ElementName=Valuethree, Path=wordthree}"  />
                         <TextBox Grid.Row="1" Name="word3" Margin="0 5" Padding="5"  />
-                    </Grid>
+                    </Grid>-->
+                    <StackPanel>
+                        <Label Name="wordthree" Margin="5 0"  Content="{Binding ElementName=Valuethree, Path=wordthree}"/>
+                        <TextBox Name="word3" Margin="0 5" Padding="5"/>
+                    </StackPanel>
                 </Border>
 
                 <Border Margin="250 10">
 
-                    <Grid >
+                    <!--<Grid >
 
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -97,7 +115,25 @@
                             </Button.Resources>
                         </Button>
 
-                    </Grid>
+                    </Grid>-->
+
+                    <StackPanel Width="554" Height="33" Orientation="Horizontal" >
+                        <Button Width="64" x:Name="cancelButton" Click="CancelButton_Click" Content="back" Padding="5" Margin="5 0" TextBlock.FontFamily="Microsoft YaHei Light" Background="White" Foreground="Green" BorderThickness="1" BorderBrush="Green" FontSize="14" RenderTransformOrigin="0.331,0.533">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="5"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+
+                        <Button Width="439" x:Name="createButton" Click="CreateButton_Click" Content="Confirm" Padding="5" Margin="5 0" TextBlock.FontFamily="Microsoft YaHei Light" Background="Green" Foreground="White" BorderThickness="0"  FontSize="14">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="5"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </StackPanel>
 
                 </Border>
 
