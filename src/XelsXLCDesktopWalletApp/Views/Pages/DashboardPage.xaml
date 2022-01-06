@@ -214,568 +214,762 @@
             <StackPanel Background="White" Margin="5">
 
                 <!--- upper grid -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
 
-                <StackPanel>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*" />
-                            <ColumnDefinition Width="4*" />
-                            <ColumnDefinition Width="2*" />
-                        </Grid.ColumnDefinitions>
+                    <!--- hybrid minning -->
 
-                        <!--- hybrid minning -->
+                    <Border x:Name="HybridMiningInfoBorder" Grid.Column="0" Padding="5" Margin="5 5 0 0" Background="#ffffff" BorderBrush="WhiteSmoke" BorderThickness="1" CornerRadius="10"  >
 
-                        <Border x:Name="HybridMiningInfoBorder" Grid.Column="0" Padding="5" Margin="5 5 0 0" Background="#ffffff" BorderBrush="WhiteSmoke" BorderThickness="1" CornerRadius="10"  >
-
-                            <!--<Border.Effect>
+                        <!--<Border.Effect>
                                 <DropShadowEffect  Direction="-75" ShadowDepth="2" Opacity="0.8" BlurRadius="10" Color="Black" />
                             </Border.Effect>-->
 
-                            <!-- Connection info with hover-->
-                            <Border.Style>
-                                <Style TargetType="Border">
-                                    <Setter Property="Effect">
-                                        <Setter.Value>
-                                            <DropShadowEffect  Direction="-75" ShadowDepth="2" Opacity="0.8" BlurRadius="10" Color="Black" />
-                                        </Setter.Value>
-                                    </Setter>
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Effect">
-                                                <Setter.Value>
-                                                    <DropShadowEffect  Direction="-75" ShadowDepth="2" Opacity="0.8" BlurRadius="20" Color="Black" />
-                                                </Setter.Value>
-                                            </Setter>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
-                            <!-- Connection info with hover end-->
+                        <!-- Connection info with hover-->
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect  Direction="-75" ShadowDepth="2" Opacity="0.8" BlurRadius="10" Color="Black" />
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Effect">
+                                            <Setter.Value>
+                                                <DropShadowEffect  Direction="-75" ShadowDepth="2" Opacity="0.8" BlurRadius="20" Color="Black" />
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <!-- Connection info with hover end-->
 
-                            <Grid>
+                        <Grid>
 
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="3*"/>
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="3*"/>
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
 
-                                <!--- header  -->
-                                <Border Grid.Row="0" CornerRadius="8">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
+                            <!--- header  -->
+                            <Border Grid.Row="0" CornerRadius="8">
+                                <!--<Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
 
-                                        <Label Grid.Row="0" Content="HYBRID-POW-POS MINING INFO" HorizontalAlignment="Left"   RenderTransformOrigin="-0.599,0.121" Foreground="#FF9B9B9B" FontWeight="DemiBold" Padding=" 0 5 0 0" />
-                                    </Grid>
-                                </Border>
+                                    <Label Grid.Row="0" Content="HYBRID-POW-POS MINING INFO" HorizontalAlignment="Left"   RenderTransformOrigin="-0.599,0.121" Foreground="#FF9B9B9B" FontWeight="DemiBold" Padding=" 0 5 0 0" />
+                                </Grid>-->
 
-                                <Border CornerRadius="8"   x:Name="t" Grid.Row="1" Background="WhiteSmoke" >
-                                    <TextBlock TextWrapping="Wrap" TextAlignment="Center" Padding="5" Margin="0 30" FontWeight="DemiBold"> Unlock your wallet to start hybrid mining</TextBlock>
-                                </Border>
+                                <StackPanel>
+                                    <Label Grid.Row="0" Content="HYBRID-POW-POS MINING INFO" HorizontalAlignment="Left"   RenderTransformOrigin="-0.599,0.121" Foreground="#FF9B9B9B" FontWeight="DemiBold" Padding=" 0 5 0 0" />
+                                </StackPanel>
+                            </Border>
 
-
-
-                                <Border x:Name="MiningInfoBorder" Visibility="Hidden" Grid.Row="1"   CornerRadius="8">
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height=".2*" />
-                                            <RowDefinition Height=".2*" />
-                                            <RowDefinition Height=".2*" />
-                                            <RowDefinition Height=".2*" />
-                                        </Grid.RowDefinitions>
-
-
-                                        <!---  hybrid weight -->
-                                        <Border Grid.Row="0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                </Grid.ColumnDefinitions>
-
-                                                <Label Grid.Column="0" Content="Hybrid weight:" />
-                                                <TextBlock FontSize="10"  x:Name="HybridWeightTxt" VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="102,-7,0,0" />
-
-                                            </Grid>
-                                        </Border>
-
-                                        <!--- coins awaiting maturity -->
-                                        <Border Grid.Row="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                </Grid.ColumnDefinitions>
-
-                                                <TextBlock Grid.Column="0" TextWrapping="Wrap" Text="Coins awaiting maturity:"/>
-                                                <TextBlock Grid.Column="1" FontSize="10"  x:Name="CoinsAwaitingMaturityTxt"/>
-
-                                            </Grid>
-                                        </Border>
-
-                                        <!--- network weight -->
-                                        <Border Grid.Row="2">
-                                            <Grid >
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                </Grid.ColumnDefinitions>
-
-                                                <TextBlock TextWrapping="Wrap" Grid.Column="0" Text="Network weight:"/>
-                                                <TextBlock Grid.Column="1" FontSize="10" x:Name="NetworkWeightTxt" />
-
-                                            </Grid>
-                                        </Border>
-
-                                        <Border Grid.Row="3">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                </Grid.ColumnDefinitions>
-
-                                                <TextBlock Grid.Column="0" TextWrapping="Wrap" Text="Expected reward time :" />
-                                                <TextBlock Grid.Column="1" FontSize="10" x:Name="ExpectedRewardTimmeTxt"/>
-
-                                            </Grid>
-                                        </Border>
-                                    </Grid>
-                                </Border>
+                            <Border CornerRadius="8"   x:Name="t" Grid.Row="1" Background="WhiteSmoke" >
+                                <TextBlock TextWrapping="Wrap" TextAlignment="Center" Padding="5" Margin="0 30" FontWeight="DemiBold"> Unlock your wallet to start hybrid mining</TextBlock>
+                            </Border>
 
 
 
-                                <Border Grid.Row="2" Margin="10">
-
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*" />
-                                            <!--<RowDefinition Height="*" />-->
-                                        </Grid.RowDefinitions>
-
-                                        <!-- textbox and button unlock -->
-                                        <Grid Grid.Row="0" x:Name="UnlockGrid">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition  Height="*"/>
-                                                <RowDefinition  Height="*"/>
-                                            </Grid.RowDefinitions>
-                                            <PasswordBox Grid.Row="0" x:Name="Password" materialDesign:HintAssist.Hint="Enter a wallet password."   materialDesign:HintAssist.IsFloating="False" PasswordChanged="EnterPassword_OnChange" />
-
-                                            <Button Grid.Row="1" x:Name="HybridMinginButton" Content="Unlock" HorizontalAlignment="Center" IsEnabled="False"  Margin="5 5 0 0  " 
-                                Click="StartHybridMiningButton_Click" Foreground="Green" Background="White" BorderBrush="Green" >
-                                                <Button.Resources>
-                                                    <Style TargetType="{x:Type Border}">
-                                                        <Setter  Property="CornerRadius" Value="2">
-                                                        </Setter>
-                                                    </Style>
-                                                </Button.Resources>
-                                            </Button>
-                                        </Grid>
-
-                                        <Button Grid.Row="0" x:Name="StopHybridMinginButton"  HorizontalAlignment="Center"  Margin="5 0 " Content="Stop Hybrid Mining" Visibility="Hidden"
-                                Click="StopHybridMiningButton_Click" Foreground="Green" Background="White" BorderBrush="red" />
+                            <Border x:Name="MiningInfoBorder" Visibility="Hidden" Grid.Row="1"   CornerRadius="8">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height=".2*" />
+                                        <RowDefinition Height=".2*" />
+                                        <RowDefinition Height=".2*" />
+                                        <RowDefinition Height=".2*" />
+                                    </Grid.RowDefinitions>
 
 
-
-                                    </Grid>
-                                </Border>
-                            </Grid>
-                        </Border>
-
-                        <!--- balance -->
-                        <Border Grid.Column="1" Padding="5" Margin="3 5 3 0" Background="#ffffff" BorderBrush="Black"  >
-
-                            <!--<Border.Effect>
-                                <DropShadowEffect  Direction="-75" ShadowDepth="2" Opacity="0.8" BlurRadius="10" Color="Black" />
-                            </Border.Effect>-->
-
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-
-                                <!-- xels balance -->
-                                <Border Grid.Row="0" CornerRadius="8">
-                                    <Grid Margin="10 0 10 0">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*"/>
-                                            <RowDefinition Height="*"/>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
-
-                                        <Border Grid.Row="0" CornerRadius="8">
-                                            <TextBlock  Margin="0,10,0,0" Text="AVAILABLE BALANCE" 
-                                                        HorizontalAlignment="Center" FontFamily="Microsoft YaHei" 
-                                                        Foreground="#FF9B9B9B" FontSize="13" 
-                                                        FontWeight="DemiBold" />
-                                        </Border>
-
-                                        <Border Grid.Row="1" Background="WhiteSmoke" CornerRadius="5" >
-
-                                            <Border.Style>
-                                                <Style TargetType="Border">
-                                                    <Style.Triggers>
-                                                        <Trigger Property="IsMouseOver" Value="True">
-                                                            <Setter Property="Effect">
-                                                                <Setter.Value>
-                                                                    <DropShadowEffect ShadowDepth="2" Opacity="0.4" BlurRadius="20" Color="ForestGreen" />
-                                                                </Setter.Value>
-                                                            </Setter>
-                                                        </Trigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Border.Style>
-
-
-
-                                            <TextBlock  Name="ConfirmedBalanceTxt"  Text="0" FontSize="20" 
-                                                HorizontalAlignment="Center" 
-                                   FontFamily="Microsoft YaHei" Foreground="Green"/>
-                                        </Border>
-
-                                        <Border Grid.Row="2" CornerRadius="8" >
-                                            <TextBlock  x:Name="UnconfirmedBalanceTxt" 
-                                                        FontFamily="Microsoft YaHei Light" Foreground="#FF898989"
-                                                        FontSize="10" FontWeight="DemiBold" 
-                                                        TextAlignment="Center" />
-                                        </Border>
-
-
-
-                                    </Grid>
-                                </Border>
-
-                                <!-- bels and sels  -->
-                                <Border Grid.Row="1" CornerRadius="8">
-                                    <Grid Margin="10 0 10 0">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*"/>
-                                            <RowDefinition Height="*"/>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
-
-                                        <Border Background="WhiteSmoke" Grid.Row="0" Margin=" 0 5" 
-                                                CornerRadius="5">
-
-                                            <Border.Style>
-                                                <Style TargetType="Border">
-                                                    <Style.Triggers>
-                                                        <Trigger Property="IsMouseOver" Value="True">
-                                                            <Setter Property="Effect">
-                                                                <Setter.Value>
-                                                                    <DropShadowEffect ShadowDepth="2" Opacity="0.4" BlurRadius="20" Color="ForestGreen" />
-                                                                </Setter.Value>
-                                                            </Setter>
-                                                        </Trigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Border.Style>
-
-
-                                            <TextBlock  Name="SelsCoinTxt" HorizontalAlignment="Center" 
-                                                        FontFamily="Microsoft YaHei Light" Foreground="Green" 
-                                                        FontSize="15" FontWeight="DemiBold" >
-                00.00000000 SELS</TextBlock>
-                                        </Border>
-
-                                        <Border Background="WhiteSmoke" Grid.Row="1" Margin=" 0 5" 
-                                                CornerRadius="5">
-
-                                            <Border.Style>
-                                                <Style TargetType="Border">
-                                                    <Style.Triggers>
-                                                        <Trigger Property="IsMouseOver" Value="True">
-                                                            <Setter Property="Effect">
-                                                                <Setter.Value>
-                                                                    <DropShadowEffect ShadowDepth="2" Opacity="0.4" BlurRadius="20" Color="ForestGreen" />
-                                                                </Setter.Value>
-                                                            </Setter>
-                                                        </Trigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Border.Style>
-
-                                            <TextBlock  Name="BelsCoinTxt" HorizontalAlignment="Center" 
-                                                        FontFamily="Microsoft YaHei Light" Foreground="Green" 
-                                                        FontSize="15" FontWeight="DemiBold" >
-                00.00000000 BELS</TextBlock>
-                                        </Border>
-
-                                        <Border Grid.Row="2"  Margin=" 0 5" CornerRadius="8">
-                                            <Button Content="Import XELS &amp; BELS Address" 
-                                                    Click="ImportAddrButton_Click" FontFamily="Microsoft YaHei 
-                                                    Light" Foreground="Green" Background="White" 
-                                                    BorderBrush="Green" FontSize="13" FontWeight="DemiBold"
-                                                    Style="{DynamicResource MaterialDesignRaisedButton}" materialDesign:ShadowAssist.ShadowDepth="Depth3">
-                                                <Button.Resources>
-                                                    <Style TargetType="{x:Type Border}">
-                                                        <Setter Property="CornerRadius" Value="2"/>
-                                                    </Style>
-                                                </Button.Resources>
-                                            </Button>
-                                        </Border>
-
-
-                                    </Grid>
-                                </Border>
-
-
-                                <!--  receive and send button  -->
-
-                                <Border Grid.Row="2">
-                                    <Grid Margin="10 30 10 0">
-                                        
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*" />
-                                            <RowDefinition Height="*" />
-                                        </Grid.RowDefinitions>
-
-                                        <Grid Grid.Row="0">
+                                    <!---  hybrid weight -->
+                                    <Border Grid.Row="0">
+                                        <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Button Grid.Column="0" x:Name="receiveButton" 
+
+                                            <Label Grid.Column="0" Content="Hybrid weight:" />
+                                            <TextBlock FontSize="10"  x:Name="HybridWeightTxt" VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="102,-7,0,0" />
+
+                                        </Grid>
+                                    </Border>
+
+                                    <!--- coins awaiting maturity -->
+                                    <Border Grid.Row="1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Grid.Column="0" TextWrapping="Wrap" Text="Coins awaiting maturity:"/>
+                                            <TextBlock Grid.Column="1" FontSize="10"  x:Name="CoinsAwaitingMaturityTxt"/>
+
+                                        </Grid>
+                                    </Border>
+
+                                    <!--- network weight -->
+                                    <Border Grid.Row="2">
+                                        <Grid >
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock TextWrapping="Wrap" Grid.Column="0" Text="Network weight:"/>
+                                            <TextBlock Grid.Column="1" FontSize="10" x:Name="NetworkWeightTxt" />
+
+                                        </Grid>
+                                    </Border>
+
+                                    <Border Grid.Row="3">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Grid.Column="0" TextWrapping="Wrap" Text="Expected reward time :" />
+                                            <TextBlock Grid.Column="1" FontSize="10" x:Name="ExpectedRewardTimmeTxt"/>
+
+                                        </Grid>
+                                    </Border>
+                                </Grid>
+                            </Border>
+
+
+
+                            <Border Grid.Row="2" Margin="10">
+
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <!--<RowDefinition Height="*" />-->
+                                    </Grid.RowDefinitions>
+
+                                    <!-- textbox and button unlock -->
+                                    <!--<Grid Grid.Row="0" x:Name="UnlockGrid">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition  Height="*"/>
+                                            <RowDefinition  Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <PasswordBox Grid.Row="0" x:Name="Password" materialDesign:HintAssist.Hint="Enter a wallet password."   materialDesign:HintAssist.IsFloating="False" PasswordChanged="EnterPassword_OnChange" />
+
+                                        <Button Grid.Row="1" x:Name="HybridMinginButton" Content="Unlock" HorizontalAlignment="Center" IsEnabled="False"  Margin="5 5 0 0  " 
+                                Click="StartHybridMiningButton_Click" Foreground="Green" Background="White" BorderBrush="Green" >
+                                            <Button.Resources>
+                                                <Style TargetType="{x:Type Border}">
+                                                    <Setter  Property="CornerRadius" Value="2">
+                                                    </Setter>
+                                                </Style>
+                                            </Button.Resources>
+                                        </Button>
+                                    </Grid>-->
+
+                                    <StackPanel Grid.Row="0" x:Name="UnlockGrid">
+                                        <PasswordBox x:Name="Password" materialDesign:HintAssist.Hint="Enter a wallet password."   materialDesign:HintAssist.IsFloating="False" PasswordChanged="EnterPassword_OnChange" />
+                                        <Button x:Name="HybridMinginButton" Content="Unlock" HorizontalAlignment="Center" IsEnabled="False"  Margin="5 5 0 0  " 
+                                Click="StartHybridMiningButton_Click" Foreground="Green" Background="White" BorderBrush="Green" >
+                                            <Button.Resources>
+                                                <Style TargetType="{x:Type Border}">
+                                                    <Setter  Property="CornerRadius" Value="2">
+                                                    </Setter>
+                                                </Style>
+                                            </Button.Resources>
+                                        </Button>
+                                    </StackPanel>
+
+                                    <Button Grid.Row="0" x:Name="StopHybridMinginButton"  HorizontalAlignment="Center"  Margin="5 0 " Content="Stop Hybrid Mining" Visibility="Hidden"
+                                Click="StopHybridMiningButton_Click" Foreground="Green" Background="White" BorderBrush="red" />
+
+
+
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <!--- balance -->
+                    <Border Grid.Column="1" Padding="5" Margin="3 5 3 0" Background="#ffffff" BorderBrush="Black"  >
+
+                        <!--<Border.Effect>
+                                <DropShadowEffect  Direction="-75" ShadowDepth="2" Opacity="0.8" BlurRadius="10" Color="Black" />
+                            </Border.Effect>-->
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- xels balance -->
+                            <Border Grid.Row="0" CornerRadius="8">
+                                <!--<Grid Margin="10 0 10 0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Border Grid.Row="0" CornerRadius="8">
+                                        <TextBlock  Margin="0,10,0,0" Text="AVAILABLE BALANCE" 
+                                                        HorizontalAlignment="Center" FontFamily="Microsoft YaHei" 
+                                                        Foreground="#FF9B9B9B" FontSize="13" 
+                                                        FontWeight="DemiBold" />
+                                    </Border>
+
+                                    <Border Grid.Row="1" Background="WhiteSmoke" CornerRadius="5" >
+
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Effect">
+                                                            <Setter.Value>
+                                                                <DropShadowEffect ShadowDepth="2" Opacity="0.4" BlurRadius="20" Color="ForestGreen" />
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+
+
+
+                                        <TextBlock  Name="ConfirmedBalanceTxt"  Text="0" FontSize="20" 
+                                                HorizontalAlignment="Center" 
+                                   FontFamily="Microsoft YaHei" Foreground="Green"/>
+                                    </Border>
+
+                                    <Border Grid.Row="2" CornerRadius="8" >
+                                        <TextBlock  x:Name="UnconfirmedBalanceTxt" 
+                                                        FontFamily="Microsoft YaHei Light" Foreground="#FF898989"
+                                                        FontSize="10" FontWeight="DemiBold" 
+                                                        TextAlignment="Center" />
+                                    </Border>
+
+
+
+                                </Grid>-->
+
+
+
+                                <StackPanel  Margin="10 0 10 0">
+                                    <Border CornerRadius="8">
+                                        <TextBlock  Margin="0,10,0,0" Text="AVAILABLE BALANCE" 
+                                                        HorizontalAlignment="Center" FontFamily="Microsoft YaHei" 
+                                                        Foreground="#FF9B9B9B" FontSize="13" 
+                                                        FontWeight="DemiBold" />
+                                    </Border>
+
+                                    <Border Grid.Row="1" Background="WhiteSmoke" CornerRadius="5" >
+
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Effect">
+                                                            <Setter.Value>
+                                                                <DropShadowEffect ShadowDepth="2" Opacity="0.4" BlurRadius="20" Color="ForestGreen" />
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+
+
+
+                                        <TextBlock  Name="ConfirmedBalanceTxt"  Text="0" FontSize="20" HorizontalAlignment="Center" FontFamily="Microsoft YaHei" Foreground="Green"/>
+                                    </Border>
+
+                                    <Border Grid.Row="2" CornerRadius="8" >
+                                        <TextBlock  x:Name="UnconfirmedBalanceTxt" 
+                                                        FontFamily="Microsoft YaHei Light" Foreground="#FF898989"
+                                                        FontSize="10" FontWeight="DemiBold" 
+                                                        TextAlignment="Center" />
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- bels and sels  -->
+                            <Border Grid.Row="1" CornerRadius="8">
+                                <!--<Grid Margin="10 0 10 0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Border Background="WhiteSmoke" Grid.Row="0" Margin=" 0 5" 
+                                                CornerRadius="5">
+
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Effect">
+                                                            <Setter.Value>
+                                                                <DropShadowEffect ShadowDepth="2" Opacity="0.4" BlurRadius="20" Color="ForestGreen" />
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+
+
+                                        <TextBlock  Name="SelsCoinTxt" HorizontalAlignment="Center" 
+                                                        FontFamily="Microsoft YaHei Light" Foreground="Green" 
+                                                        FontSize="15" FontWeight="DemiBold" >
+                00.00000000 SELS</TextBlock>
+                                    </Border>
+
+                                    <Border Background="WhiteSmoke" Grid.Row="1" Margin=" 0 5" 
+                                                CornerRadius="5">
+
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Effect">
+                                                            <Setter.Value>
+                                                                <DropShadowEffect ShadowDepth="2" Opacity="0.4" BlurRadius="20" Color="ForestGreen" />
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+
+                                        <TextBlock  Name="BelsCoinTxt" HorizontalAlignment="Center" 
+                                                        FontFamily="Microsoft YaHei Light" Foreground="Green" 
+                                                        FontSize="15" FontWeight="DemiBold" >
+                00.00000000 BELS</TextBlock>
+                                    </Border>
+
+                                    <Border Grid.Row="2"  Margin=" 0 5" CornerRadius="8">
+                                        <Button Content="Import XELS &amp; BELS Address" 
+                                                    Click="ImportAddrButton_Click" FontFamily="Microsoft YaHei 
+                                                    Light" Foreground="Green" Background="White" 
+                                                    BorderBrush="Green" FontSize="13" FontWeight="DemiBold"
+                                                    Style="{DynamicResource MaterialDesignRaisedButton}" materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                                            <Button.Resources>
+                                                <Style TargetType="{x:Type Border}">
+                                                    <Setter Property="CornerRadius" Value="2"/>
+                                                </Style>
+                                            </Button.Resources>
+                                        </Button>
+                                    </Border>
+
+
+                                </Grid>-->
+
+                                <StackPanel Margin="10 0 10 0">
+                                    <Border Background="WhiteSmoke" Margin=" 0 5" 
+                                                CornerRadius="5">
+
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Effect">
+                                                            <Setter.Value>
+                                                                <DropShadowEffect ShadowDepth="2" Opacity="0.4" BlurRadius="20" Color="ForestGreen" />
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+
+
+                                        <TextBlock  Name="SelsCoinTxt" HorizontalAlignment="Center" 
+                                                        FontFamily="Microsoft YaHei Light" Foreground="Green" 
+                                                        FontSize="15" FontWeight="DemiBold" >
+                00.00000000 SELS</TextBlock>
+                                    </Border>
+                                    <Border Background="WhiteSmoke" Grid.Row="1" Margin=" 0 5" 
+                                                CornerRadius="5">
+
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Effect">
+                                                            <Setter.Value>
+                                                                <DropShadowEffect ShadowDepth="2" Opacity="0.4" BlurRadius="20" Color="ForestGreen" />
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+
+                                        <TextBlock  Name="BelsCoinTxt" HorizontalAlignment="Center" 
+                                                        FontFamily="Microsoft YaHei Light" Foreground="Green" 
+                                                        FontSize="15" FontWeight="DemiBold" >
+                00.00000000 BELS</TextBlock>
+                                    </Border>
+                                    <Border Grid.Row="2"  Margin=" 0 5" CornerRadius="8">
+                                        <Button Content="Import XELS &amp; BELS Address" 
+                                                    Click="ImportAddrButton_Click" FontFamily="Microsoft YaHei 
+                                                    Light" Foreground="Green" Background="White" 
+                                                    BorderBrush="Green" FontSize="13" FontWeight="DemiBold"
+                                                    Style="{DynamicResource MaterialDesignRaisedButton}" materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                                            <Button.Resources>
+                                                <Style TargetType="{x:Type Border}">
+                                                    <Setter Property="CornerRadius" Value="2"/>
+                                                </Style>
+                                            </Button.Resources>
+                                        </Button>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+
+
+                            <!--  receive and send button  -->
+
+                            <Border Grid.Row="2">
+                                <!--<Grid Margin="10 30 10 0">
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+
+                                    <Grid Grid.Row="0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Button Grid.Column="0" x:Name="receiveButton" 
                                                 Click="ReceiveButton_Click"  Padding="2" FontWeight="Bold" 
                                                 Background="Green" FontFamily="Microsoft YaHei Light" 
                                                 BorderThickness="0,0,0,0" Foreground="White"
                                                 Style="{DynamicResource MaterialDesignRaisedButton}" 
                                                 materialDesign:ShadowAssist.ShadowDepth="Depth3">
-                                                <Grid Width="150">
-                                                    <materialDesign:PackIcon Kind="InboxArrowDown" 
+                                            <Grid Width="150">
+                                                <materialDesign:PackIcon Kind="InboxArrowDown" 
                                                                          VerticalAlignment="Center" 
                                                                          Height="20" Width="25"/>
-                                                    <TextBlock HorizontalAlignment="Center" Text="RECEIVE" 
+                                                <TextBlock HorizontalAlignment="Center" Text="RECEIVE" 
                                   Padding="2"                         FontFamily="Champagne &amp; Limousines"/>
-                                                </Grid>
-                                            </Button>
-                                            <Button Grid.Column="1" x:Name="sendButton" Click="SendButton_Click"
+                                            </Grid>
+                                        </Button>
+                                        <Button Grid.Column="1" x:Name="sendButton" Click="SendButton_Click"
                                                 Padding="2" Background="Green" 
                                                 FontFamily="Microsoft YaHei Light" BorderThickness="0,0,0,0"
                                                 Foreground="White" FontWeight="Bold" Margin="10,0,0,0"  
                                                 Style="{DynamicResource MaterialDesignRaisedButton}" 
                                                 materialDesign:ShadowAssist.ShadowDepth="Depth3">
-                                                <Grid Width="150">
-                                                    <materialDesign:PackIcon Kind="Send" 
+                                            <Grid Width="150">
+                                                <materialDesign:PackIcon Kind="Send" 
                                                                          VerticalAlignment="Center" 
                                                                          Height="20" Width="25"/>
-                                                    <TextBlock HorizontalAlignment="Center" Text="SEND" 
+                                                <TextBlock HorizontalAlignment="Center" Text="SEND" 
                                         Padding="2"                    FontFamily="Champagne &amp; Limousines"/>
-                                                </Grid>
-                                                <Button.Resources>
-                                                    <Style TargetType="Border">
-                                                        <Setter Property="CornerRadius" Value="5"/>
-                                                    </Style>
-                                                </Button.Resources>
-                                            </Button>
+                                            </Grid>
+                                            <Button.Resources>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="CornerRadius" Value="5"/>
+                                                </Style>
+                                            </Button.Resources>
+                                        </Button>
 
-                                        </Grid>
-                                        
-                                        <!--cross chain transfer button-->
-                                        <Grid Grid.Row="1" Margin="0 5">
-                                            <Button Grid.Row="0" x:Name="CrossChainTransferButton" 
+                                    </Grid>
+
+                                    -->
+                                <!--cross chain transfer button-->
+                                <!--
+                                    <Grid Grid.Row="1" Margin="0 5">
+                                        <Button Grid.Row="0" x:Name="CrossChainTransferButton" 
                                                 Click="CrossChainTransferButton_Click"
                                                 Padding="2" Background="Green" 
                                                 FontFamily="Microsoft YaHei Light" BorderThickness="0,0,0,0"
                                                 Foreground="White" FontWeight="Bold" Margin="0,0,0,0"  
                                                 Style="{DynamicResource MaterialDesignRaisedButton}" 
                                                 materialDesign:ShadowAssist.ShadowDepth="Depth3">
-                                                <Grid Width="250">
-                                                    <materialDesign:PackIcon Kind="Transfer" 
+                                            <Grid Width="250">
+                                                <materialDesign:PackIcon Kind="Transfer" 
                                                                          VerticalAlignment="Center" 
                                                                          Height="20" Width="25"/>
-                                                    <TextBlock HorizontalAlignment="Center" 
+                                                <TextBlock HorizontalAlignment="Center" 
                            Padding="2"                                 Text="CROSS-CHAIN TRANSFER" 
                                                            FontFamily="Champagne &amp; Limousines"/>
-                                                </Grid>
+                                            </Grid>
+                                            <Button.Resources>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="CornerRadius" Value="5"/>
+                                                </Style>
+                                            </Button.Resources>
+                                        </Button>
+                                    </Grid>
+
+                                </Grid>-->
+
+                                <StackPanel Margin="10 30 10 0">
+
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Button Grid.Column="0" x:Name="receiveButton" 
+                                                Click="ReceiveButton_Click"  Padding="2" FontWeight="Bold" 
+                                                Background="Green" FontFamily="Microsoft YaHei Light" 
+                                                BorderThickness="0,0,0,0" Foreground="White"
+                                                Style="{DynamicResource MaterialDesignRaisedButton}" 
+                                                materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                                            <Grid Width="150">
+                                                <materialDesign:PackIcon Kind="InboxArrowDown" 
+                                                                         VerticalAlignment="Center" 
+                                                                         Height="20" Width="25"/>
+                                                <TextBlock HorizontalAlignment="Center" Text="RECEIVE" 
+                                  Padding="2"                         FontFamily="Champagne &amp; Limousines"/>
+                                            </Grid>
+                                        </Button>
+
+                                        <Button Grid.Column="1" x:Name="sendButton" Click="SendButton_Click"
+                                                Padding="2" Background="Green" 
+                                                FontFamily="Microsoft YaHei Light" BorderThickness="0,0,0,0"
+                                                Foreground="White" FontWeight="Bold" Margin="10,0,0,0"  
+                                                Style="{DynamicResource MaterialDesignRaisedButton}" 
+                                                materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                                            <Grid Width="150">
+                                                <materialDesign:PackIcon Kind="Send" 
+                                                                         VerticalAlignment="Center" 
+                                                                         Height="20" Width="25"/>
+                                                <TextBlock HorizontalAlignment="Center" Text="SEND" 
+                                        Padding="2"                    FontFamily="Champagne &amp; Limousines"/>
+                                            </Grid>
+                                            <Button.Resources>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="CornerRadius" Value="5"/>
+                                                </Style>
+                                            </Button.Resources>
+                                        </Button>
+                                    </Grid>
+                                    <StackPanel Margin="0 5">
+                                        <Button x:Name="CrossChainTransferButton" 
+                                                Click="CrossChainTransferButton_Click"
+                                                Padding="2" Background="Green" 
+                                                FontFamily="Microsoft YaHei Light" BorderThickness="0,0,0,0"
+                                                Foreground="White" FontWeight="Bold" Margin="0,0,0,0"  
+                                                Style="{DynamicResource MaterialDesignRaisedButton}" 
+                                                materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                                            <Grid Width="250">
+                                                <materialDesign:PackIcon Kind="Transfer" 
+                                                                         VerticalAlignment="Center" 
+                                                                         Height="20" Width="25"/>
+                                                <TextBlock HorizontalAlignment="Center" Padding="2" Text="CROSS-CHAIN TRANSFER" FontFamily="Champagne &amp; Limousines"/>
+                                            </Grid>
+                                            <Button.Resources>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="CornerRadius" Value="5"/>
+                                                </Style>
+                                            </Button.Resources>
+                                        </Button>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+
+                        </Grid>
+
+                    </Border>
+
+                    <!--- pow/pos minning -->
+                    <Border Grid.Column="2" Padding="0" Margin=" 0 5 5 0 " Background="#ffffff" BorderBrush="WhiteSmoke" BorderThickness="1" CornerRadius="10"  >
+
+
+                        <!--<Border.Effect>
+                                <DropShadowEffect  Direction="-75" ShadowDepth="2" Opacity="0.8" BlurRadius="10" Color="Black" />
+                            </Border.Effect>-->
+                        <!-- Connection info with hover-->
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect  Direction="-75" ShadowDepth="2" Opacity="0.8" BlurRadius="10" Color="Black" />
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Effect">
+                                            <Setter.Value>
+                                                <DropShadowEffect  Direction="-75" ShadowDepth="2" Opacity="0.8" BlurRadius="20" Color="Black" />
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <!-- Connection info with hover end-->
+                        <StackPanel >
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height=".4*"/>
+                                    <RowDefinition Height=".2*"/>
+                                    <RowDefinition Height=".2*"/>
+                                    <RowDefinition Height=".2*"/>
+                                    <RowDefinition Height=".2*"/>
+                                    <RowDefinition Height=".2*"/>
+                                    <RowDefinition Height=".2*"/>
+
+                                </Grid.RowDefinitions>
+
+                                <Border Grid.Row="0" CornerRadius="8">
+                                    <Grid Margin="5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Text="CONNECTION INFO" HorizontalAlignment="Center" FontSize="9" FontWeight="DemiBold" FontFamily="Microsoft YaHei"  VerticalAlignment="Top" RenderTransformOrigin="-0.599,0.121" Foreground="#FFB6AEAE"/>
+                                    </Grid>
+                                </Border>
+
+                                <Border Grid.Row="1" CornerRadius="8">
+                                    <Grid Margin="5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <!--<materialDesign:PackIcon Kind="Autorenew" Height="13" Width="13" Margin="2,3,0,0" Foreground="Orange"/>-->
+                                        <materialDesign:PackIcon x:Name="syncCompleteIcon" Kind="CheckBold" Visibility="Collapsed" Height="13" Width="13" Margin="0,5,0,0" Foreground="Orange"/>
+                                        <ProgressBar x:Name="syncingIcon" Style="{StaticResource MaterialDesignCircularProgressBar}" Value="0" IsIndeterminate="True" Height="13" Width="13" Margin="-25,1,0,0" Foreground="Orange" />
+                                        <TextBlock Text="syncing" Grid.Column="0" Name="ConnectionPercentTxt"
+                                                    FontFamily="Microsoft YaHei" FontSize="12" Foreground="Orange" Grid.ColumnSpan="2" Margin="15,0,145,0" Height="20" VerticalAlignment="Top">
+
+                                        </TextBlock>
+                                        <materialDesign:PackIcon Kind="People" Grid.Column="1" Height="13" Width="13" Margin="27,2,0,0" Foreground="Green"/>
+                                        <TextBlock Text="0"  Grid.Column="1" Name="ConnectedCountTxt" FontSize="12" Foreground="Green" Margin="40,0,10,0" Padding="3,0,0,0" ></TextBlock>
+                                        <Label x:Name="StakingInfo" Content="Not Stacking"  FontSize="12" Grid.Column="1" Foreground="Green" Margin="50,-4,0,0"></Label>
+                                        <!--<Image Grid.Column="2"  x:Name="thumbDown" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Width="24" Source="/Assets/Images/thumbsdown.png" Margin="-40,0,0,0" />-->
+                                        <materialDesign:PackIcon Kind="DislikeOutline" Grid.Column="2"  x:Name="thumbDown" Height="15" Width="30" Margin="-40,0,0,0" Foreground="Red" VerticalAlignment="Center"/>
+                                        <materialDesign:PackIcon Kind="LikeOutline" Visibility="Collapsed" Grid.Column="2"  x:Name="thumbsup" Height="15" Width="30" Margin="-20,0,0,0" Foreground="Green" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                        <!--<Image Grid.Column="2" Visibility="Collapsed"  x:Name="thumbsup" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Width="24" Source="/Assets/Images/thumbsup.png" Margin="-20,0,0,0" />-->
+                                    </Grid>
+                                </Border>
+
+                                <Border Grid.Row="2" CornerRadius="8">
+                                    <!--<Grid Margin="5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1.5*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Grid.Column="0" TextWrapping="Wrap" Text="Connection Status:" Padding="0" Margin="0"/>
+                                        <TextBlock Grid.Column="1" FontSize="11" Foreground="Green" x:Name="ConnectionStatusTxt" TextWrapping="Wrap" Width="72"/>
+                                    </Grid>-->
+                                    <StackPanel Margin="5" Orientation="Horizontal">
+                                        <TextBlock Width="123" TextWrapping="Wrap" Text="Connection Status:" Padding="0"/>
+                                        <TextBlock FontSize="11" Foreground="Green" x:Name="ConnectionStatusTxt" TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Grid.Row="3" CornerRadius="8">
+                                    <!--<Grid Margin="5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1.5*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Grid.Column="0" TextWrapping="Wrap" Text="Last Block Synced Height:" Padding="0" Margin="0"/>
+                                        <TextBlock Grid.Column="1" x:Name="LastBlockSyncedHeightTxt" />
+                                    </Grid>-->
+                                    <StackPanel Orientation="Horizontal" Margin="5">
+                                        <TextBlock Width="123" TextWrapping="Wrap" Text="Last Block Synced Height:" Padding="0" Margin="0"/>
+                                        <TextBlock x:Name="LastBlockSyncedHeightTxt" />
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Grid.Row="4" CornerRadius="8">
+                                    <!--<Grid Margin="5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1.5*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" TextWrapping="Wrap" Text="Chain Tip:" Padding="0" Margin="0"/>
+                                        <TextBlock Grid.Column="1"  x:Name="ChainTipTxt" />
+
+                                    </Grid>-->
+                                    <StackPanel Orientation="Horizontal" Margin="5">
+                                        <TextBlock Width="123" TextWrapping="Wrap" Text="Chain Tip:" Padding="0" Margin="0"/>
+                                        <TextBlock x:Name="ChainTipTxt" />
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Grid.Row="5" CornerRadius="8">
+                                    <!--<Grid Margin="5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1.5*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Grid.Column="0" TextWrapping="Wrap" Text="Parcent Synced:"  Padding="0" Margin="0"/>
+                                        <TextBlock Grid.Column="1"  x:Name="ParcentSyncedTxt" Foreground="Green"/>
+                                    </Grid>-->
+
+                                    <StackPanel Orientation="Horizontal" Margin="5">
+                                        <TextBlock Width="123" Grid.Column="0" TextWrapping="Wrap" Text="Parcent Synced:"  Padding="0" Margin="0"/>
+                                        <TextBlock Grid.Column="1"  x:Name="ParcentSyncedTxt" Foreground="Green"/>
+                                    </StackPanel>
+
+                                </Border>
+
+                                <Border Grid.Row="6" CornerRadius="8">
+
+                                    <Grid Margin="10 40 10 10">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+
+                                        <Border Grid.Row="0" x:Name="startButton" CornerRadius="8">
+
+                                            <Button x:Name="PowMiningButton" Content="Start POW Mining" HorizontalAlignment="Center" 
+                                Click="StartPOWMiningButton_Click" Foreground="Green" Background="White" BorderBrush="green"  FontWeight="DemiBold">
                                                 <Button.Resources>
-                                                    <Style TargetType="Border">
-                                                        <Setter Property="CornerRadius" Value="5"/>
+                                                    <Style TargetType="{x:Type Border}">
+                                                        <Setter Property="CornerRadius" Value="2"/>
                                                     </Style>
                                                 </Button.Resources>
                                             </Button>
-                                        </Grid> 
+
+                                        </Border>
+
+                                        <Border Grid.Row="0" x:Name="stopButton" CornerRadius="8">
+
+                                            <Button Visibility="Hidden" x:Name="StopPowMiningButton" Content="Stop POW Mining" HorizontalAlignment="Center" 
+                                Click="StopPOWMiningButton_Click" Foreground="green" Background="White" BorderBrush="Red"  FontWeight="DemiBold">
+                                                <Button.Resources>
+                                                    <Style TargetType="{x:Type Border}">
+                                                        <Setter Property="CornerRadius" Value="2"/>
+                                                    </Style>
+                                                </Button.Resources>
+                                            </Button>
+
+                                        </Border>
 
                                     </Grid>
                                 </Border>
 
                             </Grid>
+                        </StackPanel>
+                    </Border>
 
-                        </Border>
-
-                        <!--- pow/pos minning -->
-                        <Border Grid.Column="2" Padding="0" Margin=" 0 5 5 0 " Background="#ffffff" BorderBrush="WhiteSmoke" BorderThickness="1" CornerRadius="10"  >
-
-
-                            <!--<Border.Effect>
-                                <DropShadowEffect  Direction="-75" ShadowDepth="2" Opacity="0.8" BlurRadius="10" Color="Black" />
-                            </Border.Effect>-->
-                            <!-- Connection info with hover-->
-                            <Border.Style>
-                                <Style TargetType="Border">
-                                    <Setter Property="Effect">
-                                        <Setter.Value>
-                                            <DropShadowEffect  Direction="-75" ShadowDepth="2" Opacity="0.8" BlurRadius="10" Color="Black" />
-                                        </Setter.Value>
-                                    </Setter>
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Effect">
-                                                <Setter.Value>
-                                                    <DropShadowEffect  Direction="-75" ShadowDepth="2" Opacity="0.8" BlurRadius="20" Color="Black" />
-                                                </Setter.Value>
-                                            </Setter>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
-                            <!-- Connection info with hover end-->
-                            <StackPanel >
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height=".4*"/>
-                                        <RowDefinition Height=".2*"/>
-                                        <RowDefinition Height=".2*"/>
-                                        <RowDefinition Height=".2*"/>
-                                        <RowDefinition Height=".2*"/>
-                                        <RowDefinition Height=".2*"/>
-                                        <RowDefinition Height=".2*"/>
-
-                                    </Grid.RowDefinitions>
-
-                                    <Border Grid.Row="0" CornerRadius="8">
-                                        <Grid Margin="5">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-
-                                            <Label Content="CONNECTION INFO" HorizontalAlignment="Center" FontSize="9" FontWeight="DemiBold" FontFamily="Microsoft YaHei"  VerticalAlignment="Top" RenderTransformOrigin="-0.599,0.121" Foreground="#FFB6AEAE"/>
-                                        </Grid>
-                                    </Border>
-
-                                    <Border Grid.Row="1" CornerRadius="8">
-                                        <Grid Margin="5">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                            </Grid.ColumnDefinitions>
-                                            <!--<materialDesign:PackIcon Kind="Autorenew" Height="13" Width="13" Margin="2,3,0,0" Foreground="Orange"/>-->
-                                            <materialDesign:PackIcon x:Name="syncCompleteIcon" Kind="CheckBold" Visibility="Collapsed" Height="13" Width="13" Margin="0,5,0,0" Foreground="Orange"/>
-                                            <ProgressBar x:Name="syncingIcon" Style="{StaticResource MaterialDesignCircularProgressBar}" Value="0" IsIndeterminate="True" Height="13" Width="13" Margin="-25,1,0,0" Foreground="Orange" />
-                                            <TextBlock Text="syncing" Grid.Column="0" Name="ConnectionPercentTxt"
-                                                    FontFamily="Microsoft YaHei" FontSize="12" Foreground="Orange" Grid.ColumnSpan="2" Margin="15,0,145,0" Height="20" VerticalAlignment="Top">
-
-                                            </TextBlock>
-                                            <materialDesign:PackIcon Kind="People" Grid.Column="1" Height="13" Width="13" Margin="27,2,0,0" Foreground="Green"/>
-                                            <TextBlock Text="0"  Grid.Column="1" Name="ConnectedCountTxt" FontSize="12" Foreground="Green" Margin="40,0,10,0" Padding="3,0,0,0" ></TextBlock>
-                                            <Label x:Name="StakingInfo" Content="Not Stacking"  FontSize="12" Grid.Column="1" Foreground="Green" Margin="50,-4,0,0"></Label>
-                                            <!--<Image Grid.Column="2"  x:Name="thumbDown" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Width="24" Source="/Assets/Images/thumbsdown.png" Margin="-40,0,0,0" />-->
-                                            <materialDesign:PackIcon Kind="DislikeOutline" Grid.Column="2"  x:Name="thumbDown" Height="15" Width="30" Margin="-40,0,0,0" Foreground="Red" VerticalAlignment="Center"/>
-                                            <materialDesign:PackIcon Kind="LikeOutline" Visibility="Collapsed" Grid.Column="2"  x:Name="thumbsup" Height="15" Width="30" Margin="-20,0,0,0" Foreground="Green" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                                            <!--<Image Grid.Column="2" Visibility="Collapsed"  x:Name="thumbsup" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Width="24" Source="/Assets/Images/thumbsup.png" Margin="-20,0,0,0" />-->
-                                        </Grid>
-                                    </Border>
-
-                                    <Border Grid.Row="2" CornerRadius="8">
-                                        <Grid Margin="5">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="1.5*"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-
-                                            <TextBlock Grid.Column="0" TextWrapping="Wrap" Text="Connection Status:" Padding="0" Margin="0"/>
-                                            <TextBlock Grid.Column="1" FontSize="11" Foreground="Green" x:Name="ConnectionStatusTxt" TextWrapping="Wrap" Width="72"/>
-                                        </Grid>
-                                    </Border>
-
-                                    <Border Grid.Row="3" CornerRadius="8">
-                                        <Grid Margin="5">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="1.5*"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-
-                                            <TextBlock Grid.Column="0" TextWrapping="Wrap" Text="Last Block Synced Height:" Padding="0" Margin="0"/>
-                                            <TextBlock Grid.Column="1" x:Name="LastBlockSyncedHeightTxt" />
-                                        </Grid>
-                                    </Border>
-
-                                    <Border Grid.Row="4" CornerRadius="8">
-                                        <Grid Margin="5">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="1.5*"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Grid.Column="0" TextWrapping="Wrap" Text="Chain Tip:" Padding="0" Margin="0"/>
-                                            <TextBlock Grid.Column="1"  x:Name="ChainTipTxt" />
-
-                                        </Grid>
-                                    </Border>
-
-                                    <Border Grid.Row="5" CornerRadius="8">
-                                        <Grid Margin="5">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="1.5*"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-
-                                            <TextBlock Grid.Column="0" TextWrapping="Wrap" Text="Parcent Synced:"  Padding="0" Margin="0"/>
-                                            <TextBlock Grid.Column="1"  x:Name="ParcentSyncedTxt" Foreground="Green"/>
-                                        </Grid>
-
-
-
-                                    </Border>
-
-                                    <Border Grid.Row="6" CornerRadius="8">
-
-                                        <Grid Margin="10 40 10 10">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="*"/>
-                                                <RowDefinition Height="*"/>
-                                            </Grid.RowDefinitions>
-
-                                            <Border Grid.Row="0" x:Name="startButton" CornerRadius="8">
-
-                                                <Button x:Name="PowMiningButton" Content="Start POW Mining" HorizontalAlignment="Center" 
-                                Click="StartPOWMiningButton_Click" Foreground="Green" Background="White" BorderBrush="green"  FontWeight="DemiBold">
-                                                    <Button.Resources>
-                                                        <Style TargetType="{x:Type Border}">
-                                                            <Setter Property="CornerRadius" Value="2"/>
-                                                        </Style>
-                                                    </Button.Resources>
-                                                </Button>
-
-                                            </Border>
-
-                                            <Border Grid.Row="0" x:Name="stopButton" CornerRadius="8">
-
-                                                <Button Visibility="Hidden" x:Name="StopPowMiningButton" Content="Stop POW Mining" HorizontalAlignment="Center" 
-                                Click="StopPOWMiningButton_Click" Foreground="green" Background="White" BorderBrush="Red"  FontWeight="DemiBold">
-                                                    <Button.Resources>
-                                                        <Style TargetType="{x:Type Border}">
-                                                            <Setter Property="CornerRadius" Value="2"/>
-                                                        </Style>
-                                                    </Button.Resources>
-                                                </Button>
-
-                                            </Border>
-
-                                        </Grid>
-
-                                    </Border>
-
-                                </Grid>
-                            </StackPanel>
-                        </Border>
-
-                    </Grid>
-                </StackPanel>
-
+                </Grid>
 
                 <!--- lower grid -->
 
@@ -816,7 +1010,7 @@
                                 </Grid.RowDefinitions>
 
                                 <Border Grid.Row="0" Margin="0 2">
-                                    <TextBlock Text="Latest Transaction" FontSize="12" FontWeight="DemiBold" HorizontalAlignment="Center"  />
+                                    <TextBlock Text="Latest Transaction" FontSize="12" FontWeight="DemiBold" HorizontalAlignment="Center"/>
                                 </Border>
 
                                 <Border Margin="0"  Grid.Row="01">
