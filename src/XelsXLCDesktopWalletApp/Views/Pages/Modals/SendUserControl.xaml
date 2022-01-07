@@ -5,14 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:XelsXLCDesktopWalletApp.Views.Pages.Modals"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:HorizontalAlignment="Stretch" d:VerticalAlignment="Stretch" Initialized="UserControl_Initialized">
 
 
     <Grid>
         <Rectangle Fill="#e9eeeb" Opacity=".8" MouseDown="Rectangle_MouseDown" />
 
-        <Border CornerRadius="10"  Background="White" Height="550" Width="700" BorderBrush="Green" BorderThickness="2">
+        <Border CornerRadius="10"  Background="White" Height="540" Width="700" BorderBrush="Green" BorderThickness="2">
             <Grid Margin="5,5,5,5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30" />
