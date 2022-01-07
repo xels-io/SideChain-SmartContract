@@ -58,7 +58,7 @@
                     </Grid>
                 </StackPanel>
 
-                <StackPanel Name="AboutSP" Orientation="Vertical" Margin="0,0,10,10" Grid.Column="1">
+                <StackPanel Name="AboutSP" Margin="0,0,10,10" Grid.Column="1">
                     <Grid Name="AboutGrid" Height="460" Background="WhiteSmoke" Margin="0,20,5,0" HorizontalAlignment="Left">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="214"></ColumnDefinition>
@@ -260,13 +260,11 @@
                                 FontFamily="Microsoft YaHei" FontSize="18" Padding="0" RenderTransformOrigin="0.502,0.463"  />
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="50,110,50,272"  HorizontalAlignment="Left" Background="LightGreen" >
-                            <Label Foreground="Green"  
-                                   FontFamily="Microsoft YaHei" FontSize="12" Padding="20" RenderTransformOrigin="0.502,0.463" >
-                                <TextBlock TextAlignment="Justify" TextWrapping="WrapWithOverflow">
+                            <TextBlock FontSize="12" Padding="20" Foreground="Green" FontFamily="Microsoft YaHei" TextAlignment="Justify" TextWrapping="Wrap" RenderTransformOrigin="0.502,0.463" >
                                 Rescanning your wallet will temporarily clear the transactions in your wallet and rescan the blockchain. Select 
                                 date from where you wish to rescan and click the button below.
                                 </TextBlock>
-                            </Label>
+
 
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="50,220,50,0"  HorizontalAlignment="Left"  >
