@@ -79,7 +79,7 @@
                                         </DataGridTextColumn.CellStyle>
                                     </DataGridTextColumn>
 
-                                    <DataGridTextColumn  Width="350" 
+                                    <DataGridTextColumn  Width="300" 
                                             Binding="{Binding Path= AmountWithUnit}" >
                                         <DataGridTextColumn.CellStyle>
                                             <Style>
@@ -88,7 +88,7 @@
                                             </Style>
                                         </DataGridTextColumn.CellStyle>
                                     </DataGridTextColumn>
-                                    <DataGridTextColumn Width="250" 
+                                    <DataGridTextColumn Width="Auto" 
                                             Binding="{Binding Path=Timestamp}" >
                                         <DataGridTextColumn.CellStyle>
                                             <Style>
