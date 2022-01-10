@@ -12,7 +12,7 @@
     <Grid>
         <Rectangle Fill="#e9eeeb" Opacity=".8" MouseDown="Rectangle_MouseDown" />
 
-        <Border CornerRadius="10"  Background="White" Height="550" Width="700" BorderBrush="Green" BorderThickness="2">
+        <Border CornerRadius="10"  Background="White" Height="540" Width="700" BorderBrush="Green" BorderThickness="2">
             <Grid Margin="5,5,5,5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30" />
