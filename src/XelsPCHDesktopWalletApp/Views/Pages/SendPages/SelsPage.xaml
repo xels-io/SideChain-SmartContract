@@ -32,25 +32,16 @@
 
                 <!--Amount-->
                 <Border Grid.Row="1" Margin="20,0,20,0">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <Label Grid.Row="0" FontSize="20" Content="Amount"/>
-                        <TextBox Grid.Row="1" x:Name="textAmount"  BorderBrush="#FFC9D6C9"  />
-                        <TextBlock x:Name="selsHidden" Text="SELS" Visibility="Hidden" />
-                    </Grid>
+                    <StackPanel>
+                        <Label FontSize="20" Content="Amount"/>
+                        <TextBox x:Name="textAmount"  BorderBrush="#FFC9D6C9"  />
+                        <!--<TextBlock x:Name="selsHidden" Text="SELS" Visibility="Hidden" />-->
+                    </StackPanel>
                 </Border>
 
 
                 <Border Grid.Row="2" Margin="0 10">
-                    <Grid Margin="26,0,24,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
+                    <StackPanel Margin="26,0,24,0">
 
                         <Button x:Name="sendButton" FontSize="20" Click="SendButton_Click"  Content="Send Now" Padding="2" 
                         Background="Green"  
@@ -62,9 +53,9 @@
                             </Button.Resources>
                         </Button>
 
-                    </Grid>
+                    </StackPanel>
                 </Border>
-
+                <TextBlock x:Name="selsHidden" Text="SELS" Visibility="Hidden" />
             </Grid>
         </StackPanel>
     </Grid>
