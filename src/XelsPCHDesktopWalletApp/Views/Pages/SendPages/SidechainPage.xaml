@@ -7,10 +7,10 @@
       mc:Ignorable="d" 
       d:DesignHeight="550" d:DesignWidth="700"
       Title="SidechainPage">
-    
 
 
-        <Grid Background="White" x:Name="Sidechain_Send_Page">
+
+    <Grid Background="White" x:Name="Sidechain_Send_Page">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -35,16 +35,16 @@
                 <Border Grid.Row="0">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="3*"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/> 
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
                         <Label Grid.Column="0" Content="Amount"/>
                         <Label Grid.Column="1" FontWeight="DemiBold" Content="Available:" />
 
                         <Label Grid.Column="2"  x:Name="AvailableBalanceText" FontWeight="DemiBold" />
-  
+
                     </Grid>
                 </Border>
 
@@ -127,7 +127,6 @@
                     <TextBlock  HorizontalAlignment="Center" TextWrapping="Wrap" Text="Please note that sending from a sidechain to the mainchain requires 240 confirmations."   FontWeight="DemiBold"  Margin=" 0 5" />
                 </Border>
             </Grid>
-
         </Border>
 
         <!--password-->
@@ -146,25 +145,15 @@
 
         <!---   button -->
         <Border Grid.Row="6" Margin="100 0" >
-            <Grid >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-
-                <Button x:Name="sendButton" Click="sendButton_Click"  Content="Send" Padding="2" 
+            <Button x:Name="sendButton" Click="sendButton_Click"  Content="Send" Padding="2" 
                         Background="Green" 
-                        Foreground="White" Grid.ColumnSpan="2" Margin="0,7,0,30">
-                    <Button.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="5"/>
-                        </Style>
-                    </Button.Resources>
-                </Button>
-
-
-            </Grid>
+                        Foreground="White" Margin="0,7,0,30">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
         </Border>
 
 
