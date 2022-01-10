@@ -144,8 +144,9 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.ReceivePages
         }
 
 
-        private void GenerateQRCode()
+        private async void GenerateQRCode()
         {
+            await LoadCreate();
             this.image.Source = this.QRCode.GenerateQRCode(this.textBoxTextToQr.Text);
         }
 
