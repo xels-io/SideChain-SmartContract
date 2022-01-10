@@ -9,15 +9,14 @@
       Title="XelsPage">
 
     <Grid Background="White" Margin="0,7,0,0" x:Name="Xels_Receive_Page">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
+        <Grid.RowDefinitions>
+                <RowDefinition Height="150" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <!--- image -->
-            <Border Grid.Row="0" Height="150">
+            <Border Grid.Row="0" >
                 <Image x:Name="image" />
             </Border>
             <!-- signle address and copy button  -->
@@ -152,8 +151,6 @@
             </Border>
 
 
-
-        </Grid>
     </Grid>
 
 </Page>
