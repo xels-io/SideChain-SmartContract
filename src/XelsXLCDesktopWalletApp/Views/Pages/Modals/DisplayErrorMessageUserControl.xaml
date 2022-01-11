@@ -7,7 +7,7 @@
              mc:Ignorable="d"  BorderThickness="1">
     <Grid >
         <Rectangle Fill="DarkGray" Opacity=".7" MouseDown="Rectangle_MouseDown" />
-        <Border CornerRadius ="8" Background="White" Height="100" Width="350" BorderBrush="Green" BorderThickness="1.5" >
+        <Border CornerRadius ="8" Background="White" Height="100" Width="345" BorderBrush="Green" BorderThickness="1.5" >
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="70" />
