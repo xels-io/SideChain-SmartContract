@@ -9,44 +9,39 @@
       Title="SelsPage">
 
     <Grid Background="White" x:Name="Sels_Receive_Page">
-        <StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="200" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Margin="100 2" x:Name="gridRow0">
+            <Image x:Name="image" HorizontalAlignment="Center" />
+        </Border>
+        <Border Grid.Row="1" Margin="100 02" x:Name="gridRow1" >
             <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="0.5*"/>
+                </Grid.ColumnDefinitions>
 
-                <Border Grid.Row="0" Margin="100 2" x:Name="gridRow0">
-                    <Image x:Name="image" Height="200" HorizontalAlignment="Center" />
+                <Border  Grid.Column="0" Margin="5">
+                    <TextBox  x:Name="textBoxTextToQr" IsReadOnly="True" BorderBrush="Green" BorderThickness="1" Padding="5" />
                 </Border>
-                <Border Grid.Row="1" Margin="100 02" x:Name="gridRow1" >
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="0.5*"/>
-                        </Grid.ColumnDefinitions>
+                <Border Grid.Column="1" >
+                    <Button Content="Copy" Click="CopyAddressButton_Click" Margin="15 5" RenderTransformOrigin="2.423,0.568" BorderThickness="1" BorderBrush="Green" Background="White" Foreground="Black">
+                        <Button.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius" Value="5"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
 
-                        <Border  Grid.Column="0" Margin="5">
-                            <TextBox  x:Name="textBoxTextToQr" IsReadOnly="True" BorderBrush="Green" BorderThickness="1" Padding="5" />
-                        </Border>
-                        <Border Grid.Column="1" >
-                            <Button Content="Copy" Click="CopyAddressButton_Click" Margin="15 5" RenderTransformOrigin="2.423,0.568" BorderThickness="1" BorderBrush="Green" Background="White" Foreground="Black">
-                                <Button.Resources>
-                                    <Style TargetType="{x:Type Border}">
-                                        <Setter Property="CornerRadius" Value="5"/>
-                                    </Style>
-                                </Button.Resources>
-                            </Button>
-
-                        </Border>
-                    </Grid>
                 </Border>
-                <Border Grid.Row="2" Height="50" Width="228"  x:Name="gridRow2" Visibility="Collapsed">
-                    <TextBlock Text="You have not imported SELS address yet." FontSize="20" FontWeight="Bold" Margin="-85,0,-165,0" />
-                </Border>
-
             </Grid>
-        </StackPanel>
+        </Border>
+        <Border Grid.Row="2" Height="50" Width="228"  x:Name="gridRow2" Visibility="Collapsed">
+            <TextBlock Text="You have not imported SELS address yet." FontSize="20" FontWeight="Bold" Margin="-85,0,-165,0" />
+        </Border>
     </Grid>
 </Page>
