@@ -30,18 +30,13 @@
                 </Style>
             </Border.Style>
 
-            <Grid TextOptions.TextFormattingMode="Ideal">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-
-                <Border Grid.Row="0">
-                    <Grid >
+            <StackPanel>
+                <Border Height="100">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                         <TextBlock FontSize="20" HorizontalAlignment="Center" 
                                    Margin="0 10 0 0"
                                    FontWeight="SemiBold" 
-                Text="Are you sure you want to logout?"/>
+                                   Text="Are you sure you want to logout?"/>
 
                         <TextBlock Text="Be aware that this will also Stop the staking process."  FontSize="15"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         <!--<Button x:Name="closeBtn" Click="closeBtn_Click"  Background="Red" Foreground="White"
@@ -53,9 +48,10 @@
                                 </Style>
                             </Button.Resources>
                         </Button>-->
-                    </Grid>
+                    </StackPanel>
                 </Border>
-                <Border Grid.Row="01">
+
+                <Border Height="100">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -86,9 +82,7 @@
 
                     </Grid>
                 </Border>
-
-
-            </Grid>
+            </StackPanel>
         </Border>
     </Grid>
 </UserControl>
