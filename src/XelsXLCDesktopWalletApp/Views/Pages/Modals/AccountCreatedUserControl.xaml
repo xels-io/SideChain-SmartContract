@@ -9,7 +9,7 @@
     <Grid x:Name="Succeded_Message">
         <Rectangle Fill="DarkGray" Opacity=".7"/>
         <Border CornerRadius ="8" Background="White" Height="100" Width="350" BorderBrush="Green" BorderThickness="1.5">
-            <Grid>
+            <!--<Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
@@ -18,7 +18,14 @@
 
                 <Button Grid.Row="1" HorizontalAlignment="Center" Name="Close_Modal" Background="Green" Foreground="White" Height="20" Width="51" FontSize="10" Padding=" 0 3"
                         Click="Button_Close_Modal">Ok</Button>
-            </Grid>
+            </Grid>-->
+            <StackPanel>
+                <Border Height="70">
+                    <TextBlock Grid.Row="0" x:Name="Message_Modal" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" Foreground="#FF251F1F"   TextWrapping="Wrap" />
+                </Border>
+                <Button Grid.Row="1" HorizontalAlignment="Center" Name="Close_Modal" Background="Green" Foreground="White" Height="20" Width="51" FontSize="10" Padding=" 0 3"
+                        Click="Button_Close_Modal">Ok</Button>
+            </StackPanel>
         </Border>
     </Grid>
 </UserControl>
