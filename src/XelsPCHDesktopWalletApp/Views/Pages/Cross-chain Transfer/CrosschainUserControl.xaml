@@ -97,19 +97,17 @@
                                                     <ColumnDefinition Width="0.7*" />
                                                     <!--  <ColumnDefinition Width=".5*" />-->
                                                 </Grid.ColumnDefinitions>
-                                                <Border Grid.Column="0">
-                                                    <Label Content="Amount"  RenderTransformOrigin="1.158,-0.076" />
+                                                <Border Grid.Column="0" VerticalAlignment="Center">
+                                                    <TextBlock Text="Amount" Foreground="#DD000000" />
                                                 </Border>
-                                                <Border Grid.Column="1">
-                                                    <Label Content="Spendable:"  HorizontalAlignment="Right" RenderTransformOrigin="1.158,-0.076" FontWeight="DemiBold"/>
+                                                <Border Grid.Column="1" VerticalAlignment="Center">
+                                                    <TextBlock Text="Spendable: " Foreground="#DD000000" HorizontalAlignment="Right" FontWeight="DemiBold"/>
                                                 </Border>
-                                                <Border Grid.Column="2">
-                                                    <Label  x:Name="textAvailableCoin" HorizontalAlignment="Left" 
-                           RenderTransformOrigin="1.158,-0.076" FontWeight="DemiBold"/>
+                                                <Border Grid.Column="2" VerticalAlignment="Center">
+                                                    <TextBlock x:Name="textAvailableCoin" Foreground="#DD000000" FontWeight="DemiBold"/>
                                                 </Border>
                                                 <!--<Border Grid.Column="3">
-                                        <Label  Grid.Column="3" x:Name="textCoinType" 
-                          />
+                                        <Label  Grid.Column="3" x:Name="textCoinType"/>
                                     </Border>-->
                                             </Grid>
                                         </Border>
@@ -118,13 +116,12 @@
                                             <Grid>
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="*" />
-                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="8" />
                                                 </Grid.RowDefinitions>
 
                                                 <!--Amount-->
-                                                <TextBox Grid.Row="0" x:Name="SendAmountText" 
-               TextChanged="CheckSendAmount_OnChange"/>
-                                                <Label Grid.Row="1" x:Name="Amount_Error_Message_Label" Visibility="Hidden" Foreground="red" />
+                                                <TextBox Grid.Row="0" x:Name="SendAmountText" TextChanged="CheckSendAmount_OnChange"/>
+                                                <TextBlock Grid.Row="1" x:Name="Amount_Error_Message_Label" Visibility="Hidden" Foreground="red" />
 
                                             </Grid>
                                         </Border>
@@ -132,66 +129,33 @@
                                 </Border>
 
                                 <!--Address-->
-                                <Border Grid.Row="1" Margin="0 5 0 0">
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*" />
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
-
-                                        <Label Grid.Row="0" Content="Destination Address" RenderTransformOrigin="1.158,-0.076"/>
-
-                                        <TextBox Grid.Row="1" x:Name="DestinationAddressText" 
-                          TextChanged="CalculateTransactionFee_OnChange"
-                        />
-                                        <!--Focusable="True" FocusManager.LostFocus="TxtAddress_LostFocus"-->
-
-                                    </Grid>
-                                </Border>
+                                <StackPanel Grid.Row="1" Margin="0 5 0 0">
+                                    <TextBlock Text="Destination Address" Foreground="#DD000000"/>
+                                    <TextBox x:Name="DestinationAddressText" TextChanged="CalculateTransactionFee_OnChange"/>
+                                    <!--Focusable="True" FocusManager.LostFocus="TxtAddress_LostFocus"-->
+                                </StackPanel>
 
                                 <!-- transaction fee-->
-                                <Border Grid.Row="2" Margin=" 0 5 0 0">
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*" />
-                                            <RowDefinition Height="*"/>
-                                            <RowDefinition Height="*"/>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
-
-                                        <Label Grid.Row="0" Content="Transaction fee"  RenderTransformOrigin="1.158,-0.076" />
-                                        <TextBox Grid.Row="1"  x:Name="TransactionFeeText" BorderBrush="Green" IsReadOnly="True"  />
-                                        <Label Grid.Row="2" x:Name="TransactionFeeTypeLabel"  RenderTransformOrigin="1.158,-0.076" />
-                                        <TextBlock x:Name="TransactionWarningLabel" Grid.Row="3" Text="Please enter a valid amount and destination address to calculate the fee" TextWrapping="Wrap"  Foreground="Red" />
-                                    </Grid>
-                                </Border>
+                                <StackPanel Grid.Row="2" Margin=" 0 5 0 0">
+                                    <TextBlock Text="Transaction fee" Foreground="#DD000000"/>
+                                    <TextBox x:Name="TransactionFeeText" BorderBrush="Green" IsReadOnly="True"  />
+                                    <TextBlock Height="8" x:Name="TransactionFeeTypeLabel"/>
+                                    <TextBlock x:Name="TransactionWarningLabel" Text="Please enter a valid amount and destination address to calculate the fee" TextWrapping="Wrap"  Foreground="Red" />
+                                </StackPanel>
 
                                 <!--password-->
 
-                                <Border Grid.Row="3" Margin="0 5 0 5">
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*" />
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
-
-                                        <Label Grid.Row="0" Content="Wallet Password" />
-                                        <PasswordBox Grid.Row="1" x:Name="password" PasswordChar="*"
-                             />
-                                    </Grid>
-                                </Border>
+                                <StackPanel Grid.Row="3" Margin="0 5 0 5">
+                                    <TextBlock Text="Wallet Password" Foreground="#DD000000"/>
+                                    <PasswordBox x:Name="password" PasswordChar="*"/>
+                                </StackPanel>
 
                             </Grid>
                         </Border>
 
                         <!-- submit , cancel button -->
                         <Border Grid.Row="2" Margin=" 0 5 0 0" >
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-
+                            <StackPanel HorizontalAlignment="Right">
                                 <!--<Button Grid.Column="0" x:Name="CancelButton" Click="Cancel_CrossChainTransferButton_Click"  Content="Cancel" Padding="2" Margin="100,0,5,0"
                     Background="Red" Height="35"
                       
@@ -209,8 +173,10 @@
                                 Content="Send" 
                                 Padding="2" 
                                 Margin="75,0,00,0"
-                        Background="Green" Height="35"
-                            Foreground="White">
+                                Background="Green" 
+                                Height="35"
+                                Width="198.5"
+                                Foreground="White">
                                     <Button.Resources>
                                         <Style TargetType="{x:Type Border}">
                                             <Setter Property="CornerRadius" Value="5"/>
@@ -218,7 +184,7 @@
                                     </Button.Resources>
                                 </Button>
 
-                            </Grid>
+                            </StackPanel>
                         </Border>
 
                     </Grid>

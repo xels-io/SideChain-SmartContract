@@ -265,7 +265,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.Cross_chain_Transfer
                     //{
                     this.WalletBalance = balance;
 
-                    this.textAvailableCoin.Content = $"{(balance.MaxSpendableAmount / 100000000).ToString("0.##############")} {GlobalPropertyModel.CoinUnit}";
+                    this.textAvailableCoin.Text = $"{(balance.MaxSpendableAmount / 100000000).ToString("0.##############")} {GlobalPropertyModel.CoinUnit}";
 
                     //}
                 }
@@ -605,14 +605,14 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.Cross_chain_Transfer
                 if (!Regex.IsMatch(this.SendAmountText.Text, @"^([0-9]+)?(\.[0-9]{0,8})?$"))
                 {
                     //MessageBox.Show("Enter a valid transaction amount. Only positive numbers and no more than 8 decimals are allowed.");
-                    this.Amount_Error_Message_Label.Content = "Enter a valid transaction amount. Only positive numbers and no more than 8 decimals are allowed.";
+                    this.Amount_Error_Message_Label.Text = "Enter a valid transaction amount. Only positive numbers and no more than 8 decimals are allowed.";
                 }
                 else
                 {
                     if (Convert.ToDouble(sendingAmount) > ((this.WalletBalance.MaxSpendableAmount - this.WalletBalance.Fee) / 100000000))
                     {
                         //MessageBox.Show("The total transaction amount exceeds your spendable balance.");
-                        this.Amount_Error_Message_Label.Content = "The total transaction amount exceeds your spendable balance.";
+                        this.Amount_Error_Message_Label.Text = "The total transaction amount exceeds your spendable balance.";
                     }
                     else
                     {
