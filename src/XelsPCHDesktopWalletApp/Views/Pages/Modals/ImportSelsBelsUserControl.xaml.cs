@@ -187,7 +187,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.Modals
                 if (mnemonic.Length != 12)
                 {
                     this.mnemonic_error.Visibility = Visibility.Visible;
-                    this.mnemonic_error.Content = "You entered wrong number of Mnemonics!";
+                    this.mnemonic_error.Text = "You entered wrong number of Mnemonics!";
                     this.ImportSelsBelsButton.IsEnabled = false;
                 }
                 else

@@ -21,105 +21,51 @@
                 </Grid.RowDefinitions>
 
                 <Border Grid.Row="0" >
-
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Margin="10 10 10 50" Content="IMPORT ADDRESS" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" FontWeight="DemiBold"  />
-                        <!--<Button Click="HidePopup_Click" Background="Red" Foreground="White"
-                                VerticalAlignment="Top"
-                                HorizontalAlignment="Right" 
-                                Content="X" Height="15" Width="20"
-                                FontSize="10" Padding="7 0"
-                                HorizontalContentAlignment="Left">
-
-                            <Button.Resources>
-                                <Style TargetType="{x:Type Border}">
-                                    <Setter Property="CornerRadius" Value="50"/>
-                                </Style>
-                            </Button.Resources>
-                        </Button>-->
+                    <StackPanel VerticalAlignment="Center">
                         <Button Click="HidePopup_Click" 
                         VerticalAlignment="Top"
                         HorizontalAlignment="Right"
-                        HorizontalContentAlignment="Left"
                         Background="White" BorderBrush="White">
 
                             <materialDesign:PackIcon Kind="CloseBold" Foreground="Green" />
                         </Button>
-                    </Grid>
-
+                        <Label Margin="10 10 10 50" Content="IMPORT ADDRESS" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" FontWeight="DemiBold"  />
+                    </StackPanel>
                 </Border>
 
                 <Border Grid.Row="01" Margin="40,0,40,0">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-
-                        <Label Grid.Row="0" Content="Your Wallet(Xels) Mnemonic:" Padding="0" BorderBrush="Green" />
-                        <TextBox Grid.Row="1" Padding="0" Name="MnemonicTxt" BorderBrush="Green"  materialDesign:HintAssist.Hint="Xels Wallet Mnemonic"  materialDesign:HintAssist.IsFloating="False"
-       TextChanged="Mnemonic_null_check_onchange"/>
-                        <Label x:Name="mnemonic_error" Grid.Row="2" Foreground="Red" Visibility="Hidden" Padding="0" />
-
-                    </Grid>
+                    <StackPanel>
+                        <Label Content="Your Wallet(Xels) Mnemonic:" Padding="0" BorderBrush="Green" />
+                        <TextBox Margin="0, 1"  Name="MnemonicTxt" BorderBrush="Green"  materialDesign:HintAssist.Hint="Xels Wallet Mnemonic"  materialDesign:HintAssist.IsFloating="False" TextChanged="Mnemonic_null_check_onchange"/>
+                        <TextBlock x:Name="mnemonic_error" Foreground="Red" Visibility="Hidden"/>
+                    </StackPanel>
                 </Border>
 
                 <Border Grid.Row="02"  Margin="40,0,40,0" >
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="139*"/>
-                            <ColumnDefinition Width="367*"/>
-                        </Grid.ColumnDefinitions>
-                        <CheckBox Grid.Column="0" x:Name="CheckboxPkey"  Content="Token address generate from the Mnemonics" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" Grid.ColumnSpan="2"/>
-                    </Grid>
-
+                    <StackPanel VerticalAlignment="Center">
+                        <CheckBox x:Name="CheckboxPkey"  Content="Token address generate from the Mnemonics" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                    </StackPanel>
                 </Border>
 
                 <Border Grid.Row="3" x:Name="SelsBelsBorder"  Margin="40,0,40,0">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-
-                        <Border Grid.Row="0" Margin="5">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-
-                                <Label Grid.Row="0" Content="SELS Private Key:" BorderBrush="Green" />
-                                <TextBox Grid.Row="1" BorderBrush="Green" Name="SELSPrivateKeyTxt"  materialDesign:HintAssist.Hint="Your SELS pk"  materialDesign:HintAssist.IsFloating="False" />
-
-                            </Grid>
+                    <StackPanel>
+                        <Border Margin="5">
+                            <StackPanel>
+                                <Label Content="SELS Private Key:" BorderBrush="Green" />
+                                <TextBox Margin="0, 2" BorderBrush="Green" Name="SELSPrivateKeyTxt"  materialDesign:HintAssist.Hint="Your SELS pk"  materialDesign:HintAssist.IsFloating="False" />
+                            </StackPanel>
                         </Border>
-
-                        <Border Grid.Row="1" Margin="5">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-
-                                <Label Grid.Row ="0"  Content="BELS Private Key:" BorderBrush="Green" />
-                                <TextBox Grid.Row ="1" BorderBrush="Green"   Name="BELSPrivateKeyTxt"  materialDesign:HintAssist.Hint="Your BELS pk"  materialDesign:HintAssist.IsFloating="False" />
-
-                            </Grid>
+                        <Border Margin="5">
+                            <StackPanel>
+                                <Label  Content="BELS Private Key:" BorderBrush="Green" />
+                                <TextBox Margin="0, 2" BorderBrush="Green"   Name="BELSPrivateKeyTxt"  materialDesign:HintAssist.Hint="Your BELS pk"  materialDesign:HintAssist.IsFloating="False" />
+                            </StackPanel>
                         </Border>
-                    </Grid>
+                    </StackPanel>
                 </Border>
 
                 <Border Grid.Row="4" Margin="40,0,40,0">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-
-                        </Grid.ColumnDefinitions>
+                    <StackPanel VerticalAlignment="Center">
                         <Button Grid.Column="0" x:Name="ImportSelsBelsButton"   Click="ImportSelsBelsButton_Click" 
                             Content="Import Now"  
                             Background="White" 
@@ -139,9 +85,7 @@
                                 </TransformGroup>
                             </Button.RenderTransform>
                         </Button>
-
-
-                    </Grid>
+                    </StackPanel>
                 </Border>
 
             </Grid>
