@@ -109,9 +109,9 @@ namespace XelsXLCDesktopWalletApp.Views
             this.valuetwo = "Word number " + sInd;
             this.valuethree = "Word number " + tInd;
 
-            this.wordone.Content = this.valueone;
-            this.wordtwo.Content = this.valuetwo;
-            this.wordthree.Content = this.valuethree;
+            this.wordone.Text = this.valueone;
+            this.wordtwo.Text = this.valuetwo;
+            this.wordthree.Text = this.valuethree;
 
         }
 
