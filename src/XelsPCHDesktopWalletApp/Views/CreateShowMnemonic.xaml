@@ -14,25 +14,16 @@
 
             <StackPanel>
 
-                <StackPanel>
-                    <Border Margin="20 5" Background="Green" CornerRadius="5">
-                        <Grid Background="Green" Height="100" Width="724">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
+                <Border Margin="20 5" Height="100" Background="Green" CornerRadius="5">
 
-                            <Border HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" Height="70" Background="Transparent" BorderBrush="WhiteSmoke" 
+                    <Border HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" Height="70" Background="Transparent" BorderBrush="WhiteSmoke" 
               BorderThickness="3" Margin="-2" CornerRadius="10" Padding="5">
-                                <Border.Effect>
-                                    <DropShadowEffect ShadowDepth="0" BlurRadius="10" Opacity="50"/>
-                                </Border.Effect>
-                                <Image Source="/Assets/Images/home-xels-logo-01.png" >
-
-                                </Image>
-                            </Border>
-                        </Grid>
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="0" BlurRadius="10" Opacity="50"/>
+                        </Border.Effect>
+                        <Image Source="/Assets/Images/home-xels-logo-01.png" ></Image>
                     </Border>
-                </StackPanel>
+                </Border>
 
                 <Border Margin="10 10">
                     <TextBlock Margin="0,10,0,0"  Text="Secret Words" HorizontalAlignment="Center"  FontSize="28" FontFamily="Microsoft YaHei Light" />
@@ -72,7 +63,7 @@
                             <ColumnDefinition Width="5*" />
                         </Grid.ColumnDefinitions>
 
-                        <Button x:Name="cancelButton" Click="cancelButton_Click" Grid.Column="0" Content="Cancel" VerticalAlignment="Center" Padding="5" Margin="0 0 5 0"  TextBlock.FontFamily="Microsoft YaHei Light" Background="White" Foreground="green" BorderThickness="1" BorderBrush="green" FontSize="14" RenderTransformOrigin="0.331,0.533">
+                        <Button x:Name="cancelButton" Click="cancelButton_Click" Grid.Column="0" Content="Cancel" VerticalAlignment="Center" Padding="5" Margin="0 0 5 0"  TextBlock.FontFamily="Microsoft YaHei Light" Background="White" Foreground="green" BorderThickness="1" BorderBrush="green" FontSize="14">
                             <Button.Resources>
                                 <Style TargetType="Border">
                                     <Setter Property="CornerRadius" Value="5"/>
@@ -80,7 +71,7 @@
                             </Button.Resources>
                         </Button>
 
-                        <Button x:Name="continueButton" Click="continueButton_Click" Grid.Column="1" Content="Continue" Padding="5"  Margin="5 0 0 0"   TextBlock.FontFamily="Microsoft YaHei Light" Background="green" Foreground="White" BorderThickness="0,0,0,0" FontSize="14">
+                        <Button x:Name="continueButton" Click="continueButton_Click" Grid.Column="1" Content="Continue" Padding="5"  Margin="5 0 0 0"   TextBlock.FontFamily="Microsoft YaHei Light" Background="green" Foreground="White"  FontSize="14">
                             <Button.Resources>
                                 <Style TargetType="Border">
                                     <Setter Property="CornerRadius" Value="5"/>
