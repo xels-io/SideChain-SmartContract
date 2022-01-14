@@ -67,7 +67,7 @@ namespace XelsPCHDesktopWalletApp.Views.layout
 
             if (GlobalPropertyModel.StakingStart == true)
             {
-                this.StakingInfo.Content = "Staking";
+                this.StakingInfo.Text = "Staking";
                 this.thumbsup.Visibility = Visibility.Visible;
                 this.thumbDown.Visibility = Visibility.Collapsed;
             }
@@ -266,11 +266,13 @@ namespace XelsPCHDesktopWalletApp.Views.layout
 
                     if (!GlobalPropertyModel.StakingStart && !this.sidechainEnabled)
                     {
-                        this.StakingInfo.Content = "Not Staking";
+                        this.StakingInfo.Text = "Not Staking";
+                        this.thumbsup.Visibility = Visibility.Collapsed;
+                        this.thumbDown.Visibility = Visibility.Visible;
                     }
                     else if (this.stakingEnabled && !this.sidechainEnabled)
                     {
-                        this.StakingInfo.Content = "Staking";
+                        this.StakingInfo.Text = "Staking";
                     }
                 }
 
@@ -300,7 +302,7 @@ namespace XelsPCHDesktopWalletApp.Views.layout
 
                 if (GlobalPropertyModel.StakingStart == true)
                 {
-                    this.StakingInfo.Content = "Staking";
+                    this.StakingInfo.Text = "Staking";
                     this.thumbsup.Visibility = Visibility.Visible;
                     this.thumbDown.Visibility = Visibility.Collapsed;
                 }

@@ -178,13 +178,13 @@
         <Grid x:Name="GridBarraTitulo" Grid.ColumnSpan="2" Background="#FF41A43C" MouseDown="GridBarraTitulo_MouseDown">
             <Label x:Name="labCheckChainMessage" Width="250" FontSize="14" Foreground="AliceBlue" HorizontalContentAlignment="Left" HorizontalAlignment="Left" Margin="15,0,0,0"/>
             <Border Padding="2.5 0 0 0" Grid.Row="1" CornerRadius="7" HorizontalAlignment="Right" Height="25" Background="White" Loaded="StackingBarLoaded" Margin="0,0,170,0">
-                <Grid>
+                <!--<Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <!--<materialDesign:PackIcon Kind="Autorenew" Height="13" Width="13" Margin="2,3,0,0" Foreground="Orange"/>-->
+                    --><!--<materialDesign:PackIcon Kind="Autorenew" Height="13" Width="13" Margin="2,3,0,0" Foreground="Orange"/>--><!--
                     <materialDesign:PackIcon x:Name="syncCompleteIcon" Kind="CheckBold" Visibility="Collapsed" Height="13" Width="13" Margin="0,5,0,0" Foreground="Orange"/>
                     <ProgressBar x:Name="syncingIcon" Style="{StaticResource MaterialDesignCircularProgressBar}" Value="0" IsIndeterminate="True" Height="13" Width="13" Margin="-25,1,0,0" Foreground="Orange" />
                     <TextBlock Text="syncing" Grid.Column="0" Name="ConnectionPercentTxt"
@@ -194,11 +194,35 @@
                     <materialDesign:PackIcon Kind="People" Grid.Column="1" Height="13" Width="13" Margin="27,6,0,0" Foreground="Green"/>
                     <TextBlock Text="0"  Grid.Column="1" Name="ConnectedCountTxt" FontSize="12" Foreground="Green" Margin="44,4,10,0"  ></TextBlock>
                     <Label x:Name="StakingInfo" Content="Not Stacking"  FontSize="12" Grid.Column="1" Foreground="Green" Margin="55,0,0,0"></Label>
-                    <!--<Image Grid.Column="2"  x:Name="thumbDown" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Width="24" Source="/Assets/Images/thumbsdown.png" Margin="-40,0,0,0" />-->
+                    --><!--<Image Grid.Column="2"  x:Name="thumbDown" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Width="24" Source="/Assets/Images/thumbsdown.png" Margin="-40,0,0,0" />--><!--
                     <materialDesign:PackIcon Kind="DislikeOutline" Grid.Column="2"  x:Name="thumbDown" Height="15" Width="30" Margin="-35,1.5,0,0" Foreground="Red" VerticalAlignment="Center"/>
                     <materialDesign:PackIcon Kind="LikeOutline" Visibility="Collapsed" Grid.Column="2"  x:Name="thumbsup" Height="15" Width="30" Margin="-35,0,0,0" Foreground="Green" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                    <!--<Image Grid.Column="2" Visibility="Collapsed"  x:Name="thumbsup" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Width="24" Source="/Assets/Images/thumbsup.png" Margin="-20,0,0,0" />-->
-                </Grid>
+                    --><!--<Image Grid.Column="2" Visibility="Collapsed"  x:Name="thumbsup" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Width="24" Source="/Assets/Images/thumbsup.png" Margin="-20,0,0,0" />--><!--
+                </Grid>-->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+
+                    <!--<Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                        </Grid>-->
+                    <materialDesign:PackIcon x:Name="syncCompleteIcon" Kind="CheckBold" VerticalAlignment="Center" Visibility="Collapsed" Margin="5,0,0,0"  Height="13" Width="13" Foreground="Orange"/>
+                    <ProgressBar x:Name="syncingIcon" Style="{StaticResource MaterialDesignCircularProgressBar}" VerticalAlignment="Center" Margin="5,0,0,0" Value="0" IsIndeterminate="True" Height="13" Width="13" Foreground="Orange" />
+
+                    <TextBlock  Text="syncing" Name="ConnectionPercentTxt"
+                                                    FontFamily="Microsoft YaHei" 
+                                                    FontSize="12" Foreground="Orange"
+                                                    Height="20"
+                                                    VerticalAlignment="Center">
+                    </TextBlock>
+
+                    <materialDesign:PackIcon Kind="People" Margin="5,0,0,0"  Height="13" Width="13" VerticalAlignment="Center" Foreground="Green"/>
+                    <TextBlock Text="0" Name="ConnectedCountTxt" FontSize="12" Margin="3,0,0,0"  Foreground="Green" VerticalAlignment="Center"></TextBlock>
+                    <TextBlock x:Name="StakingInfo" Text="Not Stacking"  FontSize="12" Margin="10,0,0,0" Foreground="Green" VerticalAlignment="Center"></TextBlock>
+
+                    <materialDesign:PackIcon Kind="DislikeOutline"  x:Name="thumbDown" Margin="0,5,0,0"  Height="15" Width="20" Foreground="Red" VerticalAlignment="Center"/>
+                    <materialDesign:PackIcon Kind="LikeOutline" Visibility="Collapsed" x:Name="thumbsup" Height="15" Width="30" Foreground="Green" VerticalAlignment="Center"/>
+                </StackPanel>
             </Border>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,0">
                 <Label x:Name="labWalletName" Content="wallatename" Margin="10,0,5,0" Width="150" FontSize="14" Foreground="AliceBlue" 
