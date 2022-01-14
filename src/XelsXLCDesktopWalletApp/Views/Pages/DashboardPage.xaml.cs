@@ -109,7 +109,7 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
                 this.UnlockGrid.Visibility = Visibility.Hidden;
                 this.MiningInfoBorder.Visibility = Visibility.Visible;
                 this.t.Visibility = Visibility.Hidden;
-                this.StakingInfo.Content = "Staking";
+                this.StakingInfo.Text = "Staking";
                 this.thumbsup.Visibility = Visibility.Visible;
                 this.thumbDown.Visibility = Visibility.Collapsed;
             }
@@ -307,11 +307,11 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
 
                     if (!GlobalPropertyModel.StakingStart && !this.sidechainEnabled)
                     {
-                        this.StakingInfo.Content = "Not Staking";
+                        this.StakingInfo.Text = "Not Staking";
                     }
                     else if (this.stakingEnabled && !this.sidechainEnabled)
                     {
-                        this.StakingInfo.Content = "Staking";
+                        this.StakingInfo.Text = "Staking";
                     }
                 }
                
@@ -397,12 +397,12 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
                         this.isStarting = false;
                         this.MiningInfoBorder.Visibility = Visibility.Visible;
                         this.t.Visibility = Visibility.Hidden;
-                        this.StakingInfo.Content = "Staking";
+                        this.StakingInfo.Text = "Staking";
                     }
                     else
                     {
                         this.isStopping = false;
-                        this.StakingInfo.Content = "Not Staking";
+                        this.StakingInfo.Text = "Not Staking";
                         //this.StakingInfoImage.Source;
                     }
                 }
@@ -628,7 +628,7 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
                         this.t.Visibility = Visibility.Hidden;
                         GlobalPropertyModel.StakingStart = true;
 
-                        this.StakingInfo.Content = "Staking";
+                        this.StakingInfo.Text = "Staking";
                         this.thumbDown.Visibility = Visibility.Collapsed;
                         this.thumbsup.Visibility = Visibility.Visible;
 
@@ -682,7 +682,7 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
                 this.MiningInfoBorder.Visibility = Visibility.Hidden;
                 this.t.Visibility = Visibility.Visible;
                 GlobalPropertyModel.StakingStart = false;
-                this.StakingInfo.Content = "Not Staking";
+                this.StakingInfo.Text = "Not Staking";
                 this.thumbDown.Visibility = Visibility.Visible;
                 this.thumbsup.Visibility = Visibility.Collapsed;
                 // this.preLoader.Visibility = Visibility.Collapsed;
@@ -745,7 +745,7 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
                     this.UnlockGrid.Visibility = Visibility.Hidden;
                     this.MiningInfoBorder.Visibility = Visibility.Visible;
                     this.t.Visibility = Visibility.Hidden;
-                    this.StakingInfo.Content = "Staking";
+                    this.StakingInfo.Text = "Staking";
                 }
             }
             catch (Exception a)
