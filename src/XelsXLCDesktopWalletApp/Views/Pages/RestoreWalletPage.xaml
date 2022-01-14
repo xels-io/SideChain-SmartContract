@@ -33,7 +33,7 @@
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
-                            <Label Grid.Row="0" Content="Name" Padding="1 " Margin="0 2" FontSize="13" FontWeight="DemiBold" />
+                            <TextBlock Foreground="#DD000000" Grid.Row="0" Text="Name" Padding="1 " Margin="0 2" FontSize="13" FontWeight="DemiBold" />
 
                             <TextBox Grid.Row="1" x:Name="name"  materialDesign:HintAssist.Hint="Wallet Name"  materialDesign:HintAssist.IsFloating="False"
                      Padding="5 " Margin="0 5"
@@ -41,7 +41,7 @@
                      wallet name." 
                      TextBlock.FontFamily="Microsoft YaHei Light"
                      BorderBrush="#FFAAAAAA" TextChanged="Textbox_Null_check_OnKeyPress" />
-                            <Label Grid.Row="2" x:Name="walletName_ErrorMessage" Padding="2" Margin="2" FontSize="10" FontWeight="DemiBold" Foreground="Red" Visibility="Hidden" />
+                            <TextBlock Grid.Row="2" x:Name="walletName_ErrorMessage" Padding="2" Margin="2" FontSize="10" FontWeight="DemiBold" Foreground="Red" Visibility="Visible" />
                         </Grid>
                     </Border>
 
@@ -62,7 +62,7 @@
                             <DatePicker Grid.Row="1"  x:Name="creationDate" 
                        SelectedDate = "{x:Static sys:DateTime.Now}"
                                  Padding="5" Margin="0 5" />
-                            <Label Grid.Row="2" x:Name="date_ErrorMessage" Padding="2" Margin="2" FontSize="10" FontWeight="DemiBold" Foreground="Red" Visibility="Hidden" />
+                            <TextBlock Grid.Row="2" x:Name="date_ErrorMessage" Padding="2" Margin="2" FontSize="10" FontWeight="DemiBold" Foreground="Red" Visibility="Hidden" />
                         </Grid>
                     </Border>
 
@@ -81,7 +81,7 @@
                             <TextBox Grid.Row="1" x:Name="mnemonic" Margin="0 5" materialDesign:HintAssist.Hint="Enter your secret words."  materialDesign:HintAssist.IsFloating="False" 
                      Padding="5 " BorderBrush="#FFAAAAAA" TextChanged="Textbox_Null_check_OnKeyPress" />
 
-                            <Label Grid.Row="2" x:Name="mnemonic_ErrorMessage" Padding="2" Margin="2" FontSize="10" FontWeight="DemiBold" Foreground="Red" Visibility="Hidden" />
+                            <TextBlock Grid.Row="2" x:Name="mnemonic_ErrorMessage" Padding="2" Margin="2" FontSize="10" FontWeight="DemiBold" Foreground="Red" Visibility="Hidden" />
 
                         </Grid>
                     </Border>
@@ -99,7 +99,7 @@
                             <PasswordBox Grid.Row="1" x:Name="password" Margin="0,5,0,5"  materialDesign:HintAssist.Hint="Enter Password"  materialDesign:HintAssist.IsFloating="False" 
                      Padding="5" 
                      BorderBrush="#FFAAAAAA" Grid.ColumnSpan="2"             PasswordChanged="Textbox_Null_check_OnKeyPress"  />
-                            <Label Grid.Row="2" x:Name="password_ErrorMessage" Padding="2" Margin="2,2,2,2" FontSize="10" FontWeight="DemiBold" Foreground="Red" Visibility="Hidden" Grid.ColumnSpan="2" />
+                            <TextBlock Grid.Row="2" x:Name="password_ErrorMessage" Padding="2" Margin="2,2,2,2" FontSize="10" FontWeight="DemiBold" Foreground="Red" Visibility="Hidden" Grid.ColumnSpan="2" />
 
                         </Grid>
                     </Border>

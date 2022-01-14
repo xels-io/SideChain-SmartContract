@@ -30,28 +30,28 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
         {
             if (string.IsNullOrWhiteSpace(this.name.Text))
             {
+                this.walletName_ErrorMessage.Text = "Name is required";
                 this.walletName_ErrorMessage.Visibility = Visibility.Visible;
-                this.walletName_ErrorMessage.Content = "Name is required";
                 return false;
             }
             if (string.IsNullOrWhiteSpace(this.mnemonic.Text))
             {
+                this.mnemonic_ErrorMessage.Text = "Field is required!";
                 this.mnemonic_ErrorMessage.Visibility = Visibility.Visible;
-                this.mnemonic_ErrorMessage.Content = "Field is required!";
                 return false;
             }
             if (string.IsNullOrWhiteSpace(this.creationDate.Text))
             {
+                this.date_ErrorMessage.Text = "Date is required!";
                 this.date_ErrorMessage.Visibility = Visibility.Visible;
-                this.date_ErrorMessage.Content = "Date is required!";
                 return false;
             }
             if (string.IsNullOrWhiteSpace(this.password.Password))
             {
+
+                this.password_ErrorMessage.Text = "Password is required!";
                 this.password_ErrorMessage.Visibility = Visibility.Visible;
 
-                this.password_ErrorMessage.Content = "Password is required!";               
-                    
                 return false;
             }
 
@@ -101,12 +101,12 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
                 if (this.password.Password.Length < 8)
                 {
                     this.password_ErrorMessage.Visibility = Visibility.Visible;
-                    this.password_ErrorMessage.Content = "A Password must be at least 8 characters long.";
+                    this.password_ErrorMessage.Text = "A Password must be at least 8 characters long.";
                 }
                 else if (!Regex.IsMatch(this.password.Password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!#$%&'()*+,-./:;<=>?@[\]^_`{|}~])[A-Za-z\d!#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{8,}$"))
                 {
                     this.password_ErrorMessage.Visibility = Visibility.Visible;
-                    this.password_ErrorMessage.Content = "A Password must contain at least one uppercase letter, one losercase letter, one number and one special character.";
+                    this.password_ErrorMessage.Text = "A Password must contain at least one uppercase letter, one losercase letter, one number and one special character.";
                 }
                 else
                 {
