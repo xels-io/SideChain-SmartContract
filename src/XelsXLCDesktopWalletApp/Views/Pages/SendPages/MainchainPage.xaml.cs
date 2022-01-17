@@ -21,31 +21,31 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.SendPages
     public partial class MainchainPage : Page
     {
         private readonly string baseURL = URLConfiguration.BaseURL;
-        
+
         private TransactionSending TransactionSending = new TransactionSending();
         private TransactionBuilding TransactionBuilding = new TransactionBuilding();
         private WalletBalance WalletBalance = new WalletBalance();
 
         private BuildTransaction BuildTransaction = new BuildTransaction();
-        private string cointype; 
+        private string cointype;
 
         private double estimatedFee = 0;
         private bool isSending = false;
-         
+
 
         private string walletName = GlobalPropertyModel.WalletName;
-       
+
         public MainchainPage()
-        { 
+        {
             InitializeComponent();
             this.DataContext = this;
             this.DestinationAddressText.Text = GlobalPropertyModel.selectAddressFromAddressBook;
-          
-            _= GetMaxBalanceAsync();
+
+            _ = GetMaxBalanceAsync();
         }
 
-      
-         
+
+
         private void sendButton_Click(object sender, RoutedEventArgs e)
         {
             this.isSending = true;
@@ -53,7 +53,7 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.SendPages
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
-        { 
+        {
             this.Visibility = Visibility.Collapsed;
         }
 
@@ -89,7 +89,7 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.SendPages
                 this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("The amount has to be more or equal to 1."));
                 this.SendAmountText.Focus();
                 return false;
-            }           
+            }
 
             return true;
         }
@@ -118,10 +118,10 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.SendPages
 
             return true;
         }
-              
+
 
         private async Task GetMaxBalanceAsync()
-        {            
+        {
             var content = "";
             try
             {
@@ -143,9 +143,9 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.SendPages
 
                     //foreach (var balance in balances.Balances)
                     //{
-                        this.WalletBalance = balance;
+                    this.WalletBalance = balance;
 
-                        this.textAvailableCoin.Content = $"{(balance.MaxSpendableAmount / 100000000).ToString("0.##############")} {GlobalPropertyModel.CoinUnit}";
+                    this.textAvailableCoin.Content = $"{(balance.MaxSpendableAmount / 100000000).ToString("0.##############")} {GlobalPropertyModel.CoinUnit}";
 
                     //}
                 }
@@ -163,7 +163,7 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.SendPages
 
                new Recipient{ DestinationAddress = this.DestinationAddressText.Text.Trim(),
                Amount = this.SendAmountText.Text}
-            }; 
+            };
 
             return list;
         }
@@ -239,7 +239,7 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.SendPages
                 this.DestinationAddressText.Focus();
                 return false;
             }
-           
+
             if (this.password.Password.ToString().Trim() == "")
             {
                 //MessageBox.Show("Password is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -371,17 +371,25 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.SendPages
 
             if (!string.IsNullOrWhiteSpace(sendingAmount))
             {
+                if (Regex.IsMatch(this.SendAmountText.Text, @"^([0-9]+)?(\.[0-9]{0,8})?$"))
+                {
+                    this.SendAmountErrorText.Visibility = Visibility.Hidden;
+                }
                 if (!Regex.IsMatch(this.SendAmountText.Text, @"^([0-9]+)?(\.[0-9]{0,8})?$"))
                 {
                     //MessageBox.Show("Enter a valid transaction amount. Only positive numbers and no more than 8 decimals are allowed.");
-                    this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Enter a valid transaction amount. Only positive numbers and no more than 8 decimals are allowed."));
+                    //this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Enter a valid transaction amount. Only positive numbers and no more than 8 decimals are allowed."));
+                    this.SendAmountErrorText.Text = "Enter a valid transaction amount. Only positive numbers and no more than 8 decimals are allowed.";
+                    this.SendAmountErrorText.Visibility = Visibility.Visible;
                 }
                 else
                 {
                     if (Convert.ToDouble(sendingAmount) > ((this.WalletBalance.MaxSpendableAmount - this.WalletBalance.Fee) / 100000000))
                     {
                         //MessageBox.Show("The total transaction amount exceeds your spendable balance.");
-                        this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("The total transaction amount exceeds your spendable balance."));
+                        //this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("The total transaction amount exceeds your spendable balance."));
+                        this.SendAmountErrorText.Text = "The total transaction amount exceeds your spendable balance.";
+                        this.SendAmountErrorText.Visibility = Visibility.Visible;
                     }
                     if (this.DestinationAddressText.Text != "" && this.SendAmountText.Text != "")
                     {
