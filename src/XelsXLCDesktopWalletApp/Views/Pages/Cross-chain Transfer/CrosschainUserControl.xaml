@@ -116,12 +116,12 @@
                                             <Grid>
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="*" />
-                                                    <RowDefinition Height="8" />
+                                                    <RowDefinition Height="Auto" />
                                                 </Grid.RowDefinitions>
 
                                                 <!--Amount-->
                                                 <TextBox Grid.Row="0" x:Name="SendAmountText" TextChanged="CheckSendAmount_OnChange"/>
-                                                <TextBlock Grid.Row="1" x:Name="Amount_Error_Message_Label" Visibility="Hidden" Foreground="red" />
+                                                <TextBlock Grid.Row="1" x:Name="Amount_Error_Message_Label" Visibility="Visible" Foreground="red" Margin="0,0,0,0"/>
 
                                             </Grid>
                                         </Border>
