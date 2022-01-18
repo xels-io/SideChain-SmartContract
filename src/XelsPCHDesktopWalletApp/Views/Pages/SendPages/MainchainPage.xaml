@@ -37,7 +37,7 @@
                     </Grid>
                     <!--Amount-->
                     <TextBox  x:Name="SendAmountText" TextChanged="CheckSendAmount_OnChange"/>
-                    
+                    <TextBlock x:Name="SendAmountErrorText" Visibility="Collapsed" TextWrapping="Wrap"  Foreground="Red" />
                 </StackPanel>
             </Border>
 

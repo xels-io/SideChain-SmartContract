@@ -371,17 +371,25 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.SendPages
 
             if (!string.IsNullOrWhiteSpace(sendingAmount))
             {
+                if (Regex.IsMatch(this.SendAmountText.Text, @"^([0-9]+)?(\.[0-9]{0,8})?$"))
+                {
+                    this.SendAmountErrorText.Visibility = Visibility.Hidden;
+                }
                 if (!Regex.IsMatch(this.SendAmountText.Text, @"^([0-9]+)?(\.[0-9]{0,8})?$"))
                 {
                     //MessageBox.Show("Enter a valid transaction amount. Only positive numbers and no more than 8 decimals are allowed.");
-                    this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Enter a valid transaction amount. Only positive numbers and no more than 8 decimals are allowed."));
+                    //this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Enter a valid transaction amount. Only positive numbers and no more than 8 decimals are allowed."));
+                    this.SendAmountErrorText.Text = "Enter a valid transaction amount. Only positive numbers and no more than 8 decimals are allowed.";
+                    this.SendAmountErrorText.Visibility = Visibility.Visible;
                 }
                 else
                 {
                     if (Convert.ToDouble(sendingAmount) > ((this.WalletBalance.MaxSpendableAmount - this.WalletBalance.Fee) / 100000000))
                     {
                         //MessageBox.Show("The total transaction amount exceeds your spendable balance.");
-                        this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("The total transaction amount exceeds your spendable balance."));
+                        //this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("The total transaction amount exceeds your spendable balance."));
+                        this.SendAmountErrorText.Text = "The total transaction amount exceeds your spendable balance.";
+                        this.SendAmountErrorText.Visibility = Visibility.Visible;
                     }
                     if (this.DestinationAddressText.Text != "" && this.SendAmountText.Text != "")
                     {
