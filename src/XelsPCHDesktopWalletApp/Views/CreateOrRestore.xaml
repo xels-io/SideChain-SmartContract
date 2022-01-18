@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:XelsPCHDesktopWalletApp.Views"
         mc:Ignorable="d"
-         Height="600" Width="1100">
+        Height="600" Width="1100"
+        ResizeMode="CanMinimize"
+        WindowStartupLocation="CenterScreen">
 
     <Border Margin="10,10,10,10" BorderBrush="Green" BorderThickness="3" CornerRadius="10">
         <!--Border Padding="10"-->
