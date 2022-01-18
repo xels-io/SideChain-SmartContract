@@ -123,7 +123,7 @@
                 </Rectangle>
                 <Grid Panel.ZIndex="4" Canvas.Left="35" Canvas.Right="35" Canvas.Top="170" Name="loginInfoGrid" VerticalAlignment="Bottom" Width="268"  Height="240">
                     <Label Content="LOGIN" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5" Foreground="Gray" FontSize="18"/>
-                    <Label x:Name="labChainCheck" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0" Foreground="Green" FontSize="12"/>
+                    <TextBlock x:Name="labChainCheck" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,28,0,0" Foreground="Green" FontSize="12"/>
 
                     <StackPanel VerticalAlignment="Center" Margin="15">
 

@@ -59,11 +59,11 @@ namespace XelsXLCDesktopWalletApp
                     GlobalPropertyModel.ChainCheckMessage = "";
                     if (URLConfiguration.Chain == "-mainchain")
                     {
-                        this.labChainCheck.Content = "Xels Main chain wallet / XLC Wallet";
+                        this.labChainCheck.Text = "Xels Main chain wallet / XLC Wallet";
                         GlobalPropertyModel.ChainCheckMessage = "Xels Main chain wallet / XLC Wallet";
                     } else if(URLConfiguration.Chain == "-sidechain")
                     {
-                        this.labChainCheck.Content = "Xels Side chain wallet / Carbon Credit Wallet";
+                        this.labChainCheck.Text = "Xels Side chain wallet / Carbon Credit Wallet";
                         GlobalPropertyModel.ChainCheckMessage = "Xels Side chain wallet / Carbon Credit Wallet";
                     }
                 }
