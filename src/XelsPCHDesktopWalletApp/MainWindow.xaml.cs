@@ -229,7 +229,7 @@ namespace XelsPCHDesktopWalletApp
                     else
                     {
                         var infoDialogMessage = InfoDialogMessage.GetInstance();
-                        infoDialogMessage.Message = ($"Error Code{response.StatusCode} : Message - {response.ReasonPhrase}");
+                        infoDialogMessage.Message = $"Error Code{response.StatusCode} : Message - {response.ReasonPhrase}";
                         await DialogHost.Show(infoDialogMessage);
 
                         //MessageBox.Show($"Error Code{response.StatusCode} : Message - {response.ReasonPhrase}");
@@ -239,9 +239,9 @@ namespace XelsPCHDesktopWalletApp
                 }
                 else
                 {
-                    var infoDialogMessage = InfoDialogMessage.GetInstance();
-                    infoDialogMessage.Message = ($"Enter Valid Information.");
-                    await DialogHost.Show(infoDialogMessage);
+                    var errorDialogMessage = ErrorDialogMessage.GetInstance();
+                    errorDialogMessage.Message = "Enter Valid Information.";
+                    await DialogHost.Show(errorDialogMessage);
 
                     //MessageBox.Show($"Enter Valid Information.");
                     this.preLoader.Visibility = Visibility.Collapsed;
