@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using MaterialDesignThemes.Wpf;
 using XelsPCHDesktopWalletApp.Common;
 using XelsPCHDesktopWalletApp.Models;
+using XelsPCHDesktopWalletApp.Views.Dialogs.DialogsModel;
 using XelsPCHDesktopWalletApp.Views.Pages;
 using XelsPCHDesktopWalletApp.Views.Pages.Modals;
 
@@ -13,7 +15,7 @@ namespace XelsPCHDesktopWalletApp.Views
     /// </summary>
     public partial class CreateShowMnemonic : Page
     {
-        private string copyMnemonicText; 
+        private string copyMnemonicText;
         #region Show Mnemonic Property
 
         WalletCreation _walletcreate = new WalletCreation();
@@ -25,7 +27,7 @@ namespace XelsPCHDesktopWalletApp.Views
             InitializeComponent();
         }
 
-        
+
         public CreateShowMnemonic(WalletCreation model)
         {
             InitializeComponent();
@@ -51,7 +53,7 @@ namespace XelsPCHDesktopWalletApp.Views
             {
                 MessageBox.Show(c.Message.ToString());
             }
-           
+
         }
 
         private void InitializeWalletCreationModel(WalletCreation CreateWallet)
@@ -62,13 +64,15 @@ namespace XelsPCHDesktopWalletApp.Views
             this._walletcreate.Mnemonic = CreateWallet.Mnemonic;
         }
 
-        private void copyClipboardButton_Click(object sender, RoutedEventArgs e)
+        private async void copyClipboardButton_Click(object sender, RoutedEventArgs e)
         {
             Clipboard.SetText(this.copyMnemonicText);
 
-            this.Mnemonic_Copy.Children.Add(new DisplayMessageUserControl("Copied successfully."));
+            //this.Mnemonic_Copy.Children.Add(new DisplayMessageUserControl("Copied successfully."));
 
-            //MessageBox.Show("Copied successfully.");
+            var msg =InfoDialogMessage.GetInstance();
+            msg.Message = "Copied Successfully";
+            await DialogHost.Show(msg);
         }
 
         private void continueButton_Click(object sender, RoutedEventArgs e)
@@ -92,7 +96,7 @@ namespace XelsPCHDesktopWalletApp.Views
         {
             CreateOrRestore parentWindow = (CreateOrRestore)Window.GetWindow(this);
             parentWindow.Content = new CreateWalletPage();
-          
+
         }
     }
 }
