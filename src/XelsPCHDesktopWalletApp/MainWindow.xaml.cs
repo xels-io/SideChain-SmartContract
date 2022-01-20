@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
-
+using MaterialDesignThemes.Wpf;
 using Newtonsoft.Json;
 using XelsPCHDesktopWalletApp.Common;
 using XelsPCHDesktopWalletApp.Models;
 using XelsPCHDesktopWalletApp.Models.CommonModels;
 using XelsPCHDesktopWalletApp.Models.SmartContractModels;
 using XelsPCHDesktopWalletApp.Views;
+using XelsPCHDesktopWalletApp.Views.Dialogs.DialogsModel;
 using XelsPCHDesktopWalletApp.Views.layout;
 using XelsPCHDesktopWalletApp.Views.Pages;
 using XelsPCHDesktopWalletApp.Views.Pages.Modals;
@@ -215,22 +216,34 @@ namespace XelsPCHDesktopWalletApp
                         LoginError loginError = new LoginError();
                         loginError = JsonConvert.DeserializeObject<LoginError>(content);
 
-                        this.Log_in_Window.Children.Add(new DisplayErrorMessageUserControl($"{loginError.errors[0].message}"));
+                        //this.Log_in_Window.Children.Add(new DisplayErrorMessageUserControl($"{loginError.errors[0].message}"));
 
-                       // MessageBox.Show($"{loginError.errors[0].message}");
+                        var infoDialogMessage = InfoDialogMessage.GetInstance();
+                        infoDialogMessage.Message = ($"{loginError.errors[0].message}");
+                        await DialogHost.Show(infoDialogMessage);
+
+                        // MessageBox.Show($"{loginError.errors[0].message}");
                         this.preLoader.Visibility = Visibility.Collapsed;
                         this.IsEnabled = true;
                     }
                     else
                     {
-                        MessageBox.Show($"Error Code{response.StatusCode} : Message - {response.ReasonPhrase}");
+                        var infoDialogMessage = InfoDialogMessage.GetInstance();
+                        infoDialogMessage.Message = ($"Error Code{response.StatusCode} : Message - {response.ReasonPhrase}");
+                        await DialogHost.Show(infoDialogMessage);
+
+                        //MessageBox.Show($"Error Code{response.StatusCode} : Message - {response.ReasonPhrase}");
                         this.preLoader.Visibility = Visibility.Collapsed;
                         this.IsEnabled = true;
                     }
                 }
                 else
                 {
-                    MessageBox.Show($"Enter Valid Information.");
+                    var infoDialogMessage = InfoDialogMessage.GetInstance();
+                    infoDialogMessage.Message = ($"Enter Valid Information.");
+                    await DialogHost.Show(infoDialogMessage);
+
+                    //MessageBox.Show($"Enter Valid Information.");
                     this.preLoader.Visibility = Visibility.Collapsed;
                     this.IsEnabled = true;
                 }
