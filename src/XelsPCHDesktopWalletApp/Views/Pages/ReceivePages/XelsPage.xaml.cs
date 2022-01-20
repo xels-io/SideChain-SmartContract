@@ -15,7 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using MaterialDesignThemes.Wpf;
 using Newtonsoft.Json;
 
 using QRCoder;
@@ -24,6 +24,7 @@ using XelsPCHDesktopWalletApp.Common;
 using XelsPCHDesktopWalletApp.Models;
 using XelsPCHDesktopWalletApp.Models.CommonModels;
 using XelsPCHDesktopWalletApp.Models.SmartContractModels;
+using XelsPCHDesktopWalletApp.Views.Dialogs.DialogsModel;
 using XelsPCHDesktopWalletApp.Views.Pages.Modals;
 
 namespace XelsPCHDesktopWalletApp.Views.Pages.ReceivePages
@@ -84,7 +85,10 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.ReceivePages
             }
             else
             {
-                this.Xels_Receive_Page.Children.Add(new DisplayErrorMessageUserControl("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase));
+                //this.Xels_Receive_Page.Children.Add(new DisplayErrorMessageUserControl("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase));
+                var errorDialogMessage = ErrorDialogMessage.GetInstance();
+                errorDialogMessage.Message = "Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase;
+                await DialogHost.Show(errorDialogMessage, "RootDialog");
             }
 
             return content;
@@ -150,18 +154,25 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.ReceivePages
             this.image.Source = this.QRCode.GenerateQRCode(this.textBoxTextToQr.Text);
         }
 
-        private void SingleAddress_Copy_Button_Click(object sender, RoutedEventArgs e)
+        private async void SingleAddress_Copy_Button_Click(object sender, RoutedEventArgs e)
         {
             Clipboard.SetText(this.textBoxTextToQr.Text);
-            this.Xels_Receive_Page.Children.Add(new DisplayMessageUserControl("Address Copied Successfully : " + this.textBoxTextToQr.Text.ToString()));
+            //this.Xels_Receive_Page.Children.Add(new DisplayMessageUserControl("Address Copied Successfully : " + this.textBoxTextToQr.Text.ToString()));
+
+            var infoDialogMessage = InfoDialogMessage.GetInstance();
+            infoDialogMessage.Message = "Address Copied Successfully : " + this.textBoxTextToQr.Text.ToString();
+            await DialogHost.Show(infoDialogMessage, "RootDialog");
         }
 
-        private void Address_Copy_Button_Click(object sender, RoutedEventArgs e)
+        private async void Address_Copy_Button_Click(object sender, RoutedEventArgs e)
         {
             ReceiveWalletStatus item = (ReceiveWalletStatus)((sender as Button)?.Tag as ListViewItem)?.DataContext;
             Clipboard.SetText(item.Address.ToString());
             //this.Xels_Receive_Page.Children.Add(new DisplayMessageUserControl("Address Copied Successfully :- " + item.Address.ToString()));
 
+            //var infoDialogMessage = InfoDialogMessage.GetInstance();
+            //infoDialogMessage.Message = "Address Copied Successfully :- " + item.Address.ToString();
+            //await DialogHost.Show(infoDialogMessage, "RootDialog");
         }
 
         //private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
