@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="CreateShowMnemonic" Height="560" Width="1050">
 
-    <materialDesign:DialogHost>
+    <materialDesign:DialogHost Identifier="RootDialog">
         <Grid x:Name="Mnemonic_Copy">
             <Border  Margin="10,10,10,10" Background="White" BorderBrush="Green" BorderThickness="3" CornerRadius="10">
 

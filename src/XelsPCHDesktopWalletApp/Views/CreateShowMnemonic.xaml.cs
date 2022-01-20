@@ -72,7 +72,7 @@ namespace XelsPCHDesktopWalletApp.Views
 
             var msg =InfoDialogMessage.GetInstance();
             msg.Message = "Copied Successfully";
-            await DialogHost.Show(msg);
+            await DialogHost.Show(msg, "RootDialog");
         }
 
         private void continueButton_Click(object sender, RoutedEventArgs e)
