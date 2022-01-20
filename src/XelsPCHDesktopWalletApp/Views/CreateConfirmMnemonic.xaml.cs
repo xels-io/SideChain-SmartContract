@@ -6,10 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using MaterialDesignThemes.Wpf;
 using Newtonsoft.Json;
 using XelsPCHDesktopWalletApp.Common;
 using XelsPCHDesktopWalletApp.Models;
 using XelsPCHDesktopWalletApp.Models.CommonModels;
+using XelsPCHDesktopWalletApp.Views.Dialogs.DialogsModel;
 using XelsPCHDesktopWalletApp.Views.Pages.Modals;
 
 namespace XelsPCHDesktopWalletApp.Views
@@ -29,7 +31,6 @@ namespace XelsPCHDesktopWalletApp.Views
         string[] words;
 
         int[] randomidx = new int[3];
-
         public CreateConfirmMnemonic()
         {
             InitializeComponent();
@@ -115,7 +116,7 @@ namespace XelsPCHDesktopWalletApp.Views
 
         }
 
-        public void CheckMnemonic()
+        public async void CheckMnemonic()
         {
             string firstword = this.words[this.randomidx[0]];
             string secondword = this.words[this.randomidx[1]];
@@ -129,7 +130,11 @@ namespace XelsPCHDesktopWalletApp.Views
             }
             else
             {
-                this.Confirm_Account_Creation.Children.Add(new DisplayErrorMessageUserControl("Secret words do not match!"));
+                //this.Confirm_Account_Creation.Children.Add(new DisplayErrorMessageUserControl("Secret words do not match!"));
+
+                var infoDialogMessage = ErrorDialogMessage.GetInstance();
+                infoDialogMessage.Message = "Secret words do not match!";
+                await DialogHost.Show(infoDialogMessage, "RootDialog");
             }
         }
 
@@ -157,12 +162,16 @@ namespace XelsPCHDesktopWalletApp.Views
                     {
                         //MessageBox.Show($"Successfully created wallet with Name: {this.Walletcreateconfirm.Name}");
 
-                        this.Confirm_Account_Creation.Children.Add(new AccountCreatedUserControl( $"Successfully created wallet with Name: {this.Walletcreateconfirm.Name}"));
+                        //this.Confirm_Account_Creation.Children.Add(new AccountCreatedUserControl( $"Successfully created wallet with Name: {this.Walletcreateconfirm.Name}"));
 
-                        //CreateOrRestore parentWindow = (CreateOrRestore)Window.GetWindow(this);
-                        //parentWindow.Visibility = Visibility.Collapsed;
-                        //MainWindow mw = new MainWindow();
-                        //mw.Show();
+                        var infoDialogMessage = InfoDialogMessage.GetInstance();
+                        infoDialogMessage.Message = $"Successfully created wallet with Name: {this.Walletcreateconfirm.Name}";
+                        await DialogHost.Show(infoDialogMessage, "RootDialog");
+
+                        CreateOrRestore parentWindow = (CreateOrRestore)Window.GetWindow(this);
+                        parentWindow.Visibility = Visibility.Collapsed;
+                        MainWindow mw = new MainWindow();
+                        mw.Show();
                     }
                 }
             }
