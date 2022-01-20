@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
-
+using MaterialDesignThemes.Wpf;
 using NBitcoin;
 
 using Newtonsoft.Json;
@@ -17,6 +17,7 @@ using XelsPCHDesktopWalletApp.Common;
 using XelsPCHDesktopWalletApp.Models;
 using XelsPCHDesktopWalletApp.Models.CommonModels;
 using XelsPCHDesktopWalletApp.Models.SmartContractModels;
+using XelsPCHDesktopWalletApp.Views.Dialogs.DialogsModel;
 using XelsPCHDesktopWalletApp.Views.Pages.Cross_chain_Transfer;
 using XelsPCHDesktopWalletApp.Views.Pages.Modals;
 
@@ -146,7 +147,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages
                         if (GlobalPropertyModel.HasBalance && URLConfiguration.Chain != "-sidechain")// (!this.sidechainEnabled)
                         {
                             //GlobalPropertyModel.StakingStart = true;
-                           
+
                             _ = GetStakingInfoAsync(this.baseURL);
                         }
                     }
@@ -157,7 +158,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages
                         this.HybridMiningInfoBorder.Visibility = Visibility.Hidden;
                     }
                 }
-                
+
             }
             catch (Exception r)
             {
@@ -204,7 +205,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages
                             if (hh.Type == "staked")
                             {
                                 hh.TransactionType = "HYBRID REWARD";
- 
+
                             }
                             if (hh.Type == "send")
                             {
@@ -246,7 +247,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages
                     }
 
                 }
-               
+
             }
             catch (Exception gg)
             {
@@ -268,7 +269,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages
 
                     this.walletGeneralInfoModel = JsonConvert.DeserializeObject<WalletGeneralInfoModel>(content);
 
-                     this.lastBlockSyncedHeight = this.walletGeneralInfoModel.LastBlockSyncedHeight; // for history data
+                    this.lastBlockSyncedHeight = this.walletGeneralInfoModel.LastBlockSyncedHeight; // for history data
 
                     this.processedText = $"Processed { this.walletGeneralInfoModel.LastBlockSyncedHeight ?? 0} out of { this.walletGeneralInfoModel.ChainTip} blocks.";
 
@@ -314,7 +315,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages
                         this.StakingInfo.Text = "Staking";
                     }
                 }
-               
+
             }
             catch (Exception q)
             {
@@ -347,7 +348,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages
 
                     GlobalPropertyModel.SpendableBalance = (balance.MaxSpendableAmount / 100000000);
                 }
-               
+
             }
             catch (Exception x)
             {
@@ -371,7 +372,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages
 
                     stakingInfoModel = JsonConvert.DeserializeObject<StakingInfoModel>(content);
 
-                    this.HybridWeightTxt.Text = $"{stakingInfoModel.Weight/100000000}{" "} {GlobalPropertyModel.CoinUnit}";
+                    this.HybridWeightTxt.Text = $"{stakingInfoModel.Weight / 100000000}{" "} {GlobalPropertyModel.CoinUnit}";
 
                     this.NetworkWeightTxt.Text = $"{stakingInfoModel.NetStakeWeight.ToString()} {" "} {GlobalPropertyModel.CoinUnit}"; //netStakingWeight
 
@@ -406,7 +407,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages
                         //this.StakingInfoImage.Source;
                     }
                 }
-                
+
             }
             catch (Exception e)
             {
@@ -644,8 +645,10 @@ namespace XelsPCHDesktopWalletApp.Views.Pages
 
                         foreach (var error in errors.Errors)
                         {
-                            MessageBox.Show(error.Message);
-
+                            //MessageBox.Show(error.Message);
+                            var errorDialogMessage = ErrorDialogMessage.GetInstance();
+                            errorDialogMessage.Message = error.Message;
+                            await DialogHost.Show(errorDialogMessage);
                         }
                         this.Password.Password = "";
                     }
@@ -654,7 +657,11 @@ namespace XelsPCHDesktopWalletApp.Views.Pages
                 {
                     this.PreloaderPoup.IsOpen = false;
                     this.IsEnabled = true;
-                    MessageBox.Show("Please, enter password to unlock");
+                    //MessageBox.Show("Please, enter password to unlock");
+
+                    var errorDialogMessage = ErrorDialogMessage.GetInstance();
+                    errorDialogMessage.Message = ($"Please, enter password to unlock");
+                    await DialogHost.Show(errorDialogMessage);
                 }
             }
             catch (Exception ss)
@@ -695,7 +702,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages
         }
 
         private void CrossChainTransferButton_Click(object sender, RoutedEventArgs e)
-        {           
+        {
             this.Dashboard.Children.Add(new CrosschainUserControl());
         }
         #endregion
