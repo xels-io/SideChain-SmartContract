@@ -4,7 +4,7 @@ using System.Text;
 
 namespace XelsPCHDesktopWalletApp.Views.Dialogs.DialogsModel
 {
-    public class ErrorDialogMessage : DialogMessage
+    public sealed class ErrorDialogMessage : DialogMessage
     {
         private ErrorDialogMessage()
         {

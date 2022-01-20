@@ -4,7 +4,7 @@ using System.Text;
 
 namespace XelsPCHDesktopWalletApp.Views.Dialogs.DialogsModel
 {
-    public class InfoDialogMessage : DialogMessage
+    public sealed class InfoDialogMessage : DialogMessage
     {
         private InfoDialogMessage()
         {
