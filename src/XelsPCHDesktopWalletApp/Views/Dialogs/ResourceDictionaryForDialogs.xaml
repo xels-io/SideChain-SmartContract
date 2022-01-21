@@ -16,7 +16,7 @@
         </StackPanel>-->
 
 
-        <Border MinHeight="120" MinWidth="350" >
+        <Border MinHeight="120" Width="350" >
             <Border Background="White" Margin="3 3 3 3" BorderBrush="Green" CornerRadius="8" BorderThickness="1.5">
                 <StackPanel>
                     <Border Height="70">
@@ -55,7 +55,7 @@
                             Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"></Button>
         </StackPanel>-->
 
-        <Border MinHeight="120" MinWidth="350" >
+        <Border MinHeight="120" Width="350" >
             <Border Background="White" Margin="3 3 3 3" BorderBrush="Green" CornerRadius="8" BorderThickness="1.5">
                 <StackPanel>
                     <Border Height="70">
