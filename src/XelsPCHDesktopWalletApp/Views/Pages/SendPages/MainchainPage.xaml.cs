@@ -6,12 +6,13 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-
+using MaterialDesignThemes.Wpf;
 using Newtonsoft.Json;
 using XelsPCHDesktopWalletApp.Common;
 using XelsPCHDesktopWalletApp.Models;
 using XelsPCHDesktopWalletApp.Models.CommonModels;
 using XelsPCHDesktopWalletApp.Models.SmartContractModels;
+using XelsPCHDesktopWalletApp.Views.Dialogs.DialogsModel;
 using XelsPCHDesktopWalletApp.Views.layout;
 using XelsPCHDesktopWalletApp.Views.Pages.Modals;
 
@@ -25,6 +26,9 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.SendPages
         private TransactionSending TransactionSending = new TransactionSending();
         private TransactionBuilding TransactionBuilding = new TransactionBuilding();
         private WalletBalance WalletBalance = new WalletBalance();
+
+        private ErrorDialogMessage errorDialog= ErrorDialogMessage.GetInstance();
+        private InfoDialogMessage infoDialog = InfoDialogMessage.GetInstance();
 
         private BuildTransaction BuildTransaction = new BuildTransaction();
         private string cointype; 
@@ -62,7 +66,11 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.SendPages
             if (this.DestinationAddressText.Text == string.Empty)
             {
                 //MessageBox.Show("An address is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("An address is required."));
+                //this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("An address is required."));
+
+                errorDialog.Message = "An address is required.";
+                _ = DialogHost.Show(errorDialog, "SendUserControl");
+
                 this.DestinationAddressText.Focus();
                 return false;
             }
@@ -70,7 +78,11 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.SendPages
             if (this.DestinationAddressText.Text.Length < 26)
             {
                 //MessageBox.Show("An address is at least 26 characters long.");
-                this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("An address is at least 26 characters long."));
+                //this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("An address is at least 26 characters long."));
+
+                errorDialog.Message = "An address is at least 26 characters long.";
+                _ = DialogHost.Show(errorDialog, "SendUserControl");
+
                 this.DestinationAddressText.Focus();
                 return false;
             }
@@ -78,7 +90,10 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.SendPages
             if (this.SendAmountText.Text == string.Empty)
             {
                 //MessageBox.Show("An amount is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("An amount is required."));
+                //this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("An amount is required."));
+                errorDialog.Message = "An amount is required.";
+                _ = DialogHost.Show(errorDialog, "SendUserControl");
+
                 this.SendAmountText.Focus();
                 return false;
             }
@@ -86,7 +101,11 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.SendPages
             if (this.SendAmountText.Text.Length < 0.00001)
             {
                 //MessageBox.Show("The amount has to be more or equal to 1.");
-                this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("The amount has to be more or equal to 1."));
+                //this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("The amount has to be more or equal to 1."));
+
+                errorDialog.Message = "The amount has to be more or equal to 1.";
+                _ = DialogHost.Show(errorDialog, "SendUserControl");
+
                 this.SendAmountText.Focus();
                 return false;
             }           
@@ -102,7 +121,11 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.SendPages
                 if (this.TransactionFeeText.Text == "")
                 {
                     //MessageBox.Show("Transaction Fee is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                    this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Transaction Fee is required."));
+                    //this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Transaction Fee is required."));
+
+                    errorDialog.Message = "Transaction Fee is required.";
+                    _ = DialogHost.Show(errorDialog, "SendUserControl");
+
                     this.TransactionFeeText.Focus();
                     return false;
                 }
@@ -110,7 +133,11 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.SendPages
                 if (this.password.Password == "")
                 {
                     //MessageBox.Show("Your password is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                    this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Your password is required."));
+                    //this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Your password is required."));
+
+                    errorDialog.Message = "Your password is required.";
+                    _ = DialogHost.Show(errorDialog, "SendUserControl");
+
                     this.password.Focus();
                     return false;
                 }
@@ -200,7 +227,11 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.SendPages
                     {
 
                         //MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-                        this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase));
+                        //this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase));
+
+                        errorDialog.Message = "Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase;
+                        await DialogHost.Show(errorDialog, "SendUserControl");
+
                         this.DestinationAddressText.Text = "";
                     }
                 }
@@ -220,7 +251,10 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.SendPages
                 if (rex)
                 {
                     //MessageBox.Show("Data is not valid");
-                    this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Data is not valid"));
+                    //this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Data is not valid"));
+
+                    errorDialog.Message = "Data is not valid";
+                    _ = DialogHost.Show(errorDialog, "SendUserControl");
                     this.SendAmountText.Focus();
                     return false;
                 }
@@ -228,14 +262,23 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.SendPages
             if (this.SendAmountText.Text.Trim() == string.Empty)
             {
                 //MessageBox.Show("Amount is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Amount is required!"));
+                //this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Amount is required!"));
+
+                errorDialog.Message = "Amount is required!";
+                _ = DialogHost.Show(errorDialog, "SendUserControl");
+
                 this.SendAmountText.Focus();
                 return false;
             }
             if (this.DestinationAddressText.Text.ToString().Trim() == "")
             {
                 //MessageBox.Show(" Address is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Address is required!"));
+                //this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Address is required!"));
+
+                errorDialog.Message = "Address is required!";
+
+                _ = DialogHost.Show(errorDialog, "SendUserControl");
+
                 this.DestinationAddressText.Focus();
                 return false;
             }
@@ -243,7 +286,10 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.SendPages
             if (this.password.Password.ToString().Trim() == "")
             {
                 //MessageBox.Show("Password is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Password is required!"));
+                //this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Password is required!"));
+                errorDialog.Message = "Password is required!";
+                _ = DialogHost.Show(errorDialog, "SendUserControl");
+
                 this.password.Focus();
                 return false;
             }
@@ -295,7 +341,9 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.SendPages
                             foreach (var error in errors.Errors)
                             {
                                 //MessageBox.Show(error.Message);
-                                this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl(error.Message));
+                                //this.Mainchain_Send_Page.Children.Add(new DisplayErrorMessageUserControl(error.Message));
+                                errorDialog.Message = error.Message;
+                                _ = DialogHost.Show(errorDialog, "SendUserControl");
                                 break;
                                 //MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
                             }
