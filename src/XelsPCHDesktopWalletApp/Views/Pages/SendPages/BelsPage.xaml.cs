@@ -15,8 +15,6 @@ using Nethereum.RPC.Eth.DTOs;
 using System;
 using XelsPCHDesktopWalletApp.Models.SmartContractModels;
 using XelsPCHDesktopWalletApp.Views.Pages.Modals;
-using XelsPCHDesktopWalletApp.Views.Dialogs.DialogsModel;
-using MaterialDesignThemes.Wpf;
 
 namespace XelsPCHDesktopWalletApp.Views.Pages.SendPages
 {
@@ -43,12 +41,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.SendPages
             if (this.textToAddress.Text.ToString().Trim() == "")
             {
                 //MessageBox.Show("Address To is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                //this.Bels_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Address To is required!"));
-
-                var errorDialogMessage = ErrorDialogMessage.GetInstance();
-                errorDialogMessage.Message = "Address To is required!";
-                _=DialogHost.Show(errorDialogMessage, "SendUserControl");
-
+                this.Bels_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Address To is required!"));
                 this.textToAddress.Focus();
                 return false;
             }
@@ -59,12 +52,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.SendPages
                 if (rex)
                 {
                     //MessageBox.Show("Data is not valid");
-                    //this.Bels_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Data is not valid"));
-
-                    var errorDialogMessage = ErrorDialogMessage.GetInstance();
-                    errorDialogMessage.Message = "Data is not valid";
-                    _ = DialogHost.Show(errorDialogMessage, "SendUserControl");
-
+                    this.Bels_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Data is not valid"));
                     this.textAmount.Focus();
                     return false;
                 }
@@ -72,12 +60,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.SendPages
             if (this.textAmount.Text.Trim() == string.Empty)
             {
                 //MessageBox.Show("Amount is required!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                //this.Bels_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Amount is required!"));
-
-                var errorDialogMessage = ErrorDialogMessage.GetInstance();
-                errorDialogMessage.Message = "Amount is required!";
-                _ = DialogHost.Show(errorDialogMessage, "SendUserControl");
-
+                this.Bels_Send_Page.Children.Add(new DisplayErrorMessageUserControl("Amount is required!"));
                 this.textAmount.Focus();
                 return false;
             }
@@ -115,32 +98,20 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.SendPages
                         if (sendResult.Item2 == "SUCCESS")
                         {
                             string tranID = sendResult.Item1.TransactionHash.ToString();
-                            
+                            string message = this.textAmount.Text + " Token successfully send to " + toAddress + "and Transaction Id: " + tranID;
                             //MessageBox.Show(message, "SUCCESS", MessageBoxButton.OK, MessageBoxImage.Information);
-                            //this.Bels_Send_Page.Children.Add(new DisplayErrorMessageUserControl(message));
-
-                            var dialogMessage = InfoDialogMessage.GetInstance();
-                            dialogMessage.Message = this.textAmount.Text + " Token successfully send to " + toAddress + "and Transaction Id: " + tranID;
-                            await DialogHost.Show(dialogMessage, "SendUserControl");
+                            this.Bels_Send_Page.Children.Add(new DisplayErrorMessageUserControl(message));
                         }
                         else
                         {
                             //MessageBox.Show(sendResult.Item2, "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                            //this.Bels_Send_Page.Children.Add(new DisplayErrorMessageUserControl(sendResult.Item2));
-
-                            var errorDialogMessage = ErrorDialogMessage.GetInstance();
-                            errorDialogMessage.Message = sendResult.Item2;
-                            await DialogHost.Show(errorDialogMessage, "SendUserControl");
+                            this.Bels_Send_Page.Children.Add(new DisplayErrorMessageUserControl(sendResult.Item2));
                         }
                     }
                     else
                     {
                         //MessageBox.Show("You have not imported yet!", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                        //this.Bels_Send_Page.Children.Add(new DisplayErrorMessageUserControl("You have not imported yet!"));
-
-                        var errorDialogMessage = ErrorDialogMessage.GetInstance();
-                        errorDialogMessage.Message = "You have not imported yet!";
-                        await DialogHost.Show(errorDialogMessage, "SendUserControl");
+                        this.Bels_Send_Page.Children.Add(new DisplayErrorMessageUserControl("You have not imported yet!"));
                     }
                 }
             }
