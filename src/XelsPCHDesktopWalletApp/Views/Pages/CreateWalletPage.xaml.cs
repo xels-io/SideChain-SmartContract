@@ -4,9 +4,11 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using MaterialDesignThemes.Wpf;
 using XelsPCHDesktopWalletApp.Common;
 using XelsPCHDesktopWalletApp.Models;
 using XelsPCHDesktopWalletApp.Models.CommonModels;
+using XelsPCHDesktopWalletApp.Views.Dialogs.DialogsModel;
 
 namespace XelsPCHDesktopWalletApp.Views.Pages
 {
@@ -85,7 +87,11 @@ namespace XelsPCHDesktopWalletApp.Views.Pages
 
             if (this.password.Password.Length < 8)
             {
-                MessageBox.Show("A password should be at least 8 characters long");
+                //MessageBox.Show("A password should be at least 8 characters long");
+                var errorDialogMessage = ErrorDialogMessage.GetInstance();
+                errorDialogMessage.Message = "A password should be at least 8 characters long";
+                _=DialogHost.Show(errorDialogMessage, "CreateWalletPage");
+
                 this.password.Focus();
                 return false;
             }
@@ -101,7 +107,11 @@ namespace XelsPCHDesktopWalletApp.Views.Pages
             }
             else
             {
-                MessageBox.Show("The two passwords must match!");
+                //MessageBox.Show("The two passwords must match!");
+
+                var errorDialogMessage = ErrorDialogMessage.GetInstance();
+                errorDialogMessage.Message = "The two passwords must match!";
+                _ = DialogHost.Show(errorDialogMessage, "CreateWalletPage");
             }
         }
 

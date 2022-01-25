@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-
+using MaterialDesignThemes.Wpf;
 using Nethereum.RPC.Eth.DTOs;
 
 using Newtonsoft.Json;
@@ -16,6 +16,7 @@ using XelsPCHDesktopWalletApp.Common;
 using XelsPCHDesktopWalletApp.Models;
 using XelsPCHDesktopWalletApp.Models.CommonModels;
 using XelsPCHDesktopWalletApp.Models.SmartContractModels;
+using XelsPCHDesktopWalletApp.Views.Dialogs.DialogsModel;
 
 namespace XelsPCHDesktopWalletApp.Views.Pages
 {
@@ -304,7 +305,10 @@ namespace XelsPCHDesktopWalletApp.Views.Pages
                 }
                 else
                 {
-                    MessageBox.Show("Wallet Data not Found.");
+                    //MessageBox.Show("Wallet Data not Found.");
+                    var dialogMessage = ErrorDialogMessage.GetInstance();
+                    dialogMessage.Message = "Wallet Data not Found.";
+                    _ = DialogHost.Show(dialogMessage, "ExchangePage");
                 }
             }
             catch (Exception e)
@@ -397,7 +401,11 @@ namespace XelsPCHDesktopWalletApp.Views.Pages
 
                     if (exchangedata.id == null)
                     {
-                        MessageBox.Show($"Your provided Order Id: {orderId} is not found!");
+                        //MessageBox.Show($"Your provided Order Id: {orderId} is not found!");
+
+                        var dialogMessage = ErrorDialogMessage.GetInstance();
+                        dialogMessage.Message = $"Your provided Order Id: {orderId} is not found!";
+                        await DialogHost.Show(dialogMessage, "ExchangePage");
                     }
                     else
                     {
@@ -520,7 +528,10 @@ namespace XelsPCHDesktopWalletApp.Views.Pages
                     }
                     else
                     {
-                        MessageBox.Show("Data is not valid");
+                        //MessageBox.Show("Data is not valid");
+                        var dialogMessage = ErrorDialogMessage.GetInstance();
+                        dialogMessage.Message = "Data is not valid";
+                        _ = DialogHost.Show(dialogMessage, "ExchangePage");
                         this.AmountTxt.Text = "";
                     }
                 }

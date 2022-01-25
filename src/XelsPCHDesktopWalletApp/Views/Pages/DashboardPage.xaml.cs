@@ -648,7 +648,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages
                             //MessageBox.Show(error.Message);
                             var errorDialogMessage = ErrorDialogMessage.GetInstance();
                             errorDialogMessage.Message = error.Message;
-                            await DialogHost.Show(errorDialogMessage);
+                            await DialogHost.Show(errorDialogMessage, "DashboardPage");
                         }
                         this.Password.Password = "";
                     }
@@ -660,8 +660,8 @@ namespace XelsPCHDesktopWalletApp.Views.Pages
                     //MessageBox.Show("Please, enter password to unlock");
 
                     var errorDialogMessage = ErrorDialogMessage.GetInstance();
-                    errorDialogMessage.Message = ($"Please, enter password to unlock");
-                    await DialogHost.Show(errorDialogMessage);
+                    errorDialogMessage.Message = "Please, enter password to unlock";
+                    await DialogHost.Show(errorDialogMessage, "DashboardPage");
                 }
             }
             catch (Exception ss)
