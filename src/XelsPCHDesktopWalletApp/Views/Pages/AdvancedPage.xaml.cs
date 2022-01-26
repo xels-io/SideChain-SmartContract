@@ -112,7 +112,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages
         }
 
         // Rescan Wallet
-        public bool isValidRW()
+        public async Task<bool> isValidRW()
         {
             if (this.RescanFromDate.SelectedDate == null)
             {
@@ -120,7 +120,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages
                 this.RescanFromDate.Focus();
                 var errorDialogMessage = ErrorDialogMessage.GetInstance();
                 errorDialogMessage.Message = "Please choose the date the wallet should sync from.";
-                _ = DialogHost.Show(errorDialogMessage, "AdvancedPage");
+                await DialogHost.Show(errorDialogMessage, "AdvancedPage");
                 return false;
             }
 
@@ -319,12 +319,12 @@ namespace XelsPCHDesktopWalletApp.Views.Pages
             }
         }
 
-        private void Rescan_Click(object sender, RoutedEventArgs e)
+        private async void Rescan_Click(object sender, RoutedEventArgs e)
         {
             string fromdate = this.RescanFromDate.SelectedDate.ToString();
-            if (isValidRW())
+            if (await isValidRW())
             {
-                _ = RemoveTransactionsAsync(this.baseURL, fromdate);
+               await RemoveTransactionsAsync(this.baseURL, fromdate);
             }
         }
 

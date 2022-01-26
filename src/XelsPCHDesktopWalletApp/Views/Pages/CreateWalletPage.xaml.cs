@@ -75,6 +75,14 @@ namespace XelsPCHDesktopWalletApp.Views.Pages
                 return false;
             }
 
+            if (this.password.Password != this.repassword.Password)
+            {
+                this.repassword_ErrorMessage.Visibility = Visibility.Visible;
+                this.repassword_ErrorMessage.Content = "Password not matched";
+                this.repassword.Focus();
+                return false;
+            }
+
             // Password:  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!#$%&'()*+,-./:;<=>?@[\]^_`{|}~])[A-Za-z\d!#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{8,}$/
             if (!Regex.IsMatch(this.password.Password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!#$%&'()*+,-./:;<=>?@[\]^_`{|}~])[A-Za-z\d!#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{8,}$"))
             {
@@ -104,14 +112,6 @@ namespace XelsPCHDesktopWalletApp.Views.Pages
             if (this.password.Password == this.repassword.Password)
             {
                 canProceedPass = true;
-            }
-            else
-            {
-                //MessageBox.Show("The two passwords must match!");
-
-                var errorDialogMessage = ErrorDialogMessage.GetInstance();
-                errorDialogMessage.Message = "The two passwords must match!";
-                _ = DialogHost.Show(errorDialogMessage, "CreateWalletPage");
             }
         }
 
