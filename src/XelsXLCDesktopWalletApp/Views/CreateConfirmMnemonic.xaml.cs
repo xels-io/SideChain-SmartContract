@@ -6,10 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using MaterialDesignThemes.Wpf;
 using Newtonsoft.Json;
 using XelsXLCDesktopWalletApp.Common;
 using XelsXLCDesktopWalletApp.Models;
 using XelsXLCDesktopWalletApp.Models.CommonModels;
+using XelsXLCDesktopWalletApp.Views.Dialogs.DialogsModel;
 using XelsXLCDesktopWalletApp.Views.Pages.Modals;
 
 namespace XelsXLCDesktopWalletApp.Views
@@ -115,7 +117,7 @@ namespace XelsXLCDesktopWalletApp.Views
 
         }
 
-        public void CheckMnemonic()
+        public async void CheckMnemonic()
         {
             string firstword = this.words[this.randomidx[0]];
             string secondword = this.words[this.randomidx[1]];
@@ -129,7 +131,11 @@ namespace XelsXLCDesktopWalletApp.Views
             }
             else
             {
-                this.Confirm_Account_Creation.Children.Add(new DisplayErrorMessageUserControl("Secret words do not match!"));
+                //this.Confirm_Account_Creation.Children.Add(new DisplayErrorMessageUserControl("Secret words do not match!"));
+
+                var dialogMessage = ErrorDialogMessage.GetInstance();
+                dialogMessage.Message = "Secret words do not match!";
+                await DialogHost.Show(dialogMessage, "CreateConfirmMnemonic");
             }
         }
 
@@ -157,12 +163,16 @@ namespace XelsXLCDesktopWalletApp.Views
                     {
                         //MessageBox.Show($"Successfully created wallet with Name: {this.Walletcreateconfirm.Name}");
 
-                        this.Confirm_Account_Creation.Children.Add(new AccountCreatedUserControl($"Successfully created wallet with Name: {this.Walletcreateconfirm.Name}"));
+                        //this.Confirm_Account_Creation.Children.Add(new AccountCreatedUserControl($"Successfully created wallet with Name: {this.Walletcreateconfirm.Name}"));
 
-                        //CreateOrRestore parentWindow = (CreateOrRestore)Window.GetWindow(this);
-                        //parentWindow.Visibility = Visibility.Collapsed;
-                        //MainWindow mw = new MainWindow();
-                        //mw.Show();
+                        var dialogMessage = InfoDialogMessage.GetInstance();
+                        dialogMessage.Message = $"Successfully created wallet with Name: {this.Walletcreateconfirm.Name}";
+                        await DialogHost.Show(dialogMessage, "CreateConfirmMnemonic");
+
+                        CreateOrRestore parentWindow = (CreateOrRestore)Window.GetWindow(this);
+                        parentWindow.Visibility = Visibility.Collapsed;
+                        MainWindow mw = new MainWindow();
+                        mw.Show();
                     }
                 }
             }

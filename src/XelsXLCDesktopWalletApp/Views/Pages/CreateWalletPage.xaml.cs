@@ -4,9 +4,11 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using MaterialDesignThemes.Wpf;
 using XelsXLCDesktopWalletApp.Common;
 using XelsXLCDesktopWalletApp.Models;
 using XelsXLCDesktopWalletApp.Models.CommonModels;
+using XelsXLCDesktopWalletApp.Views.Dialogs.DialogsModel;
 
 namespace XelsXLCDesktopWalletApp.Views.Pages
 {
@@ -25,13 +27,13 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
         string _mnemonic;
         bool canProceedPass = false;
 
-        
+
         public async void LoadMnemonics()
         {
             this._mnemonic = await GetMnemonics(this.baseURL);
         }
 
-        public bool IsValid()
+        public async Task<bool> IsValid()
         {
             if (string.IsNullOrWhiteSpace(this.name.Text))
             {
@@ -43,7 +45,7 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
             if (this.name.Text.Length < 1 || this.name.Text.Length > 24)
             {
                 this.walletName_ErrorMessage.Visibility = Visibility.Visible;
-                this.walletName_ErrorMessage.Content =  "Name should be 1 to 24 characters long";
+                this.walletName_ErrorMessage.Content = "Name should be 1 to 24 characters long";
                 this.name.Focus();
                 return false;
             }
@@ -73,6 +75,14 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
                 return false;
             }
 
+            if (this.password.Password != this.repassword.Password)
+            {
+                this.repassword_ErrorMessage.Visibility = Visibility.Visible;
+                this.repassword_ErrorMessage.Content = "Password not matched";
+                this.repassword.Focus();
+                return false;
+            }
+
             // Password:  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!#$%&'()*+,-./:;<=>?@[\]^_`{|}~])[A-Za-z\d!#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{8,}$/
             if (!Regex.IsMatch(this.password.Password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!#$%&'()*+,-./:;<=>?@[\]^_`{|}~])[A-Za-z\d!#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{8,}$"))
             {
@@ -85,23 +95,23 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
 
             if (this.password.Password.Length < 8)
             {
-                MessageBox.Show("A password should be at least 8 characters long");
+                //MessageBox.Show("A password should be at least 8 characters long");
                 this.password.Focus();
+
+                var errorDialogMessage = ErrorDialogMessage.GetInstance();
+                errorDialogMessage.Message = "A password should be at least 8 characters long";
+                await DialogHost.Show(errorDialogMessage, "CreateWalletPage");
                 return false;
             }
 
             return true;
         }
 
-        public void CheckPassInput()
+        public async void CheckPassInput()
         {
             if (this.password.Password == this.repassword.Password)
             {
                 canProceedPass = true;
-            }
-            else
-            {
-                MessageBox.Show("The two passwords must match!");
             }
         }
 
@@ -146,18 +156,17 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
             return mnemonic;
         }
 
-        private void CreateButton_Click(object sender, RoutedEventArgs e)
+        private async void CreateButton_Click(object sender, RoutedEventArgs e)
         {
             this.IsEnabled = false;
             try
             {
-                if (IsValid())
+                if (await IsValid())
                 {
                     CheckPassInput();
-
                     if (this.canProceedPass == true)
                     {
-
+                        this.IsEnabled = true;
                         WalletCreation creation = new WalletCreation();
                         creation.Name = this.name.Text;
                         creation.Password = this.password.Password;
@@ -177,7 +186,7 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
             {
                 GlobalExceptionHandler.SendErrorToText(es);
             }
-            
+
         }
 
         public void Textbox_Null_check_OnKeyPress(object sender, RoutedEventArgs e)
@@ -185,7 +194,7 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
             if (!string.IsNullOrWhiteSpace(this.name.Text))
             {
                 this.walletName_ErrorMessage.Visibility = Visibility.Hidden;
-            }             
+            }
 
             if (!string.IsNullOrWhiteSpace(this.password.Password))
             {
@@ -194,7 +203,7 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
                     this.password_ErrorMessage.Visibility = Visibility.Visible;
                     this.password_ErrorMessage.Content = "A Password must be at least 8 characters long.";
                 }
-                else if(!Regex.IsMatch(this.password.Password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!#$%&'()*+,-./:;<=>?@[\]^_`{|}~])[A-Za-z\d!#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{8,}$"))
+                else if (!Regex.IsMatch(this.password.Password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!#$%&'()*+,-./:;<=>?@[\]^_`{|}~])[A-Za-z\d!#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{8,}$"))
                 {
                     this.password_ErrorMessage.Visibility = Visibility.Visible;
                     this.password_ErrorMessage.Content = "A Password must contain at least one uppercase letter, one losercase letter, one number and one special character.";
@@ -213,7 +222,7 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
                     this.repassword_ErrorMessage.Visibility = Visibility.Visible;
                     this.repassword_ErrorMessage.Content = "A Password must be at least 8 characters long.";
                 }
-                else if(!Regex.IsMatch(this.repassword.Password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!#$%&'()*+,-./:;<=>?@[\]^_`{|}~])[A-Za-z\d!#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{8,}$"))
+                else if (!Regex.IsMatch(this.repassword.Password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!#$%&'()*+,-./:;<=>?@[\]^_`{|}~])[A-Za-z\d!#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{8,}$"))
                 {
                     this.repassword_ErrorMessage.Visibility = Visibility.Visible;
                     this.repassword_ErrorMessage.Content = "A Password must contain at least one uppercase letter, one losercase letter, one number and one special character.";

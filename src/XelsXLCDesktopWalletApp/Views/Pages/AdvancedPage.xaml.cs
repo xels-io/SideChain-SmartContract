@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using MaterialDesignThemes.Wpf;
 using Newtonsoft.Json;
 using Xels.Bitcoin.Controllers.Models;
 using XelsXLCDesktopWalletApp.Common;
 using XelsXLCDesktopWalletApp.Models;
 using XelsXLCDesktopWalletApp.Models.CommonModels;
+using XelsXLCDesktopWalletApp.Views.Dialogs.DialogsModel;
 
 namespace XelsXLCDesktopWalletApp.Views.Pages
 {
@@ -110,12 +112,16 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
         }
 
         // Rescan Wallet
-        public bool isValidRW()
+        public async Task<bool> isValidRW()
         {
             if (this.RescanFromDate.SelectedDate == null)
             {
-                MessageBox.Show("Please choose the date the wallet should sync from.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
                 this.RescanFromDate.Focus();
+                //MessageBox.Show("Please choose the date the wallet should sync from.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                var dialogMessage = ErrorDialogMessage.GetInstance();
+                dialogMessage.Message = "Please choose the date the wallet should sync from.";
+                await DialogHost.Show(dialogMessage, "AdvancedPage");
                 return false;
             }
 
@@ -251,7 +257,7 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
             }
         }
 
-        private void CopyButton_Click(object sender, RoutedEventArgs e)
+        private async void CopyButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -265,7 +271,11 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
             catch (Exception c)
             {
                 GlobalExceptionHandler.SendErrorToText(c);
-                MessageBox.Show(c.Message.ToString());
+                //MessageBox.Show(c.Message.ToString());
+
+                var errorDialogMessage = ErrorDialogMessage.GetInstance();
+                errorDialogMessage.Message = c.Message.ToString();
+                await DialogHost.Show(errorDialogMessage, "AdvancedPage");
             }
            
 
@@ -310,12 +320,12 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
             }
         }
 
-        private void Rescan_Click(object sender, RoutedEventArgs e)
+        private async void Rescan_Click(object sender, RoutedEventArgs e)
         {
             string fromdate = this.RescanFromDate.SelectedDate.ToString();
-            if (isValidRW())
+            if ( await isValidRW())
             {
-                _ = RemoveTransactionsAsync(this.baseURL, fromdate);
+                await RemoveTransactionsAsync(this.baseURL, fromdate);
             }
         }
 
@@ -332,7 +342,11 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
                 {
                     content = await response.Content.ReadAsStringAsync();
 
-                    MessageBox.Show("Your wallet is now resyncing. The time remaining depends on the size and creation time of your wallet. The wallet dashboard shows your progress.");
+                    //MessageBox.Show("Your wallet is now resyncing. The time remaining depends on the size and creation time of your wallet. The wallet dashboard shows your progress.");
+
+                    var dialogMessage = InfoDialogMessage.GetInstance();
+                    dialogMessage.Message = "Your wallet is now resyncing. The time remaining depends on the size and creation time of your wallet. The wallet dashboard shows your progress.";
+                    await DialogHost.Show(dialogMessage, "AdvancedPage");
                 }
                
             }

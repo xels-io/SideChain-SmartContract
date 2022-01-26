@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
-
+using MaterialDesignThemes.Wpf;
 using NBitcoin;
 
 using Newtonsoft.Json;
@@ -17,6 +17,7 @@ using XelsXLCDesktopWalletApp.Common;
 using XelsXLCDesktopWalletApp.Models;
 using XelsXLCDesktopWalletApp.Models.CommonModels;
 using XelsXLCDesktopWalletApp.Models.SmartContractModels;
+using XelsXLCDesktopWalletApp.Views.Dialogs.DialogsModel;
 using XelsXLCDesktopWalletApp.Views.Pages.Cross_chain_Transfer;
 using XelsXLCDesktopWalletApp.Views.Pages.Modals;
 
@@ -644,8 +645,11 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
 
                         foreach (var error in errors.Errors)
                         {
-                            MessageBox.Show(error.Message);
+                            //MessageBox.Show(error.Message);
 
+                            var errorDialogMessage = ErrorDialogMessage.GetInstance();
+                            errorDialogMessage.Message = error.Message;
+                            await DialogHost.Show(errorDialogMessage, "Dashboard");
                         }
                         this.Password.Password = "";
                     }
@@ -654,7 +658,11 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
                 {
                     this.PreloaderPoup.IsOpen = false;
                     this.IsEnabled = true;
-                    MessageBox.Show("Please, enter password to unlock");
+                    //MessageBox.Show("Please, enter password to unlock");
+
+                    var errorDialogMessage = ErrorDialogMessage.GetInstance();
+                    errorDialogMessage.Message = "Please, enter password to unlock";
+                    await DialogHost.Show(errorDialogMessage, "DashboardPage");
                 }
             }
             catch (Exception ss)

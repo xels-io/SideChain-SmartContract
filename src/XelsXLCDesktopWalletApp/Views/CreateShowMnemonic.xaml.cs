@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using MaterialDesignThemes.Wpf;
 using XelsXLCDesktopWalletApp.Common;
 using XelsXLCDesktopWalletApp.Models;
+using XelsXLCDesktopWalletApp.Views.Dialogs.DialogsModel;
 using XelsXLCDesktopWalletApp.Views.Pages;
 using XelsXLCDesktopWalletApp.Views.Pages.Modals;
 
@@ -49,7 +51,11 @@ namespace XelsXLCDesktopWalletApp.Views
             }
             catch (Exception c)
             {
-                MessageBox.Show(c.Message.ToString());
+                //MessageBox.Show(c.Message.ToString());
+
+                var dialogMessage = ErrorDialogMessage.GetInstance();
+                dialogMessage.Message = c.Message.ToString();
+                _=DialogHost.Show(dialogMessage, "CreateShowMnemonic");
             }
            
         }
@@ -66,8 +72,10 @@ namespace XelsXLCDesktopWalletApp.Views
         {
             Clipboard.SetText(this.copyMnemonicText);
 
-            this.Mnemonic_Copy.Children.Add(new DisplayMessageUserControl("Copied successfully."));
-
+            //this.Mnemonic_Copy.Children.Add(new DisplayMessageUserControl("Copied successfully."));
+            var dialogMessage = InfoDialogMessage.GetInstance();
+            dialogMessage.Message = "Copied successfully.";
+            _ = DialogHost.Show(dialogMessage, "CreateShowMnemonic");
             //MessageBox.Show("Copied successfully.");
         }
 
