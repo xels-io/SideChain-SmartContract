@@ -308,7 +308,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages
                     //MessageBox.Show("Wallet Data not Found.");
                     var dialogMessage = ErrorDialogMessage.GetInstance();
                     dialogMessage.Message = "Wallet Data not Found.";
-                    _ = DialogHost.Show(dialogMessage, "ExchangePage");
+                    await DialogHost.Show(dialogMessage, "ExchangePage");
                 }
             }
             catch (Exception e)
@@ -529,10 +529,11 @@ namespace XelsPCHDesktopWalletApp.Views.Pages
                     else
                     {
                         //MessageBox.Show("Data is not valid");
+                        this.AmountTxt.Text = "";
                         var dialogMessage = ErrorDialogMessage.GetInstance();
                         dialogMessage.Message = "Data is not valid";
                         _ = DialogHost.Show(dialogMessage, "ExchangePage");
-                        this.AmountTxt.Text = "";
+
                     }
                 }
             }
