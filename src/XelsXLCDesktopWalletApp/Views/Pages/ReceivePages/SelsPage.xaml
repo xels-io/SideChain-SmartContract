@@ -4,10 +4,12 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:XelsXLCDesktopWalletApp.Views.Pages.ReceivePages"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="SelsPage">
 
+    <materialDesign:DialogHost>
     <Grid Background="White" x:Name="Sels_Receive_Page">
         <Grid.RowDefinitions>
             <RowDefinition Height="200" />
@@ -44,4 +46,5 @@
             <TextBlock Text="You have not imported SELS address yet." FontSize="20" FontWeight="Bold"/>
         </Border>
     </Grid>
+    </materialDesign:DialogHost>
 </Page>

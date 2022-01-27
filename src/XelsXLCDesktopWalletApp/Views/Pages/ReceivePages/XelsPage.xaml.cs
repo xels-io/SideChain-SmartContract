@@ -15,7 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using MaterialDesignThemes.Wpf;
 using Newtonsoft.Json;
 
 using QRCoder;
@@ -24,6 +24,7 @@ using XelsXLCDesktopWalletApp.Common;
 using XelsXLCDesktopWalletApp.Models;
 using XelsXLCDesktopWalletApp.Models.CommonModels;
 using XelsXLCDesktopWalletApp.Models.SmartContractModels;
+using XelsXLCDesktopWalletApp.Views.Dialogs.DialogsModel;
 using XelsXLCDesktopWalletApp.Views.Pages.Modals;
 
 namespace XelsXLCDesktopWalletApp.Views.Pages.ReceivePages
@@ -84,7 +85,11 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.ReceivePages
             }
             else
             {
-                this.Xels_Receive_Page.Children.Add(new DisplayErrorMessageUserControl("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase));
+                //this.Xels_Receive_Page.Children.Add(new DisplayErrorMessageUserControl("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase));
+
+                var errorDialogMessage = ErrorDialogMessage.GetInstance();
+                errorDialogMessage.Message = "Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase;
+                await DialogHost.Show(errorDialogMessage, "ReceiveUserControl");
             }
 
             return content;
@@ -150,10 +155,14 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.ReceivePages
             this.image.Source = this.QRCode.GenerateQRCode(this.textBoxTextToQr.Text);
         }
 
-        private void SingleAddress_Copy_Button_Click(object sender, RoutedEventArgs e)
+        private async void SingleAddress_Copy_Button_Click(object sender, RoutedEventArgs e)
         {
             Clipboard.SetText(this.textBoxTextToQr.Text);
-            this.Xels_Receive_Page.Children.Add(new DisplayMessageUserControl("Address Copied Successfully : " + this.textBoxTextToQr.Text.ToString()));
+            //this.Xels_Receive_Page.Children.Add(new DisplayMessageUserControl("Address Copied Successfully : " + this.textBoxTextToQr.Text.ToString()));
+
+            var infoDialogMessage = InfoDialogMessage.GetInstance();
+            infoDialogMessage.Message = "Address Copied Successfully : " + this.textBoxTextToQr.Text.ToString();
+            await DialogHost.Show(infoDialogMessage, "ReceiveUserControl");
         }
 
         private void Address_Copy_Button_Click(object sender, RoutedEventArgs e)

@@ -13,11 +13,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using MaterialDesignThemes.Wpf;
 using XelsXLCDesktopWalletApp.Common;
 using XelsXLCDesktopWalletApp.Models;
 using XelsXLCDesktopWalletApp.Models.CommonModels;
 using XelsXLCDesktopWalletApp.Models.SmartContractModels;
+using XelsXLCDesktopWalletApp.Views.Dialogs.DialogsModel;
 using XelsXLCDesktopWalletApp.Views.Pages.Modals;
 
 namespace XelsXLCDesktopWalletApp.Views.Pages.ReceivePages
@@ -64,14 +65,18 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.ReceivePages
             this.image.Source = this.QRCode.GenerateQRCode(this.textBoxTextToQr.Text);
         }
 
-        private void CopyAddressButton_Click(object sender, RoutedEventArgs e)
+        private async void CopyAddressButton_Click(object sender, RoutedEventArgs e)
         {
             string addressString = this.textBoxTextToQr.Text.ToString();
             if (addressString !="")
             {
                 Clipboard.SetText(addressString);
                 //MessageBox.Show("Address Copied Successfully :- " + addressString);
-                this.Bels_Receive_Page.Children.Add(new DisplayMessageUserControl("Address Copied Successfully : " + this.textBoxTextToQr.Text.ToString()));
+                //this.Bels_Receive_Page.Children.Add(new DisplayMessageUserControl("Address Copied Successfully : " + this.textBoxTextToQr.Text.ToString()));
+
+                var infoDialogMessage = InfoDialogMessage.GetInstance();
+                infoDialogMessage.Message = "Address Copied Successfully : " + this.textBoxTextToQr.Text.ToString();
+                await DialogHost.Show(infoDialogMessage, "ReceiveUserControl");
             }
             else
             {
@@ -98,7 +103,11 @@ namespace XelsXLCDesktopWalletApp.Views.Pages.ReceivePages
                 else
                 {
                     //MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
-                    this.Bels_Receive_Page.Children.Add(new DisplayErrorMessageUserControl("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase));
+                    //this.Bels_Receive_Page.Children.Add(new DisplayErrorMessageUserControl("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase));
+
+                    var errorDialogMessage = ErrorDialogMessage.GetInstance();
+                    errorDialogMessage.Message = "Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase;
+                    await DialogHost.Show(errorDialogMessage, "ReceiveUserControl");
                 }
 
                 return content;

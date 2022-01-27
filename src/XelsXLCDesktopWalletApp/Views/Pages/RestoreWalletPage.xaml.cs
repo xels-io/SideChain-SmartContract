@@ -3,12 +3,13 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-
+using MaterialDesignThemes.Wpf;
 using Newtonsoft.Json;
 
 using XelsXLCDesktopWalletApp.Common;
 using XelsXLCDesktopWalletApp.Models;
 using XelsXLCDesktopWalletApp.Models.CommonModels;
+using XelsXLCDesktopWalletApp.Views.Dialogs.DialogsModel;
 using XelsXLCDesktopWalletApp.Views.Pages.Modals;
 
 namespace XelsXLCDesktopWalletApp.Views.Pages
@@ -140,7 +141,11 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
 
                     if (response.IsSuccessStatusCode)
                     {
-                        this.Restore_Account.Children.Add(new AccountCreatedUserControl($"Successfully saved data with Name:{ recovery.Name}"));
+                        //this.Restore_Account.Children.Add(new AccountCreatedUserControl($"Successfully saved data with Name:{ recovery.Name}"));
+                        var infoDialogMessage = InfoDialogMessage.GetInstance();
+                        infoDialogMessage.Message = $"Successfully saved data with Name:{ recovery.Name}";
+                        await DialogHost.Show(infoDialogMessage, "RestoreWalletPage");
+
                         //CreateOrRestore parentWindow = (CreateOrRestore)Window.GetWindow(this);
                         //parentWindow.Visibility = Visibility.Collapsed;
                         //MainWindow mw = new MainWindow();

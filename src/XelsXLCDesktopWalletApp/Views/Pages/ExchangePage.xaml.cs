@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-
+using MaterialDesignThemes.Wpf;
 using Nethereum.RPC.Eth.DTOs;
 
 using Newtonsoft.Json;
@@ -16,6 +16,7 @@ using XelsXLCDesktopWalletApp.Common;
 using XelsXLCDesktopWalletApp.Models;
 using XelsXLCDesktopWalletApp.Models.CommonModels;
 using XelsXLCDesktopWalletApp.Models.SmartContractModels;
+using XelsXLCDesktopWalletApp.Views.Dialogs.DialogsModel;
 using XelsXLCDesktopWalletApp.Views.Pages.Modals;
 
 namespace XelsXLCDesktopWalletApp.Views.Pages
@@ -307,7 +308,11 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
                 }
                 else
                 {
-                    MessageBox.Show("Wallet Data not Found.");
+                    //MessageBox.Show("Wallet Data not Found.");
+
+                    var dialogMessage = ErrorDialogMessage.GetInstance();
+                    dialogMessage.Message = "Wallet Data not Found.";
+                    await DialogHost.Show(dialogMessage, "ExchangePage");
                 }
             }
             catch (Exception e)
@@ -401,7 +406,11 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
                     if (exchangedata.id == null)
                     {
                         //MessageBox.Show($"Your provided Order Id: {orderId} is not found!");
-                        this.Exchange.Children.Add(new DisplayErrorMessageUserControl($"Your provided Order Id: {orderId} is not found!"));
+                        //this.Exchange.Children.Add(new DisplayErrorMessageUserControl($"Your provided Order Id: {orderId} is not found!"));
+
+                        var dialogMessage = ErrorDialogMessage.GetInstance();
+                        dialogMessage.Message = $"Your provided Order Id: {orderId} is not found!";
+                        await DialogHost.Show(dialogMessage, "ExchangePage");
                     }
                     else
                     {
@@ -531,8 +540,11 @@ namespace XelsXLCDesktopWalletApp.Views.Pages
                     else
                     {
                         //MessageBox.Show("Data is not valid");
-                        this.Exchange.Children.Add(new DisplayErrorMessageUserControl("Data is not valid"));
+                        //this.Exchange.Children.Add(new DisplayErrorMessageUserControl("Data is not valid"));
                         this.AmountTxt.Text = "";
+                        var dialogMessage = ErrorDialogMessage.GetInstance();
+                        dialogMessage.Message = "Data is not valid";
+                        _ = DialogHost.Show(dialogMessage, "ExchangePage");
                     }
                 }
             }

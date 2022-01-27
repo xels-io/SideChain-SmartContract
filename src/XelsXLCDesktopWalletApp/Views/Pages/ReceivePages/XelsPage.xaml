@@ -4,12 +4,14 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:XelsXLCDesktopWalletApp.Views.Pages.ReceivePages"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="XelsPage">
 
-    <Grid Background="White" Margin="0,7,0,0" x:Name="Xels_Receive_Page">
-        <Grid.RowDefinitions>
+    <materialDesign:DialogHost>
+        <Grid Background="White" Margin="0,7,0,0" x:Name="Xels_Receive_Page">
+            <Grid.RowDefinitions>
                 <RowDefinition Height="150" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -151,6 +153,8 @@
             </Border>
 
 
-    </Grid>
+        </Grid>
+    </materialDesign:DialogHost>
+
 
 </Page>
