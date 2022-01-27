@@ -9,7 +9,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="XelsPage">
 
-    <materialDesign:DialogHost Identifier="RootDialog">
+    <materialDesign:DialogHost>
         <Grid Background="White" Margin="0,7,0,0" x:Name="Xels_Receive_Page">
             <Grid.RowDefinitions>
                 <RowDefinition Height="150"/>

@@ -88,7 +88,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.ReceivePages
                 //this.Xels_Receive_Page.Children.Add(new DisplayErrorMessageUserControl("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase));
                 var errorDialogMessage = ErrorDialogMessage.GetInstance();
                 errorDialogMessage.Message = "Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase;
-                await DialogHost.Show(errorDialogMessage, "RootDialog");
+                await DialogHost.Show(errorDialogMessage, "ReceiveUserControl");
             }
 
             return content;
@@ -161,7 +161,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.ReceivePages
 
             var infoDialogMessage = InfoDialogMessage.GetInstance();
             infoDialogMessage.Message = "Address Copied Successfully : " + this.textBoxTextToQr.Text.ToString();
-            await DialogHost.Show(infoDialogMessage, "RootDialog");
+            await DialogHost.Show(infoDialogMessage, "ReceiveUserControl");
         }
 
         private async void Address_Copy_Button_Click(object sender, RoutedEventArgs e)

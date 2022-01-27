@@ -72,20 +72,16 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.ReceivePages
             {
                 Clipboard.SetText(addressString);
                 //MessageBox.Show("Address Copied Successfully :- " + addressString);
-                this.Bels_Receive_Page.Children.Add(new DisplayMessageUserControl("Address Copied Successfully : " + this.textBoxTextToQr.Text.ToString()));
+                //this.Bels_Receive_Page.Children.Add(new DisplayMessageUserControl("Address Copied Successfully : " + this.textBoxTextToQr.Text.ToString()));
 
                 var infoDialogMessage = InfoDialogMessage.GetInstance();
                 infoDialogMessage.Message = "Address Copied Successfully : " + this.textBoxTextToQr.Text.ToString();
-                await DialogHost.Show(infoDialogMessage);
+                await DialogHost.Show(infoDialogMessage, "ReceiveUserControl");
             }
             else
             {
                 //MessageBox.Show("Data Not Found!.");
-                //this.Bels_Receive_Page.Children.Add(new DisplayErrorMessageUserControl("Data Not Found!."));
-
-                var errorDialogMessage = ErrorDialogMessage.GetInstance();
-                errorDialogMessage.Message = "Data Not Found!.";
-                await DialogHost.Show(errorDialogMessage);
+                this.Bels_Receive_Page.Children.Add(new DisplayErrorMessageUserControl("Data Not Found!."));
             }
         }
          
@@ -111,7 +107,7 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.ReceivePages
 
                     var errorDialogMessage = ErrorDialogMessage.GetInstance();
                     errorDialogMessage.Message = "Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase;
-                    await DialogHost.Show(errorDialogMessage);
+                    await DialogHost.Show(errorDialogMessage, "ReceiveUserControl");
                 }
 
                 return content;
