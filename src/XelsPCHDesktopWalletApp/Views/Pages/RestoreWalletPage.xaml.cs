@@ -147,10 +147,10 @@ namespace XelsPCHDesktopWalletApp.Views.Pages
                         infoDialogMessage.Message = $"Successfully saved data with Name:{ recovery.Name}";
                         await DialogHost.Show(infoDialogMessage, "RestoreWalletPage");
 
-                        //CreateOrRestore parentWindow = (CreateOrRestore)Window.GetWindow(this);
-                        //parentWindow.Visibility = Visibility.Collapsed;
-                        //MainWindow mw = new MainWindow();
-                        //mw.Show();
+                        CreateOrRestore parentWindow = (CreateOrRestore)Window.GetWindow(this);
+                        parentWindow.Visibility = Visibility.Collapsed;
+                        MainWindow mw = new MainWindow();
+                        mw.Show();
                     }
                     else
                     {
