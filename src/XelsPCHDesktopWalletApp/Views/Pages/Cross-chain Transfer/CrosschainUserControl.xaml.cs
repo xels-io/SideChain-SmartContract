@@ -13,11 +13,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MaterialDesignThemes.Wpf;
 using Newtonsoft.Json;
 using XelsPCHDesktopWalletApp.Common;
 using XelsPCHDesktopWalletApp.Models;
 using XelsPCHDesktopWalletApp.Models.CommonModels;
 using XelsPCHDesktopWalletApp.Models.SmartContractModels;
+using XelsPCHDesktopWalletApp.Views.Dialogs.DialogsModel;
 using XelsPCHDesktopWalletApp.Views.Pages.Modals;
 
 namespace XelsPCHDesktopWalletApp.Views.Pages.Cross_chain_Transfer
@@ -90,8 +92,11 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.Cross_chain_Transfer
                 if (this.TransactionFeeText.Text == "")
                 {
                     //MessageBox.Show("Transaction Fee is required.", "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                    this.Cross_Chain_Trans.Children.Add(new DisplayErrorMessageUserControl("Transaction Fee is required."));
+                    //this.Cross_Chain_Trans.Children.Add(new DisplayErrorMessageUserControl("Transaction Fee is required."));
                     this.TransactionFeeText.Focus();
+                    var dialogMessage = ErrorDialogMessage.GetInstance();
+                    dialogMessage.Message = "Transaction Fee is required.";
+                    _ = DialogHost.Show(dialogMessage, "CrosschainUserControl");
                     return false;
                 }
 
@@ -229,8 +234,11 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.Cross_chain_Transfer
                     else
                     {
 
-                        MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                        //MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
                         this.DestinationAddressText.Text = "";
+                        var dialogMessage = ErrorDialogMessage.GetInstance();
+                        dialogMessage.Message = "Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase;
+                        _ = DialogHost.Show(dialogMessage, "CrosschainUserControl");
                     }
                 }
             }
@@ -323,7 +331,10 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.Cross_chain_Transfer
 
                             foreach (var error in errors.Errors)
                             {
-                                MessageBox.Show(error.Message);
+                                //MessageBox.Show(error.Message);
+                                var dialogMessage = ErrorDialogMessage.GetInstance();
+                                dialogMessage.Message = error.Message;
+                                _ = DialogHost.Show(dialogMessage, "CrosschainUserControl");
                                 break;
                                 //MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
                             }
@@ -448,7 +459,10 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.Cross_chain_Transfer
 
                             foreach (var error in errors.Errors)
                             {
-                                MessageBox.Show(error.Message);
+                                //MessageBox.Show(error.Message);
+                                var dialogMessage = ErrorDialogMessage.GetInstance();
+                                dialogMessage.Message = error.Message;
+                                _ = DialogHost.Show(dialogMessage, "CrosschainUserControl");
                                 break;
                                 //MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
                             }
@@ -498,7 +512,10 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.Cross_chain_Transfer
 
                         foreach (var error in errors.Errors)
                         {
-                            MessageBox.Show(error.Message);
+                            //MessageBox.Show(error.Message);
+                            var dialogMessage = ErrorDialogMessage.GetInstance();
+                            dialogMessage.Message = error.Message;
+                            _ = DialogHost.Show(dialogMessage, "CrosschainUserControl");
                             break;
                             //MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
                         }
@@ -549,7 +566,10 @@ namespace XelsPCHDesktopWalletApp.Views.Pages.Cross_chain_Transfer
 
                         foreach (var error in errors.Errors)
                         {
-                            MessageBox.Show(error.Message);
+                            //MessageBox.Show(error.Message);
+                            var dialogMessage = ErrorDialogMessage.GetInstance();
+                            dialogMessage.Message = error.Message;
+                            _ = DialogHost.Show(dialogMessage, "CrosschainUserControl");
                             break;
                             //MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
                         }
